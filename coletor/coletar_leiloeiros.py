@@ -1,10 +1,10 @@
 """
-SOLIDUNS — LEILÕES DE BANCOS E LEILOEIROS — v1.1 (10/10/2026)
+SOLIDUNS — LEILÕES DE BANCOS E LEILOEIROS — v1.3 (12/10/2026)
 
-v1.1 (veículos): cada lote leva a MODALIDADE (SQL 114) — judicial (tribunal/vara/praça judicial), venda direta
-(tomada de preço / venda direta) ou extrajudicial — e o endereço da FOTO do lote no site do leiloeiro (SQL 116:
-só o link; a imagem não é copiada). Título sem ano repetido ("John Deere 350G 2020"); "Mini Trailer" não é a
-marca Mini; reboque/trailer vai para Caminhões.
+v1.3 (Leilo): nova fonte — Leilo (leilo.com.br), leilões extrajudiciais de bancos, seguradoras e frotas.
+Leitor tenta 3 caminhos em ordem: API JSON pública -> __NEXT_DATA__ embutido no HTML -> regex dos
+links /lote/<id>. Se os 3 falharem, o log grava as chaves do pageProps para ajuste. Veículos apenas
+(nesta versão); imóveis da Leilo ficam de fora por segurança.
 v1.2 (galeria, SQL 121): o lote guarda até 8 links de foto (coluna fotos) — VIP: as fotos do carrossel da
 ficha; Superbid: a galeria do anúncio. A foto_url continua sendo a capa do card. Nada é copiado: só os links.
 v1.1 (VIP Leilões): carros RECUPERADOS DE FINANCIAMENTO (alienação fiduciária) da VIP Leilões — a página
@@ -12,12 +12,17 @@ v1.1 (VIP Leilões): carros RECUPERADOS DE FINANCIAMENTO (alienação fiduciári
 cada lote NOVO (comitente, km, combustível, cidade). Comitente banco/financeira/consórcio -> fonte 'banco'
 (Origem "Bancos (retomados)", selo do banco); os demais (seguradora, particular) -> fonte 'leiloeiro'. Modalidade
 extrajudicial. Lance = o valor atual do lote (já com os lances dados), nunca abaixo do valor inicial.
+v1.1 (veículos): cada lote leva a MODALIDADE (SQL 114) — judicial (tribunal/vara/praça judicial), venda direta
+(tomada de preço / venda direta) ou extrajudicial — e o endereço da FOTO do lote no site do leiloeiro (SQL 116:
+só o link; a imagem não é copiada). Título sem ano repetido ("John Deere 350G 2020"); "Mini Trailer" não é a
+marca Mini; reboque/trailer vai para Caminhões.
 
 Rotina "Leilões - bancos e leiloeiros" (leiloes-leiloeiros.yml), todo dia. Custo zero (sem IA paga).
-Lê as páginas PÚBLICAS de três leiloeiros oficiais que vendem imóveis e veículos de bancos:
+Lê as páginas PÚBLICAS de quatro leiloeiros oficiais que vendem imóveis e veículos de bancos:
   - Portal Zuk    (portalzuk.com.br)    — imóveis por comitente (Bradesco, Itaú, Santander, Sicoob...) e veículos
   - Mega Leilões  (megaleiloes.com.br)  — imóveis (banco pelo ícone do cartão) e veículos
   - Superbid      (exchange.superbid.net) — imóveis (Banco Inter, Daycoval...) e veículos
+  - Leilo         (leilo.com.br)        — veículos extrajudiciais (bancos, seguradoras, frotas)
 Regras de boa vizinhança: respeita o robots.txt de cada site (página proibida não é aberta), identifica o robô
 (SOLIDUNS-coletor), espera 2 s entre páginas, não passa por CAPTCHA nem por login.
 
@@ -25,13 +30,14 @@ Grava:
   - IMÓVEIS de bancos/financeiras (menos a Caixa, que tem lista própria) e só os EXTRAJUDICIAIS em
     public.leiloes_radar (fonte 'zuk' | 'mega' | 'superbid'; orgao = banco vendedor; leiloeiro = o site).
     Os judiciais desses sites ficam de fora: o Radar já os lê do Diário de Justiça.
-  - VEÍCULOS em public.veiculos_leiloes (fonte 'leiloeiro'), marca/modelo casados com a Tabela FIPE.
+  - VEÍCULOS em public.veiculos_leiloes (fonte 'leiloeiro').
 Saída da lista: imóvel não visto há 3 dias (com a leitura daquele site completa) ou com a data do leilão passada.
 
 Repositório PÚBLICO: nenhuma chave aqui — SUPABASE_URL e SUPABASE_SERVICE_KEY vêm dos Secrets do GitHub.
 """
 
 import datetime as dt
+import json
 import os
 import re
 import sys
@@ -46,7 +52,7 @@ import leiloeiros_regras as R  # noqa: E402
 from veiculos_regras import Catalogo, Cidades, ler_lote, limpar_privado, texto_busca, tipo_pelo_texto  # noqa: E402
 from veiculos_regras import VERSAO_REGRAS as VERSAO_VEI  # noqa: E402
 
-VERSAO = "1.2"
+VERSAO = "1.3"
 UA = "SOLIDUNS-coletor/1.0 (+contato@soliduns.com.br)"
 TESTE = bool(os.environ.get("LEILOES_TESTE"))
 PAUSA = float(os.environ.get("LEILOEIROS_PAUSA") or (0 if TESTE else 2))
@@ -55,18 +61,22 @@ MAX_PAG = int(os.environ.get("LEILOEIROS_MAX_PAGINAS") or 120)          # por si
 ZUK_CIDADES = int(os.environ.get("LEILOEIROS_ZUK_CIDADES") or 60)     # páginas de cidade (extras) no Zuk
 VEI_PAG = int(os.environ.get("LEILOEIROS_VEICULOS_PAGINAS") or 15)     # por categoria de veículo
 DIAS_SEM_VER = int(os.environ.get("LEILOEIROS_DIAS_SEM_VER") or 3)
-FONTES = [f.strip() for f in (os.environ.get("LEILOEIROS_FONTES") or "zuk,mega,superbid,vip").split(",") if f.strip()]
+FONTES = [f.strip() for f in (os.environ.get("LEILOEIROS_FONTES") or "zuk,mega,superbid,vip,leilo").split(",") if f.strip()]
 VIP_PAG = int(os.environ.get("LEILOEIROS_VIP_PAGINAS") or 25)            # páginas da lista (12 lotes cada)
 VIP_FICHAS = int(os.environ.get("LEILOEIROS_VIP_FICHAS") or 260)         # fichas de lotes novos por execução
+LEILO_PAG = int(os.environ.get("LEILOEIROS_LEILO_PAGINAS") or 20)        # páginas da lista
+LEILO_FICHAS = int(os.environ.get("LEILOEIROS_LEILO_FICHAS") or 300)     # fichas abertas por execução (fallback HTML)
 BASES = {
     "zuk": (os.environ.get("ZUK_BASE") or "https://www.portalzuk.com.br").rstrip("/"),
     "mega": (os.environ.get("MEGA_BASE") or "https://www.megaleiloes.com.br").rstrip("/"),
     "superbid": (os.environ.get("SUPERBID_BASE") or "https://exchange.superbid.net").rstrip("/"),
     "vip": (os.environ.get("VIP_BASE") or "https://www.vipleiloes.com.br").rstrip("/"),
+    "leilo": (os.environ.get("LEILO_BASE") or "https://leilo.com.br").rstrip("/"),
 }
-NOMES = {"zuk": "Portal Zuk", "mega": "Mega Leilões", "superbid": "Superbid", "vip": "VIP Leilões"}
+NOMES = {"zuk": "Portal Zuk", "mega": "Mega Leilões", "superbid": "Superbid", "vip": "VIP Leilões",
+         "leilo": "Leilo"}
 SITES = {"zuk": "https://www.portalzuk.com.br", "mega": "https://www.megaleiloes.com.br", "superbid": "https://www.superbid.net",
-         "vip": "https://www.vipleiloes.com.br"}
+         "vip": "https://www.vipleiloes.com.br", "leilo": "https://leilo.com.br"}
 UFS = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI",
        "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}
 COLS_RADAR = ("id", "fonte", "numero", "uf", "cidade", "bairro", "endereco", "tipo", "tipo_original", "preco", "avaliacao",
@@ -802,7 +812,291 @@ def ler_vip(leitor, catalogo, cidades, agora, hoje):
     return res
 
 
-LEITORES = {"zuk": ler_zuk, "mega": ler_mega, "superbid": ler_superbid, "vip": ler_vip}
+# ------------------------------------------------------------ LEILO
+def _leilo_achar_lotes(obj, out=None, prof=0):
+    """Procura recursivamente listas de lotes no JSON do __NEXT_DATA__.
+       Heurística: lista de dicionários com 'id' e algum de 'title'/'name'/'brand'."""
+    if out is None:
+        out = []
+    if prof > 8 or len(out) > 5000:
+        return out
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if isinstance(v, list) and v and isinstance(v[0], dict):
+                a = v[0]
+                if any(kk in a for kk in ("id", "lotId", "code")) and \
+                   any(kk in a for kk in ("title", "name", "brand", "make", "description", "vehicle")):
+                    out.extend(v)
+            elif isinstance(v, (dict, list)):
+                _leilo_achar_lotes(v, out, prof + 1)
+    elif isinstance(obj, list):
+        for it in obj[:300]:
+            _leilo_achar_lotes(it, out, prof + 1)
+    return out
+
+
+def _leilo_json_lotes(obj):
+    """Extrai a lista de lotes de uma resposta JSON do Leilo (formato REST comum)."""
+    if isinstance(obj, list):
+        return obj
+    for k in ("data", "items", "lots", "results", "content"):
+        v = obj.get(k)
+        if isinstance(v, list):
+            return v
+    return []
+
+
+def _leilo_num(x, *chaves):
+    for k in chaves:
+        v = x.get(k)
+        if isinstance(v, (int, float)):
+            return float(v)
+        if isinstance(v, dict):
+            for kk in ("value", "amount", "price"):
+                if isinstance(v.get(kk), (int, float)):
+                    return float(v[kk])
+    return None
+
+
+def _leilo_do_json(x, base):
+    """Normaliza um item JSON (API ou __NEXT_DATA__) para o formato interno."""
+    codigo = str(x.get("id") or x.get("lotId") or x.get("code") or "").strip()
+    if not codigo:
+        return None
+    titulo = (x.get("title") or x.get("name") or x.get("description") or "").strip()[:200]
+    atual = _leilo_num(x, "currentBid", "currentBidValue", "bid", "price", "currentPrice")
+    inicial = _leilo_num(x, "initialBid", "minimumBid", "openingBid", "startingBid", "initialPrice")
+    avaliacao = _leilo_num(x, "marketValue", "evaluation", "appraisal", "referenceValue", "fipeValue")
+    data_ini = (x.get("startDate") or x.get("startAt") or x.get("startsAt") or "")[:10] or None
+    data_fim = (x.get("endDate") or x.get("endAt") or x.get("endsAt") or "")[:10] or None
+    cidade = x.get("city") or x.get("cityName") or ""
+    uf = x.get("state") or x.get("uf") or x.get("stateCode") or ""
+    veic = x.get("vehicle") if isinstance(x.get("vehicle"), dict) else {}
+    marca = (x.get("brand") or x.get("make") or veic.get("brand") or "").strip()
+    modelo = (x.get("model") or veic.get("model") or "").strip()
+    ano = x.get("year") or x.get("modelYear") or x.get("manufactureYear") or veic.get("year")
+    km = x.get("km") or x.get("mileage") or veic.get("km") or veic.get("mileage")
+    combustivel = (x.get("fuel") or x.get("fuelType") or veic.get("fuel") or "").strip().lower()
+    cat = (x.get("category") or x.get("categoryName") or veic.get("category") or "").strip().lower()
+    modalidade_txt = (x.get("auctionType") or x.get("modality") or "").lower()
+    foto = None
+    for k in ("mainImage", "image", "thumbnail", "coverImage", "photo"):
+        v = x.get(k)
+        if isinstance(v, str) and v.startswith("http"):
+            foto = v; break
+        if isinstance(v, dict) and isinstance(v.get("url"), str):
+            foto = v["url"]; break
+    fotos = []
+    for im in (x.get("images") or x.get("photos") or [])[:8]:
+        u = im if isinstance(im, str) else (im.get("url") if isinstance(im, dict) else None)
+        if u and isinstance(u, str) and u.startswith("http") and u not in fotos:
+            fotos.append(u)
+    if foto and foto not in fotos:
+        fotos.insert(0, foto)
+    link = x.get("url") or x.get("link") or x.get("slug") or codigo
+    if not str(link).startswith("http"):
+        link = f"{base}/lote/{link}"
+    return {
+        "codigo": codigo, "titulo": titulo, "link": link,
+        "valor_atual": atual, "valor_inicial": inicial, "avaliacao": avaliacao,
+        "data_inicio": data_ini, "data_fim": data_fim,
+        "cidade": cidade, "uf": uf,
+        "foto": foto, "fotos": fotos or None,
+        "categoria": cat, "marca": marca, "modelo": modelo,
+        "ano": ano, "km": km, "combustivel": combustivel,
+        "modalidade_txt": modalidade_txt,
+        "descricao_extra": (x.get("description") or "")[:600],
+    }
+
+
+def _leilo_do_html(txt, codigo, base):
+    """Fallback: extrai os campos direto do HTML da ficha (quando o JSON não veio)."""
+    titulo = ""
+    m = re.search(r'<meta[^>]*property="og:title"[^>]*content="([^"]+)"', txt)
+    if m: titulo = m.group(1).strip()
+    m2 = re.search(r"<title[^>]*>([^<]+)</title>", txt)
+    if not titulo and m2: titulo = m2.group(1).split("|")[0].strip()
+    if not titulo: return None
+    foto = None
+    m3 = re.search(r'<meta[^>]*property="og:image"[^>]*content="([^"]+)"', txt)
+    if m3: foto = m3.group(1)
+    def bloco(rot):
+        mm = re.search(rf"{rot}\s*[:\-]\s*([^\n<]+)", txt, re.IGNORECASE)
+        return mm.group(1).strip() if mm else None
+    preco = bloco(r"Lance\s*(?:atual|inicial)")
+    avaliacao = bloco(r"Valor\s*de\s*mercado|Avalia[çc][ãa]o|FIPE")
+    ano = bloco(r"Ano(?:\s*modelo)?")
+    km = bloco(r"Km|Quilometragem")
+    combustivel = bloco(r"Combust[íi]vel")
+    local = bloco(r"Localiza[çc][aã]o|Cidade")
+    def num(s):
+        if not s: return None
+        n = re.sub(r"[^\d,]", "", s).replace(".", "").replace(",", ".")
+        try: return float(n)
+        except ValueError: return None
+    def so_int(s):
+        if not s: return None
+        n = re.sub(r"\D", "", s)
+        return int(n) if n else None
+    cidade, uf = None, None
+    if local:
+        if "/" in local:
+            cidade, uf = local.split("/", 1)[0].strip(), local.split("/", 1)[1].strip()[:2].upper()
+        else:
+            cidade = local.strip()
+    return {
+        "codigo": codigo, "titulo": titulo, "link": f"{base}/lote/{codigo}",
+        "valor_atual": num(preco), "valor_inicial": None, "avaliacao": num(avaliacao),
+        "data_inicio": None, "data_fim": None,
+        "cidade": cidade, "uf": uf,
+        "foto": foto, "fotos": [foto] if foto else None,
+        "categoria": "", "marca": "", "modelo": "",
+        "ano": so_int(ano), "km": so_int(km), "combustivel": (combustivel or "").lower() or None,
+        "modalidade_txt": "extrajudicial",
+        "descricao_extra": titulo,
+    }
+
+
+def veiculo_leilo(x, catalogo, cidades, agora, hoje):
+    """Item normalizado do Leilo -> linha de veiculos_leiloes."""
+    marca = (x.get("marca") or "").strip()
+    modelo = (x.get("modelo") or "").strip()
+    titulo_original = x.get("titulo") or ""
+    if marca and modelo:
+        bruto = f"{marca.upper()}/{modelo.upper()}"
+    else:
+        bruto = titulo_original
+    ano_txt = ""
+    if x.get("ano"):
+        ano_txt = str(x["ano"])
+    km_txt = f" KM {x['km']} km." if x.get("km") else ""
+    comb_txt = f" Combustível {x['combustivel']}." if x.get("combustivel") else ""
+    texto = (f"{bruto} {ano_txt}.{km_txt}{comb_txt} {x.get('descricao_extra') or ''}").strip()
+    tipo = tipo_categoria((x.get("categoria") or "") + " " + titulo_original)
+    if tipo == "fora":
+        return None
+    lance = x.get("valor_atual") or x.get("valor_inicial")
+    item = {"codigo": x["codigo"], "link": x["link"], "titulo": (titulo_original or bruto)[:200],
+            "foto": x.get("foto"), "fotos": x.get("fotos")}
+    v = linha_veiculo("leilo", item, texto, tipo, catalogo, cidades, agora, hoje,
+                      x.get("uf"), x.get("cidade"), lance, x.get("data_inicio"), x.get("data_fim"),
+                      fotos=x.get("fotos"))
+    if x.get("avaliacao") and not v.get("avaliacao"):
+        av = x["avaliacao"]
+        if 50 <= av <= 50_000_000:
+            v["avaliacao"] = av
+    if x.get("ano") and not v.get("ano_modelo") and not v.get("ano_fabricacao"):
+        try:
+            a = int(x["ano"])
+            if 1950 <= a <= hoje.year + 1:
+                v.update(ano_fabricacao=a, ano_modelo=a)
+        except (ValueError, TypeError):
+            pass
+    v["modalidade"] = "judicial" if RE_JUDICIAL.search(texto) else "extrajudicial"
+    v["texto_busca"] = texto_busca(v["titulo"], v.get("marca"), v.get("familia"), v.get("modelo_texto"),
+                                   v.get("cidade"), v["descricao"], "Leilo",
+                                   "recuperado financiamento banco seguradora")
+    return v
+
+
+def ler_leilo(leitor, catalogo, cidades, agora, hoje):
+    """Leilo — leilões extrajudiciais (bancos, seguradoras, frotas). Tenta API JSON, depois __NEXT_DATA__,
+       depois regex de links /lote/<id>."""
+    res, b = Resultado("leilo"), BASES["leilo"]
+    res.completo["imoveis"] = False
+    try:
+        # 1) API JSON pública (tentativa rápida, alguns desses endpoints existem)
+        for endpoint in ("/api/v1/public/lots", "/api/lots", "/public/api/lots"):
+            st, txt = leitor.pagina(b + endpoint + "?limit=100&page=1")
+            if st != 200 or not txt.strip().startswith(("{", "[")):
+                continue
+            try:
+                obj = json.loads(txt)
+            except ValueError:
+                continue
+            itens = _leilo_json_lotes(obj)
+            if not itens:
+                continue
+            total = len(itens)
+            for v in (obj.get("meta") or obj.get("pagination") or {}).values() if isinstance(obj.get("meta") or obj.get("pagination"), dict) else []:
+                if isinstance(v, int):
+                    total = max(total, v); break
+            paginas = max(1, min(LEILO_PAG, -(-total // 100)))
+            log(f"    Leilo: API JSON respondeu ({endpoint}, {paginas} página(s))")
+            for n in range(1, paginas + 1):
+                if n > 1:
+                    st2, txt2 = leitor.pagina(b + endpoint + f"?limit=100&page={n}")
+                    if st2 != 200: break
+                    try: obj = json.loads(txt2)
+                    except ValueError: break
+                    itens = _leilo_json_lotes(obj)
+                res.lidos += len(itens)
+                for raw in itens:
+                    x = _leilo_do_json(raw, b)
+                    if not x: continue
+                    v = veiculo_leilo(x, catalogo, cidades, agora, hoje)
+                    if v:
+                        res.veiculos[v["id"]] = v
+            return res
+
+        # 2) Fallback: HTML público
+        paginas_vistas, fila, n = set(), [b + "/oportunidades"], 0
+        fichas_lidas = 0
+        while fila and n < LEILO_PAG:
+            url = fila.pop(0)
+            if url in paginas_vistas: continue
+            paginas_vistas.add(url); n += 1
+            st, txt = leitor.pagina(url)
+            if st != 200:
+                res.aviso(f"{up.urlparse(url).path}: HTTP {st}")
+                continue
+            processou_json = False
+            m = re.search(r'<script[^>]*id="__NEXT_DATA__"[^>]*>(.*?)</script>', txt, re.S)
+            if m:
+                try:
+                    dados = json.loads(m.group(1))
+                except ValueError:
+                    dados = None
+                if dados:
+                    itens = _leilo_achar_lotes(dados)
+                    if itens:
+                        processou_json = True
+                        res.lidos += len(itens)
+                        for raw in itens:
+                            x = _leilo_do_json(raw, b)
+                            if not x: continue
+                            v = veiculo_leilo(x, catalogo, cidades, agora, hoje)
+                            if v:
+                                res.veiculos[v["id"]] = v
+                    else:
+                        pp = (((dados or {}).get("props") or {}).get("pageProps") or {})
+                        res.aviso(f"__NEXT_DATA__ sem lotes; chaves de pageProps: {sorted(pp.keys())[:12]}")
+            # 2b) regex dos links /lote/<id>
+            if not processou_json:
+                ids = set(re.findall(r'href="(/lote/[a-zA-Z0-9\-]+)"', txt))
+                for u in list(ids)[:60]:
+                    if fichas_lidas >= LEILO_FICHAS:
+                        break
+                    st2, t2 = leitor.pagina(b + u)
+                    if st2 != 200: continue
+                    fichas_lidas += 1
+                    x = _leilo_do_html(t2, u.rsplit("/", 1)[-1], b)
+                    if not x: continue
+                    v = veiculo_leilo(x, catalogo, cidades, agora, hoje)
+                    if v:
+                        res.veiculos[v["id"]] = v
+            # paginação
+            if n == 1:
+                base_u = url.split("?")[0]
+                for p in range(2, min(LEILO_PAG + 1, 50)):
+                    fila.append(f"{base_u}?page={p}")
+        log(f"    Leilo: {n} página(s) de HTML, {fichas_lidas} ficha(s) aberta(s)")
+    except StopIteration:
+        pass
+    return res
+
+
+LEITORES = {"zuk": ler_zuk, "mega": ler_mega, "superbid": ler_superbid, "vip": ler_vip, "leilo": ler_leilo}
 
 
 # ------------------------------------------------------------ principal
@@ -845,7 +1139,7 @@ def main():
     resumo, falhas, tot_im, tot_vei = {}, 0, 0, 0
     for f in FONTES:
         if f not in LEITORES:
-            log(f"  {f}: fonte desconhecida (use zuk, mega, superbid)")
+            log(f"  {f}: fonte desconhecida (use zuk, mega, superbid, vip, leilo)")
             continue
         log(f"[{NOMES[f]}]")
         try:
@@ -911,7 +1205,7 @@ def main():
         sb_upsert("veiculos_fontes", [{"fonte": "leiloeiro", "nome": "Leiloeiros oficiais",
                                        "situacao": "ativa" if falhas < len(FONTES) else "em_implantacao",
                                        "ultima_execucao": agora,
-                                       "mensagem": "Portal Zuk, Mega Leilões e Superbid (páginas públicas, todo dia)"}], "fonte")
+                                       "mensagem": "Portal Zuk, Mega Leilões, Superbid e Leilo (páginas públicas, todo dia)"}], "fonte")
     log("")
     log("== RESUMO ==")
     for k, v in resumo.items():
