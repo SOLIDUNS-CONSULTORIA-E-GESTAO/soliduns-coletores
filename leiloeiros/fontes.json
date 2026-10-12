@@ -1,0 +1,55 @@
+{
+  "_campos": "conferir=true: domínio ou rota não validados hoje; listagem=null: o scraper descobre a página de lotes a partir da URL base; ativo=false: o scraper pula",
+  "leiloeiros_judiciais": [
+    {"nome": "Sold Leilões", "url": "https://www.sold.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
+    {"nome": "Lance Judicial", "url": "https://www.lancejudicial.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
+    {"nome": "Biasi Leilões", "url": "https://www.biasileiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
+    {"nome": "Fidalgo Leilões", "url": "https://www.fidalgoleiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
+    {"nome": "Frazão Leilões", "url": "https://www.frazaoleiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
+    {"nome": "Lance no Leilão", "url": "https://www.lancenoleilao.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
+    {"nome": "Kronberg Leilões", "url": "https://www.kronbergleiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
+    {"nome": "Vianna Leilões", "url": "https://www.viannaleiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
+    {"nome": "Canal Judicial", "url": "https://www.canaljudicial.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
+    {"nome": "Mazzollini Leilões", "url": "https://www.mazzollinileiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
+    {"nome": "LEJE Leilões Judiciais Eletrônicos", "url": "https://www.leje.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
+    {"nome": "Damiani Leilões", "url": "https://www.damianileiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
+    {"nome": "Alfa Leilões", "url": "https://www.alfaleiloes.com", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
+    {"nome": "Daniel Garcia Leilões", "url": "https://www.danielgarcialeiloes.com.br", "listagem": null, "tipos": ["imoveis"], "conferir": true}
+  ],
+  "leiloeiros_extrajudiciais": [
+    {"nome": "Copart Brasil", "url": "https://www.copart.com.br", "listagem": null, "tipos": ["veiculos"], "render": true},
+    {"nome": "Freitas Leiloeiro", "url": "https://www.freitasleiloeiro.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
+    {"nome": "Sodré Santoro", "url": "https://www.sodresantoro.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
+    {"nome": "Palácio dos Leilões", "url": "https://www.palaciodosleiloes.com.br", "listagem": null, "tipos": ["veiculos", "imoveis"]},
+    {"nome": "Parque dos Leilões", "url": "https://www.parquedosleiloes.com.br", "listagem": null, "tipos": ["veiculos"]},
+    {"nome": "Leilo", "url": "https://leilo.com.br", "listagem": null, "tipos": ["veiculos"], "render": true},
+    {"nome": "Pestana Leilões", "url": "https://www.pestanaleiloes.com.br", "listagem": null, "tipos": ["veiculos", "imoveis"]},
+    {"nome": "Milan Leilões", "url": "https://www.milanleiloes.com.br", "listagem": null, "tipos": ["veiculos", "imoveis"]},
+    {"nome": "Sato Leilões", "url": "https://www.satoleiloes.com.br", "listagem": null, "tipos": ["veiculos", "imoveis"]},
+    {"nome": "Rogério Menezes Leilões", "url": "https://www.rogeriomenezes.com.br", "listagem": null, "tipos": ["veiculos"], "conferir": true}
+  ],
+  "agregadores": [
+    {"nome": "Resale", "url": "https://www.resale.com.br", "listagem": null, "tipos": ["imoveis"]},
+    {"nome": "Leilão Imóvel", "url": "https://www.leilaoimovel.com.br", "listagem": null, "tipos": ["imoveis"]},
+    {"nome": "Bomvalor", "url": "https://www.bomvalor.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
+    {"nome": "Leilões Judiciais", "url": "https://www.leiloesjudiciais.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true}
+  ],
+  "instituicoes_financeiras": [
+    {"nome": "Caixa – Venda de Imóveis", "url": "https://venda-imoveis.caixa.gov.br", "listagem": "https://venda-imoveis.caixa.gov.br/sistema/busca-imovel.asp", "tipos": ["imoveis"], "render": true, "sobreposicao": "rotina_bancos"},
+    {"nome": "Banco do Brasil – Seu Imóvel BB", "url": "https://www.seuimovelbb.com.br", "listagem": null, "tipos": ["imoveis"], "sobreposicao": "rotina_bancos", "conferir": true},
+    {"nome": "Emgea", "url": "https://www.emgea.gov.br", "listagem": null, "tipos": ["imoveis"], "conferir": true}
+  ],
+  "orgaos_publicos": [
+    {"nome": "Terracap", "url": "https://www.terracap.df.gov.br", "listagem": null, "tipos": ["imoveis"]},
+    {"nome": "Senad – leilões de bens apreendidos", "url": "https://www.gov.br/mj/pt-br/assuntos/sua-protecao/politicas-sobre-drogas", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
+    {"nome": "SPU – Imóveis da União", "url": "https://www.gov.br/gestao/pt-br/assuntos/patrimonio-da-uniao", "listagem": null, "tipos": ["imoveis"], "conferir": true},
+    {"nome": "TRF3 – Central de Hastas Públicas", "url": "https://www.trf3.jus.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true}
+  ],
+  "diretorios_juntas_comerciais": [
+    {"nome": "JUCESP", "url": "https://www.jucesp.sp.gov.br", "uso": "descobrir_leiloeiros_matriculados", "ativo": false},
+    {"nome": "JUCERJA", "url": "https://www.jucerja.rj.gov.br", "uso": "descobrir_leiloeiros_matriculados", "ativo": false},
+    {"nome": "JUCEMG", "url": "https://www.jucemg.mg.gov.br", "uso": "descobrir_leiloeiros_matriculados", "ativo": false},
+    {"nome": "Junta Comercial do Paraná", "url": "https://www.juntacomercial.pr.gov.br", "uso": "descobrir_leiloeiros_matriculados", "ativo": false},
+    {"nome": "JUCISRS", "url": "https://jucisrs.rs.gov.br", "uso": "descobrir_leiloeiros_matriculados", "ativo": false}
+  ]
+}
