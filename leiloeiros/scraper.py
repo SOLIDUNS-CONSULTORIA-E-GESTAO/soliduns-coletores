@@ -324,5 +324,27 @@ def main():
     salvar_atomico(BASE / "erros_ultima_execucao.json", {"execucao": agora, "erros": erros})
     log.info("FIM: %d lotes no total, %d novos, %d fontes com erro", len(base), novos, len(erros))
 
+def enviar_supabase():
+    url, chave = os.environ.get("SUPABASE_URL"), os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+    if not url or not chave:
+        log.info("Supabase não configurado: resultado só em lotes.json")
+        return
+    lotes = []
+    for l in json.loads(SAIDA.read_text(encoding="utf-8")):
+        d = l.get("data") or ""
+        lotes.append({"id": l["id"], "titulo": l["titulo"], "categoria": l["categoria"],
+                      "valor": l.get("valor"), "data_leilao": d[:19] if re.match(r"\d{4}-\d{2}-\d{2}", d) else None,
+                      "link": l["link"], "fonte": l["fonte"], "grupo": l.get("grupo"), "visto_em": l["visto_em"]})
+    h = {"apikey": chave, "Authorization": f"Bearer {chave}", "Content-Type": "application/json",
+         "Prefer": "resolution=merge-duplicates,return=minimal"}
+    for i in range(0, len(lotes), 500):
+        r = requests.post(f"{url.rstrip('/')}/rest/v1/leiloes_lotes_raspados?on_conflict=id",
+                          headers=h, json=lotes[i:i + 500], timeout=60)
+        if r.status_code >= 300:
+            log.error("Supabase %s: %s", r.status_code, r.text[:500])
+            raise SystemExit(1)
+    log.info("Supabase: %d lotes enviados", len(lotes))
+
 if __name__ == "__main__":
     main()
+    enviar_supabase()
