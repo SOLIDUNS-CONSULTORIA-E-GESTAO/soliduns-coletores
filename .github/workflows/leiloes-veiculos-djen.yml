@@ -1,0 +1,23 @@
+name: Leilões - veículos DJEN
+
+on:
+  schedule:
+    - cron: '0 11 * * *'   # 8h BRT, todo dia
+  workflow_dispatch:
+
+jobs:
+  djen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - env:
+          SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          DJEN_RELAY_URL:       ${{ secrets.DJEN_RELAY_URL }}
+          DJEN_TOKEN:           ${{ secrets.DJEN_TOKEN }}
+        run: python coletor/coletar_leiloes_veiculos_djen.py
