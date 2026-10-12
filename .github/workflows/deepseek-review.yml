@@ -1,0 +1,101 @@
+name: DeepSeek Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  deepseek-review:
+    runs-on: ubuntu-latest
+    # Executa se for Pull Request ou se alguém comentar '/deepseek' em uma Issue/PR
+    if: ${{ github.event_name == 'pull_request' || (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/deepseek')) }}
+    
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Executar Code Review via DeepSeek
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
+          IS_PR: ${{ github.event_name == 'pull_request' }}
+        run: |
+          node -e '
+          const https = require("https");
+
+          async function runReview() {
+            const apiKey = process.env.DEEPSEEK_API_KEY;
+            if (!apiKey) {
+              console.error("ERRO: DEEPSEEK_API_KEY não foi configurada nos Secrets!");
+              process.exit(1);
+            }
+
+            console.log("Iniciando análise com a API do DeepSeek...");
+
+            // Chamada para a API do DeepSeek
+            const data = JSON.stringify({
+              model: "deepseek-chat",
+              messages: [
+                {
+                  role: "system",
+                  content: "Você é um Engenheiro de Software Sênior e especialista em PostgreSQL/Supabase. Faça uma revisão detalhada do código ou solicitação enviada, fornecendo melhorias, alertas de segurança e scripts SQL prontos se necessário."
+                },
+                {
+                  role: "user",
+                  content: "Por favor, revise as alterações recentes deste projeto e sugira otimizações e correções."
+                }
+              ]
+            });
+
+            const options = {
+              hostname: "api.deepseek.com",
+              path: "/chat/completions",
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${apiKey}`,
+                "Content-Length": data.length
+              }
+            };
+
+            const req = https.request(options, (res) => {
+              let body = "";
+              res.on("data", (chunk) => body += chunk);
+              res.on("end", () => {
+                if (res.statusCode === 200) {
+                  const response = JSON.parse(body);
+                  console.log("Análise concluída com sucesso!");
+                  console.log(response.choices[0].message.content);
+                } else {
+                  console.error(`Erro na API do DeepSeek (${res.statusCode}):`, body);
+                  process.exit(1);
+                }
+              });
+            });
+
+            req.on("error", (e) => {
+              console.error("Erro na requisição:", e);
+              process.exit(1);
+            });
+
+            req.write(data);
+            req.end();
+          }
+
+          runReview();
+          '
