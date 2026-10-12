@@ -1,5 +1,17 @@
 """
-SOLIDUNS — Coletor do MERCADO AMERICANO (NYSE e Nasdaq) — v2.0 (10/10/2026)
+SOLIDUNS — Coletor do MERCADO AMERICANO (NYSE e Nasdaq) — v2.1 (11/10/2026)
+
+v2.1 (v109-LEI, SQL 125 — espelho da CVM): LAIR, IR e ALÍQUOTA EFETIVA.
+  - Do mesmo arquivo semanal da SEC: lucro antes do IR (LAIR) e despesa de
+    IR dos últimos 12 meses (lair_ttm, ir_ttm), mesmas regras de TTM e de
+    etiqueta abandonada dos demais fluxos;
+  - aliquota_ir = IR ÷ LAIR, entre 0 e a alíquota nominal federal (21%),
+    a mesma regra do Brasil (lá: −IR ÷ LAIR entre 0 e 34%). Sem LAIR
+    positivo ou sem IR: a nominal (21%), como no Brasil (34%);
+  - o ROIC passa a usar a alíquota efetiva de cada empresa (antes: 21% para
+    todas), como o ROIC brasileiro;
+  - sem o SQL 125 (colunas novas), só avisa: grava como antes e o ROIC
+    segue com 21%.
 
 v2.0 (cobertura da Busca avançada igual à do Brasil — sem SQL novo, sem
 coleta extra, mesmo arquivo semanal da SEC):
@@ -272,8 +284,13 @@ CONCEITOS = {
     "divida_lp": ["LongTermDebt", "LongTermDebtNoncurrent"],
     "divida_lp_circ": ["LongTermDebtCurrent"],
     "divida_cp": ["ShortTermBorrowings", "CommercialPaper"],
+    # v2.1: espelho da CVM (3.07 resultado antes dos tributos; 3.08 IR e CSLL)
+    "lair": ["IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+             "IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments"],
+    "ir": ["IncomeTaxExpenseBenefit"],
 }
-FLUXOS = {"receita", "lucro_bruto", "ebit", "lucro_liq", "dividendos"}
+FLUXOS = {"receita", "lucro_bruto", "ebit", "lucro_liq", "dividendos", "lair", "ir"}
+COLUNAS_V21 = ("lair_ttm", "ir_ttm", "aliquota_ir")   # v2.1: SQL 125
 
 # v2.0: etiquetas usadas só quando a principal falta (lucro bruto e EBIT calculados)
 CUSTO_RECEITA = ["CostOfRevenue", "CostOfGoodsAndServicesSold", "CostOfGoodsSold"]
@@ -538,6 +555,7 @@ def extrair_empresa(fatos):
             r["_calc"].discard(k)
     if r.get("passivo_total") is None and r.get("patrimonio_liq") is not None:
         r["passivo_total"] = r["ativo_total"] - r["patrimonio_liq"]
+    r["aliquota_ir"] = aliquota_efetiva(r.get("lair_ttm"), r.get("ir_ttm"))   # v2.1
     r["divida_bruta"] = sum(x for x in (r.pop("divida_lp"), r.pop("divida_lp_circ"), r.pop("divida_cp")) if x) or 0.0
     r["historico"] = _historico_anual(gaap, calc=calc)   # v1.4 (v2.0: etiquetas juntas)
     r["entregas"] = _entregas(gaap)                  # v1.5
@@ -546,6 +564,15 @@ def extrair_empresa(fatos):
     ult = max((f for n in CONCEITOS["ativo_total"] for f in _fatos(gaap, n)), key=lambda f: f["fim"], default=None)
     r["documento"] = (ult or {}).get("form", "")[:4] or None
     return r
+
+
+def aliquota_efetiva(lair, ir):
+    """v2.1: mesma regra do Brasil (coletar_cvm: aliq = −IR ÷ LAIR entre 0 e 34%).
+    Na SEC a despesa de IR vem POSITIVA (IncomeTaxExpenseBenefit), por isso IR ÷ LAIR.
+    Sem LAIR positivo ou sem IR: a alíquota nominal federal."""
+    if lair and lair > 0 and ir is not None:
+        return round(min(max(ir / lair, 0.0), IR_EUA), 4)
+    return IR_EUA
 
 
 def _historico_anual(gaap, anos=7, calc=None):
@@ -761,6 +788,8 @@ def calcular_indicadores(fund, precos):
         pos = lambda x: x if x is not None and x > 0 else None
         cap_giro = (ac - pc) if ac is not None and pc is not None else None
         acl = (ac - pt) if ac is not None and pt is not None else None
+        aliq = f.get("aliquota_ir")                                   # v2.1: alíquota efetiva (SQL 125)
+        aliq = IR_EUA if aliq is None else aliq
         ind = {
             "ticker": f["ticker"], "nome": f.get("empresa"), "setor": f.get("setor"), "bolsa": f.get("bolsa"),
             "financeira": bool(f.get("financeira")),
@@ -778,7 +807,7 @@ def calcular_indicadores(fund, precos):
             "p_cap_giro": None if f.get("financeira") else _r(_div(vm, cap_giro)),
             "p_acl": None if f.get("financeira") else _r(_div(vm, acl)),
             "roe": _r(_div(ll * 100, pos(pl_eq)) if ll is not None else None),
-            "roic": _r(_div(ebit * (1 - IR_EUA) * 100, pos((pl_eq or 0) + div_liq)) if ebit is not None else None),
+            "roic": _r(_div(ebit * (1 - aliq) * 100, pos((pl_eq or 0) + div_liq)) if ebit is not None else None),   # v2.1
             "roa": _r(_div(ll * 100, at) if ll is not None else None),
             "liq_corrente": _r(_div(ac, pc)), "patr_ativos": _r(_div(pl_eq, at)), "passiv_ativos": _r(_div(pt, at)),
             "giro_ativo": _r(_div(rec, at)), "cagr_receitas": f.get("cagr_receitas"), "cagr_lucros": f.get("cagr_lucros"),
@@ -842,6 +871,16 @@ def gravar(nome, linhas, conflito, lote=1000):
             dica = " Rode o SQL 45 no Supabase." if r.status_code == 404 else ""
             raise RuntimeError(f"Gravação em {nome} recusada: {r.status_code} {r.text[:300]}.{dica}")
     log(f"{nome}: {len(linhas)} linha(s) gravada(s)")
+
+
+def tem_colunas(nome, colunas):
+    """v2.1: a tabela já tem as colunas novas? (sem elas o banco recusaria o lote inteiro)"""
+    url, cab = supa()
+    try:
+        r = requests.get(f"{url}/rest/v1/{nome}?select={','.join(colunas)}&limit=1", headers=cab, timeout=60)
+        return r.status_code < 300
+    except requests.RequestException:
+        return False
 
 
 def gravar_opcional(nome, linhas, conflito, lote=1000):
@@ -1168,6 +1207,16 @@ def main():
         log(f"{len(fund)} ações com balanço montado")
         if not local:
             fund = list({l["ticker"]: l for l in fund}.values())   # v1.2: um por ticker
+            if not tem_colunas("fundamentos_us", COLUNAS_V21):   # v2.1
+                log("  aviso: fundamentos_us sem as colunas do SQL 125 (lair_ttm, ir_ttm, aliquota_ir): gravando sem elas "
+                    "e o ROIC segue com 21%. Rode o SQL 125 no Supabase.")
+                for l in fund:
+                    for k in COLUNAS_V21:
+                        l.pop(k, None)
+            com_aliq = [l["aliquota_ir"] for l in fund if l.get("aliquota_ir") is not None and l.get("aliquota_ir") != IR_EUA]
+            if com_aliq:
+                com_aliq.sort()
+                log(f"  alíquota efetiva calculada em {len(com_aliq)} empresa(s); mediana {com_aliq[len(com_aliq) // 2]:.1%}")
             gravar("fundamentos_us", [{k: v for k, v in l.items() if k not in ("financeira", "historico", "entregas")} for l in fund], "ticker")
             hist = {}                                              # v1.4: histórico anual por empresa
             for cik, b in balancos.items():
