@@ -5,6 +5,8 @@ v1.1 (veículos): cada lote leva a MODALIDADE (SQL 114) — judicial (tribunal/v
 (tomada de preço / venda direta) ou extrajudicial — e o endereço da FOTO do lote no site do leiloeiro (SQL 116:
 só o link; a imagem não é copiada). Título sem ano repetido ("John Deere 350G 2020"); "Mini Trailer" não é a
 marca Mini; reboque/trailer vai para Caminhões.
+v1.2 (galeria, SQL 121): o lote guarda até 8 links de foto (coluna fotos) — VIP: as fotos do carrossel da
+ficha; Superbid: a galeria do anúncio. A foto_url continua sendo a capa do card. Nada é copiado: só os links.
 v1.1 (VIP Leilões): carros RECUPERADOS DE FINANCIAMENTO (alienação fiduciária) da VIP Leilões — a página
 /pesquisa/recuperadofinanciamento e a lista que ela mesma pede ao site (?handler=pesquisar, 12 por página) + a ficha de
 cada lote NOVO (comitente, km, combustível, cidade). Comitente banco/financeira/consórcio -> fonte 'banco'
@@ -44,7 +46,7 @@ import leiloeiros_regras as R  # noqa: E402
 from veiculos_regras import Catalogo, Cidades, ler_lote, limpar_privado, texto_busca, tipo_pelo_texto  # noqa: E402
 from veiculos_regras import VERSAO_REGRAS as VERSAO_VEI  # noqa: E402
 
-VERSAO = "1.1"
+VERSAO = "1.2"
 UA = "SOLIDUNS-coletor/1.0 (+contato@soliduns.com.br)"
 TESTE = bool(os.environ.get("LEILOES_TESTE"))
 PAUSA = float(os.environ.get("LEILOEIROS_PAUSA") or (0 if TESTE else 2))
@@ -347,6 +349,18 @@ def foto_ok(u):
     return u if isinstance(u, str) and re.match(r"^https://[\w.-]+/[^\s\"'<>]{4,400}$", u) else None
 
 
+def fotos_lista(x):
+    """v101: até 8 endereços de foto do lote (a capa primeiro); None quando não há nenhum"""
+    out = []
+    for u in [x.get("foto")] + list(x.get("fotos") or []):
+        u = foto_ok(u)
+        if u and u not in out:
+            out.append(u)
+        if len(out) >= 8:
+            break
+    return out or None
+
+
 RE_MM_MISTO = re.compile(r"\b([A-Za-zÀ-ú][A-Za-zÀ-ú.\-]{1,15}(?:\s[A-Za-z]{2,10})?)\s*/\s*([A-Za-z0-9][\w .\-]{1,30})")
 
 
@@ -412,7 +426,7 @@ def tipo_categoria(txt):
     return None
 
 
-def linha_veiculo(fonte, x, texto, tipo_cat, catalogo, cidades, agora, hoje, uf, cidade, lance, data_leilao, data_fim):
+def linha_veiculo(fonte, x, texto, tipo_cat, catalogo, cidades, agora, hoje, uf, cidade, lance, data_leilao, data_fim, fotos=None):
     r = ler_lote("LOTE 1 - veículo " + texto, catalogo, cidades, uf, hoje) or {}
     tipo = tipo_cat or r.get("tipo") or tipo_pelo_texto(texto) or "carro"
     if r.get("tipo") and r["tipo"] != tipo:
@@ -432,7 +446,7 @@ def linha_veiculo(fonte, x, texto, tipo_cat, catalogo, cidades, agora, hoje, uf,
                  data_leilao=data_leilao, data_fim=data_fim, lote=str(x["codigo"])[:40], processo=None,
                  leiloeiro=NOMES[fonte], url=x["link"],
                  descricao=limpar_privado(texto)[:600], situacao="ativo", atualizado_em=agora,
-                 modalidade=modalidade_lote(fonte, x), foto_url=foto_ok(x.get("foto")))
+                 modalidade=modalidade_lote(fonte, x), foto_url=foto_ok(x.get("foto")), fotos=fotos_lista(x))
     if not linha.get("ano_modelo") and not linha.get("ano_fabricacao"):    # "Carro Volkswagen Passat LS - 1982", "... - 2013/2014"
         m = re.search(r"\b(19[5-9]\d|20[0-4]\d)(?:\s*/\s*(19[5-9]\d|20[0-4]\d))?\s*$", x.get("titulo") or "")
         if m:
@@ -504,7 +518,7 @@ def veiculo_superbid(x, catalogo, cidades, agora, hoje):
     lance = x.get("lance_inicial") or x.get("preco")
     texto = (x.get("titulo") or "") + ". " + (x.get("categoria") or "") + ". " + (x.get("descricao") or "")
     return linha_veiculo("superbid", x, texto, tipo, catalogo, cidades, agora, hoje, x.get("uf"), x.get("cidade"),
-                         float(lance) if lance else None, x.get("fim"), None)
+                         float(lance) if lance else None, x.get("fim"), None, fotos=x.get("fotos"))
 
 
 # ------------------------------------------------------------ leitura de cada site
@@ -705,10 +719,11 @@ def veiculo_vip(x, ficha, catalogo, cidades, agora, hoje):
     atual, inicial = x.get("valor_atual") or 0, x.get("valor_inicial") or 0
     lance = max(atual, inicial) or None
     item = {"codigo": x["codigo"], "link": x["link"], "titulo": f"{marca.title()} {modelo.title()} - {anos}".strip(" -"),
-            "comitente": ficha.get("comitente") or "", "foto": x.get("foto")}
+            "comitente": ficha.get("comitente") or "", "foto": x.get("foto"), "fotos": ficha.get("fotos")}
     tipo = tipo_categoria(modelo) if tipo_categoria(modelo) in ("maquina", "caminhao", "moto") else None
     fim = ficha.get("encerramento") if (ficha.get("encerramento") or "") > (x.get("inicio") or "") else None
-    v = linha_veiculo("vip", item, texto, tipo, catalogo, cidades, agora, hoje, uf, cidade, lance, x.get("inicio"), fim)
+    v = linha_veiculo("vip", item, texto, tipo, catalogo, cidades, agora, hoje, uf, cidade, lance, x.get("inicio"), fim,
+                      fotos=ficha.get("fotos"))
     if re.search(r"sinistr", R.sa(ficha.get("procedencia") or "")) and v.get("condicao") in (None, "nao_informado", "circulacao"):
         v["condicao"] = "recuperavel"
     if x.get("placa_final") and not v.get("placa_final"):
@@ -792,10 +807,11 @@ LEITORES = {"zuk": ler_zuk, "mega": ler_mega, "superbid": ler_superbid, "vip": l
 
 # ------------------------------------------------------------ principal
 def gravar_veiculos(linhas):
-    sem = [x for x in linhas if "fipe_valor" not in x]
-    com = [x for x in linhas if "fipe_valor" in x]
-    sb_upsert("veiculos_leiloes", sem)                   # mesmas colunas em cada envio (PostgREST usa as do 1º item)
-    sb_upsert("veiculos_leiloes", com)
+    grupos = {}                                          # mesmas colunas em cada envio (PostgREST usa as do 1º item)
+    for x in linhas:
+        grupos.setdefault(tuple(sorted(x.keys())), []).append(x)
+    for g in grupos.values():
+        sb_upsert("veiculos_leiloes", g)
 
 
 def main():
@@ -814,7 +830,7 @@ def main():
             log("AVISO: catálogo FIPE vazio — marca/modelo dos veículos ficam sem casar nesta execução.")
     leitor = Leitor()
     if "vip" in FONTES and not sem_gravar:                # fichas já lidas: não abre de novo (menos pedidos ao site)
-        for y in sb_get("veiculos_leiloes?select=id,origem_nome,anunciante_sigla,descricao,cidade,uf&id=like.vip-*"):
+        for y in sb_get("veiculos_leiloes?select=id,origem_nome,anunciante_sigla,descricao,cidade,uf,fotos&id=like.vip-*"):
             d = y.get("descricao") or ""
             ficha = {k: m.group(1).strip() for k, m in (
                 ("comitente", re.search(r"Comitente: ([^.]+)\.", d)), ("km", re.search(r"KM ([\d.]+) km", d)),
@@ -823,6 +839,8 @@ def main():
             if ficha.get("comitente"):
                 if y.get("cidade") and y.get("uf"):
                     ficha["localizacao"] = f"x, {y['cidade']}, {y['uf']} - CEP"
+                if y.get("fotos"):
+                    ficha["fotos"] = y["fotos"]
                 VIP_CACHE[y["id"]] = ficha
     resumo, falhas, tot_im, tot_vei = {}, 0, 0, 0
     for f in FONTES:

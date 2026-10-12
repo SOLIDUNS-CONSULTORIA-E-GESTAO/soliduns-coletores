@@ -1,5 +1,10 @@
 """
-SOLIDUNS — LEILÃO DE AUTOMÓVEIS — Tabela FIPE — v1.0 (08/10/2026)
+SOLIDUNS — LEILÃO DE AUTOMÓVEIS — Tabela FIPE — v1.1 (11/10/2026)
+
+v1.1 (SQL 123 — histórico FIPE): além de preencher o preço dos lotes novos, o robô RENOVA o preço dos lotes
+ativos quando a FIPE publica um mês novo (o lote mostra "setembro de 2026" e já estamos em outubro). Cada preço
+gravado vai sozinho para veiculos_fipe_historico (gatilho do SQL 123) e a ficha mostra a série. A renovação usa
+o mesmo teto de consultas; um mesmo modelo/ano não é reconsultado antes de 7 dias.
 
 Duas tarefas, escolhidas sozinhas a cada execução:
 
@@ -30,7 +35,7 @@ import requests
 
 from veiculos_regras import chave, familia_do_modelo, familia_exibicao, nome_marca
 
-VERSAO = "1.0"
+VERSAO = "1.1"
 BASE = (os.environ.get("FIPE_BASE") or "https://parallelum.com.br/fipe/api/v1").rstrip("/")
 TIPOS = {"carro": "carros", "moto": "motos", "caminhao": "caminhoes"}
 DIAS_CATALOGO = int(os.environ.get("FIPE_DIAS_CATALOGO") or 30)
@@ -212,6 +217,77 @@ def preencher_precos():
     log(f"Preços FIPE: {feitos} lote(s) com preço novo | {len(lotes)} aguardavam | {consultas - gastas_ini} consulta(s)")
 
 
+MESES_FIPE = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro",
+              "novembro", "dezembro"]
+
+
+def referencia_esperada(hoje=None):
+    hoje = hoje or dt.date.today()
+    return f"{MESES_FIPE[hoje.month - 1]} de {hoje.year}"
+
+
+def escolher(opcoes, combustivel):
+    opcoes = [p for p in opcoes if p.get("valor")]
+    if combustivel:
+        mesmo = [p for p in opcoes if (p.get("combustivel") or "").lower().startswith(combustivel.lower()[:4])]
+        opcoes = mesmo or opcoes
+    if len(opcoes) == 1 or (opcoes and len({p["valor"] for p in opcoes}) == 1):
+        return opcoes[0]
+    return None
+
+
+def renovar_precos(teto):
+    """lotes ativos com preço de um mês da FIPE que já passou: consulta o mês novo (o gatilho guarda o histórico)"""
+    esperado = referencia_esperada()
+    lotes = sb_get("veiculos_leiloes?select=id,tipo,marca_codigo,modelo_codigo,ano_modelo,combustivel,fipe_referencia"
+                   "&situacao=eq.ativo&fipe_valor=not.is.null&modelo_codigo=not.is.null&ano_modelo=not.is.null"
+                   "&tipo=in.(carro,moto,caminhao)&order=data_leilao.asc")
+    velhos = [x for x in lotes if (x.get("fipe_referencia") or "").strip().lower() != esperado]
+    if not velhos:
+        log(f"Renovação FIPE: todos os lotes já estão em {esperado}")
+        return
+    recentes = set()
+    limite = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ")   # sem "+" na URL
+    for p in sb_get("veiculos_fipe_precos?select=tipo,marca_codigo,modelo_codigo,ano_modelo&consultado_em=gt." + limite):
+        recentes.add((p["tipo"], p["marca_codigo"], p["modelo_codigo"], p["ano_modelo"]))
+    grupos = defaultdict(list)
+    for x in velhos:
+        grupos[(x["tipo"], x["marca_codigo"], x["modelo_codigo"], x["ano_modelo"])].append(x)
+    gastas_ini, renovados, chaves, mes_novo = consultas, 0, 0, None
+    agora = dt.datetime.now(dt.timezone.utc).isoformat()
+    for k, lts in grupos.items():
+        if consultas - gastas_ini >= teto:
+            log(f"  renovação: teto de consultas atingido; o restante fica para amanhã")
+            break
+        if k in recentes:                       # consultado há menos de 7 dias e a FIPE ainda não mudou o mês
+            continue
+        tipo, marca, modelo, ano = k
+        cam = TIPOS[tipo]
+        anos = fipe(f"{cam}/marcas/{marca}/modelos/{modelo}/anos") or []
+        novos = []
+        for a in anos:
+            if not str(a["codigo"]).startswith(str(ano) + "-"):
+                continue
+            d = fipe(f"{cam}/marcas/{marca}/modelos/{modelo}/anos/{a['codigo']}") or {}
+            novos.append({"tipo": tipo, "marca_codigo": marca, "modelo_codigo": modelo, "ano_codigo": str(a["codigo"]),
+                          "ano_modelo": d.get("AnoModelo") or ano, "combustivel": d.get("Combustivel"),
+                          "codigo_fipe": d.get("CodigoFipe"), "valor": valor_br(d.get("Valor")),
+                          "referencia": (d.get("MesReferencia") or "").strip() or None, "consultado_em": agora})
+        if not novos:
+            continue
+        sb_upsert("veiculos_fipe_precos", novos, "tipo,marca_codigo,modelo_codigo,ano_codigo")   # gatilho -> histórico
+        chaves += 1
+        mes_novo = mes_novo or next((n["referencia"] for n in novos if n.get("referencia")), None)
+        for x in lts:
+            p = escolher(novos, x.get("combustivel"))
+            if p and p.get("referencia") and p["referencia"] != x.get("fipe_referencia"):
+                sb_patch(f"veiculos_leiloes?id=eq.{requests.utils.quote(x['id'], safe='')}",
+                         {"fipe_valor": p["valor"], "fipe_codigo": p["codigo_fipe"], "fipe_referencia": p["referencia"]})
+                renovados += 1
+    log(f"Renovação FIPE ({esperado}): {renovados} lote(s) com o preço do mês novo | {chaves} modelo/ano consultados"
+        + (f" (a FIPE devolveu '{mes_novo}')" if mes_novo else "") + f" | {len(velhos)} lote(s) com mês antigo")
+
+
 def main():
     modo = (sys.argv[1] if len(sys.argv) > 1 else "tudo").lower()
     log(f"SOLIDUNS — Tabela FIPE v{VERSAO} — {dt.datetime.now():%d/%m/%Y %H:%M} — modo {modo}")
@@ -221,7 +297,11 @@ def main():
         elif modo == "tudo":
             log("Catálogo FIPE em dia (atualiza a cada %d dias)" % DIAS_CATALOGO)
         if modo in ("precos", "tudo"):
+            ini = consultas
             preencher_precos()
+            sobra = PRECOS_MAX - (consultas - ini)
+            if sobra > 0:
+                renovar_precos(sobra)
     except Limite:
         log("A API da FIPE informou LIMITE DIÁRIO atingido: o robô parou aqui e continua na próxima execução.")
     log(f"Consultas à FIPE nesta execução: {consultas}")

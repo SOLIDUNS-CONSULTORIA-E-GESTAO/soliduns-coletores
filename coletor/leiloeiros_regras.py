@@ -17,7 +17,7 @@ import json
 import re
 import unicodedata
 
-VERSAO = "leiloeiros-v2"
+VERSAO = "leiloeiros-v3"
 
 
 def sa(t):
@@ -255,6 +255,11 @@ def superbid(pagina):
                     sa(x.get("subMarketplaceDesc")) == "judicial" for x in ((o.get("auction") or {}).get("subMarketplaces") or [])),
                 "foto": p.get("thumbnailUrl") or next((g.get("link") for g in (p.get("galleryJson") or [])
                                                        if str(g.get("link") or "").lower().endswith((".jpg", ".jpeg", ".png", ".webp"))), None),
+                "fotos": [u for u in ([p.get("thumbnailUrl")] + [g.get("link") for g in (p.get("galleryJson") or [])])
+                          if isinstance(u, str) and u.lower().startswith("https://")
+                          and u.lower().split("?")[0].endswith((".jpg", ".jpeg", ".png", ".webp"))],
+                "fotos": [g.get("link") for g in (p.get("galleryJson") or [])
+                          if str(g.get("link") or "").lower().endswith((".jpg", ".jpeg", ".png", ".webp"))][:8],
                 "cidade": cid[0].strip() if cid and cid[0] else None, "uf": cid[1].strip() if len(cid) == 2 else None,
                 "categoria": (sub.get("description") or ""), "grupo": ((sub.get("category") or {}).get("description") or ""),
                 "preco": o.get("price"), "lance_inicial": od.get("initialBidValue") or od.get("currentMinBid"),
@@ -427,7 +432,35 @@ def vip_detalhe(pagina):
     m = re.search(r'"data_encerramento"\s*:\s*"(\d{2}/\d{2}/\d{4})', pagina)    # leilão online com prazo
     if m:
         d["encerramento"] = data_br(m.group(1))
+    fotos = []                                             # v101: só as fotos do carrossel do lote (class "d-block w-100");
+    for tag in re.findall(r'<img[^>]+>', pagina, re.I):    # selos, logos e lotes recomendados do rodapé ficam de fora
+        if not re.search(r'class="[^"]*d-block w-100', tag):
+            continue
+        m = re.search(r'src="(https://[^"]+?\.(?:jpe?g|png|webp))"', tag, re.I)
+        if m and m.group(1) not in fotos and len(m.group(1)) <= 500:
+            fotos.append(m.group(1))
+        if len(fotos) >= 8:
+            break
+    if fotos:
+        d["fotos"] = fotos
     return d
+
+
+def vip_fotos(pagina):
+    """fotos do lote na ficha da VIP: o 1º carrossel da página (até as setas), na ordem"""
+    partes = re.split(r'class="carousel slide"', pagina or "")
+    if len(partes) < 2:
+        return []
+    bloco = partes[1]
+    fim = bloco.find("carousel-control")
+    if fim > 0:
+        bloco = bloco[:fim]
+    out = []
+    for u in re.findall(r'carousel-item[^>]*>\s*<img[^>]+src="(https://[^"]+)"', bloco):
+        u = htmlmod.unescape(u)
+        if u not in out:
+            out.append(u)
+    return out
 
 
 RE_VIP_FINANCEIRA = re.compile(r"cons[oó]rcio|financiamento|financeira|itapeva|leasing|arrendamento", re.I)
