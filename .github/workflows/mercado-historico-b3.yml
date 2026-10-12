@@ -1,0 +1,38 @@
+# SOLIDUNS — MERCADO: HISTÓRICO DIÁRIO DAS AÇÕES DA B3 (abertura, máxima, mínima, fechamento, volume) — v1.0 (12/10/2026)
+# Fonte oficial e gratuita: Séries Históricas de Cotações da B3 (COTAHIST). Grava em cotacoes_br_hist e
+# cotacoes_br_eventos (SQL 127). Todo dia útil às 22h20 (Brasília) busca os pregões que faltam.
+# CARGA DO PASSADO (uma vez): Actions -> "Mercado - histórico B3" -> Run workflow -> anos: 2025,2026
+# Repositório PÚBLICO: nenhuma chave aqui (só os Secrets do GitHub).
+name: Mercado - histórico B3
+
+on:
+  schedule:
+    - cron: "20 1 * * 2-6"      # 22h20 em Brasília, segunda a sexta
+  workflow_dispatch:
+    inputs:
+      anos:
+        description: "Carga do passado (ex.: 2025,2026). Vazio = só os pregões que faltam."
+        required: false
+        default: ""
+
+jobs:
+  historico:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install requests
+
+      - name: Ler as Series Historicas da B3
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          ANOS: ${{ github.event.inputs.anos }}
+        run: |
+          if [ -n "$ANOS" ]; then python coletor/coletar_cotahist.py --anos "$ANOS"; else python coletor/coletar_cotahist.py; fi
