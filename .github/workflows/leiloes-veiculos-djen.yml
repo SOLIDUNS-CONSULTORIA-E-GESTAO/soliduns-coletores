@@ -20,4 +20,4 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           DJEN_RELAY_URL:       ${{ secrets.DJEN_RELAY_URL }}
           DJEN_TOKEN:           ${{ secrets.DJEN_TOKEN }}
-        run: python coletor/coletar_leiloes_veiculos_djen.py
+        run: python -u coletor/coletar_leiloes_veiculos_djen.py
