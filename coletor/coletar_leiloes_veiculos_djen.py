@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-coletar_leiloes_veiculos_djen.py — v1.1 (12/10/2026)
+coletar_leiloes_veiculos_djen.py — v1.1 (12/10/2026) — MODO TESTE RÁPIDO
 
-Correções sobre a v1.0:
-  - Nomes dos parâmetros alinhados com a Edge Function swift-api v1.3
-    (inicio, fim, pagina) — antes mandava dataDisponibilizacaoInicio/Fim.
-  - Remove o parâmetro "texto": a função fixa a busca em "leilão".
-  - Tribunais: só os 35 da whitelist da função (14 TJs, 6 TRFs, 15 TRTs).
-    O robô original mandava 33, dos quais 13 eram recusados (HTTP 400).
-  - Loop de 3 páginas por tribunal (até 300 publicações por chamada).
-  - Mapeia os campos que a função devolve: id, data, tribunal, orgao,
-    processo, classe, link, texto.
+Alterações para o teste:
+  - PAGINAS = 1 (apenas 1 página por tribunal)
+  - TRIBUNAIS = ["TJSP"] (apenas São Paulo)
+  - timeout = 15s na chamada requests.get
 """
 
 import os, re, sys, hashlib, time
@@ -25,16 +20,10 @@ DJEN_RELAY   = os.environ["DJEN_RELAY_URL"].rstrip("/")
 DJEN_TOKEN   = os.environ["DJEN_TOKEN"]
 
 JANELA_DIAS = 3
-PAGINAS     = 3
+PAGINAS     = 1
 
-# 35 tribunais da whitelist da swift-api v1.3 (TJs + TRFs + TRTs)
-TRIBUNAIS = [
-    "TJDFT","TJGO","TJSP","TJMG","TJBA","TJCE","TJPB","TJRN",
-    "TJRJ","TJPR","TJSC","TJRS","TJES","TJPE",
-    "TRF1","TRF2","TRF3","TRF4","TRF5","TRF6",
-    "TRT1","TRT2","TRT3","TRT4","TRT5","TRT6","TRT7","TRT9",
-    "TRT10","TRT12","TRT13","TRT15","TRT17","TRT18","TRT21",
-]
+# MODO TESTE: apenas TJSP
+TRIBUNAIS = ["TJSP"]
 
 HEADERS_SUPA = {
     "apikey": SUPABASE_KEY,
@@ -79,7 +68,8 @@ def consultar_djen(tribunal, pagina, ini, fim):
     headers = {"x-soliduns-token": DJEN_TOKEN}
     for tentativa in range(3):
         try:
-            r = requests.get(DJEN_RELAY, params=params, headers=headers, timeout=60)
+            # ALTERAÇÃO PARA TESTE: timeout de 15s (antes era 60)
+            r = requests.get(DJEN_RELAY, params=params, headers=headers, timeout=15)
             if r.status_code == 200:
                 return r.json()
             print(f"  [http {r.status_code}] {tribunal} p{pagina}")
