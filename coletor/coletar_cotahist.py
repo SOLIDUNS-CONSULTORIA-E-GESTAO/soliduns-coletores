@@ -38,7 +38,7 @@ import zipfile
 
 import requests
 
-VERSAO = "1.1"
+VERSAO = "1.2"
 URL_ANUAL = "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A{ano}.ZIP"
 URL_DIARIO = "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_D{ddmmaaaa}.ZIP"
 URL_EVENTOS = ("https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/"
@@ -177,9 +177,17 @@ def eventos_b3(emissores, pausa=0.4):
     return saida, falhas
 
 
-def candidatos(f):
-    c = {1 + f / 100, f / 100, 100 / f if f else None, f, 1 / f if f else None, 1 / (1 + f / 100)}
-    return [x for x in c if x and x > 0 and abs(math.log(x)) > 1e-6]
+def fator_b3(rotulo, f):
+    """v1.2: leitura do fator da B3 (conferida com os eventos reais de 2025-26):
+    DESDOBRAMENTO e BONIFICAÇÃO = % de aumento de ações (900 -> 1 vira 10; 4 -> 1,04);
+    GRUPAMENTO = multiplicador de ações (0,025 -> 40 viram 1). Outros (cisão, redução de capital…) não
+    mudam a quantidade de ações: não são ajustados."""
+    r = (rotulo or "").upper()
+    if "GRUPAMENTO" in r:
+        return f if f > 0 else None
+    if "DESDOBRAMENTO" in r or "BONIFICA" in r:
+        return 1 + f / 100
+    return None
 
 
 def salto(serie, data_com):
@@ -199,18 +207,30 @@ def detectar_eventos(por_ticker, ev_b3):
     eventos, avisos = [], []
     for tk, serie in por_ticker.items():
         usados = set()
+        por_data = {}                                     # v1.2: eventos da mesma data-com são combinados (VIVT3 04/2025: 1/40 × 80 = 2)
         for (dc, f, rot, isin) in ev_b3.get(tk[:4], []):
             if isin and serie and serie[-1].get("isin") and isin != serie[-1]["isin"]:
                 continue
+            fx = fator_b3(rot, f)
+            if fx is None:
+                continue                                  # cisão/redução de capital etc.: não mexe na quantidade de ações
+            lst = por_data.setdefault(dc, [])
+            if (rot, round(fx, 10)) not in [(r, round(x, 10)) for r, x in lst]:   # a B3 às vezes repete o evento
+                lst.append((rot, fx))
+        for dc, lst in por_data.items():
             s = salto(serie, dc)
             if not s:
                 continue
             obs = s[0]
-            melhor = min(candidatos(f), key=lambda c: abs(math.log(obs / c)), default=None)
-            if melhor is None or abs(math.log(obs / melhor)) > 0.18:
-                avisos.append(f"{tk} {dc}: evento B3 {rot} fator {f} não bate com o salto {obs:.3f} — não ajustado")
+            prod = math.prod(x for _, x in lst)
+            opcoes = [(prod, " + ".join(r for r, _ in lst))] + ([(x, r) for r, x in lst] if len(lst) > 1 else [])
+            fx, rot = min(opcoes, key=lambda o: abs(math.log(obs / o[0])))
+            if abs(math.log(fx)) < 1e-6:
                 continue
-            eventos.append({"ticker": tk, "data_com": s[1], "fator": round(melhor, 8), "tipo": rot or "EVENTO",
+            if abs(math.log(obs / fx)) > 0.18:
+                avisos.append(f"{tk} {dc}: evento B3 {rot} (fator {fx:.4f}) não bate com o salto {obs:.3f} — não ajustado")
+                continue
+            eventos.append({"ticker": tk, "data_com": s[1], "fator": round(fx, 8), "tipo": rot[:60] or "EVENTO",
                             "origem": "b3", "salto": round(obs, 6)})
             usados.add(s[1])
         for k, (a, b) in enumerate(zip(serie, serie[1:])):   # saltos grandes sem evento da B3
@@ -371,7 +391,7 @@ def principal():
     eventos, avisos = detectar_eventos(por_ticker, ev_b3)
     resumo(f"- eventos aplicados no ajuste: {len(eventos)} (B3: {sum(e['origem'] == 'b3' for e in eventos)}; "
            f"por salto exato: {sum(e['origem'] == 'heuristica' for e in eventos)})")
-    for e in eventos[:40]:
+    for e in eventos:
         log(f"    {e['ticker']} data-com {e['data_com']}: {e['tipo']} fator {e['fator']} ({e['origem']}, salto {e['salto']})")
     if avisos:
         resumo(f"- saltos grandes NÃO ajustados (conferir): {len(avisos)}")
@@ -384,18 +404,26 @@ def principal():
         json.dump(eventos, open(os.path.join(a.saida, "cotacoes_br_eventos.json"), "w"), ensure_ascii=False, indent=1)
         resumo(f"RESULTADO (teste): {len(linhas)} linhas e {len(eventos)} eventos em {a.saida}")
         return
+    dmin, dmax = min(l["data"] for l in linhas), max(l["data"] for l in linhas)
     try:
         gravar("cotacoes_br_hist", linhas, "ticker,data")
     except Exception as e:                                 # v1.1: o motivo vai para o Summary
         resumo(f"RESULTADO: **ERRO** ao gravar o histórico — {str(e)[:600]}")
         sys.exit(1)
+    if a.anos:                                            # v1.2: carga refaz os eventos automáticos do período
+        try:
+            url, cab = supa()
+            r = requests.delete(f"{url}/rest/v1/cotacoes_br_eventos?origem=in.(b3,heuristica)&data_com=gte.{dmin}&data_com=lte.{dmax}",
+                                headers=cab, timeout=120)
+            resumo(f"- eventos automáticos antigos do período apagados para regravar (HTTP {r.status_code})")
+        except requests.RequestException as e:
+            resumo(f"- aviso: não consegui limpar os eventos antigos ({type(e).__name__})")
     if eventos:
         try:
             gravar("cotacoes_br_eventos", [{k: e[k] for k in ("ticker", "data_com", "fator", "tipo", "origem", "salto")} for e in eventos],
                    "ticker,data_com")
         except Exception as e:                             # eventos nunca derrubam o histórico já gravado
             resumo(f"- **aviso**: eventos de ajuste NÃO gravados — {str(e)[:500]}")
-    dmin, dmax = min(l["data"] for l in linhas), max(l["data"] for l in linhas)
     resumo(f"RESULTADO: gravadas {len(linhas):,} linhas de {len(por_ticker)} ações/units, de {dmin} a {dmax}; "
            f"{len(eventos)} evento(s) de ajuste.".replace(",", "."))
 
