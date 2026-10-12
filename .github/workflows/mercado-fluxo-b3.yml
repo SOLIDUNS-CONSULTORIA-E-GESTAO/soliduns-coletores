@@ -1,14 +1,14 @@
-# SOLIDUNS - MERCADO: FLUXO E PARTICIPAÇÃO DOS INVESTIDORES NA B3 (v1.0, 11/10/2026)
+# SOLIDUNS — MERCADO: FLUXO E PARTICIPAÇÃO DOS INVESTIDORES NA B3 (v1.0, 11/10/2026)
 # Todo dia útil lê a tabela "Participação dos investidores" do Boletim Diário do Mercado (BDI) da B3
 # (arquivo público e gratuito) e grava em mercado_fluxo_investidores (SQL 124) — só se a leitura passar
-# na conferência (5 tipos, participações fechando 100%). Nunca grave número de exemplo. Custo zero.
+# na conferência (5 tipos, participações fechando 100%). Nunca grava número de exemplo. Custo zero.
 # Respeita o robots.txt, 2 s entre pedidos, sem login. Guarda amostras (artefato "amostras-fluxo-b3").
 # Repositório PÚBLICO: nenhuma chave aqui (só os Secrets do GitHub).
 name: Mercado - fluxo dos investidores B3
 
 on:
   schedule:
-    - cron: "11 22 * * 1-5" # 19h11 em Brasília, Dias Úteis
+    - cron: "11 12 * * 1-5"      # 09h11 em Brasília, dias úteis
   workflow_dispatch:
 
 jobs:
@@ -22,12 +22,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Instalar dependencias
+      - name: Instalar dependências
         run: |
-          sudo apt-get update -y && sudo apt-get install -y -q poppler-utils
+          sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
           pip install requests
 
-      - name: Ler o Boletim Diario da B3
+      - name: Ler o Boletim Diário da B3
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
