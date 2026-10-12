@@ -38,7 +38,7 @@ import zipfile
 
 import requests
 
-VERSAO = "1.0"
+VERSAO = "1.1"
 URL_ANUAL = "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A{ano}.ZIP"
 URL_DIARIO = "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_D{ddmmaaaa}.ZIP"
 URL_EVENTOS = ("https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/"
@@ -233,7 +233,13 @@ def detectar_eventos(por_ticker, ev_b3):
                                 "tipo": "DESDOBRAMENTO" if r > 1 else "GRUPAMENTO", "origem": "heuristica", "salto": round(obs, 6)})
             else:
                 avisos.append(f"{tk} {a['data']}→{b['data']}: salto de {obs:.3f} sem evento — não ajustado")
-    return eventos, avisos
+    # v1.1: um evento por ticker e data-com (a B3 pode listar o mesmo evento 2×; a da B3 vale mais que a heurística)
+    unicos = {}
+    for e in eventos:
+        k = (e["ticker"], e["data_com"])
+        if k not in unicos or (unicos[k]["origem"] != "b3" and e["origem"] == "b3"):
+            unicos[k] = e
+    return list(unicos.values()), avisos
 
 
 # ---------------------------------------------------------------------------------------------- banco
@@ -257,7 +263,7 @@ def gravar(nome, linhas, conflito, lote=1000):
             if r.status_code == 404:
                 sys.exit(f"Tabela {nome} não existe: rode o SQL 127 no Supabase.")
             if t == 2:
-                raise RuntimeError(f"Gravação em {nome} recusada: {r.status_code} {r.text[:300]}")
+                raise RuntimeError(f"Gravação em {nome} recusada (lote {i // lote + 1}): HTTP {r.status_code} {r.text[:400]}")
             time.sleep(5)
 
 
@@ -297,6 +303,16 @@ def dias_uteis_desde(ini, hoje):
 
 
 def main():
+    try:
+        principal()
+    except SystemExit:
+        raise
+    except Exception as e:                                 # v1.1: qualquer erro aparece no Summary
+        resumo(f"RESULTADO: **ERRO** {type(e).__name__}: {str(e)[:600]}")
+        raise
+
+
+def principal():
     global FONTE
     ap = argparse.ArgumentParser()
     ap.add_argument("--anos", help="carga do passado, ex.: 2025,2026")
@@ -368,10 +384,17 @@ def main():
         json.dump(eventos, open(os.path.join(a.saida, "cotacoes_br_eventos.json"), "w"), ensure_ascii=False, indent=1)
         resumo(f"RESULTADO (teste): {len(linhas)} linhas e {len(eventos)} eventos em {a.saida}")
         return
-    gravar("cotacoes_br_hist", linhas, "ticker,data")
+    try:
+        gravar("cotacoes_br_hist", linhas, "ticker,data")
+    except Exception as e:                                 # v1.1: o motivo vai para o Summary
+        resumo(f"RESULTADO: **ERRO** ao gravar o histórico — {str(e)[:600]}")
+        sys.exit(1)
     if eventos:
-        gravar("cotacoes_br_eventos", [{k: e[k] for k in ("ticker", "data_com", "fator", "tipo", "origem", "salto")} for e in eventos],
-               "ticker,data_com")
+        try:
+            gravar("cotacoes_br_eventos", [{k: e[k] for k in ("ticker", "data_com", "fator", "tipo", "origem", "salto")} for e in eventos],
+                   "ticker,data_com")
+        except Exception as e:                             # eventos nunca derrubam o histórico já gravado
+            resumo(f"- **aviso**: eventos de ajuste NÃO gravados — {str(e)[:500]}")
     dmin, dmax = min(l["data"] for l in linhas), max(l["data"] for l in linhas)
     resumo(f"RESULTADO: gravadas {len(linhas):,} linhas de {len(por_ticker)} ações/units, de {dmin} a {dmax}; "
            f"{len(eventos)} evento(s) de ajuste.".replace(",", "."))
