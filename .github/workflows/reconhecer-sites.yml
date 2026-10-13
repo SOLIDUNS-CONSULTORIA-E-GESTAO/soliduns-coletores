@@ -1,0 +1,33 @@
+name: Reconhecimento - sites de leiloeiros
+
+on:
+  workflow_dispatch:
+    inputs:
+      so:
+        description: "Só estes leiloeiros (nomes do fontes.json, separados por vírgula). Vazio = todos com veículos."
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  reconhecer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install playwright && python -m playwright install --with-deps chromium
+      - name: Reconhecer
+        env:
+          RECON_SO: ${{ github.event.inputs.so }}
+        run: python -u coletor/reconhecer_sites.py
+      - name: Publicar no ramo recon
+        if: always()
+        run: |
+          git config user.name "soliduns-recon"; git config user.email "recon@soliduns.com.br"
+          git checkout --orphan recon-tmp
+          git rm -rq --cached . ; git add -f recon/
+          git commit -qm "recon $(date -u +%F' '%H:%M)" && git push -f origin recon-tmp:recon
