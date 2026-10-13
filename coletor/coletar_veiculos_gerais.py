@@ -16,6 +16,8 @@ do leiloeiro quando o cartão informa ("comissão de 5%"). Lote não visto há 3
 v1.1: leitor PRÓPRIO da Sodré Santoro (a busca de lotes que o próprio site usa, /api/search-lots: veículos de
 bancos, seguradoras e judiciais, com marca, modelo, ano, km, pátio, comitente, fotos e comissão). Os demais
 continuam no raspador genérico até ganharem leitor próprio (reconhecimento: rotina "Reconhecimento - sites de leiloeiros").
+v1.3: leitor PRÓPRIO da Pestana Leilões (lista /procurar-bens?tipoBem=421 lida na página + /api/v2/leilao para
+cidade do pátio e edital). Origem "Retomado" (recuperado de financiamento) -> fonte 'banco'; "Judicial" -> judicial.
 Secrets: SUPABASE_URL, SUPABASE_SERVICE_KEY. Opcional: GERAIS_SO="Copart Brasil,Sodré Santoro" (testar poucas).
 """
 import datetime as dt
@@ -33,7 +35,7 @@ import coletar_leiloeiros as CL          # noqa: E402  (sb_get, sb_upsert, sb_pa
 import scraper as G                     # noqa: E402
 from veiculos_regras import Catalogo, Cidades  # noqa: E402
 
-VERSAO = "1.2"
+VERSAO = "1.3"
 JA_LIDOS = ("portalzuk.", "megaleiloes.", "superbid.", "vipleiloes.", "leilo.com.br")
 DIAS_SEM_VER = 3
 RE_BANCO = re.compile(r"\b(banco|santander|bradesco|ita[uú]|caixa econ|bv financeira|banco bv|safra|daycoval|omni|"
@@ -213,7 +215,103 @@ def linha_sodre(f, sg, x, catalogo, cidades, agora, hoje):
     return v
 
 
-LEITORES = {"sodresantoro.": ler_sodre}
+PESTANA_URL = "https://www.pestanaleiloes.com.br"
+PESTANA_QTD, PESTANA_MAX = 48, 30
+JS_PESTANA_CARDS = """() => {
+  const out = [], vistos = new Set();
+  document.querySelectorAll('a[href*="/agenda-de-leiloes/"]').forEach(a => {
+    const m = a.href.match(/agenda-de-leiloes\\/(\\d+)\\/(\\d+)/); if (!m || vistos.has(m[2])) return;
+    let c = a; for (let i = 0; i < 6 && c.parentElement; i++) { c = c.parentElement; if (/Lance/.test(c.innerText || '')) break; }
+    const img = c.querySelector('img[src*="http"]');
+    vistos.add(m[2]);
+    out.push({leilao: m[1], lote: m[2], link: a.href.split('?')[0], texto: (c.innerText || '').slice(0, 900), foto: img ? img.src : null});
+  });
+  return out;
+}"""
+
+
+def ler_pestana(f, catalogo, cidades, agora, hoje):
+    from playwright.sync_api import sync_playwright
+    sg = sigla(f["url"]); CL.NOMES[sg] = f["nome"]
+    linhas, descartados, erro, vistos = {}, 0, None, set()
+    with sync_playwright() as p:
+        b = p.chromium.launch(headless=True)
+        pg = b.new_context(user_agent=G.UA, locale="pt-BR").new_page()
+        try:
+            pg.goto(PESTANA_URL, timeout=60000, wait_until="domcontentloaded")
+            pg.wait_for_timeout(2500)
+            leiloes = {}
+            r = pg.evaluate("async () => { const r = await fetch('/api/v2/leilao'); return r.ok ? await r.json() : []; }")
+            for l in r or []:
+                ex = (l.get("exposicao") or [{}])[0] or {}
+                ed = next((d.get("link") for d in (l.get("documentos") or []) if "edital" in (d.get("nome") or "").lower()), None)
+                leiloes[str(l.get("id"))] = {"nome": l.get("nome"), "cidade": ex.get("cidade"), "uf": ex.get("estado"), "edital": ed}
+            for n in range(1, PESTANA_MAX + 1):
+                pg.goto(f"{PESTANA_URL}/procurar-bens?tipoBem=421&lotePage={n}&loteQty={PESTANA_QTD}",
+                        timeout=60000, wait_until="networkidle")
+                pg.wait_for_timeout(2000)
+                cards = [c for c in pg.evaluate(JS_PESTANA_CARDS) if c["lote"] not in vistos]
+                if not cards:
+                    break
+                for c in cards:
+                    vistos.add(c["lote"])
+                    v = linha_pestana(f, sg, c, leiloes.get(c["leilao"]) or {}, catalogo, cidades, agora, hoje)
+                    if v:
+                        linhas[v["id"]] = v
+                    else:
+                        descartados += 1
+        except Exception as e:
+            erro = str(e)[:200]
+        b.close()
+    return linhas, descartados, erro
+
+
+RE_PESTANA_DATA = re.compile(r"(\d{2})/(\d{2})/(\d{4})")
+
+
+def linha_pestana(f, sg, c, lei, catalogo, cidades, agora, hoje):
+    CL.NOMES[sg] = f["nome"]
+    linhas_txt = [t.strip() for t in c["texto"].split("\n") if t.strip()]
+    origem = next((t for t in linhas_txt if t in ("Retomado", "Sinistrado", "Judicial", "Recuperado", "Frota", "Particular")), "")
+    titulo = next((t for t in linhas_txt if re.search(r"\b(19|20)\d\d\b", t) and not t.startswith("LOTE")
+                   and not RE_PESTANA_DATA.search(t)), "")
+    m = re.search(r"Lance (?:atual|inicial|m[ií]nimo):\s*R\$\s*([\d.]+,\d{2})", c["texto"])
+    lance = float(m.group(1).replace(".", "").replace(",", ".")) if m else None
+    d = RE_PESTANA_DATA.search(c["texto"])
+    data = f"{d.group(3)}-{d.group(2)}-{d.group(1)}" if d else None
+    if data and data < str(hoje):
+        return None
+    uf = (lei.get("uf") or "").upper() or None
+    cidade = cidades.oficial(lei.get("cidade"), uf) if lei.get("cidade") and uf in CL.UFS else None
+    nome_leilao = lei.get("nome") or next((t for t in linhas_txt if t.lower().startswith("leilão")), "")
+    texto = f"{titulo} {origem}. Comitente: {nome_leilao}."
+    item = {"codigo": c["lote"], "titulo": titulo, "comitente": texto, "link": c["link"], "foto": c.get("foto")}
+    v = CL.linha_veiculo(sg, item, texto, None, catalogo, cidades, agora, hoje, uf, cidade, lance, data, None)
+    if not v or not v.get("marca"):
+        return None
+    a = re.search(r"\b((?:19|20)\d\d)\s*/?\s*((?:19|20)\d\d)\b", titulo)
+    if a and not v.get("ano_modelo"):
+        fab, mod = int(a.group(1)), int(a.group(2))
+        if 0 <= mod - fab <= 1 and fab <= hoje.year + 1:
+            v.update(ano_fabricacao=fab, ano_modelo=mod)
+            v["titulo"] = CL.titulo_veiculo(v, titulo)
+    if not v.get("uf"):
+        t = re.search(r"\bTJ([A-Z]{2})\b", nome_leilao)
+        if t and t.group(1) in CL.UFS:
+            v["uf"] = t.group(1)
+    if origem == "Judicial" or re.search(r"judicial|\btj[a-z]{2}\b|\btrt\b|\btrf\b", nome_leilao, re.I):
+        v["modalidade"] = "judicial"
+    else:
+        v["modalidade"] = "extrajudicial"
+        if origem in ("Retomado", "Recuperado") or RE_BANCO.search(nome_leilao):
+            v["fonte"] = "banco"
+    v["origem_nome"] = f"{f['nome']} · {nome_leilao}"[:80] if nome_leilao else f["nome"]
+    if lei.get("edital"):
+        v["link_edital"] = lei["edital"]
+    return v
+
+
+LEITORES = {"sodresantoro.": ler_sodre, "pestanaleiloes.": ler_pestana}
 
 
 def main():
