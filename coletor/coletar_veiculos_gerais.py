@@ -20,6 +20,8 @@ v1.3: leitor PRÓPRIO da Pestana Leilões (lista /procurar-bens?tipoBem=421 lida
 cidade do pátio e edital). Origem "Retomado" (recuperado de financiamento) -> fonte 'banco'; "Judicial" -> judicial.
 v1.4: leitor PRÓPRIO do Leilões Judiciais (/veiculos?pagina=N, 42 por página, lido no DOM; página de cada
 leilão para nome do comitente/vara e data). Vara/tribunal -> judicial; Detran/PRF/Receita -> órgão público.
+v1.5: leitor PRÓPRIO da Freitas Leiloeiro (/Leiloes/Pesquisar?categoria=1 no navegador, clicando em
+"Carregar mais lotes"; comitente FINANCEIRA/BANCO -> banco; pátios em SP).
 Secrets: SUPABASE_URL, SUPABASE_SERVICE_KEY. Opcional: GERAIS_SO="Copart Brasil,Sodré Santoro" (testar poucas).
 """
 import datetime as dt
@@ -37,7 +39,7 @@ import coletar_leiloeiros as CL          # noqa: E402  (sb_get, sb_upsert, sb_pa
 import scraper as G                     # noqa: E402
 from veiculos_regras import Catalogo, Cidades  # noqa: E402
 
-VERSAO = "1.4"
+VERSAO = "1.5"
 JA_LIDOS = ("portalzuk.", "megaleiloes.", "superbid.", "vipleiloes.", "leilo.com.br")
 DIAS_SEM_VER = 3
 RE_BANCO = re.compile(r"\b(banco|santander|bradesco|ita[uú]|caixa econ|bv financeira|banco bv|safra|daycoval|omni|"
@@ -420,7 +422,92 @@ def linha_lj(f, sg, c, lei, catalogo, cidades, agora, hoje):
     return v
 
 
-LEITORES = {"sodresantoro.": ler_sodre, "pestanaleiloes.": ler_pestana, "leiloesjudiciais.": ler_leiloes_judiciais}
+FREITAS_URL = "https://www.freitasleiloeiro.com.br"
+FREITAS_CLIQUES = 80
+JS_FREITAS_CARDS = """() => {
+  const out = [], vistos = new Set();
+  document.querySelectorAll('a[href*="LoteDetalhes"]').forEach(a => {
+    const u = new URL(a.href); const id = u.searchParams.get('leilaoId') + '-' + u.searchParams.get('loteNumero');
+    if (vistos.has(id)) return;
+    let c = a; for (let i = 0; i < 7 && c.parentElement; i++) { c = c.parentElement; if (/R\\$/.test(c.innerText || '') && /\\d{2}\\/\\d{2}\\/\\d{4}/.test(c.innerText || '')) break; }
+    const img = c.querySelector('img[src^="http"]');
+    vistos.add(id);
+    out.push({codigo: id, link: a.href, texto: (c.innerText || '').replace(/\\s+/g, ' ').slice(0, 600), foto: img ? img.src : null});
+  });
+  return out;
+}"""
+
+
+def ler_freitas(f, catalogo, cidades, agora, hoje):
+    from playwright.sync_api import sync_playwright
+    sg = sigla(f["url"]); CL.NOMES[sg] = f["nome"]
+    linhas, descartados, erro = {}, 0, None
+    with sync_playwright() as p:
+        b = p.chromium.launch(headless=True)
+        pg = b.new_context(user_agent=G.UA, locale="pt-BR").new_page()
+        try:
+            pg.goto(f"{FREITAS_URL}/Leiloes/Pesquisar?query=&categoria=1", timeout=60000, wait_until="networkidle")
+            pg.wait_for_timeout(2000)
+            antes = -1
+            for _ in range(FREITAS_CLIQUES):
+                n = pg.locator('a[href*="LoteDetalhes"]').count()
+                if n == antes:
+                    break
+                antes = n
+                botao = pg.get_by_text(re.compile(r"Carregar mais lotes", re.I))
+                if not botao.count():
+                    break
+                botao.first.click()
+                pg.wait_for_timeout(2500)
+            for c in pg.evaluate(JS_FREITAS_CARDS):
+                v = linha_freitas(f, sg, c, catalogo, cidades, agora, hoje)
+                if v:
+                    linhas[v["id"]] = v
+                else:
+                    descartados += 1
+        except Exception as e:
+            erro = str(e)[:200]
+        b.close()
+    return linhas, descartados, erro
+
+
+def linha_freitas(f, sg, c, catalogo, cidades, agora, hoje):
+    CL.NOMES[sg] = f["nome"]
+    t = c["texto"]
+    if re.search(r"vendid|encerrad|cancelad|retirad|condicional", t, re.I):
+        return None
+    m = re.search(r"(\d{2})/(\d{2})/(\d{4})\s+\d{2}:\d{2}\s+(.+?),\s*(\d{2})/(\d{2}),", t)
+    if not m:
+        return None
+    data = f"{m.group(3)}-{m.group(2)}-{m.group(1)}"
+    if data < str(hoje):
+        return None
+    titulo = m.group(4).strip()
+    vl = re.search(r"R\$\s*([\d.]+,\d{2})", t)
+    lance = _brl(vl.group(1)) if vl else None
+    comit = re.search(r"(?:Maior lance|Lance inicial|Lance m[ií]nimo)\s+(.+?)\s+(?:ABERTO|EM BREVE|AGUARD|$)", t)
+    comit = comit.group(1).strip() if comit else ""
+    texto = f"{titulo} {m.group(5)}/{m.group(6)} {t[m.end():m.end() + 120]} Comitente: {comit}."
+    item = {"codigo": c["codigo"], "titulo": titulo, "comitente": texto, "link": c["link"], "foto": c.get("foto")}
+    v = CL.linha_veiculo(sg, item, texto, None, catalogo, cidades, agora, hoje, "SP", None, lance, data, None)
+    if not v or not v.get("marca"):
+        return None
+    yy = hoje.year % 100
+    fab, mod = [(2000 if int(x) <= yy + 1 else 1900) + int(x) for x in (m.group(5), m.group(6))]
+    if 0 <= mod - fab <= 1:
+        v.update(ano_fabricacao=fab, ano_modelo=mod)
+        v["titulo"] = re.sub(r"\s\d{2}(?=\s(?:19|20)\d\d$)", "", CL.titulo_veiculo(v, titulo))
+    if CL.RE_JUDICIAL.search(comit):
+        v["modalidade"] = "judicial"
+    else:
+        v["modalidade"] = "extrajudicial"
+        if RE_BANCO.search(comit):
+            v["fonte"] = "banco"
+    v["origem_nome"] = f"{f['nome']} · {comit.title()}"[:80] if comit else f["nome"]
+    return v
+
+
+LEITORES = {"freitasleiloeiro.": ler_freitas, "sodresantoro.": ler_sodre, "pestanaleiloes.": ler_pestana, "leiloesjudiciais.": ler_leiloes_judiciais}
 
 
 def main():
