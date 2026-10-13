@@ -6,6 +6,13 @@ on:
       so:
         description: "Só estes leiloeiros (nomes do fontes.json, separados por vírgula). Vazio = todos com veículos."
         required: false
+      urls:
+        description: "Páginas extras para abrir (separadas por vírgula)."
+        required: false
+      lim:
+        description: "Tamanho da amostra de cada JSON (caracteres)."
+        required: false
+        default: "4000"
 
 permissions:
   contents: write
@@ -23,6 +30,8 @@ jobs:
       - name: Reconhecer
         env:
           RECON_SO: ${{ github.event.inputs.so }}
+          RECON_URLS: ${{ github.event.inputs.urls }}
+          RECON_LIM: ${{ github.event.inputs.lim }}
         run: python -u coletor/reconhecer_sites.py
       - name: Publicar no ramo recon
         if: always()

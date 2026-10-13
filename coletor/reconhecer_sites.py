@@ -11,6 +11,8 @@ FONTES = json.load(open(os.path.join(AQUI, "..", "leiloeiros", "fontes.json"), e
 SAIDA = os.path.join(AQUI, "..", "recon"); os.makedirs(SAIDA, exist_ok=True)
 SO = {s.strip() for s in os.environ.get("RECON_SO", "").split(",") if s.strip()}
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36"
+LIM = int(os.environ.get("RECON_LIM", "4000"))
+EXTRAS = [u.strip() for u in os.environ.get("RECON_URLS", "").split(",") if u.strip()]
 RE_VEI = re.compile(r"ve[ií]culo|carro|moto|autom|leil[aã]o|lotes|agenda|busca|pesquisa", re.I)
 
 def sigla(u): return re.sub(r"[^a-z0-9]+", "-", urlparse(u).netloc.lower().replace("www.", "").split(".")[0])
@@ -43,9 +45,9 @@ def main():
             ctx = b.new_context(user_agent=UA, locale="pt-BR"); pg = ctx.new_page(); jsons = []
             def resp(r):
                 try:
-                    if "json" in (r.headers.get("content-type") or "") and len(jsons) < 25:
-                        jsons.append({"url": r.url, "metodo": r.request.method, "post": (r.request.post_data or "")[:500],
-                                      "status": r.status, "amostra": r.text()[:4000]})
+                    if "json" in (r.headers.get("content-type") or "") and len(jsons) < 40:
+                        jsons.append({"url": r.url, "metodo": r.request.method, "post": (r.request.post_data or "")[:6000],
+                                      "status": r.status, "amostra": r.text()[:LIM]})
                 except Exception:
                     pass
             pg.on("response", resp)
@@ -57,6 +59,14 @@ def main():
                 if urlparse(u).netloc.endswith(urlparse(f["url"]).netloc.replace("www.", "")) and u not in seen \
                    and re.search(r"ve[ií]culo|carro|autom", u + t, re.I):
                     seen.add(u); out["paginas"].append(visitar(pg, u, jsons))
+            for u in EXTRAS:
+                if urlparse(u).netloc.replace("www.", "") == urlparse(f["url"]).netloc.replace("www.", ""):
+                    out["paginas"].append(visitar(pg, u, jsons))
+                    try:
+                        for _ in range(4):
+                            pg.mouse.wheel(0, 4000); pg.wait_for_timeout(1500)
+                    except Exception:
+                        pass
             out["jsons"] = jsons
             json.dump(out, open(os.path.join(SAIDA, sigla(f["url"]) + ".json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
             print(f["nome"], "páginas:", len(out["paginas"]), "json:", len(jsons), flush=True)
