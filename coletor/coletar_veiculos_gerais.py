@@ -18,6 +18,8 @@ bancos, seguradoras e judiciais, com marca, modelo, ano, km, pátio, comitente, 
 continuam no raspador genérico até ganharem leitor próprio (reconhecimento: rotina "Reconhecimento - sites de leiloeiros").
 v1.3: leitor PRÓPRIO da Pestana Leilões (lista /procurar-bens?tipoBem=421 lida na página + /api/v2/leilao para
 cidade do pátio e edital). Origem "Retomado" (recuperado de financiamento) -> fonte 'banco'; "Judicial" -> judicial.
+v1.4: leitor PRÓPRIO do Leilões Judiciais (/veiculos?pagina=N, 42 por página, lido no DOM; página de cada
+leilão para nome do comitente/vara e data). Vara/tribunal -> judicial; Detran/PRF/Receita -> órgão público.
 Secrets: SUPABASE_URL, SUPABASE_SERVICE_KEY. Opcional: GERAIS_SO="Copart Brasil,Sodré Santoro" (testar poucas).
 """
 import datetime as dt
@@ -35,7 +37,7 @@ import coletar_leiloeiros as CL          # noqa: E402  (sb_get, sb_upsert, sb_pa
 import scraper as G                     # noqa: E402
 from veiculos_regras import Catalogo, Cidades  # noqa: E402
 
-VERSAO = "1.3"
+VERSAO = "1.4"
 JA_LIDOS = ("portalzuk.", "megaleiloes.", "superbid.", "vipleiloes.", "leilo.com.br")
 DIAS_SEM_VER = 3
 RE_BANCO = re.compile(r"\b(banco|santander|bradesco|ita[uú]|caixa econ|bv financeira|banco bv|safra|daycoval|omni|"
@@ -311,7 +313,114 @@ def linha_pestana(f, sg, c, lei, catalogo, cidades, agora, hoje):
     return v
 
 
-LEITORES = {"sodresantoro.": ler_sodre, "pestanaleiloes.": ler_pestana}
+LJ_URL = "https://www.leiloesjudiciais.com.br"
+LJ_MAX, LJ_LEILOES_MAX = 40, 120
+JS_LJ_CARDS = """() => {
+  const out = [], vistos = new Set();
+  document.querySelectorAll('a[href*="/lote/"]').forEach(a => {
+    const m = a.href.match(/leiloesjudiciais\\.com\\.br\\/lote\\/(\\d+)\\/(\\d+)/); if (!m || vistos.has(m[2])) return;
+    let c = a; for (let i = 0; i < 7 && c.parentElement; i++) { c = c.parentElement; if (/Avalia|Lance m/.test(c.innerText || '')) break; }
+    const img = c.querySelector('img[src^="http"]');
+    vistos.add(m[2]);
+    out.push({leilao: m[1], lote: m[2], link: a.href.split('?')[0], texto: (c.innerText || '').slice(0, 900), foto: img ? img.src : null});
+  });
+  return out;
+}"""
+RE_ORGAO = re.compile(r"\b(detran|prf|pol[ií]cia rodovi[aá]ria|receita federal|ciretran|dnit|der\b)", re.I)
+
+
+def ler_leiloes_judiciais(f, catalogo, cidades, agora, hoje):
+    from playwright.sync_api import sync_playwright
+    sg = sigla(f["url"]); CL.NOMES[sg] = f["nome"]
+    linhas, descartados, erro, vistos, cartoes = {}, 0, None, set(), []
+    with sync_playwright() as p:
+        b = p.chromium.launch(headless=True)
+        pg = b.new_context(user_agent=G.UA, locale="pt-BR").new_page()
+        try:
+            for n in range(1, LJ_MAX + 1):
+                pg.goto(f"{LJ_URL}/veiculos?pagina={n}", timeout=60000, wait_until="networkidle")
+                pg.wait_for_timeout(1500)
+                novos = [c for c in pg.evaluate(JS_LJ_CARDS) if c["lote"] not in vistos]
+                if not novos:
+                    break
+                for c in novos:
+                    vistos.add(c["lote"])
+                cartoes += novos
+            leiloes = {}
+            for lid in list(dict.fromkeys(c["leilao"] for c in cartoes))[:LJ_LEILOES_MAX]:
+                try:
+                    pg.goto(f"{LJ_URL}/leilao/{lid}", timeout=45000, wait_until="domcontentloaded")
+                    pg.wait_for_timeout(1200)
+                    t = re.sub(r"\s+", " ", pg.inner_text("body"))
+                    i = t.find("Comitente")
+                    trecho = t[i:i + 300] if i >= 0 else t[:600]
+                    d = re.search(r"(\d{2})/(\d{2})/(\d{4})", t)
+                    leiloes[lid] = {"texto": trecho, "titulo": pg.title(),
+                                    "data": f"{d.group(3)}-{d.group(2)}-{d.group(1)}" if d else None}
+                except Exception:
+                    pass
+            for c in cartoes:
+                v = linha_lj(f, sg, c, leiloes.get(c["leilao"]) or {}, catalogo, cidades, agora, hoje)
+                if v:
+                    linhas[v["id"]] = v
+                else:
+                    descartados += 1
+        except Exception as e:
+            erro = str(e)[:200]
+        b.close()
+    return linhas, descartados, erro
+
+
+def _brl(t):
+    return float(t.replace(".", "").replace(",", ".")) if t else None
+
+
+def linha_lj(f, sg, c, lei, catalogo, cidades, agora, hoje):
+    CL.NOMES[sg] = f["nome"]
+    txt = c["texto"]
+    if re.search(r"encerrad|arrematad|suspens|cancelad|retirad|vendid", txt, re.I):
+        return None
+    ls = [t.strip() for t in txt.split("\n") if t.strip()]
+    titulo = next((t for t in ls if re.search(r"[A-Za-zÀ-ú]{3}", t) and not t.startswith("#")
+                   and not re.search(r"^(aberto|em breve|aguardando|avalia|lance|clique|r\$)", t, re.I)), "")
+    loc = next((t for t in ls if re.match(r"^[A-Za-zÀ-ú' .\-]+/[A-Z]{2}$", t)), "")
+    cidade, uf = (loc.rsplit("/", 1) + [None])[:2] if loc else (None, None)
+    uf = uf if uf in CL.UFS else None
+    cidade = cidades.oficial(cidade, uf) if cidade and uf else None
+    av = re.search(r"Avalia[cç][aã]o\s*R\$\s*([\d.]+,\d{2})", txt)
+    mn = re.search(r"Lance m[ií]nimo\s*R\$\s*([\d.]+,\d{2})", txt)
+    at = re.search(r"Lance Atual\s*R\$\s*([\d.]+,\d{2})", txt)
+    lance = max(x for x in (_brl(mn.group(1)) if mn else 0, _brl(at.group(1)) if at else 0)) or None
+    data = lei.get("data") if (lei.get("data") or "") >= str(hoje) else None
+    comit = lei.get("texto") or lei.get("titulo") or ""
+    texto = f"{titulo}. Comitente: {comit}"
+    item = {"codigo": c["lote"], "titulo": titulo, "comitente": texto, "link": c["link"], "foto": c.get("foto")}
+    v = CL.linha_veiculo(sg, item, texto, None, catalogo, cidades, agora, hoje, uf, cidade, lance, data, None)
+    if not v or not v.get("marca"):
+        return None
+    a = re.search(r"\s-\s(\d{2})/(\d{2})\s-", titulo)
+    if a and not v.get("ano_modelo"):
+        yy = hoje.year % 100
+        fab, mod = [(2000 if int(x) <= yy + 1 else 1900) + int(x) for x in a.groups()]
+        if 0 <= mod - fab <= 1:
+            v.update(ano_fabricacao=fab, ano_modelo=mod)
+            v["titulo"] = CL.titulo_veiculo(v, titulo)
+    if av and not v.get("avaliacao"):
+        v["avaliacao"] = _brl(av.group(1))
+    if RE_ORGAO.search(comit):
+        v["fonte"], v["modalidade"] = ("detran" if re.search(r"detran|ciretran", comit, re.I) else "prf" if re.search(r"prf|rodovi", comit, re.I) else "receita"), "extrajudicial"
+    elif CL.RE_JUDICIAL.search(comit) or not comit:
+        v["modalidade"] = "judicial"
+    else:
+        v["modalidade"] = "extrajudicial"
+        if RE_BANCO.search(comit):
+            v["fonte"] = "banco"
+    nome = re.sub(r"^Comitente:?\s*", "", comit)[:60].strip()
+    v["origem_nome"] = f"{f['nome']} · {nome}"[:80] if nome else f["nome"]
+    return v
+
+
+LEITORES = {"sodresantoro.": ler_sodre, "pestanaleiloes.": ler_pestana, "leiloesjudiciais.": ler_leiloes_judiciais}
 
 
 def main():
