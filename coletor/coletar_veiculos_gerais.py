@@ -33,7 +33,7 @@ import coletar_leiloeiros as CL          # noqa: E402  (sb_get, sb_upsert, sb_pa
 import scraper as G                     # noqa: E402
 from veiculos_regras import Catalogo, Cidades  # noqa: E402
 
-VERSAO = "1.1"
+VERSAO = "1.2"
 JA_LIDOS = ("portalzuk.", "megaleiloes.", "superbid.", "vipleiloes.", "leilo.com.br")
 DIAS_SEM_VER = 3
 RE_BANCO = re.compile(r"\b(banco|santander|bradesco|ita[uú]|caixa econ|bv financeira|banco bv|safra|daycoval|omni|"
@@ -95,33 +95,70 @@ def _sodre_corpo(de):
 
 
 def ler_sodre(f, catalogo, cidades, agora, hoje):
+    """v1.2: a busca é feita DE DENTRO da página (fetch do próprio navegador, mesma origem e cookies);
+    se o site recusar (403), lê as respostas que a própria página pede ao navegar /veiculos/lotes?page=N."""
     from playwright.sync_api import sync_playwright
     sg = sigla(f["url"]); CL.NOMES[sg] = f["nome"]
-    linhas, descartados, erro = {}, 0, None
+    linhas, descartados, erro, vistos = {}, 0, None, set()
+
+    def usar(res):
+        nonlocal descartados
+        for x in res:
+            k = str(x.get("lot_id") or x.get("id"))
+            if k in vistos:
+                continue
+            vistos.add(k)
+            v = linha_sodre(f, sg, x, catalogo, cidades, agora, hoje)
+            if v:
+                linhas[v["id"]] = v
+            else:
+                descartados += 1
+
     with sync_playwright() as p:
         b = p.chromium.launch(headless=True)
         ctx = b.new_context(user_agent=G.UA, locale="pt-BR")
         pg = ctx.new_page()
+        capturadas = []
+        def resp(r):
+            if "/api/search-lots" in r.url and r.status == 200:
+                try:
+                    capturadas.append(r.json().get("results") or [])
+                except Exception:
+                    pass
+        pg.on("response", resp)
         try:
-            pg.goto(SODRE_URL + "/veiculos/lotes", timeout=60000, wait_until="domcontentloaded")
+            pg.goto(SODRE_URL + "/veiculos/lotes", timeout=60000, wait_until="networkidle")
             pg.wait_for_timeout(3000)
             for i in range(SODRE_MAX):
-                r = ctx.request.post(SODRE_URL + "/api/search-lots", data=_sodre_corpo(i * SODRE_PAG),
-                                     headers={"Content-Type": "application/json", "Referer": SODRE_URL + "/veiculos/lotes"},
-                                     timeout=60000)
-                if r.status != 200:
-                    erro = f"search-lots HTTP {r.status}"
+                r = pg.evaluate("""async (corpo) => {
+                    const r = await fetch('/api/search-lots', {method: 'POST', credentials: 'include',
+                        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(corpo)});
+                    return {status: r.status, dados: r.ok ? await r.json() : null};
+                }""", _sodre_corpo(i * SODRE_PAG))
+                if r["status"] != 200:
+                    erro = f"search-lots HTTP {r['status']} (fetch na página)"
                     break
-                res = (r.json() or {}).get("results") or []
-                for x in res:
-                    v = linha_sodre(f, sg, x, catalogo, cidades, agora, hoje)
-                    if v:
-                        linhas[v["id"]] = v
-                    else:
-                        descartados += 1
+                res = (r["dados"] or {}).get("results") or []
+                usar(res)
                 if len(res) < SODRE_PAG:
                     break
                 pg.wait_for_timeout(1500)
+            if erro:                                     # plano B: navegar pelas páginas da lista
+                for c in capturadas:
+                    usar(c)
+                for n in range(2, SODRE_MAX + 1):
+                    antes = len(vistos)
+                    pg.goto(f"{SODRE_URL}/veiculos/lotes?page={n}", timeout=60000, wait_until="networkidle")
+                    pg.wait_for_timeout(2500)
+                    for c in capturadas:
+                        usar(c)
+                    capturadas.clear()
+                    if len(vistos) == antes:
+                        break
+                if linhas:
+                    erro = None
+                else:
+                    erro += "; plano B (navegação) também sem lotes"
         except Exception as e:
             erro = str(e)[:200]
         b.close()
