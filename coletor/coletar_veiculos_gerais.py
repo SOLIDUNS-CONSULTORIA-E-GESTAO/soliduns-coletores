@@ -448,17 +448,18 @@ def ler_freitas(f, catalogo, cidades, agora, hoje):
         try:
             pg.goto(f"{FREITAS_URL}/Leiloes/Pesquisar?query=&categoria=1", timeout=60000, wait_until="networkidle")
             pg.wait_for_timeout(2000)
-            antes = -1
-            for _ in range(FREITAS_CLIQUES):
+            antes, parados = -1, 0
+            for _ in range(FREITAS_CLIQUES):          # v1.5.1: clique pelo próprio botão (#btnListarLotes) via JS
                 n = pg.locator('a[href*="LoteDetalhes"]').count()
-                if n == antes:
+                parados = parados + 1 if n == antes else 0
+                if parados >= 2:
                     break
                 antes = n
-                botao = pg.get_by_text(re.compile(r"Carregar mais lotes", re.I))
-                if not botao.count():
+                ok = pg.evaluate("""() => { const b = document.getElementById('btnListarLotes');
+                    if (!b || b.disabled || b.offsetParent === null) return false; b.click(); return true; }""")
+                if not ok:
                     break
-                botao.first.click()
-                pg.wait_for_timeout(2500)
+                pg.wait_for_timeout(3000)
             for c in pg.evaluate(JS_FREITAS_CARDS):
                 v = linha_freitas(f, sg, c, catalogo, cidades, agora, hoje)
                 if v:
