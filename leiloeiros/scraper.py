@@ -147,7 +147,8 @@ def montar(fonte, titulo, link, texto, valor=None, data=None):
     return {"id": lote_id(link), "titulo": titulo, "categoria": cat,
             "valor": valor if valor is not None else valor_float(texto),
             "data": data or data_iso(texto), "link": canonico(link),
-            "fonte": fonte["nome"], "grupo": fonte["grupo"]}
+            "fonte": fonte["nome"], "grupo": fonte["grupo"],
+            "texto": re.sub(r"\s+", " ", texto or "")[:1200]}
 
 # ---------- Extração ----------
 def de_jsonld(soup, base, fonte):

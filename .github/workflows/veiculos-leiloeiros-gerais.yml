@@ -1,0 +1,40 @@
+name: Veículos - leiloeiros gerais
+
+on:
+  schedule:
+    - cron: "40 13 * * *"   # 10h40 de Brasília, todo dia (depois de "Leilões - veículos")
+  workflow_dispatch:
+    inputs:
+      so:
+        description: "Só estes leiloeiros (nomes do fontes.json, separados por vírgula). Vazio = todos."
+        required: false
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests beautifulsoup4 lxml playwright && python -m playwright install --with-deps chromium
+      - name: Coletar veículos dos leiloeiros
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GERAIS_SO: ${{ github.event.inputs.so }}
+        run: python -u coletor/coletar_veiculos_gerais.py
+      - name: Preço FIPE dos lotes novos
+        if: always()
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python coletor/coletar_fipe.py precos
+      - name: Guardar log
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: veiculos-gerais-log
+          path: leiloeiros/scraper.log
+          retention-days: 14
