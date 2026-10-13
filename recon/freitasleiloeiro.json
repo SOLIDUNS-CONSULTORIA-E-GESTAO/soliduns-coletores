@@ -1,0 +1,932 @@
+{
+ "nome": "Freitas Leiloeiro",
+ "base": "https://www.freitasleiloeiro.com.br",
+ "paginas": [
+  {
+   "url": "https://www.freitasleiloeiro.com.br",
+   "status": 200,
+   "titulo": "Freitas Leiloeiro | Leilão de Veículos, Imóveis e Materiais | Freitas Leiloeiro - Site Oficial",
+   "tamanho_html": 984497,
+   "captcha": false,
+   "links_veiculos": [
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Agenda",
+     "Agenda"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos",
+     "Consulta de Documentos Veiculos / Solicitação de Sedex"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Index?redir=/documentacao/emissaonotavenda",
+     "Emissão de nota de venda de Veículos e Bens"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=1",
+     "Veículos"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=2",
+     "Imóveis"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=3",
+     "Materiais"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/#leiloes-destaques",
+     "VEÍCULOS"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8103",
+     "quarta-feira"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8103",
+     "Ver Lotes"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=1",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=1",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=2",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=2",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=97",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=97",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=100",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=100",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=104",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=104",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=105",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=105",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=116",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=116",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=145",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=145",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=188",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=188",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=189",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=189",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=195",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=195",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=229",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=229",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=1",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=1",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=2",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=2",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=97",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=97",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=100",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=100",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=104",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=104",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=105",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=105",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=116",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=116",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=145",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=145",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=188",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=188",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=189",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=189",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=195",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=195",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=229",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=229",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8112",
+     "sexta-feira"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8112",
+     "Ver Lotes"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=15",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=15",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=1",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=1",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=2",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=2",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=3",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=3",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=4",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=4",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=5",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=5",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=6",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=6",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=7",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=7",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=8",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=8",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=9",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=9",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=10",
+     ""
+    ]
+   ],
+   "links_todos": [
+    "https://www.freitasleiloeiro.com.br/",
+    "https://www.freitasleiloeiro.com.br/#",
+    "https://www.freitasleiloeiro.com.br/#leiloes-destaques",
+    "https://www.freitasleiloeiro.com.br/Clientes/Cadastro",
+    "https://www.freitasleiloeiro.com.br/Clientes/ConsultaDocumentosVeiculos",
+    "https://www.freitasleiloeiro.com.br/Documentacao/emissaonotavenda",
+    "https://www.freitasleiloeiro.com.br/Home/Comunicadodetran",
+    "https://www.freitasleiloeiro.com.br/Home/Contato",
+    "https://www.freitasleiloeiro.com.br/Home/Cookies",
+    "https://www.freitasleiloeiro.com.br/Home/Faq",
+    "https://www.freitasleiloeiro.com.br/Home/Index",
+    "https://www.freitasleiloeiro.com.br/Home/Organizacao",
+    "https://www.freitasleiloeiro.com.br/Home/Privacidade",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Agenda",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=1",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=100",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=104",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=105",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=116",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=145",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=188",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=189",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=195",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=2",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=229",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=97",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=700",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=701",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=702",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=703",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=704",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=705",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=706",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=707",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=708",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=709",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=710",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8111&loteNumero=711",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=1",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=10",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=11",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=15",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=2",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=3",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=4",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=5",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=6",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=7",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=8",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8112&loteNumero=9",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=7924",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8040",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8067",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8068",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8070",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8071",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8073",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8075",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8077",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8080",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8081",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8085",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8086",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8088",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8089",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8090",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8091",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8092",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8093",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8096",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8097",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8099",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8101",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8103",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8104",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8106",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8107",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8108",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8109",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8110",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8111",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8112",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8113",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8114",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8115",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Lotes?leilaoId=8116",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?Categoria=1&Condicao=sinistros+e+sucatas",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?Categoria=1&TipoLoteId=1",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?Categoria=1&TipoLoteId=3",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?Categoria=1&TipoLoteId=7",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?Categoria=2",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?Categoria=3",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=1",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=2",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=3",
+    "https://www.freitasleiloeiro.com.br/Login/Index",
+    "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos",
+    "https://www.freitasleiloeiro.com.br/Login/Index?redir=/documentacao/emissaonotavenda",
+    "https://www.freitasleiloeiro.com.br/Login/Recuperar",
+    "https://www.freitasleiloeiro.com.br/home/comunicadodetran",
+    "https://www.freitasleiloeiro.com.br/home/cookies",
+    "https://www.freitasleiloeiro.com.br/home/faq",
+    "https://www.freitasleiloeiro.com.br/home/participe",
+    "https://www.freitasleiloeiro.com.br/home/privacidade"
+   ],
+   "amostra_texto": "Início Agenda Organização Cadastre-se Contato Serviços Login LOGIN Nova senha Cadastre-se Pesquisar oportunidades por categoria Veículos Imóveis Materiais Leilões em destaque VEÍCULOS IMÓVEIS MATERIAIS quarta-feira 14/10/2026 10:00 - PÁTIO STA. BÁRBARA Ver Lotes 001 14/10/2026 10:00 (B167182) PERFURATRIZ VERMEER, MODELO D23X30III, ANO 2019 R$ 250.000,00 Maior lance VENDIDO NO ESTADO ABERTO PARA LANCES 002 14/10/2026 10:00 (B155181) ESCAVADEIRA HIDRAULICA XCMG, MODELO XE150BR, ANO 2021 R$ 115.000,00 Maior lance VENDIDO NO ESTADO ABERTO PARA LANCES 097 14/10/2026 10:00 I/CITROEN C4L THP A ORIG, 16/17, PLACA: G__-___6, GASOL/ALC, BRANCA Ar Cond. Dir. Hidr. R$ 19.500,00 Maior lance FINANCEIRA ABERTO PARA LANCES 100 14/10/2026 10:00 RENAULT/SANDERO EXPR 16, 14/15, PLACA: P__-___3, GASOL/ALC, VERMELHA Ar Cond. Dir. Hidr. R$ 10.500,00 Maior lance FINANCEIRA ABERTO PARA LANCES Previous Next sexta-feira 16/10/2026 10:00 - PÁTIO UTINGA Ver Lotes 015 16/10/2026 10:00 M.BENZ/GLA200FF STY, 16/16, PLACA: B__-___8, GASOL/ALC, CINZA Ar Cond. Dir. Hidr. R$ 53.000,00 Maior lance FINANCEIRA ABERTO PARA LANCES 001 16/10/2026 10:00 RENAULT/DUSTER INTP CVT, 23/24, PLACA: S__-___4, GASOL/ALC, PRATA Ar Cond. Dir. Hidr. R$ 50.500,00 Maior lance FINANCEIRA ABERTO PARA LANCES 002 16/10/2026 10:00 CHEV/ONIX PLUS 10MT LT2, 22/23, PLACA: R__-___7, GASOL/ALC, PRETA Ar Cond. Dir. Hidr. R$ 31.000,00 Lance Inicial FINANCEIRA ABERTO PARA LANCES 003 16/10/2026 10:00 VW/VIRTUS CL TSI, 22/22, PLACA: G__-___4, GASOL/ALC, PRATA Ar Cond. Dir. Hidr. R$ 46.000,00 Maior lance FINANCEIRA ABERTO PARA LANCES Previous Next sábado 24/10/2026 10:00 - PÁTIO STA. BÁRBARA Ver Lotes X 24/10/2026 10:00 TOYOTA/COROLLA XEI20FLEX, 15/16, PLACA: Q__-___0, GASOL/ALC, BRANCA - Lance Inicial FINANCEIRA EM LOTEAMENTO X 24/10/2026 10:00 CHEVROLET/ONIX 10MT JOYE, 17/18, PLACA: Q__-___1, GASOL/ALC, BRANCA - Lance Inicial FINANCEIRA EM LOTEAMENTO X 24/10/2026 10:00 TOYOTA/ETIOS HB XLS, 14/15, PLACA: F__-___8, GASOL/ALC, BRANCA - Lance Inicial FINANCEIRA EM LOTEAMENTO X 24/10/2026 10:00 VW/GOL 1.6 POWER, 11/12, PLACA: E__-___0, GASOL/ALC, PRETA - Lance Inicial FINANCEIRA EM LOTEAMENTO Previous Next VEÍCULOS MOTOS CAMINHÕES SINISTROS / SUCATAS IMÓVEIS MATERIAIS Próximos leilões 30/07/2026 15:00 quinta-feira SOMENTE ONLINE 01 ImóveL DESOCUPADO Localizado em: São Paulo/SP ABERTO PARA PROPOSTAS ABERTO PARA PROPOSTAS 14/10/2026 10:00 quarta-feira SOMENTE ONLINE Terreno c/ 150,00m² Jardim Vale Suiço Mogi das Cruzes/SP 1º LEILÃO - 14/10/2026, às 10h00 2º LEILÃO - 21/10/2026, às 10h00 ABERTO PARA LANCES 14/10/2026 10:00 quarta-feira ONLINE E PRESENCIAL 307 LOTES PERFURATRIZ - ESCAVADEIRA - VEÍCULOS - CAMINHÕES - MOTOS - SEMI NOVOS - SINISTRADOS E SUCATAS ABERTO PARA LANCES 14/10/2026 11:00 quarta-feira SOMENTE ONLINE Terreno c/ 384,28m² Portal dos Pássaros Lorena Lorena/SP 1º LEILÃO - 14/10/2026 às 11h00 2º LEILÃO - 21/10/2026 às 11h00 ABERTO PARA LANCES 15/10/2026 09:30 quinta-feira SOMENTE ONLINE 08 imóveis Localidades",
+   "next_data": false,
+   "jsonld": 0
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos",
+   "status": 200,
+   "titulo": "Login | Freitas Leiloeiro - Site Oficial",
+   "tamanho_html": 643728,
+   "captcha": false,
+   "links_veiculos": [
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Agenda",
+     "Agenda"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos",
+     "Consulta de Documentos Veiculos / Solicitação de Sedex"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Index?redir=/documentacao/emissaonotavenda",
+     "Emissão de nota de venda de Veículos e Bens"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos#",
+     "Newsletter"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Recuperar?redir=/clientes/consultadocumentosveiculos&leilaoId=0&loteNumero=0",
+     "Esqueci minha senha"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Clientes/ConsultaDocumentosVeiculos",
+     "Consultar documentos de Veículos"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos#",
+     "Newsletter"
+    ]
+   ],
+   "links_todos": [
+    "https://www.freitasleiloeiro.com.br/",
+    "https://www.freitasleiloeiro.com.br/Clientes/Cadastro",
+    "https://www.freitasleiloeiro.com.br/Clientes/ConsultaDocumentosVeiculos",
+    "https://www.freitasleiloeiro.com.br/Documentacao/emissaonotavenda",
+    "https://www.freitasleiloeiro.com.br/Home/Comunicadodetran",
+    "https://www.freitasleiloeiro.com.br/Home/Contato",
+    "https://www.freitasleiloeiro.com.br/Home/Cookies",
+    "https://www.freitasleiloeiro.com.br/Home/Faq",
+    "https://www.freitasleiloeiro.com.br/Home/Index",
+    "https://www.freitasleiloeiro.com.br/Home/Organizacao",
+    "https://www.freitasleiloeiro.com.br/Home/Privacidade",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Agenda",
+    "https://www.freitasleiloeiro.com.br/Login/Index",
+    "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos",
+    "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos#",
+    "https://www.freitasleiloeiro.com.br/Login/Index?redir=/documentacao/emissaonotavenda",
+    "https://www.freitasleiloeiro.com.br/Login/Recuperar",
+    "https://www.freitasleiloeiro.com.br/Login/Recuperar?redir=/clientes/consultadocumentosveiculos&leilaoId=0&loteNumero=0",
+    "https://www.freitasleiloeiro.com.br/home/comunicadodetran",
+    "https://www.freitasleiloeiro.com.br/home/cookies",
+    "https://www.freitasleiloeiro.com.br/home/faq",
+    "https://www.freitasleiloeiro.com.br/home/participe",
+    "https://www.freitasleiloeiro.com.br/home/privacidade"
+   ],
+   "amostra_texto": "Início Agenda Organização Cadastre-se Contato Serviços Login Efetuar Login Apelido Senha Exibir Senha Esqueci minha senha Entrar Ainda não tem conta? Cadastre-se Praça da Liberdade, 130 - 15º andar - Liberdade - São Paulo/SP - CEP: 01503-010 - Fone: (11) 3117-1000 Atendimento presencial de segunda a sexta das 09:00 às 16:30. Atendimento Cadastro Telefone: (11) 3117-1000 - Ramais: 132, 133 e 134 online@freitasleiloeiro.com.br Pagamento e Emissão de Nota de Venda de Veículos Telefone / WhatsApp: (11) 3117-1006 pagamento@freitasleiloeiro.com.br Documentos de Veículos Telefone: (11) 3117-1005 documentacao@freitasleiloeiro.com.br Atendimento Imóveis Telefone: (11) 3117-1001 sac@freitasleiloeiro.com.br Esclarecimentos de dúvidas Veículos: contato@freitasleiloeiro.com.br Imóveis: sac@freitasleiloeiro.com.br Serviços Consultar documentos de Veículos Emissão de nota de venda Informações Como funciona Dúvidas Newsletter Comunicado Detran nº 07/2014 Privacidade Política de Privacidade Política de Cookies Aplicativo App Store Play Store Redes Sociais Facebook Instagram TikTok Twitter LinkedIn Youtube ©2026 Freitas Leiloeiro - Todos os direitos reservados - www.freitasleiloeiro.com.br Política de Privacidade - Política de Cookies Controle sua privacidade AdOpt Nosso site usa cookies para melhorar a navegação. Política de Privacidade - Termos de uso Customizar Não venda Aceitar",
+   "next_data": false,
+   "jsonld": 0
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Login/Index?redir=/documentacao/emissaonotavenda",
+   "status": 200,
+   "titulo": "Login | Freitas Leiloeiro - Site Oficial",
+   "tamanho_html": 643714,
+   "captcha": false,
+   "links_veiculos": [
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Agenda",
+     "Agenda"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos",
+     "Consulta de Documentos Veiculos / Solicitação de Sedex"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Index?redir=/documentacao/emissaonotavenda",
+     "Emissão de nota de venda de Veículos e Bens"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Recuperar?redir=/documentacao/emissaonotavenda&leilaoId=0&loteNumero=0",
+     "Esqueci minha senha"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Clientes/ConsultaDocumentosVeiculos",
+     "Consultar documentos de Veículos"
+    ]
+   ],
+   "links_todos": [
+    "https://www.freitasleiloeiro.com.br/",
+    "https://www.freitasleiloeiro.com.br/Clientes/Cadastro",
+    "https://www.freitasleiloeiro.com.br/Clientes/ConsultaDocumentosVeiculos",
+    "https://www.freitasleiloeiro.com.br/Documentacao/emissaonotavenda",
+    "https://www.freitasleiloeiro.com.br/Home/Comunicadodetran",
+    "https://www.freitasleiloeiro.com.br/Home/Contato",
+    "https://www.freitasleiloeiro.com.br/Home/Cookies",
+    "https://www.freitasleiloeiro.com.br/Home/Faq",
+    "https://www.freitasleiloeiro.com.br/Home/Index",
+    "https://www.freitasleiloeiro.com.br/Home/Organizacao",
+    "https://www.freitasleiloeiro.com.br/Home/Privacidade",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Agenda",
+    "https://www.freitasleiloeiro.com.br/Login/Index",
+    "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos",
+    "https://www.freitasleiloeiro.com.br/Login/Index?redir=/documentacao/emissaonotavenda",
+    "https://www.freitasleiloeiro.com.br/Login/Index?redir=/documentacao/emissaonotavenda#",
+    "https://www.freitasleiloeiro.com.br/Login/Recuperar",
+    "https://www.freitasleiloeiro.com.br/Login/Recuperar?redir=/documentacao/emissaonotavenda&leilaoId=0&loteNumero=0",
+    "https://www.freitasleiloeiro.com.br/home/comunicadodetran",
+    "https://www.freitasleiloeiro.com.br/home/cookies",
+    "https://www.freitasleiloeiro.com.br/home/faq",
+    "https://www.freitasleiloeiro.com.br/home/participe",
+    "https://www.freitasleiloeiro.com.br/home/privacidade"
+   ],
+   "amostra_texto": "Início Agenda Organização Cadastre-se Contato Serviços Login Efetuar Login Apelido Senha Exibir Senha Esqueci minha senha Entrar Ainda não tem conta? Cadastre-se Praça da Liberdade, 130 - 15º andar - Liberdade - São Paulo/SP - CEP: 01503-010 - Fone: (11) 3117-1000 Atendimento presencial de segunda a sexta das 09:00 às 16:30. Atendimento Cadastro Telefone: (11) 3117-1000 - Ramais: 132, 133 e 134 online@freitasleiloeiro.com.br Pagamento e Emissão de Nota de Venda de Veículos Telefone / WhatsApp: (11) 3117-1006 pagamento@freitasleiloeiro.com.br Documentos de Veículos Telefone: (11) 3117-1005 documentacao@freitasleiloeiro.com.br Atendimento Imóveis Telefone: (11) 3117-1001 sac@freitasleiloeiro.com.br Esclarecimentos de dúvidas Veículos: contato@freitasleiloeiro.com.br Imóveis: sac@freitasleiloeiro.com.br Serviços Consultar documentos de Veículos Emissão de nota de venda Informações Como funciona Dúvidas Newsletter Comunicado Detran nº 07/2014 Privacidade Política de Privacidade Política de Cookies Aplicativo App Store Play Store Redes Sociais Facebook Instagram TikTok Twitter LinkedIn Youtube ©2026 Freitas Leiloeiro - Todos os direitos reservados - www.freitasleiloeiro.com.br Política de Privacidade - Política de Cookies Controle sua privacidade AdOpt Nosso site usa cookies para melhorar a navegação. Política de Privacidade - Termos de uso Customizar Não venda Aceitar",
+   "next_data": false,
+   "jsonld": 0
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=1",
+   "status": 200,
+   "titulo": "Pesquisar em Leilões de Veículos | Freitas Leiloeiro - Site Oficial",
+   "tamanho_html": 683466,
+   "captcha": false,
+   "links_veiculos": [
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Agenda",
+     "Agenda"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos",
+     "Consulta de Documentos Veiculos / Solicitação de Sedex"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Login/Index?redir=/documentacao/emissaonotavenda",
+     "Emissão de nota de venda de Veículos e Bens"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=1#",
+     "Newsletter"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=1",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=2",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=3",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=3",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=3",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=4",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=4",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=5",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=5",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=6",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=6",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=7",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=7",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=8",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=8",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=9",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=9",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=10",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=10",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=11",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=11",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=12",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=12",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=13",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=13",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=14",
+     ""
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=14",
+     "ABERTO PARA LANCES"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Clientes/ConsultaDocumentosVeiculos",
+     "Consultar documentos de Veículos"
+    ],
+    [
+     "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=1#",
+     "Newsletter"
+    ]
+   ],
+   "links_todos": [
+    "https://www.freitasleiloeiro.com.br/",
+    "https://www.freitasleiloeiro.com.br/Clientes/Cadastro",
+    "https://www.freitasleiloeiro.com.br/Clientes/ConsultaDocumentosVeiculos",
+    "https://www.freitasleiloeiro.com.br/Documentacao/emissaonotavenda",
+    "https://www.freitasleiloeiro.com.br/Home/Comunicadodetran",
+    "https://www.freitasleiloeiro.com.br/Home/Contato",
+    "https://www.freitasleiloeiro.com.br/Home/Cookies",
+    "https://www.freitasleiloeiro.com.br/Home/Faq",
+    "https://www.freitasleiloeiro.com.br/Home/Index",
+    "https://www.freitasleiloeiro.com.br/Home/Organizacao",
+    "https://www.freitasleiloeiro.com.br/Home/Privacidade",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Agenda",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=10",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=11",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=12",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=13",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=14",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=3",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=4",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=5",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=6",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=7",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=8",
+    "https://www.freitasleiloeiro.com.br/Leiloes/LoteDetalhes?leilaoId=8103&loteNumero=9",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=1",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=1#",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=2",
+    "https://www.freitasleiloeiro.com.br/Leiloes/Pesquisar?query=&categoria=3",
+    "https://www.freitasleiloeiro.com.br/Login/Index",
+    "https://www.freitasleiloeiro.com.br/Login/Index?redir=/clientes/consultadocumentosveiculos",
+    "https://www.freitasleiloeiro.com.br/Login/Index?redir=/documentacao/emissaonotavenda",
+    "https://www.freitasleiloeiro.com.br/home/comunicadodetran",
+    "https://www.freitasleiloeiro.com.br/home/cookies",
+    "https://www.freitasleiloeiro.com.br/home/faq",
+    "https://www.freitasleiloeiro.com.br/home/participe",
+    "https://www.freitasleiloeiro.com.br/home/privacidade"
+   ],
+   "amostra_texto": "Início Agenda Organização Cadastre-se Contato Serviços Login Refine sua busca: Tipo de veículo: Todos Veículos de Passeio (464) Motos (76) Desconto Desp. OPE (4) Especial Desp. OPE (2) Veículos Pesados (7) Modelo (de - até): Ar Condicionado Direção Hidráulica Condição: Todos Inteiros Sinistros e Sucatas Pequena Monta Média Monta Sucatas Visitação/Retirada: Todos Pátio Utinga Pátio Santo André Pátio Santa Bárbara Faixa de valor: Todas Até R$ 10.000 R$ 10.000 Até R$ 25.000 R$ 25.000 Até R$ 50.000 R$ 50.000 Até R$ 100.000 R$ 100.000 Até R$ 200.000 Acima de R$ 200.000 Limpar filtros VEÍCULOS EM LEILÃO 003 14/10/2026 10:00 HYUNDAI/HB20 10M LIMITED, 22/23, PLACA: R__-___7, GASOL/ALC, PRATA Ar Cond. Dir. Hidr. R$ 35.500,00 Maior lance FINANCEIRA ABERTO PARA LANCES 004 14/10/2026 10:00 CHEV/TRACKER T A LTZ, 22/22, PLACA: E__-___5, GASOL/ALC, AZUL Ar Cond. Dir. Hidr. R$ 49.000,00 Maior lance FINANCEIRA ABERTO PARA LANCES 005 14/10/2026 10:00 FORD/ECOSPORT SE 1.5, 20/21, PLACA: F__-___1, GASOL/ALC, PRATA Ar Cond. Dir. Hidr. R$ 36.500,00 Maior lance FINANCEIRA ABERTO PARA LANCES 006 14/10/2026 10:00 I/CHEV TRACKER MIDNIGHT, 18/19, PLACA: F__-___2, GASOL/ALC, PRETA Ar Cond. Dir. Hidr. R$ 51.500,00 Maior lance FINANCEIRA ABERTO PARA LANCES 007 14/10/2026 10:00 VW/NOVO FOX ROCK RIO MB, 15/16, PLACA: F__-___1, GASOL/ALC, VERMELHA Ar Cond. Dir. Hidr. R$ 28.000,00 Maior lance FINANCEIRA ABERTO PARA LANCES 008 14/10/2026 10:00 HYUNDAI/HB20 1.0M COMFOR, 15/16, PLACA: F__-___3, GASOL/ALC, PRETA R$ 28.500,00 Maior lance FINANCEIRA ABERTO PARA LANCES 009 14/10/2026 10:00 CHEVROLET/COBALT 1.8 LTZ, 14/15, PLACA: F__-___0, GASOL/ALC, BRANCA Ar Cond. Dir. Hidr. R$ 15.000,00 Maior lance FINANCEIRA ABERTO PARA LANCES 010 14/10/2026 10:00 I/HYUNDAI I30 2.0, 10/11, PLACA: E__-___5, GASOLINA, PRATA Ar Cond. Dir. Hidr. R$ 27.500,00 Maior lance FINANCEIRA ABERTO PARA LANCES 011 14/10/2026 10:00 CHEVROLET/ONIX 1.4MT LT, 14/15, PLACA: F__-___5, GASOL/ALC, PRATA Ar Cond. Dir. Hidr. R$ 25.000,00 Maior lance FINANCEIRA ABERTO PARA LANCES 012 14/10/2026 10:00 VW/VOYAGE 1.6 COMFORTL, 10/11, PLACA: N__-___1, GASOL/ALC, PRATA Ar Cond. Dir. Hidr. R$ 17.500,00 Maior lance FINANCEIRA ABERTO PARA LANCES 013 14/10/2026 10:00 CHEVROLET/CLASSIC LS, 11/12, PLACA: E__-___3, GASOL/ALC, PRETA R$ 10.500,00 Maior lance FINANCEIRA ABERTO PARA LANCES 014 14/10/2026 10:00 PEUGEOT/207HB XR S, 10/11, PLACA: E__-___4, GASOL/ALC, CINZA Ar Cond. Dir. Hidr. R$ 5.000,00 Maior lance FINANCEIRA ABERTO PARA LANCES Carregar mais lotes Praça da Liberdade, 130 - 15º andar - Liberdade - São Paulo/SP - CEP: 01503-010 - Fone: (11) 3117-1000 Atendimento presencial de segunda a sexta das 09:00 às 16:30. Atendimento Cadastro Telefone: (11) 3117-1000 - Ramais: 132, 133 e 134 online@freitasleiloeiro.com.br Pagamento e Emissão de Nota de Venda de Veículos Telefone / WhatsApp: (11) 3117-1006 pagamento@freitasleiloeiro.com.br Documentos de Veículos Telefone: (11) 3117-1005 documentacao@freitasleiloeiro.com.br Atendimento Imóve",
+   "next_data": false,
+   "jsonld": 0
+  }
+ ],
+ "jsons": [
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Login/CheckTokenValidation",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"logado\":false,\"autenticado\":false,\"message\":\"Usu\\u00E1rio n\\u00E3o autenticado!\"}"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Leiloes/ListarLeiloesDestaques?tipoDestaque=1",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "[{\"leilaoId\":8103,\"lotes\":\"1,2,145,188,189,195,229,116,105,104,100,97\"},{\"leilaoId\":8112,\"lotes\":\"15\"},{\"leilaoId\":8111,\"lotes\":\"\"}]"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/_bm/get_params?type=get-akid&v=m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"a\":\"F0A397C352BB2CDF5569C844E673ECDA~0\",\"j\":\"\"}"
+  },
+  {
+   "url": "https://disclaimer-api.goadopt.io/api/tag/get-consent",
+   "metodo": "POST",
+   "post": "{\"websiteID\":\"ea6f2d77-2144-4a06-aaa3-a861b0476c5a\",\"adoptConsent\":null,\"visitorId\":null,\"device\":\"desktop\",\"consentTTL\":60,\"consentVersion\":0,\"priorityQueue\":true,\"allowTPCookies\":false}",
+   "status": 200,
+   "amostra": "{\"message\":\"\",\"success\":true,\"data\":{\"visitorId\":\"6eb0cf9b-1ec3-458a-9cd1-50931a644dea\",\"optInTags\":[],\"optOutTags\":[],\"third_cookie\":true,\"tcString\":null,\"consentId\":\"oPuynU\",\"eventType\":\"w8biHzeN\"}}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/ReiEuZHNyP4qGOSbLjN4jplT/7bf9zftG1Yr2Q6/UWM9Uw/ZDNXP/ggeAl0",
+   "metodo": "POST",
+   "post": "{\"sensor_data\":\"3;0;1;0;8888888;m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=;19,0,0,0,2,0;D\\\"m n\\\"P\\\"x.Al\\\"d\\\"_5{\\\"76V#|/\\\"_.5y\\\".\\\"p=u%|,v7>wfPUg\\\"~\\\"y[o\\\"?$\\\"G0^\\\"1.=\\\"KEuHUA8n2H\\\"7yoO\\\"QuTj%kf~\\\"rSe\\\"~o}\\\"M~e\\\".\\\"w5T8qb>8sq<z;d\\\"Jy7\\\"`YC\\\"-\\\"\\\"/\\\"J^>\\\"a\\\"C$bh\\\"%}p\\\" :z\\\"=b dED| 3ODL=/h)22^~eN5\\\"x`j\\\"Wn<L\\\"n8:w\\\"i j?6\\\")#R)\\\"g\\\"-&Tu_tPhK&_6;P!gij2ldt:1+?||3gWMj~@iAlOw;Z^b]0A@\\\"8_Y\\\"9V^\\\"GR}p%3nOG~:(\\\"0J1$\\\"ry<#_Vbz\\\"Vj@\\\"1\\\"\\\"rct\\\"Z>:\\\"ndo(3\\\"r]4S\\\"/t#{0Ux\\\"ilQ\\\"+oFs \\\"B<E\\\"2CE@TA=K\\\",\\\"Wtv\\\"Q.D\\\"k<C3(t:mJHHGa|>Fdq}*_,gcVKW@ZLZ0c%Cd{R~AZ1J9xtRWr}w9SL|BBZowK)*EGs1|CM~x>/X&^>]]#g}vmFIux@R4\\\"M\\\"It]\\\"d\\\"c1mj],2d&k~X_)( P7M7d&j96nW4u<kh|[=11e\\\"D\\\"8I&\\\"0$3v@Gaw\\\"q`p\\\"J)bwGI2\\\"!9._Nr=^0qU\\\"w\\\"_MQ\\\"}L2\\\"M nZ@\\\"<8X\\\"X\\\"\\\":\\\" G.\\\"w\\\"6IgJ0svF$j\\\"3+>{\\\"i\\\"Zz\\\"C\\\"?|N\\\"1sHyc6Q]Dq+(-}\\\"N^G\\\"n\\\"\\\"~\\\"1/m\\\"p\\\"7A(dL9Ra(?1sB3P3<mFbiimN-l=X%NS7,K+tN6|[`EEa,O?v(~z SAb6&0J:9]|qx1pwjnFJ8peg0(wZxk#ragtYj$#-)VvgG\\\"w5n\\\"A T\\\"M\\\"-\\\"J\\\"%|9\\\"4+C\\\"k0\\\"CCq\\\"p^W\\\"(?[\\\"z^2\\\"f6d;Z\\\"Q~)\\\" 8p$H\\\"9:{D\\\"Q\\\"^<.0|0@,<M Zh` }ih-2f_P+&/GxqWCbO*\\\"&1\\\"Q>J\\\"K\\\"liC\\\"IR}6Vcq<#:\\\"/S\\\"%\\\"sEP}0[mPN/~K}xW(uEk#>eyD?I_ePj2?blWUGayx2Fp&\\\"1\\\"ZDh\\\"z\\\"pA(5*\\\"vfc\\\"y$TJ;\\\"S=)MikE\\\"m/R\\\"+\\\"#\\\"eV!\\\"|JA\\\"h\\\"` AV}K9,|M{;t ;{\\\"O\\\"9cK\\\"M\\\"\\\"d\\\"se$\\\"+0ks<Lb\\\"CrD\\\"h$D\\\"3yU\\\"8kvO?\\\"h:@6\\\"+[s{3&SmZ\\\"*Nk\\\"XrC}_\\\"*I\\\"0LM2>~\\\"w3J2O!D#\\\"MWR\\\"eYq\\\"@q9Ik\\\"?mA\\\"TP;m~\\\"?B\\\"wS g#L@M+\\\"pz^u;\\\"y\\\"gbK e\\\"7+[\\\"Z<g\\\"?\\\"?,\\\"s)4\\\"N^j[\\\"P#0ZqG\\\"l?JrKEb\\\"e(n\\\"xU2\\\"U\\\"\\\"SVc\\\"J((\\\"6|rkb\\\"s+n\\\"P\\\"\\\"S\\\"N|\\\"*\\\"\\\"e\\\"!qy\\\"}\\\"68\\\"$#(\\\"e<zL\\\"3|@\\\"|NRx\\\"!\\\"\\\"n7Z\\\"7lz\\\"yzgeij.7n_tOH\\\"drP\\\"V9&QUz8\\\"~zrHmiKUJpp2z5~q8m r6WK#$nuZd=<Q./>]5<\\\"%\\\"|,]\\\"4D^\\\"KLh.\\\"}ae6U-\\\"lT7g\\\"DqJ\\\"r:4\\\"1\\\"\\\"W%X\\\"X*\\\"w>tvf\\\"_[\\\"ta;\\\"^{Q\\\"^\\\"erAPt}@;B%g{#\\\"=\\\"rlv\\\"O\\\"Q:vmHePRZ>co.u{1UD)B4NMjBLs148v~lzV>YL8}yVWdBm(y36\\\"4\\\"}Dv\\\"D49I`\\\"xg\\\"&h|55 ;\\\"\\\"0\\\"oI[\\\"]iU\\\"Elk\\\"$\\\">\\\"Yy/\\\",#R\\\"~kNox\\\"P,{\\\"5E\\\"psuA\\\"k@]9hA[$7D_/8Z\\\"eY\\\"a1Z;p_qPb\\\"`]7\\\"&u~;J\\\"*Cv\\\"a\\\"&U\\\"K\\\"Ir4\\\"0J4n7\\\"vb\\\"j=.2C\\\"|4g\\\"~/HFG}T`b2J+e7*`\\\"y?W\\\"7\\\"\\\"C\\\"HO2\\\"d\\\"\\\"a\\\"nxU\\\"k\\\"n<@*6\\\"9tU\\\"GIT\\\"QH8tx\\\"sQy\\\"Ge`yN\\\"#2rE\\\"?$e\\\"6g:\\\"ak54/\\\"HyN\\\"9\\\"\\\"g\\\"o1n\\\"\"}",
+   "status": 201,
+   "amostra": "{\"success\": false}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/ReiEuZHNyP4qGOSbLjN4jplT/7bf9zftG1Yr2Q6/UWM9Uw/ZDNXP/ggeAl0",
+   "metodo": "POST",
+   "post": "{\"sensor_data\":\"3;0;1;0;8888888;m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=;10,26,0,0,4,151;\\\"3\\\":(&\\\"gX]vB\\\"r\\\"\\\"T\\\"9c\\\"_7$09-a\\\"NW;K~Z74q5i[rIsuy?9UK(s%D3#0OWYM3Ay6ryPGrKlgo0fI<LX+4K7C|mb3?4q p*o8%`F/JGjRm6YC1ifTZp]nH3?vTt^Kx9AHBHia@760[q|S( r_U:*`171bus0YMVpj{to^CqEdEYJ*9/frW[$e.IR%W>BT_ 0C]b<7h5vFn28Np]kQq^1n9NL4-\\\"p-0\\\"]lw\\\"NM%Lhp\\\"rZQL\\\"{\\\"6BAdEZ&$%|FTdN5Sa$rH\\\"j\\\"uhNA\\\"H\\\"z;<>lXNj;|Pif1F_-Wn(0D$V$$\\\"9B3\\\"n\\\".E13tbu>\\\"_xi\\\">^)\\\"B\\\"t|q`z8{hrl$)GO\\\"ZfJ\\\"PoI\\\"$+Ig@\\\".4t\\\"eo-\\\"dNKH\\\"2\\\"7Uoo#6E\\\"j5\\\"i|V\\\"0c;a\\\"9+\\\"c?f]\\\"mf1!PQJ\\\"sNG%~u&et)Y<Wy$So}L,Y.l7S]n|MXX[}znG XS%$>6$[Lt ;Z\\\"_\\\"HK6\\\"@e,l~B_p\\\"T;\\\"L8\\\"we+\\\"H+}\\\"Ebh\\\"Ai{\\\"d\\\"eL0Y)\\\" \\\"tnEa\\\"6\\\":xrL@&n0dt%iO\\\"R\\\"*rG!\\\"=\\\"TIjT)\\\"f\\\"Z`JC\\\"+_BvI\\\"Z@1\\\"nr8,<:WSaJH%r\\\">X.g)\\\"^\\\"E;$\\\" CP\\\"QaX?[\\\"kH\\\";\\\"K|2%z\\\"kZ}\\\"ITO\\\"na7c};W\\\"9fQ27;UFrS:=,pmN3)W[5]fFJBdk;z;$f`0C.#J9$NqQ\\\"Z\\\"]/|\\\"/\\\"<HOERh`K:=7^|{R!$xfH5)_,)(Xxn|XHYgano]].t<Z8S9v4 ]hJF#S)<8zJ91CHb&*?]+$R(]-Pzt=Z?QHRH}]#A3xm\\\"Ny\\\"0~\\\" \\\"!\\\"JlN\\\"oK8\\\"R6GE\\\"z|Ov\\\"s\\\")\\\"t=4\\\"a0-\\\"%\\\"TAOb6!v\\\"r\\\"l^l\\\"#\\\"\\\":Y=\\\"tiA\\\"I\\\":u5+y>:1.(V\\\"u\\\"|z4J4=!\\\"AZDy6;v!KD*.`vmlTa3xZ[Y|(eTp%/e7T$mtofEU;XTE%/e@6F~[NPOtNW lhO8~KPE,{_^ fTb,bI1*#u;nI9F9Dw!B$fUO{>\\\",\\\"FrT\\\"0i.o%?@5q;$eEV\\\"*nv\\\"@CU\\\"ufig\\\"R\\\"S\\\"l\\\"qk)U\\\"[\\\"fUWt\\\"V\\\"/aFK\\\"i`?`^WX\\\"[-q]R\\\"S\\\"2R[@\\\"{\\\"\\\"F\\\"+`z\\\"C^W\\\"zg^\\\"j\\\"rII~\\\"P\\\"Er3\\\"D!%6]ZDZ\\\"a4\\\"OPM\\\"hgi\\\"I\\\"\\\"k\\\"5-{K\\\"EH+ozmk1i1Mu5Ps)4\\\"I`zW\\\"P#0keU8\\\"MGv\\\"q\\\"Z[#s=6hMqLYq`ZD\\\"n\\\"~-1&\\\"y\\\"\\\"y=S\\\"$;_\\\"+sB\\\"d;i\\\"4C8g)}\\\"\\\"3\\\"t]!\\\"1eJl3vx2\\\"!TR\\\"@wxK!>]TN\\\"!mS\\\"u.*@%|Qg1SJHh\\\"X2}\\\"5v`Cy\\\"deZ\\\"{V\\\">%P\\\"6 ~yX\\\"CJt\\\"eK,qWyiaC<V30;j<2x++;Kd\\\"`KV\\\"x\\\" O&s^c\\\"U\\\".)%Q\\\"=;mON7VKg-T\\\"\\\"R\\\"}_c\\\"w\\\"\\\"v\\\"U%{*\\\"k\\\"2_{K`E]II +\\\"}\\\"(vlLZcB\\\"J6;4ONW69c\\\"Y]\\\"QOSY+a\\\"7L\\\"i\\\"APlv\\\"L\\\"\\\"H\\\"@Pc\\\"y\\\"7O\\\"C42\\\"`i7m\\\"x\\\"2Q\\\"mCO\\\"dpx\\\"Wst|5<&\\\"}K\\\"n-6\\\"v>eD\\\"]Se.)S@\\\"\\\"hz,\\\"@ft\\\"V\\\"Q~@I4Ra3Y O4d-:.Z^>K]D]@%iUO1qP{7D2c yQhTki5|-o\\\"t&@\\\"`Re\\\"g\\\"CY/@RL=v<SEw&b3,FD}Ie304`9>2YbBI(K}!?L\\\"s\\\"/6q\\\"0\\\"*ro]X\\\"x\\\"peAJ\\\"m\\\"buY(\\\"T+y\\\"Y%J\\\"8\\\"dP>>_\\\"W6Z\\\"RG,~I\\\"7\\\"3sH~>apyb7MV6\\\"T\\\"e@K\\\">gFEPHBm\\\"WzqYQ\\\"kg\\\"~Q<)\\\"Q&Z\\\"}(h\\\"w\\\"{t)7.\\\"r~A\\\"*U>{Nf[m&dk|+RIS\\\"C ,nnM+Hjj\\\"V!D\\\"W~)\\\"s4d\\\"(!n\\\"p\\\"<8$(\\\"-\\\"R>-\\\"?}c3E\\\"D6|i\\\"tkPv=!B\\\"}%tm\\\"!\\\"P~\\\"ZHoBB?]\\\"a\\\"zy%e\\\"<\\\"\\\"X0W\\\"=9j\\\"C\\\"Ula\\\"W\\\"K9~\\\"&H*U&r!@B%o4SU#uIá8ADmJ-~:y!U#*GE0!maM^FNAC\\\"N\\\"CGo}\\\",\\\"FQs 2$+e8DV5`U8ABI;D68_;?Z0nvc4,^i5?iV^=%5C#T]9JNVTjYT.z}@\\\"c\\\"<h&\\\"*\\\"mFBE+PbBO+%v+Gf7c^W3~OzeJYVk2)t/E!d$pc ICFjuy Km+N{IJU vv*;bsW Tv]Lxf=i$m$]Dky!Ia`lgenJ86AY;\\\"@\\\"3wER\\\"tb,\\\" t2$\\\"0.C`a<\\\"fKy%\\\"0\\\"yE+\\\".[)\\\"AN:s:\\\"_hg?I\\\"%SXt\\\"2T|Sj|CBhU(\\\"%}Ec\\\"nBi\\\"KV\\\"g{]&\\\"_rinE}.!Qr\\\"so;\\\"a;d\\\"^\\\"JHWHj|e~\\\":\\\"q.:<gKa\\\"Z\\\"3`B\\\"e\\\"qQ*-\\\"-VSh}\\\"f!\\\"b[>\\\"`hR\\\"w\\\"J\\\"OD.\\\"[@.\\\"V(d\\\"x1,m#\\\"]\\\"i\\\"^8@\\\"+lu\\\"D\\\"y|%]jF;. }B!tT>rIrlsRBnCN(w2#;i@Qjza`7HyMxJQQe}Kwg6&0lG|<-xSx>un4BUH_cd[f9_K9~;#^G~k~&^7cs5:[,dGT\\\"K\\\"O__D\\\"ZUhb%?}U^AC@6\\\"Ps8<6i*%n|j.|B<Q.}aw$#Uq[5?x.rsA8i=47m\\\"&\\\"rj.\\\"qn%pb2se\\\"3`N\\\"UBKEJ{o@t~\\\"_\\\"z(=F\\\"!<>M\\\"#tRf\\\"Po\\\"W\\\">f^b\\\"L\\\"PWgQ\\\"(\\\",Pm-\\\"dE[\\\")mw\\\"5hNLK\\\"IIO\\\"v\\\"b3P\\\"j\\\"Z.Ep\\\"`\\\"\\\"*\\\"W,L\\\"~\\\"R\\\"N\\\"Sj-#\\\"]\\\"+I7DMY}@XkOnAKU{ 3\\\".W]\\\"ICNau\\\"i?5S\\\",{)%Dr<\\\"9Hp\\\"`\\\"{Antp\\\"Kmw\\\"4FV\\\"oj*U@:K[-S0[==) \\\"- C\\\"0\\\"5T~0dk=E%DCa1+\\\"^\\\"3S@mAuG\\\"I89V!b-:8>{\\\"?i}\\\"a\\\"yOKCs!p4)S;eM\\\"}^$\\\"z0.V\\\"4\\\"{\\\"Ur%\\\"i>z\\\"Tr0m15c\\\"yW{\\\"y\\\"egh[+:-mq+08^{S!Zfle\\\"v\\\"(~vQ\\\"k9<M2tgs/\\\"nF$7E\\\"8\\\"q*9J!-}B\\\"?\\\"c_S#\\\"o\\\"\\\"-{O\\\"..\\\"NpHj7RZFv.Y?\\\"pz~jg]:uO_fZYWu9|LtgO3C#9SE&Se2)r \\\"Xy\\\"`<p*\\\"5\\\"*bAd\\\"1\\\"_I\\\"I\\\"_ia+\\\"5\\\"r_kZmUP+%2iUIc%a7-jX\\\" \\\"vBM\\\"s/VH!z{}\\\"x{6\\\"i\\\"QXHu.tOA%#m]=\\\"5_X\\\"aA~~z\\\"b\\\"iis[K{H\\\":p-\\\"9: .k\\\"w\\\"\\\"G\\\"1e5\\\"O}}CYb*\\\"y}_*\\\"A\\\"{`\\\"_\\\"DTR@\\\"e,y;d\\\"8+X\\\"&vF\\\"e\\\"?/gv\\\"`\\\"\\\"c\\\"JOO\\\"e\\\".+JZ.pxc\\\"R\\\"o/=cT]8\\\"L\\\">rk\\\"a\\\"Mgtg\\\"J$.-+Z\\\"Ub~LN&G\\\"2&XPU\\\"9s)|\\\"[aJmR\\\".g~\\\"_-1@T\\\"=Pr1\\\"7\\\"*`(4|?qk1#n3EE[D{[}3Xog1nl/n!6Nb@R#RE7F4Zny#mf)mTXrT;YgN<=ZEkY^4UXy<)HUX-%WWIg eg)!xw?IuH\\\"U\\\"G=Ll\\\"r\\\"u<(;Ni?9x5bif~(KAOmE-Ax[h8@[~!yjp,~ec5ql5Zh&:\\\"tVB\\\"h)[\\\"N\\\"jF+\\\"i\\\"l^<:\\\"^\\\"V6s;y~RP*&ux F\\\"|\\\"6ed9tI{\\\"],ls!Ia?e.j,\\\"_r$Q\\\"}uCVJyH~x\\\"#V*\\\"~\\\"<EU\\\"?\\\"64fH\\\"<\\\"Q\\\"q\\\"%)RD\\\"1\\\"q\\\"A\\\"Dn&{\\\"qwR\\\"6c[\\\"Aa&5H\\\"y2J,\\\"}h`\\\"CJA%\\\"s|\\\"T/Es\\\"8\\\"XiUUnhBZ;-`]cE\\\"8\\\"unf\\\"Jt*mYE_4oT17LY|\\\"^w\\\"A\\\"PzVL&/V\\\"vF0n9URpF[<]huP.1L^DsjtLotY+Xsk~5uSMd*>:I*#wzhpPF5e0)*-a4]I97YV*] lnJ99TZ,u]IekbrF/O^t!T2)CW`+$LT\\\"FXx\\\"eXA\\\"1\\\"\\\"Z\\\"D=B\\\"(\\\"]yb\\\".\\\"w~N\\\"]Oh\\\"M i\\\"Y0\\\"X\\\"9Pjb\\\"]\\\"4\\\"m3e\\\"7@_\\\"]\\\"`#IOaI%Zwx31\\\"4\\\"1EZZ\\\":u+@+_\\\"Z~Sz\\\"6eK\\\"JE2\\\"79@\\\"~F9jf\\\"E\\\"(\\\"*M)\\\"#2G\\\"j\\\"Y\\\":U^\\\"-Nb\\\"j\\\"\\\"s*?\\\"^X}\\\"n\\\"~ d B+&i~f0xr ~w\\\"!\\\"=L[\\\"U\\\"\\\"E\\\"?5(\\\"E@*Rg\\\"C&U5\\\"\"}",
+   "status": 201,
+   "amostra": "{\"success\": false}"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Login/CheckTokenValidation",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"logado\":false,\"autenticado\":false,\"message\":\"Usu\\u00E1rio n\\u00E3o autenticado!\"}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/_bm/get_params?type=get-akid&v=m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"a\":\"831CB635BFC21D41F1C6F3C1F1A20AF5~0\",\"j\":\"\"}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/ReiEuZHNyP4qGOSbLjN4jplT/7bf9zftG1Yr2Q6/UWM9Uw/ZDNXP/ggeAl0",
+   "metodo": "POST",
+   "post": "{\"sensor_data\":\"3;0;1;0;8888888;m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=;14,0,0,0,2,0;D\\\"m n\\\"P\\\"x.Al\\\"d\\\"_5{\\\"76V#|/\\\"_.5y\\\".\\\"p=u%|,v7>wfPUg\\\"~\\\"y[o\\\"?$\\\"G0^\\\"1.=\\\"KEuHUA8n2H\\\"7yoO\\\"QuTj%kf~\\\"rSe\\\"~o}\\\"M~e\\\".\\\"w5Q>kd79xr>y9a\\\"Jy7\\\"`YC\\\"-\\\"\\\"/\\\"J^>\\\"a\\\"C$bh\\\"%}p\\\" :z\\\"=b dED| 3ODL=/h)9/c~eN5\\\"x`j\\\"Wn<L\\\"n8:w\\\"i j?6\\\")#R)\\\"g\\\"-Tdt/sOeJ6g1>x&skkxud{4pHvEWWA}1)ZdIaMnV[3(@~kd\\\"9DP\\\"z8H\\\"P@O t~8pP.-,\\\"29I$\\\"0izByNcS\\\"*Nr\\\"n\\\"\\\",~T\\\"zZ3\\\"WdS{w\\\"svG?\\\"A$_xi\\\"Ca-\\\"Bmdz]\\\"We]\\\"sc|Z-~Ku\\\"]\\\"Y(a\\\"_d0\\\"]mB9 y6*pDeN>HQ]yAP)t#-~DD7>Sy:G0N6YP?n]|$I018InsE.(U<%LyKBv0=IL^&urq2QsLxKj`WHcns(TZ|DoLvwp\\\"I\\\"@)f\\\"I\\\">UWd1pea(:e1c#Si~&&T3?8d*e=2vXAm?cutZ?\\\"-\\\"X}Y\\\"|?f.#~j.\\\"?v]\\\"}oJ*k;:\\\"Ih?.aVz$S *\\\"4\\\"lry\\\",;=\\\" _3?m\\\"?%X\\\"o\\\"\\\"J\\\"?|5\\\"q\\\"ZSp>H-h:ed\\\"][Q;\\\"`\\\"7\\\"8\\\"L5(\\\"sCj9(uV1^jzgt)\\\"S>j\\\"!\\\"\\\"o\\\"7zY\\\"e\\\"U;R,U>l*sX Sxj2$UYlkocrxs,+.Hh0y1-=#O3}j5G.)Imf`*R*p@3OGT$/TCo0MuVz]BR/OcY6t5-&,b&vJ5@YS o=.+P!+,\\\"h`/\\\"olf\\\"d\\\"w\\\"?\\\"e~%\\\"MH^\\\"ib\\\"<,R\\\"y*L\\\":En\\\"NVW\\\"Sx8(W\\\"KC>\\\"&I9hc\\\"ghC{\\\"c\\\"{E,*-I~9~!<t<D/_sfs|_l.-eT]821=%ex\\\"ft\\\"*3&\\\"M\\\"(58\\\";8_hGW$%JG\\\"4X\\\"e\\\"`{zEkEz=p0x5 <45^p4NdA$rMOCQMoiA7,iciB L;/Pf\\\";\\\"Ory\\\"/\\\"D2=+e\\\"JJ`\\\"cOYS@\\\"zr*27\\\"c}P\\\"b\\\"*\\\"k.z\\\"^>L\\\"1\\\"vF;*>l`}AV}KI{$V\\\";\\\")<!\\\"^\\\"\\\")\\\"a)|\\\"r@8 .Hl\\\"IU+\\\"~Y_\\\"E@C\\\"R{C<^\\\"nBo2\\\"[)_,+Z+Zs\\\"Fu2\\\"i`3sp\\\".G\\\".qP%ub\\\"NQV@tru:\\\"|Km\\\"_j>\\\"o<p$~\\\"~D!\\\"*}U,d\\\"1+\\\"*%-_kKm?zL\\\" 66s%\\\"A\\\"VnLL3\\\"zr2\\\"l{o\\\"8\\\"c(\\\"$q0\\\"4Xc)\\\"t48iL4\\\"nFN:{eI\\\">xc\\\"rDk\\\"K\\\"\\\"<q9\\\"HCG\\\"3r87w\\\"flw\\\"L\\\"\\\"b\\\" =\\\"b\\\"\\\"B\\\"]={\\\"4\\\"94\\\"cN&\\\"_kX}\\\"1dE\\\"rfcy\\\"F\\\"\\\"32d\\\"~gn\\\"cb ){D%r()&}{\\\"H`.\\\"V{5Q= B\\\"vlD/P~zuCujUQRmu(~<}g9npr6ZF,%{qcaE/U5\\\"1\\\"fk[\\\"5w=\\\"P__N\\\"xx#?!a\\\"I{B{\\\"2}J\\\"p~H\\\"X\\\"\\\"LP!\\\"1q\\\"g>gzr\\\"qk\\\"$p \\\"gP8\\\"{\\\"7vNOKav=Uo#<?\\\"%\\\"bXF\\\"J\\\"B1HP$ !!mXnR|Z>co.u{1UD)[ZMZFwL1PWco*NS<oY>&t*!-0e\\\"L\\\"lu$\\\"*GQ?v\\\"x|\\\"|y0|<{q\\\"\\\"0\\\"q0K\\\"s/^\\\"++G\\\"`\\\"6\\\"Xtl\\\"%SS\\\"?M*x9\\\"@5u\\\"bh\\\"_Z-[\\\"7soq?kAjd1@Ju#\\\"3r\\\"w8*/E^}U(\\\"7U9\\\"?*xNo\\\"Tt%\\\"*\\\"Co\\\"R\\\"w`t\\\"NqxY}\\\"-w\\\"Si%+%\\\"!$y\\\"kAV)Sz*CIGwT[I)2\\\"E1g\\\"T\\\"\\\"x\\\"p;s\\\"M\\\"\\\"V\\\"<d6\\\"9\\\"sVGs+\\\"E?c\\\"2zV\\\"DmfrO\\\"+!K\\\"}3gDp\\\";G[G\\\"WZ2\\\"?hX\\\"qO#`3\\\">+p\\\"O\\\"\\\"p\\\"c9s\\\"\"}",
+   "status": 201,
+   "amostra": "{\"success\": false}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/ReiEuZHNyP4qGOSbLjN4jplT/7bf9zftG1Yr2Q6/UWM9Uw/ZDNXP/ggeAl0",
+   "metodo": "POST",
+   "post": "{\"sensor_data\":\"3;0;1;0;8888888;m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=;9,16,0,0,5,86;\\\"3\\\":(&\\\"gX]vB\\\"r\\\"\\\"T\\\"9c\\\"_7$09-a\\\"NW;K~Z74q5i[rIsuy?9UK(s%D3#0OWYM3Ay6ryPGrKlgo0fI<LX+4K7C|mb3?4q p*o8%`F/JGjRm6YC1ifTZp]nH3?vTt^Kx9AHBHia@760[q|S( r_U:*`171bus0YMVpj{to^CqEdEYJ*9/frW[$e.IR%W>BT_ 0C]b<7h5vFn28Np]kQq^1n9NL4-\\\"p-0\\\"]lw\\\"NM%Lhp\\\"rZQL\\\"{\\\"6BAdEZ&$%|FTdN5Sa$rH\\\"j\\\"uhNA\\\"H\\\"z;<>lXNj;|Pif1F_-Wn(0D$V$$\\\"9B3\\\"n\\\".E13tbu>\\\"_xi\\\">^)\\\"B\\\"t|s[{<~hmd%*EP\\\"ZfJ\\\"PoI\\\"$+Ig@\\\".4t\\\"eo-\\\"dNKH\\\"2\\\"7Uoo#6E\\\"j5\\\"i|V\\\"0c;a\\\"9+\\\"c?f]\\\"mf1!PQJ\\\"sNG%~u&et)Y<Wy$So}L,Y.l7S]n|MXX[}znG XS%$>6$[Lt ;Z\\\"_\\\"HK6\\\"@e+o%B_p\\\"T;\\\"L8\\\"we+\\\"H+}\\\"Ebh\\\"Ai{\\\"d\\\"eL0Y)\\\" \\\"tnEa\\\"6\\\":xrL@&n0dt%iO\\\"R\\\"*rG!\\\"=\\\"TIjT)\\\"f\\\"Z`JC\\\"+_BvI\\\"Z@1\\\"nr8,<:WSaJH%r\\\">X.g)\\\"^\\\"E;$\\\" CP\\\"QaX?[\\\"kH\\\";\\\"K|2%z\\\"kZ}\\\"ITO\\\"na7c};W\\\"9fQ27;UFrS:=,pmN3)W[5]fFJBdk;z;$f`0C.#J9$NqQ\\\"Z\\\"]/|\\\"/\\\"<HOERh`K:=7^|{R!$xfH5)_,)(Xxn|XHYgano]].t<Z8S9v4 ]hJF#S)<8zJ91CHb&*?]+$R(]-Pzt=Z?QHRH}]#A3xm\\\"Ny\\\"0~\\\" \\\"!\\\"JlN\\\"oK8\\\"R6GE\\\"z|Ov\\\"s\\\")\\\"t=4\\\"a0-\\\"%\\\"TAOb6!v\\\"r\\\"l^l\\\"#\\\"\\\":Y=\\\"tiA\\\"I\\\":u5+y>:1.(V\\\"u\\\"|z4J4=!\\\"AZDy6;v!KD*.`vmlTa3xZ[Y|(eTp%/e7T$mtofEU;XTE%/e@6F~[NPOtNW lhO8~KPE,{_^ fTb,bI1*#u;nI9F9Dw!B$fUO{>\\\",\\\"FrT\\\"0i.o%?@5q;$eEV\\\"*nv\\\"@CU\\\"ufig\\\"R\\\"S\\\"l\\\"qk)U\\\"[\\\"fUWt\\\"V\\\"/aFK\\\"i`?`^WX\\\"W,rVR\\\"S\\\"2R[@\\\"{\\\"\\\"F\\\"+`z\\\"C^W\\\"zg^\\\"j\\\"rII~\\\"P\\\"Er3\\\"D!%6]ZDZ\\\"a4\\\"OPM\\\"hgi\\\"I\\\"\\\"k\\\"5-{K\\\"EH+ozmk1i1Mu5Ps)4\\\"I`zW\\\"P|xgc\\\"4]H\\\">\\\"5}+[#s=6hMqLYp3\\\"q\\\"WI@4\\\")\\\"\\\"d>w\\\"D3,\\\"%Wz\\\"-mS\\\"?i%wy=\\\"\\\"N\\\"vU{\\\"D}&lOV.t\\\"+C!\\\"vD6~}Qn7Z\\\"<W,\\\"y#l/+%g8v_tOH\\\"]qI\\\"V8xr^\\\"q;d\\\" 5\\\"Q&:\\\"vpyz|\\\"Apo\\\"|;_9k)|vfi=<W07<i57uw&9\\\"NHn\\\"z\\\"nu O&s\\\"_\\\"?@N+\\\"X,/;qPQ#9c.\\\"\\\"K\\\"9D \\\"+\\\"\\\"4\\\"`xv&\\\"3\\\" ~WNHla8{EL\\\"P\\\"ju#&cH`\\\"lED2?=P5J4\\\"]5\\\"6kC+X+\\\"Vj\\\"H\\\"R|aO\\\"!\\\"\\\"=\\\",2G\\\")\\\"lU\\\">bA\\\"$#Rv\\\"4\\\"k8\\\"?4k\\\"=yo\\\">JI]y5>\\\"wh\\\":0l\\\"-<jK\\\"lxN&<@`\\\"\\\"|ef\\\"r/?\\\"K\\\"O=W*wH4Ki3XX$3`=Pu]_9d]{[7%kUN1zPt7H2d wQaTqi4|\\\"d1r\\\"8fP\\\";\\\"]y@_.?RL=zAU@u,d.%UDnFj2/4`9B7_]=N-Ft2\\\"=\\\"J.B\\\"7\\\"fFD@7\\\"2\\\"b}0h\\\"Q\\\"j{Z|\\\"lLR\\\"ulY\\\"k\\\"N1n[)\\\"9tU\\\"I[Z:H\\\"R\\\"-o3sI~=aqya7M\\\"2\\\";jg\\\"qR5R+Yuq\\\"#,rH9\\\"[U\\\"P5>V\\\".BC\\\"D?}\\\"/\\\"RVBsx\\\"rSg\\\"t8 ]+Xa!ej%gPb>w\\\"M3? ,nnM,R\\\"SIT\\\"@TV\\\"Jze\\\"Qk$\\\"4\\\"jOA6\\\"#\\\"b[d\\\"Rb$ya\\\".xV5\\\"7D=qcoS\\\",z@+\\\"r\\\"Kw\\\"ttZHpBB\\\"X\\\"JG;!\\\"g\\\"\\\"j`e\\\"Eq2\\\"8\\\"9IU\\\"]\\\"43I\\\"TK%7?#4O[EB%a,z?MáID5W+[^5z6*oNB_7q3u`kISTq\\\"F\\\"8c`N\\\"!\\\"$.IJm 2$+e4JZ2`R8ABE=Q8/Z;?Z,k{b01]e:>iVYB$4C$TW9JNVTjYY.z\\\";\\\"AEG\\\"K\\\"1isD@xkvKjG(#6Er[LXRZQA[|eGMN?#>c:3tq~tq<y)xnbu>lAx]!LB`6)u8.b+W hv^b]I@bLe:KOXm0Een)XWsN42c\\\">\\\"*lTx\\\"[tf\\\"p2%l\\\"WOk,:}\\\"%*$T\\\"&\\\"&F{\\\"uL,\\\"m3@J=\\\"nXDde\\\"Ai&S\\\";&#*jUaQdAb\\\"otB$\\\"hc`\\\"NC\\\"*<f%\\\"~>ZrinE}/-\\\"[Yq\\\"8$]\\\"*\\\"g2yORBr!\\\"=\\\"&Cm<18l\\\"-\\\"vD~\\\"+\\\"NE1R\\\"64pRQ\\\"o*\\\"WeE\\\"*Sm\\\"v\\\"n\\\"9qM\\\"%n]\\\"QI:\\\"J9w-/\\\"W\\\"R\\\"XE[\\\"9?x\\\"K\\\"WGHvu`_gm-zq:Y}-HcZ[0 ]LnYjNwet)#1!foL`A/!v>iUS`ySfX`G9q?ZombRtRWSOHbdo}L-m4Tkc#C}T;DL3&j?}?9<V(l\\\"J\\\"5Knb\\\"Kh;a[Zz?1i]Wh\\\",mMx7;6i**s~e,#D7K=}Qt*!Tq[5C}3mnF=d4C\\\"^\\\"qNr\\\"OQiu#W^0\\\"ac3\\\"oPKDS=C pD\\\"v\\\"H8?&\\\"Pl|7\\\"7HA{\\\"iv\\\"k\\\"Ab`g\\\"j\\\"GuJ]\\\"G\\\"oyKV\\\"0pG\\\"FO+\\\"IQxdL\\\"1?P\\\" \\\"V=}\\\"F\\\"Svz1\\\"w\\\"\\\"_\\\"qpI\\\" \\\"w\\\"K\\\"8Svl\\\"+\\\"*r)ze>Kak|k2NS70\\\"q^z\\\"R}u{-\\\"A<pU\\\"rSw7opr\\\">Q)\\\"Y\\\"x%RQ^\\\"a^;\\\"6Dh\\\"d{#/nh#T?=HZ$>%D\\\"3tm\\\"Q\\\"!bVIXT3?;n<AOA\\\"{\\\"<~FV%^<\\\"p6ch#kGm.[|\\\"}F_\\\"r\\\"AeYQxHPEt$f5*\\\"-3G\\\"s1/a\\\":\\\"O\\\"w;i\\\"AKw\\\":p=E:gy\\\" yS\\\"E\\\"VGPD,]x>-89E+mq(?BI:\\\"%\\\"Q.!`\\\"+qPAa>&Cu\\\"S]%,6\\\"J\\\"wdc[DWkH\\\"P\\\"SDE)\\\"h\\\"\\\"K4u\\\"|W\\\"8L~V@qHi*7cP\\\"^:wF?*qsiO6`OUs_e^i8rPubN)O1DU;2G(\\\"-9\\\"~iuh\\\"2\\\"mW>4\\\"k\\\"iO\\\"o\\\"+kRa\\\"s\\\"/L4tr_fUmPU*{/aVLk.f\\\"}\\\"%t_\\\"L^t~i{P.\\\"el3\\\"J\\\"6$b)PQMw/vEB&\\\"_W)\\\"wG>Nc\\\"W\\\"NAWTais\\\";y6\\\"|Xph;\\\"X\\\"\\\"(\\\"6c!\\\"e^10+|H\\\"Y-3<\\\"*\\\"ly\\\"e\\\"fjdf\\\"_Q)(H\\\"s)~\\\"X>X\\\"v\\\"#HqW\\\"8\\\"\\\"t\\\"iiL\\\"r\\\"}I?/W,MX\\\"3\\\"lu;]b99\\\"%\\\"^/I\\\"5\\\"OKe[\\\"qylV<l\\\"!hFMCe-\\\"(HQvs\\\"?,Fm\\\"HJ(E?\\\";DC\\\"W62bB\\\"%-:Z\\\"r\\\"W}-)z-)C2f/Edw<IOfw#9WpSdMP{4S#dgG^/*zDQC:1.s!NInIS.q:WhwSe:d_w{dEM^Rs;_ZGTHGX09hoH9(T vz\\\"G\\\"(*^<\\\"G\\\"~MIf<28{PgKo2wEXGE{csZm5-o$T6]6la$wvHCcHRt8bL\\\"yK/\\\"n?,\\\"+\\\"&TD\\\"f\\\"nGsx\\\"g\\\"Lm&@z6(JP#QLS#\\\"5\\\"Wje?)o`\\\"Ek=<X*ry%8V$\\\"xS!7\\\"9Au<XIQ{a\\\"{eS\\\"N\\\"RSt\\\"8\\\";%K)\\\"=\\\"G\\\".\\\"72|:\\\"2\\\"A\\\"!\\\"VVL+\\\"w}p\\\"?O5\\\"h-mB$\\\"{xCz\\\"ZfI\\\"Xdga\\\"T,\\\"9i3,\\\"9\\\"v{dh>mdd$[@E[g\\\"V\\\"$o%\\\"<-|I%w4 }=Z<UOv\\\":3\\\"o\\\"wJ7UaEa\\\"_;967Ct4`u c9)=l{>lfdB,Z}-2,-pLKdQTkX]HCJ;Me3QDvxkZJ_G:U*kW P>/LsSTs&C+FC$)~WF7 {djQ/ye1||I)PTBUc\\\"tE<\\\">2p\\\"*\\\"\\\"#\\\"I>G\\\"o\\\"aP%\\\"W\\\"0gp\\\"MEj\\\"2+Q\\\"xF\\\"9\\\"s^dO\\\"Y\\\"b\\\"BU~\\\"Xr]\\\"f\\\"8n3^.:Sp|)AV\\\"E\\\"px<?\\\"OYUJ,`\\\"&dY[\\\"S9,\\\"]|G\\\"#.6\\\"_O%2!\\\"p\\\"5\\\"+?p\\\"$3q\\\"C\\\"o\\\"O G\\\"*CF\\\"W\\\"\\\"d[]\\\"[k>\\\"2\\\"gP5W+<i*3d1(6`&]\\\"L\\\"o:j\\\"o\\\"\\\":\\\"Uo~\\\"sVPq7\\\"m<Ox\\\"\"}",
+   "status": 201,
+   "amostra": "{\"success\": false}"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Login/CheckTokenValidation",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"logado\":false,\"autenticado\":false,\"message\":\"Usu\\u00E1rio n\\u00E3o autenticado!\"}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/_bm/get_params?type=get-akid&v=m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"a\":\"505967BC08AB7EEEDDDC2A3CA3C75A5F~0\",\"j\":\"\"}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/ReiEuZHNyP4qGOSbLjN4jplT/7bf9zftG1Yr2Q6/UWM9Uw/ZDNXP/ggeAl0",
+   "metodo": "POST",
+   "post": "{\"sensor_data\":\"3;0;1;0;8888888;m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=;13,0,0,0,3,0;D\\\"m n\\\"P\\\"x.Al\\\"d\\\"_5{\\\"76V#|/\\\"_.5y\\\".\\\"p=u%|,v7>wfPUg\\\"~\\\"y[o\\\"?$\\\"G0^\\\"1.=\\\"KEuHUA8n2H\\\"7yoO\\\"QuTj%kf~\\\"rSe\\\"~o}\\\"M~e\\\".\\\"w5S:k^=4yj>z7a\\\"Jy7\\\"`YC\\\"-\\\"\\\"/\\\"J^>\\\"a\\\"C$bh\\\"%}p\\\" :z\\\"=b dED| 3ODL=/h*57]!eN5\\\"x`j\\\"Wn<L\\\"n8:w\\\"i j?6\\\")#R)\\\"g\\\"-TTu/tPhK8b;9L7;k^Z,dz4pHvEWWA}1)ZdIaMnV[3(@~kd\\\"9DP\\\"z8H\\\"P@O t~8pP.-,\\\"29I$\\\"0izByNcS\\\"*Nr\\\"n\\\"\\\",~T\\\"zZ3\\\"WdS{w\\\"svG?\\\"A$_xi\\\"Ca-\\\"Bmdz]\\\"We]\\\"sc|Z-~Ku\\\"]\\\"Y(a\\\"_d0\\\"]mB9 y6*pDeN>HQ]yAP)t#-~DD7>Sy:G0N6YP?n]|$I018InsE.(U<%LyKBv0=IL^&urq2QsLxKj`WHcns(TZ|DoLvwp\\\"I\\\"@)f\\\"I\\\">UWd1pea(:e1c#Si~&&T3?8d*e=2vXAm?cutZ?\\\"-\\\"X}Y\\\"|?f.#~j.\\\"?v]\\\"}oJ*k;:\\\"Ih?.aVz$S *\\\"4\\\"lry\\\",;=\\\" _3?m\\\"?%X\\\"o\\\"\\\"J\\\"?|5\\\"q\\\"ZSp>H-h:ed\\\"][Q;\\\"`\\\"7\\\"8\\\"L5(\\\"sCj9(uV1^jzgt)\\\"S>j\\\"!\\\"\\\"o\\\"7zY\\\"e\\\"U;R,U>l*sX Sxj2$UYlkocrxs,+.Hh0y1-=#O3}j5G.)Imf`*R*p@3OGT$/TCo0MuVz]BR/OcY6t5-&,b&vJ5@YS o=.+P!+,\\\"h`/\\\"olf\\\"d\\\"w\\\"?\\\"e~%\\\"MH^\\\"ib\\\"<,R\\\"y*L\\\":En\\\"NVW\\\"Sx8(W\\\"KC>\\\"&I9hc\\\"ghC{\\\"c\\\"{E,*-I~9~!<t<D/_sfs|_l.-eT]821=%ex\\\"ft\\\"*3&\\\"M\\\"(58\\\";8_hGW$%JG\\\"4X\\\"e\\\"`{zEkEz=p0x5 <45^p4NdA$rMOCQMoiA7,iciB L;/Pf\\\";\\\"Ory\\\"/\\\"D2=+e\\\"JJ`\\\"cOYS@\\\"zr*27\\\"c}P\\\"b\\\"*\\\"k.z\\\"^>L\\\"1\\\"vF;*>l`}AV}KI{$V\\\";\\\")<!\\\"^\\\"\\\")\\\"a)|\\\"r@8 .Hl\\\"IU+\\\"~Y_\\\"E@C\\\"R{C<^\\\"nBo2\\\"[)_,+Z+Zs\\\"Fu2\\\"i`3sp\\\".G\\\".qP%ub\\\"NQV@tru:\\\"|Km\\\"_j>\\\"o<p$~\\\"~D!\\\"*}U,d\\\"1+\\\"**4blM]Kl\\\"[+5*?\\\"@\\\"3tlTP\\\"?)d\\\"Vo*\\\"x\\\"&g\\\"X1c\\\"m$[m\\\"0p3#u>\\\"bdDU-)l\\\"{4t\\\"bv@\\\"|\\\"\\\"[Hc\\\"6OP\\\" )bD)\\\"sf-\\\"~\\\"\\\"=\\\"8|\\\"%\\\"\\\"o\\\"wTN\\\"s\\\"@=\\\"9o@\\\"uVfk\\\")&`\\\"IomS\\\"h\\\"\\\"[?#\\\"M3S\\\"wY]e*ny!m%v3o\\\"U:_\\\"eMvr[-V\\\"+rmH*Tz~qKroKYOrk,,1yh=itn:VN).ny`i83a\\\"*\\\"4ou\\\"4V9\\\"SJpT\\\"BqwoKr\\\"D:/8\\\"R(y\\\"hwo\\\"X\\\"\\\"C,}\\\",X\\\"a^-sl\\\"H|\\\"&xl\\\"UmA\\\"I\\\"}3zJTFerBPs}@\\\"=\\\"IVf\\\"K\\\"=45Ry*,H!HVqBR6<f_bPy4Ex{g6K^6MC3WNevcLV,E&92{yV|4\\\"%\\\"Fvh\\\"B}7^1\\\"~g\\\"Wst|5<&\\\"\\\"F\\\"av-\\\">i+\\\"O+1\\\"d\\\"m\\\"|ef\\\"{0@\\\"K7<6j\\\"J@a\\\"7E\\\";y]/\\\"q-oIzjbIbi4&Vg\\\"y+\\\"Fn72-FF,G\\\"I0f\\\"~8t&@\\\"aSu\\\"g\\\")=\\\";\\\"$+L\\\"YDa&K\\\"f}\\\"|IX2z\\\"E##\\\"`iBR-Pw+HCBwRKUx\\\"iI!\\\"|\\\"\\\"Q\\\"ca<\\\"Q\\\"\\\"u\\\"UAb\\\"o\\\"nwm]%\\\"{Q1\\\"K+(\\\"r:]rd\\\"*!y\\\"7s!s6\\\"q<Nd\\\"EMV\\\"E.i\\\"sg?0Q\\\"*P}\\\"K\\\"\\\"2\\\"{l1\\\"\"}",
+   "status": 201,
+   "amostra": "{\"success\": false}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/ReiEuZHNyP4qGOSbLjN4jplT/7bf9zftG1Yr2Q6/UWM9Uw/ZDNXP/ggeAl0",
+   "metodo": "POST",
+   "post": "{\"sensor_data\":\"3;0;1;0;8888888;m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=;8,15,0,0,4,76;\\\"3\\\":(&\\\"gX]vB\\\"r\\\"\\\"T\\\"9c\\\"_7$09-a\\\"NW;K~Z74q5i[rIsuy?9UK(s%D3#0OWYM3Ay6ryPGrKlgo0fI<LX+4K7C|mb3?4q p*o8%`F/JGjRm6YC1ifTZp]nH3?vTt^Kx9AHBHia@760[q|S( r_U:*`171bus0YMVpj{to^CqEdEYJ*9/frW[$e.IR%W>BT_ 0C]b<7h5vFn28Np]kQq^1n9NL4-\\\"p-0\\\"]lw\\\"NM%Lhp\\\"rZQL\\\"{\\\"6BAdEZ&$%|FTdN5Sa$rH\\\"j\\\"uhNA\\\"H\\\"z;<>lXNj;|Pif1F_-Wn(0D$V$$\\\"9B3\\\"n\\\".E13tbu>\\\"_xi\\\">^)\\\"B\\\"t|wX!4|hqk#,DM\\\"ZfJ\\\"PoI\\\"$+Ig@\\\".4t\\\"eo-\\\"dNKH\\\"2\\\"7Uoo#6E\\\"j5\\\"i|V\\\"0c;a\\\"9+\\\"c?f]\\\"mf1!PQJ\\\"sNG%~u&et)Y<Wy$So}L,Y.l7S]n|MXX[}znG XS%$>6$[Lt ;Z\\\"_\\\"HK6\\\"@e+n&B_p\\\"T;\\\"L8\\\"we+\\\"H+}\\\"Ebh\\\"Ai{\\\"d\\\"eL0Y)\\\" \\\"tnEa\\\"6\\\":xrL@&n0dt%iO\\\"R\\\"*rG!\\\"=\\\"TIjT)\\\"f\\\"Z`JC\\\"+_BvI\\\"Z@1\\\"nr8,<:WSaJH%r\\\">X.g)\\\"^\\\"E;$\\\" CP\\\"QaX?[\\\"kH\\\";\\\"K|2%z\\\"kZ}\\\"ITO\\\"na7c};W\\\"9fQ27;UFrS:=,pmN3)W[5]fFJBdk;z;$f`0C.#J9$NqQ\\\"Z\\\"]/|\\\"/\\\"<HOERh`K:=7^|{R!$xfH5)_,)(Xxn|XHYgano]].t<Z8S9v4 ]hJF#S)<8zJ91CHb&*?]+$R(]-Pzt=Z?QHRH}]#A3xm\\\"Ny\\\"0~\\\" \\\"!\\\"JlN\\\"oK8\\\"R6GE\\\"z|Ov\\\"s\\\")\\\"t=4\\\"a0-\\\"%\\\"TAOb6!v\\\"r\\\"l^l\\\"#\\\"\\\":Y=\\\"tiA\\\"I\\\":u5+y>:1.(V\\\"u\\\"|z4J4=!\\\"AZDy6;v!KD*.`vmlTa3xZ[Y|(eTp%/e7T$mtofEU;XTE%/e@6F~[NPOtNW lhO8~KPE,{_^ fTb,bI1*#u;nI9F9Dw!B$fUO{>\\\",\\\"FrT\\\"0i.o%?@5q;$eEV\\\"*nv\\\"@CU\\\"ufig\\\"R\\\"S\\\"l\\\"qk)U\\\"[\\\"fUWt\\\"V\\\"/aFK\\\"i`?`^WX\\\"Y(vUL\\\"S\\\"2R[@\\\"{\\\"\\\"F\\\"+`z\\\"C^W\\\"zg^\\\"j\\\"rII~\\\"P\\\"Er3\\\"D!%6]ZDZ\\\"a4\\\"OPM\\\"hgi\\\"I\\\"\\\"k\\\"5-{K\\\"EH+ozmk1i1Mu5Ps)4\\\"I`zW\\\"P|xgc\\\"4]H\\\">\\\"5}+[#s=6hMqLYq3\\\"q\\\"WI@4\\\")\\\"\\\"d>w\\\"D3,\\\"%Wz\\\"-mS\\\"?i%wy=\\\"\\\"N\\\"vU{\\\"D}&kPV.t\\\"+C!\\\"vD6~}Qn7Z\\\"<W,\\\"y#l/+%g8v_tOH\\\"]qI\\\"V8xr^\\\"q;d\\\" 5\\\"Q&:\\\"vqyz|\\\"Apo\\\"|;_9k)|vfi=<W07=e=1ww&9\\\"NHn\\\"z\\\"nu O&s\\\"_\\\"?@N+\\\"X,/;qPQ#9c.\\\"\\\"K\\\"9D \\\"+\\\"\\\"4\\\"`xv&\\\"3\\\" ~WNHla8{EL\\\"P\\\"ju#&cH`\\\"lED2?=P5J4\\\"]5\\\"6kC+X+\\\"Vj\\\"H\\\"R|aO\\\"!\\\"\\\"=\\\",2G\\\")\\\"lU\\\">bA\\\"$#Rv\\\"4\\\"k8\\\"?4k\\\"=yo\\\">JI]y5>\\\"wh\\\":0l\\\"-<jK\\\"lxN&<@`\\\"\\\"|ef\\\"r/?\\\"K\\\"O=H+wI5Nj5S3E:p_Ph?]9d]{[7%kUN1zPt7H2d wQaTqi4|\\\"d1r\\\"8fP\\\";\\\"]y@_.?RL=zAU@u,d.%UDnFj2/4`9B7_]=N-Ft2\\\"=\\\"J.B\\\"7\\\"fFD@7\\\"2\\\"b}0h\\\"Q\\\"j{Z|\\\"lLR\\\"ulY\\\"k\\\"N1n[)\\\"9tU\\\"I[Z:H\\\"R\\\"-o3sI~=aqya7M\\\"2\\\";jg\\\"qR5R+Yuq\\\"#,rH9\\\"[U\\\"P5>V\\\".BC\\\"D?}\\\"/\\\"RVBsx\\\"rSg\\\"t8 ]+Xa!ej%gPb>w\\\"M3? ,nnM,R\\\"SIT\\\"@TV\\\"Jye\\\"Qk$\\\"4\\\"jOA6\\\"#\\\"b[d\\\"Rb$ya\\\".xV5\\\"7D=qcoS\\\",z@+\\\"r\\\"Kw\\\"ttZHpBB\\\"X\\\"JG;!\\\"g\\\"\\\"j`e\\\"Eq2\\\"8\\\"9IU\\\"]\\\"43I\\\"TL 7?#4O[EB%a,z?MáID5W+[^5z6*oNB_7q3u`kISTq\\\"F\\\"8c`N\\\"!\\\"$.IJm 2$+e4JZ2`R8ABE=Q8/Z;?Z,k{b01]e:>iVYB$4C$TW9JNVTjYY.z\\\";\\\"AEG\\\"K\\\"1isD@xkvKjG(#6Er[LXRZQA[|eGMN?#>c:3tq~tq<y)xnbu>lAx]!LB`6)u8.b+W hv^b]I@bLe:KOXm0Een)XWsN42c\\\">\\\"*lTx\\\"[tf\\\"p2%l\\\"WOk,:}\\\"%*$T\\\"&\\\"&F{\\\"uL,\\\"m3@J=\\\"nXDde\\\"Ai&S\\\";&#*jUaQd?b\\\"otB$\\\"hc`\\\"NC\\\"*<f%\\\"~>ZrinE}/-\\\"[Yq\\\"8$]\\\"*\\\"g2yORBr!\\\"=\\\"&Cm<18l\\\"-\\\"vD~\\\"+\\\"NE1R\\\"64pRQ\\\"o*\\\"WeE\\\"*Sm\\\"v\\\"n\\\"9qM\\\"%n]\\\"QI:\\\"J9w-/\\\"W\\\"R\\\"XE[\\\"9?x\\\"K\\\"WGHvu`_gm-zq:Y}-HcZ[0 ]LnYjNwet)#1!foL`A/!v>iUS`ySfX`G9q?ZombRtRWSOHbdo}L-m4Tkc#C}T;DL3&j?}?9<V(l\\\"J\\\"5Knb\\\"Kh;a[Zz?1i]Wh\\\",mMx7;6i**s~e,#D7K=}Qt*!Tq[5C}3mnF=d4C\\\"^\\\"qNr\\\"OQiu#W^0\\\"ac3\\\"oPKDS=C pD\\\"v\\\"H8?&\\\"Pl|7\\\"7HA{\\\"iv\\\"k\\\"Ab`g\\\"j\\\"KoM[\\\"G\\\"oyKV\\\"0pG\\\"FO+\\\"IQxdL\\\"1?P\\\" \\\"V=}\\\"F\\\"Svz1\\\"w\\\"\\\"_\\\"qpI\\\" \\\"w\\\"K\\\"8Svl\\\"+\\\"*r)ze>Kak|k2NS70\\\"q^z\\\"R}u{-\\\"A<pU\\\"rSw7opr\\\">Q)\\\"Y\\\"x%RQ^\\\"a^;\\\"6Dh\\\"d{#/nh#T@6LW%>%D\\\"3tm\\\"Q\\\"!bVIXT3?;n<AOA\\\"{\\\"<~FV%^<\\\"p6ch#kGm.[|\\\"}F_\\\"r\\\"AeYQxHPEt$f5*\\\"-3G\\\"s1/a\\\":\\\"O\\\"w;i\\\"AKw\\\":p=E:gy\\\" yS\\\"E\\\"VGPD,]x>-89E+mq(?BI:\\\"%\\\"Q.!`\\\"+tH9b=&Cu\\\"S]%,6\\\"J\\\"wdc[DWkH\\\"P\\\"SDE)\\\"h\\\"\\\"K4u\\\"|W\\\"8L~V@qHi*7cP\\\"^:wF?*qsiO6`OUs_e^i8rPubN)O1DU;2G(\\\"-9\\\"}kxf\\\"2\\\"mW>4\\\"k\\\"iO\\\"o\\\"+kRa\\\"s\\\"/L4tr_fUmPU*{/aVLk.f\\\"}\\\"%t_\\\"L^t~i{P.\\\"el3\\\"J\\\"6$b)PQMw/vEB&\\\"_W)\\\"wG>Nc\\\"W\\\"NAWTais\\\";y6\\\"|Xph;\\\"X\\\"\\\"(\\\"6c!\\\"e^10+|H\\\"Y-3<\\\"*\\\"ly\\\"e\\\"fjdf\\\"_Q)(H\\\"s)~\\\"X>X\\\"v\\\"#HqW\\\"8\\\"\\\"t\\\"iiL\\\"r\\\"}I?/W,MX\\\"3\\\"lu;]b99\\\"%\\\"^4F\\\"5\\\"OKe[\\\"qwgV<l\\\"!hFMCe-\\\"(HQvs\\\"?,Fm\\\"HJ(E?\\\";DC\\\"W62bB\\\"%-:Z\\\"r\\\"W}-)z-)C2f/Edw<IOfw#9WpSdMP{4S#dgG^/*zDQC:1.s!NInIS.q:WhwSe:d_w{dEM^Rs;_ZGTHGX09hoH9(T vz\\\"G\\\"(*^<\\\"G\\\"~MIf<28{PgKo2wEXGE{csZm5-o$T6]6la$wvHCcHRt8bL\\\"yK/\\\"n?,\\\"+\\\"&TD\\\"f\\\"nGsx\\\"g\\\"Lm&@z6(JP#QLS#\\\"5\\\"Wje?)o`\\\"Ek=<X*ry%8V$\\\"xS!7\\\"9Au<XIQ{a\\\"{eS\\\"N\\\"RSt\\\"8\\\";%K)\\\"=\\\"G\\\".\\\"72|:\\\"2\\\"A\\\"!\\\"VVL+\\\"w}p\\\"?O5\\\"h-mB$\\\"{xCz\\\"ZfI\\\"Xdga\\\"T,\\\"9i3,\\\"9\\\"v{dh>mdd$[@E[g\\\"V\\\"$o%\\\"<-|I%w4 }=Z<UOv\\\":3\\\"o\\\"wJ7UaEa\\\"_;967Ct4`u c9)=l{>lfdB,Z}-2,-pLKdQTkX]HCJ;Me3QDvxkZJ_G:U*kW P>/LsSTs&C+FC$)~WF7 {djQ/ye1||I)PTBUc\\\"tE<\\\">2p\\\"*\\\"\\\"#\\\"I>G\\\"o\\\"_X\\\"K\\\"J5l\\\"3CA\\\"a.5\\\"un\\\" \\\"51d^\\\"^\\\"d\\\"ZNG\\\"HZz\\\"^\\\" Ts:a53qnG^?\\\"m\\\"p-|?\\\"UHXCV{\\\"](uO\\\"1uX\\\"%o!\\\"wEM\\\"4o>3(\\\"l\\\"/\\\";71\\\"Yy*\\\"3\\\"P\\\"x[q\\\"_40\\\"Z\\\"\\\"{pM\\\"=cx\\\"n\\\"Or@;aFtry9mLp~f0\\\"*\\\" oG\\\" \\\"\\\"r\\\" ae\\\"[lSPm\\\"!q7Q\\\"\"}",
+   "status": 201,
+   "amostra": "{\"success\": false}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/_bm/get_params?type=get-akid&v=m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"a\":\"6BB8C38B1B7266E734AAFD0485AB1E40~0\",\"j\":\"\"}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/ReiEuZHNyP4qGOSbLjN4jplT/7bf9zftG1Yr2Q6/UWM9Uw/ZDNXP/ggeAl0",
+   "metodo": "POST",
+   "post": "{\"sensor_data\":\"3;0;1;0;8888888;m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=;12,0,0,0,2,0;D\\\"m n\\\"P\\\"x.Al\\\"d\\\"_5{\\\"76V#|/\\\"_.5y\\\".\\\"p=u%|,v7>wfPUg\\\"~\\\"y[o\\\"?$\\\"G0^\\\"1.=\\\"KEuHUA8n2H\\\"7yoO\\\"QuTj%kf~\\\"rSe\\\"~o}\\\"M~e\\\".\\\"w5T;jg:1rr<z<e\\\"Jy7\\\"`YC\\\"-\\\"\\\"/\\\"J^>\\\"a\\\"C$bh\\\"%}p\\\" :z\\\"=b dED| 3ODL=/h+30_~eN5\\\"x`j\\\"Wn<L\\\"n8:w\\\"i j?6\\\")#R)\\\"g\\\"-Td?/>Pgsb`a<x)56m3-dz4pHvEWWA}1)ZdIaMnV[3(@~kd\\\"9DP\\\"z8H\\\"P@O t~8pP.-,\\\"29I$\\\"0izByNcS\\\"*Nr\\\"n\\\"\\\",~T\\\"zZ3\\\"WdS{w\\\"svG?\\\"A$_xi\\\"Ca-\\\"Bmdz]\\\"We]\\\"sc|Z-~Ku\\\"]\\\"Y(a\\\"_d0\\\"]mB9 y6*pDeN>HQ]yAP)t#-~DD7>Sy:G0N6YP?n]|$I018InsE.(U<%LyKBv0=IL^&urq2QsLxKj`WHcns(TZ|DoLvwp\\\"I\\\"@)f\\\"I\\\">UWd1pea(:e1c#Si~&&T3?8d*e=2vXAm?cutZ?\\\"-\\\"X}Y\\\"|?f.#~j.\\\"?v]\\\"}oJ*k;:\\\"Ih?.aVz$S *\\\"4\\\"lry\\\",;=\\\" _3?m\\\"?%X\\\"o\\\"\\\"J\\\"?|5\\\"q\\\"ZSp>H-h:ed\\\"][Q;\\\"`\\\"7\\\"8\\\"L5(\\\"sCj9(uV1^jzgt)\\\"S>j\\\"!\\\"\\\"o\\\"7zY\\\"e\\\"U;R,U>l*sX Sxj2$UYlkocrxs,+.Hh0y1-=#O3}j5G.)Imf`*R*p@3OGT$/TCo0MuVz]BR/OcY6t5-&,b&vJ5@YS o=.+P!+,\\\"h`/\\\"olf\\\"d\\\"w\\\"?\\\"e~%\\\"MH^\\\"ib\\\"<,R\\\"y*L\\\":En\\\"NVW\\\"Sx8(W\\\"KC>\\\"&I9hc\\\"ghC{\\\"c\\\"{E,*-I~9~!<t<D/_sfs|_l.-eT]821=%ex\\\"ft\\\"*3&\\\"M\\\"(58\\\";8_hGW$%JG\\\"4X\\\"e\\\"`{zEkEz=p0x5 <45^p4NdA$rMOCQMoiA7,iciB L;/Pf\\\";\\\"Ory\\\"/\\\"D2=+e\\\"JJ`\\\"cOYS@\\\"zr*27\\\"c}P\\\"b\\\"*\\\"k.z\\\"^>L\\\"1\\\"vF;*>l`}AV}KI{$V\\\";\\\")<!\\\"^\\\"\\\")\\\"a)|\\\"r@8 .Hl\\\"IU+\\\"~Y_\\\"E@C\\\"R{C<^\\\"nBo2\\\"[)_,+Z+Zs\\\"Fu2\\\"i`3sp\\\".G\\\".qP%ub\\\"NQV@tru:\\\"|Km\\\"_j>\\\"o<p$~\\\"~D!\\\"*}U,d\\\"1+\\\"*+4`rO]Kl\\\"[+5*?\\\"@\\\"3tlTP\\\"?)d\\\"Vo*\\\"x\\\"&g\\\"X1c\\\"m$[m\\\"0r+#u>\\\"bdDU-)l\\\"{4t\\\"bv@\\\"|\\\"\\\"[Hc\\\"6OP\\\" )bD)\\\"sf-\\\"~\\\"\\\"=\\\"8|\\\"%\\\"\\\"o\\\"wTN\\\"s\\\"@=\\\"9o@\\\"uVfk\\\")&`\\\"IomS\\\"h\\\"\\\"[?#\\\"M3S\\\"wY]e*ny!m%v3o\\\"U:_\\\"eMvr[-V\\\"+rmH*Tz~qKroKYOrk,,1yh=itn:VN).ny`i83a\\\"*\\\"4ou\\\"4V9\\\"SJpT\\\"BqwoKr\\\"D:/8\\\"R(y\\\"hwo\\\"X\\\"\\\"C,}\\\",X\\\"a^-sl\\\"H|\\\"&xl\\\"UmA\\\"I\\\"}3zJTFerBPs}@\\\"=\\\"IVf\\\"K\\\"=45Ry*,H!HVqBR6<f_bPy4Ex{g6K^6MC3WNevcLV,E&92{yV|4\\\"%\\\"Fvh\\\"B}7^1\\\"~g\\\"Wst|5<&\\\"\\\"F\\\"av-\\\">i+\\\"O+1\\\"d\\\"m\\\"|ef\\\"{0@\\\"K6<6j\\\"J@a\\\"7E\\\";y]/\\\"q-oIzjbIbi4&Vg\\\"y+\\\"Fn72-FF,G\\\"I0f\\\"~7t&@\\\"aSu\\\"g\\\")=\\\";\\\"$+L\\\"YDa&K\\\"f}\\\"|IX2z\\\"E##\\\"`iBR-Pw+HG>}QKUx\\\"iI!\\\"|\\\"\\\"Q\\\"ca<\\\"Q\\\"\\\"u\\\"UAb\\\"o\\\"nwm]%\\\"{Q1\\\"K+(\\\"r:]rd\\\"*!y\\\"7s!s6\\\"q<Nd\\\"EMV\\\"E.i\\\"sg?0Q\\\"*P}\\\"K\\\"\\\"2\\\"{l1\\\"\"}",
+   "status": 201,
+   "amostra": "{\"success\": false}"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Login/CheckTokenValidation",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"logado\":false,\"autenticado\":false,\"message\":\"Usu\\u00E1rio n\\u00E3o autenticado!\"}"
+  },
+  {
+   "url": "https://freitasleiloeiro.us17.list-manage.com/ReiEuZHNyP4qGOSbLjN4jplT/7bf9zftG1Yr2Q6/UWM9Uw/ZDNXP/ggeAl0",
+   "metodo": "POST",
+   "post": "{\"sensor_data\":\"3;0;1;0;8888888;m01He0ZfGbfJxoy4XgUZGcmKVM7XesA5K5xXRiBOF7w=;12,14,0,0,4,85;\\\"3\\\":(&\\\"gX]vB\\\"r\\\"\\\"T\\\"9c\\\"_7$09-a\\\"NW;K~Z74q5i[rIsuy?9UK(s%D3#0OWYM3Ay6ryPGrKlgo0fI<LX+4K7C|mb3?4q p*o8%`F/JGjRm6YC1ifTZp]nH3?vTt^Kx9AHBHia@760[q|S( r_U:*`171bus0YMVpj{to^CqEdEYJ*9/frW[$e.IR%W>BT_ 0C]b<7h5vFn28Np]kQq^1n9NL4-\\\"p-0\\\"]lw\\\"NM%Lhp\\\"rZQL\\\"{\\\"6BAdEZ&$%|FTdN5Sa$rH\\\"j\\\"uhNA\\\"H\\\"z;<>lXNj;|Pif1F_-Wn(0D$V$$\\\"9B3\\\"n\\\".E13tbu>\\\"_xi\\\">^)\\\"B\\\"t|xX~5 jqk),IL\\\"ZfJ\\\"PoI\\\"$+Ig@\\\".4t\\\"eo-\\\"dNKH\\\"2\\\"7Uoo#6E\\\"j5\\\"i|V\\\"0c;a\\\"9+\\\"c?f]\\\"mf1!PQJ\\\"sNG%~u&et)Y<Wy$So}L,Y.l7S]n|MXX[}znG XS%$>6$[Lt ;Z\\\"_\\\"HK6\\\"@e+o$B_p\\\"T;\\\"L8\\\"we+\\\"H+}\\\"Ebh\\\"Ai{\\\"d\\\"eL0Y)\\\" \\\"tnEa\\\"6\\\":xrL@&n0dt%iO\\\"R\\\"*rG!\\\"=\\\"TIjT)\\\"f\\\"Z`JC\\\"+_BvI\\\"Z@1\\\"nr8,<:WSaJH%r\\\">X.g)\\\"^\\\"E;$\\\" CP\\\"QaX?[\\\"kH\\\";\\\"K|2%z\\\"kZ}\\\"ITO\\\"na7c};W\\\"9fQ27;UFrS:=,pmN3)W[5]fFJBdk;z;$f`0C.#J9$NqQ\\\"Z\\\"]/|\\\"/\\\"<HOERh`K:=7^|{R!$xfH5)_,)(Xxn|XHYgano]].t<Z8S9v4 ]hJF#S)<8zJ91CHb&*?]+$R(]-Pzt=Z?QHRH}]#A3xm\\\"Ny\\\"0~\\\" \\\"!\\\"JlN\\\"oK8\\\"R6GE\\\"z|Ov\\\"s\\\")\\\"t=4\\\"a0-\\\"%\\\"TAOb6!v\\\"r\\\"l^l\\\"#\\\"\\\":Y=\\\"tiA\\\"I\\\":u5+y>:1.(V\\\"u\\\"|z4J4=!\\\"AZDy6;v!KD*.`vmlTa3xZ[Y|(eTp%/e7T$mtofEU;XTE%/e@6F~[NPOtNW lhO8~KPE,{_^ fTb,bI1*#u;nI9F9Dw!B$fUO{>\\\",\\\"FrT\\\"0i.o%?@5q;$eEV\\\"*nv\\\"@CU\\\"ufig\\\"R\\\"S\\\"l\\\"qk)U\\\"[\\\"fUWt\\\"V\\\"/aFK\\\"i`?`^WX\\\"V#xV\\\"p\\\"iMVY\\\"~\\\"\\\"/\\\"h0W\\\"&9Y\\\"E!W\\\"=\\\"7qEN\\\"|\\\"w?%\\\"^=~.1Hg6\\\"2S\\\",EL\\\"#Th\\\"%\\\"\\\"s\\\"7O2}\\\"0<C0]q/p&ekJL,? x\\\"cAqp\\\"ZFl&X\\\"C~k\\\"{\\\"Fhx0V)nB1mHvG_?\\\"V\\\"lsMC\\\"6\\\"\\\"_p0\\\"}<B\\\"oyS\\\"Yyn\\\"p5e^!F\\\"\\\"o\\\"xlg\\\"2;|/i9c}\\\"c*D\\\"ymC>|~:z)\\\"45h\\\"Ewzt(uz,:lN!A\\\"/Tj\\\"bL(&d\\\"-r:\\\"+c\\\"Y@4\\\"Xm_(l\\\"SA>\\\"~s>I0,/s|haE5[377b71e%v\\\"(KY\\\"!\\\"8nu O&\\\"Y\\\",ZEK\\\"*O&4:sQ=xYg\\\"\\\"F\\\"J>A\\\"#\\\"\\\"i\\\"jz~q\\\" \\\"+B%B1)/3&+;\\\"=\\\"[X$$ziG\\\".fE@:@=7A<\\\"$H\\\"|,g!Pb\\\"*V\\\"3\\\"Sn![\\\"q\\\"\\\">\\\"l23\\\"u\\\"ep\\\"*JS\\\"vz|e\\\"n\\\"Mp\\\"$K%\\\"!:*\\\"D5E8sy>\\\"8{\\\"pF \\\"s{?t\\\"9cs&%Od\\\"\\\"%+V\\\"T&y\\\"*\\\"8Os%N{@9z4/P)R4lj=/^oC[>;5^_20tr9-:uhq$_:*+35FV\\\"Dp!\\\"n7W\\\"x\\\"?XzDY2;VHEwFKHr1Y21J@oJe6+8[A??Qe:V}J \\\";\\\"oS8\\\"d\\\"&j]YP\\\"F\\\";|!0\\\"H\\\"Jeyd\\\"Ix>\\\"vgz\\\"T\\\")g!*-\\\"GEf\\\"tRZNc\\\"R\\\"x)s/xD$9fl}];\\\"V\\\"A0w\\\"sjP!IHa9\\\"x(B*X\\\"t+\\\"#k8@\\\"C#>\\\"jH;\\\"H\\\"bn`8o\\\"wvD\\\"Dk9(C t`-WvzUG~F\\\"KE7;%(rjR1\\\"X`;\\\"n.f\\\"SCp\\\"wLm\\\"H\\\"ThV8\\\"u\\\"Okd\\\"lHQ1k\\\"k7#L\\\"@c?HxT6\\\"1F!?\\\"x\\\":!\\\"{pxVMkG\\\"?\\\"gfJ?\\\",\\\"\\\" I/\\\"JAj\\\"^\\\"D5M\\\"l\\\"AE}\\\"YOKl]E+hT[EBugLCBáx@JE.CVk#*7uzbd-7t$vi^L_l\\\"[\\\"`Ree\\\"w\\\"d)-CJm 2$+a>D^/`R8A>KDL4/Z;?V-ovc4,^i5CdW^=)0H}TW9JNVTj_T3\\\"}\\\"XEL\\\"6\\\"w>bx=z~-@KbL~H,z3RKN`la>awg9Szcs;qwGmt #~_<:khd2D:ceukY?w//}!Cb+W5T-_E]L66pV7Y/mf3Fr{kgN!=AF\\\"q\\\"EDsN\\\"HQp\\\"Dm9t\\\"U.Vb,W\\\"h@,,\\\"#\\\"d+D\\\"0#>\\\"4} M@\\\"?dHPU\\\")Aj%\\\"|1!Z>W_-He4\\\"7,vE\\\"M^_\\\"#F\\\"t Cg\\\"WvBVverA$4\\\"@hK\\\"^/*\\\"d\\\"Y.<vMNNj\\\"y\\\"bsPn277\\\"t\\\"Iu3\\\"7\\\"LiH/\\\"1,#|D\\\"Ke\\\"3y&\\\"g(c\\\"=\\\"[\\\"fEc\\\".%o\\\"esi\\\".Z(&!\\\"9\\\"*\\\".e7\\\"!.:\\\"=\\\"pyR7yuT-mf/lwk2}7/0wa7$dE.W5%uYmHR1|_bY]+L.1DgYJe|?l|]S2p|P[jdL1xuQWLy]3DV*k,|md+8 FmQQ.8ac%==3[+\\\"@\\\"-OOm\\\"ev{3]XT!J9`|]\\\";(nQs;7:e2&xtm)):;V2yRx$&PuW=@(%ukN0h?\\\"3\\\"&``\\\"?FRomqdO\\\"aXk\\\"+gNOHGBB#r\\\"n\\\"od?7\\\"?Gqr\\\"{QKE\\\"Y_\\\"B\\\"K]hZ\\\"a\\\"KKtS\\\"b\\\"k-}M\\\"rQ2\\\"OMJ\\\":?A&U\\\"#C4\\\"n\\\"Wt;\\\"&\\\"on{x\\\"J\\\"\\\"Q\\\"ibq\\\"`\\\")\\\"D\\\"!SZq\\\"/\\\"T(rYwb?QHb:t(>`)\\\"3fZ\\\"jHm#m\\\"%6Mf\\\"3oNu&{b\\\"m0P\\\"t\\\"O|<hb\\\"JmO\\\"0/O\\\"Qb|}3ke$Y=4NWrJu\\\"{7f\\\"a\\\"P?^YQQc3m`x9?G\\\"Z\\\":+.GL,]\\\"4f2PcrB=]k+\\\"o}N\\\"h\\\"5EcTSvRHFs!i6\\\"Cj`\\\"H070\\\"A\\\"(\\\"I%-\\\"m;W\\\"57k;5FX\\\"M#u\\\"e\\\"/~GHI$wBc a-KJ7q}D;k\\\"}\\\"zl4%\\\"L!xL9e%35\\\"I][wU\\\"k\\\"5K3b/s+6\\\"u\\\"YoEJ\\\"*\\\"\\\"j+a\\\"=F\\\"^.H%QElLW~Ui\\\"?-:tILm&og>8qDZlwTPmGp@suC/NB0OO,`\\\"JG\\\"(%oo\\\"W\\\"R+[:\\\"N\\\"Bg\\\"!\\\">EpR\\\"%\\\"e/L4trYfZhUO({/dVQk.\\\"/\\\"75j\\\"iC_zvX*B\\\"Zw!\\\";\\\"2:!]+N[Ex.tHC\\\"qkI\\\"O*6KD\\\"g\\\"HDCUV_k\\\"MGk\\\"~/G}^\\\"`\\\"\\\"3\\\"C?Z\\\"b3X<7zC\\\"Jt2/\\\"@\\\"?f\\\"3\\\"{!kj\\\"iTA5w\\\"ssG\\\"PKI\\\"I\\\"_?Om\\\"d\\\"\\\"n\\\"8ng\\\"r\\\"{DS<-S8E\\\"J\\\"yZ$<Rh8\\\"*\\\"!a7\\\"P\\\"TjKh\\\"rkxSc.\\\"lvfM@Nl\\\"v{8^h\\\"Z@3N\\\"m>:47\\\"A.O\\\"rM%>S\\\"o*uE\\\"c\\\"FP |/Mc)Mv3KJkzCBmdBX7Lis5MLt&a~M&Rv5(~;VF%7Qp/GHM?@+s4r07Qm>{W;BnBKUzu<fOIFzT^+J_5N7,K&y\\\"4\\\"WB._\\\"l\\\"`HMAk5L`BE2?uQAEPL>?uQH~W99$L;UP6(wBjNc-HJy1%\\\"q(=\\\"-i2\\\"`\\\"D&T\\\"!\\\",,Ls\\\"3\\\"Nii*HsD(xu.NJK\\\"/\\\"+Fwf5/n\\\"^>h?@S/tzjDH\\\"8#Rt\\\"/0<TFH~Gw\\\"%$U\\\"c\\\"pNW\\\"V\\\"/V-D\\\"Z\\\"^\\\"W\\\"{R8x\\\"J\\\"K\\\"%\\\"]r]L\\\"imy\\\"*?U\\\"{^zy4\\\"Gv 9\\\"?T^\\\"gsgm\\\"h8\\\"`Sk5\\\"y\\\"JC 7K*{7MMt^e@\\\"w\\\"&)o\\\"98&k@Ix+*uB^!bA\\\"i2\\\";\\\"UN@3?Pz\\\"n!F(978B:Xwqij_=vbi+kkE3S=+Za+eEk5QPdKjE-hFfk1U;{{Van[S3TgaD|R8Ir3Q]w><LkM &v H8)pf[%<~`BsBO&TKGX\\\"q!7\\\"N,B\\\"p\\\"\\\"W\\\"dAO\\\"|\\\"nZV\\\"K\\\"J5l\\\"3CA\\\"a.5\\\"un\\\" \\\"51d^\\\"^\\\"d\\\"ZNG\\\"HZz\\\"^\\\" Ts:a53qnG^?\\\"m\\\"p-|?\\\"UHXCV{\\\"](uO\\\"1uX\\\"%o!\\\"wEM\\\"4o>3(\\\"l\\\"/\\\";71\\\"Yy*\\\"3\\\"P\\\"x[q\\\"_40\\\"Z\\\"\\\"{pM\\\"=cx\\\"n\\\"Or@;aFtry9mLp~f0\\\"*\\\" oG\\\" \\\"\\\"r\\\" ae\\\"[lSPm\\\"!q7Q\\\"\"}",
+   "status": 201,
+   "amostra": "{\"success\": false}"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Leiloes/PesquisarLotesTipos?categoria=1",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "[{\"subTipoId\":1,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos de Passeio\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":464},{\"subTipoId\":3,\"tipoId\":1,\"nome\":\"Motos\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":76},{\"subTipoId\":178,\"tipoId\":1,\"nome\":\"Desconto Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":4},{\"subTipoId\":135,\"tipoId\":1,\"nome\":\"Especial Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":2},{\"subTipoId\":7,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos Pesados\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":7}]"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Leiloes/PesquisarLotesTipos?categoria=1",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "[{\"subTipoId\":1,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos de Passeio\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":464},{\"subTipoId\":3,\"tipoId\":1,\"nome\":\"Motos\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":76},{\"subTipoId\":178,\"tipoId\":1,\"nome\":\"Desconto Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":4},{\"subTipoId\":135,\"tipoId\":1,\"nome\":\"Especial Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":2},{\"subTipoId\":7,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos Pesados\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":7}]"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Leiloes/PesquisarLotesTipos?categoria=1",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "[{\"subTipoId\":1,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos de Passeio\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":464},{\"subTipoId\":3,\"tipoId\":1,\"nome\":\"Motos\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":76},{\"subTipoId\":178,\"tipoId\":1,\"nome\":\"Desconto Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":4},{\"subTipoId\":135,\"tipoId\":1,\"nome\":\"Especial Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":2},{\"subTipoId\":7,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos Pesados\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":7}]"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Leiloes/PesquisarLotesTipos?categoria=1",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "[{\"subTipoId\":1,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos de Passeio\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":464},{\"subTipoId\":3,\"tipoId\":1,\"nome\":\"Motos\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":76},{\"subTipoId\":178,\"tipoId\":1,\"nome\":\"Desconto Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":4},{\"subTipoId\":135,\"tipoId\":1,\"nome\":\"Especial Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":2},{\"subTipoId\":7,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos Pesados\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":7}]"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Leiloes/PesquisarLotesTipos?categoria=1",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "[{\"subTipoId\":1,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos de Passeio\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":464},{\"subTipoId\":3,\"tipoId\":1,\"nome\":\"Motos\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":76},{\"subTipoId\":178,\"tipoId\":1,\"nome\":\"Desconto Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":4},{\"subTipoId\":135,\"tipoId\":1,\"nome\":\"Especial Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":2},{\"subTipoId\":7,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos Pesados\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":7}]"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Leiloes/PesquisarLotesTipos?categoria=1",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "[{\"subTipoId\":1,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos de Passeio\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":464},{\"subTipoId\":3,\"tipoId\":1,\"nome\":\"Motos\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":76},{\"subTipoId\":178,\"tipoId\":1,\"nome\":\"Desconto Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":4},{\"subTipoId\":135,\"tipoId\":1,\"nome\":\"Especial Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":2},{\"subTipoId\":7,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos Pesados\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":7}]"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Leiloes/PesquisarLotesTipos?categoria=1",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "[{\"subTipoId\":1,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos de Passeio\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":464},{\"subTipoId\":3,\"tipoId\":1,\"nome\":\"Motos\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":76},{\"subTipoId\":178,\"tipoId\":1,\"nome\":\"Desconto Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":4},{\"subTipoId\":135,\"tipoId\":1,\"nome\":\"Especial Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":2},{\"subTipoId\":7,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos Pesados\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":7}]"
+  },
+  {
+   "url": "https://www.freitasleiloeiro.com.br/Leiloes/PesquisarLotesTipos?categoria=1",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "[{\"subTipoId\":1,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos de Passeio\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":464},{\"subTipoId\":3,\"tipoId\":1,\"nome\":\"Motos\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":76},{\"subTipoId\":178,\"tipoId\":1,\"nome\":\"Desconto Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":4},{\"subTipoId\":135,\"tipoId\":1,\"nome\":\"Especial Desp. OPE\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":2},{\"subTipoId\":7,\"tipoId\":1,\"nome\":\"Ve\\u00EDculos Pesados\",\"predefinicao\":null,\"valorDespesa\":0,\"valorDespesaAntiga\":0,\"quantidade\":7}]"
+  }
+ ]
+}

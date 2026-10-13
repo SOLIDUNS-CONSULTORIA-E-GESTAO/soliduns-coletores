@@ -1,0 +1,305 @@
+{
+ "nome": "Palácio dos Leilões",
+ "base": "https://www.palaciodosleiloes.com.br",
+ "paginas": [
+  {
+   "url": "https://www.palaciodosleiloes.com.br",
+   "status": 200,
+   "titulo": "Palácio dos Leilões",
+   "tamanho_html": 2078122,
+   "captcha": false,
+   "links_veiculos": [
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8825",
+     "14\nLEILÃO\nQuarta-Feira\n14/10\nVeículos em bom estado recupera"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8826",
+     "14\nLEILÃO\nQuarta-Feira\n14/10\nMateriais outlet mix e outros c"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8835",
+     "14\nLEILÃO\nQuarta-Feira\n14/10\nVeículos sinistrados e sucatas\n"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8838",
+     "14\nLEILÃO\nQuarta-Feira\n14/10\nMotocicletas recuperadas de fin"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8837",
+     "15\nLEILÃO\nQuinta-Feira\n15/10\nVeículos sinistrados e sucatas\n"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8841",
+     "15\nLEILÃO\nQuinta-Feira\n15/10\nMateriais outlet mix e outros c"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8842",
+     "16\nLEILÃO\nSexta-Feira\n16/10\nVeículos sinistrados e sucatas\nL"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8843",
+     "16\nLEILÃO\nSexta-Feira\n16/10\nVeículos em bom estado recuperad"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8827",
+     "17\nLEILÃO\nSábado\n17/10\nLeilão de venda exclusiva de veículos"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8839",
+     "19\nLEILÃO\nSegunda-Feira\n19/10\nMateriais diversos e outros co"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8828",
+     "21\nLEILÃO\nQuarta-Feira\n21/10\nCaminhões, tratores e equipamen"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8840",
+     "21\nLEILÃO\nQuarta-Feira\n21/10\nMateriais outlet mix e outros c"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8825",
+     "aqui"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8835",
+     "aqui"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8838",
+     "aqui"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8826",
+     "aqui"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8837",
+     "aqui"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8842",
+     "aqui"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8827",
+     "aqui"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8839",
+     "aqui"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8828",
+     "aqui"
+    ],
+    [
+     "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8840",
+     "aqui"
+    ]
+   ],
+   "links_todos": [
+    "https://www.palaciodosleiloes.com.br/site/cadastro_arrematante.php",
+    "https://www.palaciodosleiloes.com.br/site/editais.php",
+    "https://www.palaciodosleiloes.com.br/site/embreve.php",
+    "https://www.palaciodosleiloes.com.br/site/evento.php",
+    "https://www.palaciodosleiloes.com.br/site/images/logos/login/horario.webp",
+    "https://www.palaciodosleiloes.com.br/site/index.php",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8825",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8826",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8827",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8828",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8835",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8837",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8838",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8839",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8840",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8841",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8842",
+    "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8843",
+    "https://www.palaciodosleiloes.com.br/site/login.php",
+    "https://www.palaciodosleiloes.com.br/site/meusindicados.php",
+    "https://www.palaciodosleiloes.com.br/site/politicadeprivacidade.php",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php",
+    "https://www.palaciodosleiloes.com.br/site/publicacoes.php",
+    "https://www.palaciodosleiloes.com.br/site/trabalhe_conosco.php"
+   ],
+   "amostra_texto": "Sobre o Palácio Termos e Editais Publicações Ouvidoria Trabalhe Conosco Produtos Entrar Quero me cadastrar Anterior Próximo Localizar ofertas Categoria (1103) Automovel (844) Eletro (252) Maquinario (1) Materiais (5) Materiais eletricos (1) Leilão (1103) 14/10/2026 (148) 14/10/2026 (163) 14/10/2026 (172) 14/10/2026 (97) 15/10/2026 (171) 15/10/2026 (12) 16/10/2026 (89) 16/10/2026 (5) 17/10/2026 (138) 19/10/2026 (34) 21/10/2026 (29) 21/10/2026 (45) Subcategoria (1103) Marca (844) Modelo (844) Ano (778) Situação (844) Local (1103) Comitente (1048) Estado (1036) 12 Leilões 1.103 Lotes 259 Materiais 844 Veículos 609 No estado 87 Pequena monta 64 Sinistrados 84 Sucatas 471 carro 252 diversos 147 camioneta 122 motocicleta 50 caminhao 26 semi-reboque 9 van 4 paleteira 4 colheitadeira 3 plantadeira 2 furgao 2 escavadeira 14 LEILÃO Quarta-Feira 14/10 Veículos em bom estado recuperados de financiamento Leilão 8825 148 veiculo Aberto para lance 14 LEILÃO Quarta-Feira 14/10 Materiais outlet mix e outros comitentes Leilão 8826 163 eletrodomestico Aberto para lance 14 LEILÃO Quarta-Feira 14/10 Veículos sinistrados e sucatas Leilão 8835 172 veiculo Aberto para lance 14 LEILÃO Quarta-Feira 14/10 Motocicletas recuperadas de financiamento Leilão 8838 97 veiculo Aberto para lance 15 LEILÃO Quinta-Feira 15/10 Veículos sinistrados e sucatas Leilão 8837 171 veiculo Aberto para lance 15 LEILÃO Quinta-Feira 15/10 Materiais outlet mix e outros comitentes Leilão 8841 12 eletrodomestico Aberto para lance 16 LEILÃO Sexta-Feira 16/10 Veículos sinistrados e sucatas Leilão 8842 89 veiculo Aberto para lance 16 LEILÃO Sexta-Feira 16/10 Veículos em bom estado recuperados de financiamento Leilão 8843 5 veiculo Aberto para lance 17 LEILÃO Sábado 17/10 Leilão de venda exclusiva de veículos premium Leilão 8827 138 veiculo Aberto para lance 19 LEILÃO Segunda-Feira 19/10 Materiais diversos e outros comitentes Leilão 8839 34 eletrodomestico Aberto para lance 21 LEILÃO Quarta-Feira 21/10 Caminhões, tratores e equipamentos Leilão 8828 29 veiculo Aberto para lance 21 LEILÃO Quarta-Feira 21/10 Materiais outlet mix e outros comitentes Leilão 8840 45 eletrodomestico Aberto para lance 14 de Outubro Quarta-Feira Leilão de Veículos em bom estado recuperados de financiamento Leilão 8825 · 148 lotes disponíveis juatuba 111 externo 18 cajamar 12 salvador 7 carro 80 camioneta 25 semi-reboque 15 caminhao 7 paleteira 4 colheitadeira 3 plantadeira 3 van 2 escavadeira 2 plataforma 1 reboque 1 trator 1 furgao 1 retroescavadeira 1 grade niveladora 1 moto niveladora 1 Lista provisória de lotes, sujeita a alterações. Destaques do leilão Lote 303 1.382 Fiat Strada Fire Flex Alcool/Gasolina 2010/2011 Lance atual R$ 13.000,00 Lote 304 645 Fiat Strada Fire Flex Alcool/Gasolina 2009/2009 Lance atual R$ 10.000,00 Lote 351 524 Hyundai Hb20s10ta Platin Alcool/Gasolina 2022/2022 Lance atual R$ 20.000,00 Lote 302 490 VW 26.260 E Diesel 2007/2008 Lance atual R$ 10.000,00 Lote 300 477 VW 26.260 E Diesel 2009/2009 Lance ",
+   "next_data": false,
+   "jsonld": 0
+  },
+  {
+   "url": "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8825",
+   "status": 200,
+   "titulo": "VEÍCULOS EM BOM ESTADO RECUPERADOS DE FINANCIAMENTO - Palácio dos Leilões",
+   "tamanho_html": 346862,
+   "captcha": false,
+   "links_veiculos": [],
+   "links_todos": [
+    "https://www.palaciodosleiloes.com.br/site/cadastro_arrematante.php",
+    "https://www.palaciodosleiloes.com.br/site/editais.php",
+    "https://www.palaciodosleiloes.com.br/site/embreve.php",
+    "https://www.palaciodosleiloes.com.br/site/evento.php",
+    "https://www.palaciodosleiloes.com.br/site/index.php",
+    "https://www.palaciodosleiloes.com.br/site/login.php",
+    "https://www.palaciodosleiloes.com.br/site/meusindicados.php",
+    "https://www.palaciodosleiloes.com.br/site/politicadeprivacidade.php",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php",
+    "https://www.palaciodosleiloes.com.br/site/publicacoes.php",
+    "https://www.palaciodosleiloes.com.br/site/trabalhe_conosco.php"
+   ],
+   "amostra_texto": "Sobre o Palácio Termos e Editais Publicações Ouvidoria Trabalhe Conosco Produtos Entrar Quero me cadastrar Anterior Próximo Localizar ofertas Categoria (148) Automovel (144) Materiais (4) Leilão (148) 14/10/2026 (148) Subcategoria (148) Marca (144) Modelo (144) Ano (123) Situação (144) Local (148) Comitente (148) Estado (137) 148 lotes localizados Clique aqui para expandir o painel de filtro avançado Lote 300 VW 26.260 E Diesel 2009/2009 no estado que se encontra Supermix Concreto sa Leilão 8825 14/10/26 Externo 477 visualizações 1 lances Último lance R$ 15.000,00 Lote 301 Iveco Eurocargo 260e25n Diesel 2011/2011 no estado que se encontra Supermix Concreto sa Leilão 8825 14/10/26 Externo 319 visualizações 1 lances Lance inicial R$ 28.486,00 Lote 302 VW 26.260 E Diesel 2007/2008 no estado que se encontra Supermix Concreto sa Leilão 8825 14/10/26 Externo 490 visualizações 1 lances Último lance R$ 10.000,00 Lote 303 Fiat Strada Fire Flex Alcool/Gasolina 2010/2011 no estado que se encontra Supermix Concreto sa Leilão 8825 14/10/26 Externo 1.382 visualizações 9 lances Último lance R$ 13.000,00 Lote 304 Fiat Strada Fire Flex Alcool/Gasolina 2009/2009 no estado que se encontra Supermix Concreto sa Leilão 8825 14/10/26 Externo 645 visualizações 6 lances Último lance R$ 10.000,00 Lote 305 GM Chevrolet D20 Custom S Diesel 1987/1988 no estado que se encontra Supermix Concreto sa Leilão 8825 14/10/26 Externo 465 visualizações 15 lances Último lance R$ 29.000,00 Lote 306 VW 26.260 E Diesel 2009/2010 no estado que se encontra Supermix Concreto sa Leilão 8825 14/10/26 Externo 136 visualizações 1 lances Último lance R$ 31.000,00 Lote 310 GM SILVERADO no estado que se encontra Outlet MIX Leilão 8825 14/10/26 Juatuba 227 visualizações 1 lances Último lance R$ 1.000,00 1 de 19 Exibir todos Rogério Lopes Ferreira - JUCEMG 394 Palácio dos Leilões ® 2026 BR-262, KM 375, Juatuba - MG, 35675-000 Horário de Funcionamento Juatuba Segunda a Sexta-feira Horário de Visitação: 08:15 às 17:00 Caixa, Documentação e Retirada de Lote: 08:15 às 17:00 Horário de Funcionamento Cajamar Horário de Visitação e Retirada: 08:15 às 17:30 Rod. Anhanguera, via de Acesso Norte, Km 32,5 - Empresarial Anhanguera - Cajamar/SP - 07753-580 Horário de Funcionamento Simões Filho Horário de Visitação e Retirada: 08:30 às 17:00 Via periférica Waldyr Beira, n° 4709, Vila CIA Sul, Simões Filho - BA, 43700-000 * Em caso de feriados, confirme os horários antes de realizar sua visita. Contatos (31) 3360-8100 Política de Privacidade Usamos cookies e outras tecnologias semelhantes para garantir que vocé tenha a melhor experiência em nosso site. Ao continuar navegando, você concorda com o uso dessas tecnologias descritas em nossos termos e políticas de privacidade. Concordar e Fechar Palácio dos Leilões",
+   "next_data": false,
+   "jsonld": 0
+  },
+  {
+   "url": "https://www.palaciodosleiloes.com.br/site/index.php?leilao_pesquisa=8835",
+   "status": 200,
+   "titulo": "VEÍCULOS SINISTRADOS E SUCATAS - Palácio dos Leilões",
+   "tamanho_html": 339895,
+   "captcha": false,
+   "links_veiculos": [],
+   "links_todos": [
+    "https://www.palaciodosleiloes.com.br/site/cadastro_arrematante.php",
+    "https://www.palaciodosleiloes.com.br/site/editais.php",
+    "https://www.palaciodosleiloes.com.br/site/embreve.php",
+    "https://www.palaciodosleiloes.com.br/site/evento.php",
+    "https://www.palaciodosleiloes.com.br/site/index.php",
+    "https://www.palaciodosleiloes.com.br/site/login.php",
+    "https://www.palaciodosleiloes.com.br/site/meusindicados.php",
+    "https://www.palaciodosleiloes.com.br/site/politicadeprivacidade.php",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php",
+    "https://www.palaciodosleiloes.com.br/site/publicacoes.php",
+    "https://www.palaciodosleiloes.com.br/site/trabalhe_conosco.php"
+   ],
+   "amostra_texto": "Sobre o Palácio Termos e Editais Publicações Ouvidoria Trabalhe Conosco Produtos Entrar Quero me cadastrar Anterior Próximo Localizar ofertas Categoria (172) Automovel (171) Maquinario (1) Leilão (172) 14/10/2026 (172) Subcategoria (172) Marca (171) Modelo (171) Ano (165) Situação (171) Local (172) Comitente (166) Estado (168) 172 lotes localizados Clique aqui para expandir o painel de filtro avançado Lote 500 Chev Onix Plus 10mt NB Alcool/Gasolina 2025/2026 no estado que se encontra Localiza Leilão 8835 14/10/26 Juatuba 166 visualizações 0 lances Lance inicial R$ 0,00 Lote 501 VW Polo Track MA Alcool/Gasolina 2025/2026 no estado que se encontra Localiza Leilão 8835 14/10/26 Juatuba 173 visualizações 0 lances Lance inicial R$ 0,00 Lote 502 Renault Kwid ZEN 2 Alcool/Gasolina 2025/2026 no estado que se encontra Localiza Leilão 8835 14/10/26 Juatuba 169 visualizações 0 lances Lance inicial R$ 0,00 Chev Montana T A LTZ Alcool/Gasolina 2025/2026 no estado que se encontra Leilão 8835 14/10/26 Juatuba 152 visualizações 0 lances Lance inicial R$ 0,00 Lote 504 Chev Onix 10mt LOG Alcool/Gasolina 2025/2025 no estado que se encontra Localiza Leilão 8835 14/10/26 Juatuba 157 visualizações 0 lances Lance inicial R$ 0,00 Lote 505 Chev Onix 10mt HB Alcool/Gasolina 2025/2026 no estado que se encontra Localiza Leilão 8835 14/10/26 Juatuba 197 visualizações 0 lances Lance inicial R$ 0,00 Lote 506 Hyundai Hb20 10M Comfort Alcool/Gasolina 2025/2026 no estado que se encontra Localiza Leilão 8835 14/10/26 Juatuba 172 visualizações 0 lances Lance inicial R$ 0,00 Lote 507 Fiat Toro Volc Td450 AT Diesel 2025/2026 no estado que se encontra Localiza Leilão 8835 14/10/26 Juatuba 251 visualizações 0 lances Lance inicial R$ 0,00 1 de 22 Exibir todos Rogério Lopes Ferreira - JUCEMG 394 Palácio dos Leilões ® 2026 BR-262, KM 375, Juatuba - MG, 35675-000 Horário de Funcionamento Juatuba Segunda a Sexta-feira Horário de Visitação: 08:15 às 17:00 Caixa, Documentação e Retirada de Lote: 08:15 às 17:00 Horário de Funcionamento Cajamar Horário de Visitação e Retirada: 08:15 às 17:30 Rod. Anhanguera, via de Acesso Norte, Km 32,5 - Empresarial Anhanguera - Cajamar/SP - 07753-580 Horário de Funcionamento Simões Filho Horário de Visitação e Retirada: 08:30 às 17:00 Via periférica Waldyr Beira, n° 4709, Vila CIA Sul, Simões Filho - BA, 43700-000 * Em caso de feriados, confirme os horários antes de realizar sua visita. Contatos (31) 3360-8100 Política de Privacidade Usamos cookies e outras tecnologias semelhantes para garantir que vocé tenha a melhor experiência em nosso site. Ao continuar navegando, você concorda com o uso dessas tecnologias descritas em nossos termos e políticas de privacidade. Concordar e Fechar Palácio dos Leilões",
+   "next_data": false,
+   "jsonld": 0
+  },
+  {
+   "url": "https://www.palaciodosleiloes.com.br/site/produtos.php",
+   "status": 200,
+   "titulo": "Palácio dos Leilões - Produtos",
+   "tamanho_html": 232643,
+   "captcha": false,
+   "links_veiculos": [],
+   "links_todos": [
+    "https://www.palaciodosleiloes.com.br/site/cadastro_arrematante.php",
+    "https://www.palaciodosleiloes.com.br/site/editais.php",
+    "https://www.palaciodosleiloes.com.br/site/embreve.php",
+    "https://www.palaciodosleiloes.com.br/site/evento.php",
+    "https://www.palaciodosleiloes.com.br/site/index.php",
+    "https://www.palaciodosleiloes.com.br/site/login.php",
+    "https://www.palaciodosleiloes.com.br/site/meusindicados.php",
+    "https://www.palaciodosleiloes.com.br/site/meuspontos.php",
+    "https://www.palaciodosleiloes.com.br/site/politicadeprivacidade.php",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel172",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel173",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel174",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel175",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel176",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel177",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel178",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel179",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel180",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel182",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel183",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel184",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel188",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel189",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel190",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel191",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel192",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel197",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel198",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel199",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel200",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel202",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel203",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel204",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel205",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel206",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel207",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel208",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel209",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel43",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel44",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel45",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel57",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel62",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel64",
+    "https://www.palaciodosleiloes.com.br/site/produtos.php#carousel66",
+    "https://www.palaciodosleiloes.com.br/site/publicacoes.php",
+    "https://www.palaciodosleiloes.com.br/site/trabalhe_conosco.php"
+   ],
+   "amostra_texto": "Sobre o Palácio Termos e Editais Publicações Ouvidoria Trabalhe Conosco Produtos Entrar Quero me cadastrar Fidelidade Palácio+ O Programa de Fidelidade do Palácio dos Leilões foi criado para valorizar nossos arrematantes. Reconhecemos sua importância e queremos retribuir de forma especial. A cada real gasto, você acumula pontos que podem ser trocados por produtos exclusivos. Além disso, ao atingir metas mensais de arremates, você pode conquistar títulos nobres e se tornar um membro da nossa realeza. Quanto mais você arrematar, mais alto será seu título e maiores as suas recompensas. Barão/Baronesa 20 arremates de veículos ou 30 de materiais mensais Príncipe/Princesa 30 arremates de veículos ou 40 de materiais mensais Rei/Rainha 40 arremates de veículos ou 50 de materiais mensais Fique atento aos nossos leilões, pois durante os eventos os leiloeiros podem sortear pontos extras, oferecendo a você uma oportunidade única de acumular ainda mais vantagens. Participe, acumule e viva a experiência de ser valorizado no Palácio dos Leilões! Loja de Produtos Previous Next Fone de Ouvido Personalizado com Logotipo do Palácio dos Leilões. 30.000 pontos resgatar Previous Next Mop move pro condor 30.000 pontos resgatar Previous Next Liquidificador Power 2 Black da Mondial 75.000 pontos resgatar Previous Next Chapeira Fergold 300x600 111.000 pontos resgatar Previous Next Ventilador VTX-40 Mondial Super Turbo 120.000 pontos resgatar Previous Next Cafeteira Elétrica Electrolux 120.000 pontos resgatar Previous Next Kit Panela Brinox Ceramic life 120.000 pontos resgatar Previous Next Cadeirinha baby rocker polar 135.000 pontos resgatar Previous Next Panela de pressão PPP01P Digital Inox Philco 150.000 pontos resgatar Previous Next Micro ondas 20L Midea 150.000 pontos resgatar Previous Next Ventilador de teto Mistral Inverter 150.000 pontos resgatar Previous Next Rádio Pioneer MVH-145BR 150.000 pontos resgatar Previous Next Aparelho de Jantar e lanche Oxford 180.000 pontos resgatar Previous Next Fritadeira Sem Óleo Air Fryer 8L, Mondial 210.000 pontos resgatar Previous Next Chave de impacto 1/2 a bateria 210.000 pontos resgatar Previous Next Cooktop a Gás MUELLER 210.000 pontos resgatar Previous Next Chapeira 300X600 FERGOLD 210.000 pontos resgatar Previous Next Cooktop a Gás MUELLER 210.000 pontos resgatar Previous Next Panela de pressão, Digital inox Ppp01p, 6L 225.000 pontos resgatar Previous Next Wap Fritadeira Airfryer Oven 240.000 pontos resgatar Previous Next Caixa de ferramentas - 94 peças 300.000 pontos resgatar Previous Next Perfume Boss Bottled Hugo Boss 300.000 pontos resgatar Previous Next Caixa de ferramentas Gorillaz 222 peças 300.000 pontos resgatar Previous Next Tablet Lenovo tab p11 plus + folio case 300.000 pontos resgatar Previous Next jogo de panelas Tramontina Cookware 315.000 pontos resgatar Previous Next Micro-Ondas Electrolux 31L 315.000 pontos resgatar Previous Next Thrustmaster T-Flight Hotas X 330.000 pontos resgatar Previous Next Moto elé",
+   "next_data": false,
+   "jsonld": 0
+  },
+  {
+   "url": "https://www.palaciodosleiloes.com.br/site/evento.php",
+   "status": 429,
+   "titulo": "Acesso Bloqueado",
+   "tamanho_html": 3206,
+   "captcha": true,
+   "links_veiculos": [],
+   "links_todos": [],
+   "amostra_texto": "Você atingiu o limite de acessos Não foi possível acessar Por que fui bloqueado? O site é protegido por um serviço de segurança online que limita a taxa de acessos para evitar abusos. Você atingiu o limite de acessos a algum recurso do site. Seu acesso será reestabelecido assim que sua taxa de acessos se normalizar. O que eu devo fazer? Tente novamente mais tarde. Caso acredite que seu comportamento foi normal, entre em contato por email com o dono do site, informando sobre o bloqueio. Envie o ID da requisição exibido abaixo para facilitar a investigação. ID da requisição: be3baf0b4eaf66a7b915bc485826e6dc - Seu endereço IP: 52.247.210.117 Horário: 2026-10-13 18:30:38 - Local: 1s3",
+   "next_data": false,
+   "jsonld": 0
+  }
+ ],
+ "jsons": [
+  {
+   "url": "https://www.palaciodosleiloes.com.br/site/camada_ajax/index_m_home.php?quebra=0.039158383186922774",
+   "metodo": "POST",
+   "post": "opcao=carregar_banners",
+   "status": 200,
+   "amostra": "\n[{\"COD_BANNER\":14350,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/6ac381b69b2b2.jpeg\",\"HREF\":\"https:\\/\\/www.remuveb2b.com.br\\/\"},{\"COD_BANNER\":14155,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/675c388aee2a2.jpeg\",\"HREF\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/meusindicados.php\"},{\"COD_BANNER\":14197,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/6840abeebdf91.jpeg\",\"HREF\":null},{\"COD_BANNER\":14156,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/676403b784b22.jpeg\",\"HREF\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/sitefraude.php\"},{\"COD_BANNER\":14161,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/67800974bc6c6.jpeg\",\"HREF\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/trabalhe_conosco.php\"}]"
+  },
+  {
+   "url": "https://app.mzworkspace.com/api/botSites/2626d5b5b9445a45b9ac35928041c07b/customizacao",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"id\":12873,\"site\":\"palaciodosleiloes.com.br\",\"cliente\":\"Palácio dos Leilões\",\"mensagem\":\"Posso ajudar?\",\"fileId\":777907174,\"imagem\":\"https://v2b-21.mz-css.net/3c081dabe8b0be1d27e7d58535ca57f9/WhatsApp_Image_2024-07-23_at_14.23.09.jpeg\",\"cor\":\"#497dc5\",\"posicaoHorizontal\":\"DIREITA\",\"notificarSom\":false}"
+  },
+  {
+   "url": "https://www.palaciodosleiloes.com.br/site/camada_ajax/index_m_home.php?quebra=0.022173226906673227",
+   "metodo": "POST",
+   "post": "opcao=carregar_banners",
+   "status": 200,
+   "amostra": "\n[{\"COD_BANNER\":14350,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/6ac381b69b2b2.jpeg\",\"HREF\":\"https:\\/\\/www.remuveb2b.com.br\\/\"},{\"COD_BANNER\":14155,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/675c388aee2a2.jpeg\",\"HREF\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/meusindicados.php\"},{\"COD_BANNER\":14197,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/6840abeebdf91.jpeg\",\"HREF\":null},{\"COD_BANNER\":14156,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/676403b784b22.jpeg\",\"HREF\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/sitefraude.php\"},{\"COD_BANNER\":14161,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/67800974bc6c6.jpeg\",\"HREF\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/trabalhe_conosco.php\"}]"
+  },
+  {
+   "url": "https://app.mzworkspace.com/api/botSites/2626d5b5b9445a45b9ac35928041c07b/customizacao",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"id\":12873,\"site\":\"palaciodosleiloes.com.br\",\"cliente\":\"Palácio dos Leilões\",\"mensagem\":\"Posso ajudar?\",\"fileId\":777907174,\"imagem\":\"https://v2b-21.mz-css.net/3c081dabe8b0be1d27e7d58535ca57f9/WhatsApp_Image_2024-07-23_at_14.23.09.jpeg\",\"cor\":\"#497dc5\",\"posicaoHorizontal\":\"DIREITA\",\"notificarSom\":false}"
+  },
+  {
+   "url": "https://www.palaciodosleiloes.com.br/site/camada_ajax/index_m_home.php?quebra=0.6527145653360987",
+   "metodo": "POST",
+   "post": "opcao=carregar_banners",
+   "status": 200,
+   "amostra": "\n[{\"COD_BANNER\":14350,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/6ac381b69b2b2.jpeg\",\"HREF\":\"https:\\/\\/www.remuveb2b.com.br\\/\"},{\"COD_BANNER\":14155,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/675c388aee2a2.jpeg\",\"HREF\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/meusindicados.php\"},{\"COD_BANNER\":14197,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/6840abeebdf91.jpeg\",\"HREF\":null},{\"COD_BANNER\":14156,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/676403b784b22.jpeg\",\"HREF\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/sitefraude.php\"},{\"COD_BANNER\":14161,\"COD_LEILAO\":null,\"COD_GRUPO\":null,\"COD_LOTE\":null,\"ARQUIVO\":null,\"URL\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/images\\/banners\\/67800974bc6c6.jpeg\",\"HREF\":\"https:\\/\\/www.palaciodosleiloes.com.br\\/site\\/trabalhe_conosco.php\"}]"
+  },
+  {
+   "url": "https://app.mzworkspace.com/api/botSites/2626d5b5b9445a45b9ac35928041c07b/customizacao",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"id\":12873,\"site\":\"palaciodosleiloes.com.br\",\"cliente\":\"Palácio dos Leilões\",\"mensagem\":\"Posso ajudar?\",\"fileId\":777907174,\"imagem\":\"https://v2b-21.mz-css.net/3c081dabe8b0be1d27e7d58535ca57f9/WhatsApp_Image_2024-07-23_at_14.23.09.jpeg\",\"cor\":\"#497dc5\",\"posicaoHorizontal\":\"DIREITA\",\"notificarSom\":false}"
+  },
+  {
+   "url": "https://app.mzworkspace.com/api/botSites/2626d5b5b9445a45b9ac35928041c07b/customizacao",
+   "metodo": "GET",
+   "post": "",
+   "status": 200,
+   "amostra": "{\"id\":12873,\"site\":\"palaciodosleiloes.com.br\",\"cliente\":\"Palácio dos Leilões\",\"mensagem\":\"Posso ajudar?\",\"fileId\":777907174,\"imagem\":\"https://v2b-21.mz-css.net/3c081dabe8b0be1d27e7d58535ca57f9/WhatsApp_Image_2024-07-23_at_14.23.09.jpeg\",\"cor\":\"#497dc5\",\"posicaoHorizontal\":\"DIREITA\",\"notificarSom\":false}"
+  }
+ ]
+}
