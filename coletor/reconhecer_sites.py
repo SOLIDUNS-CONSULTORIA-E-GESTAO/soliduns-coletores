@@ -29,6 +29,7 @@ def visitar(pg, url, jsons):
         r["captcha"] = bool(re.search(r"g-recaptcha|hcaptcha|cf-challenge|turnstile|just a moment", html[:60000], re.I))
         links = pg.eval_on_selector_all("a[href]", "as => as.map(a => [a.href, (a.innerText||'').trim().slice(0,60)])")
         r["links_veiculos"] = [l for l in links if RE_VEI.search(l[0] + " " + l[1])][:80]
+        r["links_todos"] = sorted({l[0] for l in links if urlparse(l[0]).netloc.endswith(urlparse(url).netloc.replace("www.", ""))})[:300]
         r["amostra_texto"] = re.sub(r"\s+", " ", pg.inner_text("body"))[:3000]
         r["next_data"] = bool(re.search(r'id="__NEXT_DATA__"', html))
         r["jsonld"] = len(re.findall(r'application/ld\+json', html))
