@@ -1,4 +1,7 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.0 (14/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.1 (14/10/2026)
+//
+// v1.1 (decisões do Thiago, 14/10 15h43): PUBLICA AUTOMATICAMENTE, sem revisão (a verificação fica só como registro;
+//       VM_REVISAO_HUMANA=1 volta a gravar como rascunho) e usa a agenda do dia (public.vm_agenda) no contexto.
 //
 // ETAPA 3 do plano de fontes (Prompts 14 a 17): escreve o "Scanner do Dia" como RASCUNHO para aprovação humana.
 //   1. Monta o contexto do dia SÓ com a base própria: public.cotacoes (indicadores de fechamento e maiores variações
@@ -15,7 +18,8 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.0";
+const VERSAO = "1.1";
+const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.0";
 const PROMPT_SHA256 = "c400ce9e9788afb6d8febbead081e47abe908d21e6f56d2fb8a564065ffffcd0";
 // prompt-sistema-agente.txt, versão 1.0 — texto EXATO abaixo da linha de "=" (sem alterações)
@@ -34,7 +38,7 @@ const DIAS = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quint
 const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
 type Registro = Record<string, unknown> & { id: string };
-export type Contexto = { data_de_hoje: string; indicadores: Registro[]; maiores_variacoes_b3: Registro[];
+export type Contexto = { data_de_hoje: string; agenda_do_dia: Registro[]; indicadores: Registro[]; maiores_variacoes_b3: Registro[];
   fontes_oficiais_livres: Registro[]; assuntos_em_pauta: Registro[]; observacao: string };
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
@@ -63,6 +67,7 @@ async function pgPost(tabela: string, linhas: unknown[], prefer = "return=minima
 // ------------------------------------------------------------------ contexto do dia
 type Cot = { id: number; fonte: string; codigo: string; descricao: string | null; data_ref: string; fechamento: number;
   unidade: string; url_fonte: string; volume?: number | null; codbdi?: string | null };
+type Ag = { id: number; hora: string; regiao: string; categoria: string; evento: string; consenso: string | null; fonte: string; url: string; origem: string };
 type Ach = { id: number; fonte_nome: string; camada: string; titulo: string; resumo: string | null; link: string; publicado_em: string | null };
 
 export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls: Record<string, { fonte: string; url: string }> }> {
@@ -98,6 +103,15 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
       urls[id] = { fonte: "B3 COTAHIST", url: c.url_fonte };
     }
   }
+  const agenda: Registro[] = [];
+  const ags = await pgGet<Ag[]>(`vm_agenda?select=id,hora,regiao,categoria,evento,consenso,fonte,url,origem&data_ref=eq.${iso(hoje)}&order=hora&limit=80`);
+  const temOficial = new Set(ags.filter((a) => a.origem === "calendario_oficial").map((a) => a.hora + "|" + a.categoria));
+  for (const a of ags) {
+    if (a.origem === "pesquisa_web" && temOficial.has(a.hora + "|" + a.categoria)) continue;   // calendário oficial tem prioridade
+    const id = `ag:${a.id}`;
+    agenda.push({ id, hora_brasilia: a.hora, regiao: a.regiao, categoria: a.categoria, evento: a.evento, consenso: a.consenso, fonte: a.fonte });
+    urls[id] = { fonte: a.fonte, url: a.url };
+  }
   const desde = new Date(Date.now() - 30 * 3600e3).toISOString();
   const achados = await pgGet<Ach[]>(`vm_achados?select=id,fonte_nome,camada,titulo,resumo,link,publicado_em&coletado_em=gte.${desde}` +
     `&order=publicado_em.desc.nullslast&limit=80`);
@@ -108,15 +122,16 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
     if (a.camada === "livre" && livres.length < 30) livres.push({ id, fonte: a.fonte_nome, titulo: a.titulo, resumo: a.resumo, publicado_em: a.publicado_em, link: a.link });
     else if (a.camada === "pauta" && pauta.length < 30) pauta.push({ id, fonte: a.fonte_nome, assunto: a.titulo, publicado_em: a.publicado_em });
   }
-  return { urls, ctx: { data_de_hoje: iso(hoje), indicadores, maiores_variacoes_b3: variacoes, fontes_oficiais_livres: livres, assuntos_em_pauta: pauta,
-    observacao: "Indicadores e cotações são de FECHAMENTO. 'fontes_oficiais_livres' trazem só o resumo publicado pela própria fonte (uso com crédito). " +
+  return { urls, ctx: { data_de_hoje: iso(hoje), agenda_do_dia: agenda, indicadores, maiores_variacoes_b3: variacoes, fontes_oficiais_livres: livres, assuntos_em_pauta: pauta,
+    observacao: "'agenda_do_dia' traz os eventos previstos para hoje, com horário de Brasília e fonte. Indicadores e cotações são de FECHAMENTO. 'fontes_oficiais_livres' trazem só o resumo publicado pela própria fonte (uso com crédito). " +
       "'assuntos_em_pauta' trazem só o assunto: o texto desses veículos não está no contexto e não pode ser reproduzido nem resumido." } };
 }
 
 export function pedido(hoje: Date, ctx: Contexto, anterior?: unknown, instrucao?: string): string {
   return `Escreva o "Scanner do Dia" do Valor e Mercado para ${extenso(hoje)}: a análise que abre a coluna "O que move o dia" na home. ` +
-    "Reúna, em ordem decrescente de importância, o que os indicadores de fechamento mais recentes mostram, as maiores variações da bolsa no último pregão " +
-    "e o que as fontes oficiais publicaram nas últimas 24 horas. Use o chapéu \"Scanner\". " +
+    "Reúna, em ordem decrescente de importância: o que está previsto para hoje na agenda do dia (Brasil e Estados Unidos, com horário de Brasília e consenso quando houver), " +
+    "o que os indicadores de fechamento mais recentes mostram, as maiores variações da bolsa no último pregão e o que as fontes oficiais publicaram nas últimas 24 horas. " +
+    "Use o chapéu \"Scanner\". " +
     "Os identificadores das referências são o campo \"id\" de cada registro do contexto. " +
     "Itens de \"assuntos_em_pauta\" só podem ser citados como tema, com atribuição ao veículo; não reproduza nem resuma o texto deles." +
     (instrucao ? `\n\nINSTRUÇÃO DO EDITOR PARA ESTA NOVA VERSÃO: ${instrucao}\n\nVERSÃO ANTERIOR (devolvida pelo editor):\n${JSON.stringify(anterior)}` : "") +
@@ -181,7 +196,7 @@ export function verificar(g: Record<string, unknown>, ctx: Contexto, hoje: Date)
   const faltam = ["chapeu", "titulo", "linha_fina"].filter((k) => !String(g[k] ?? "").trim());
   ch.push({ checagem: "campos", ok: !faltam.length && pars.length > 0 && Array.isArray(g.referencias), bloqueia: true,
     detalhe: [...faltam.map((k) => `campo vazio: ${k}`), ...(pars.length ? [] : ["sem parágrafos"])] });
-  const registros = new Map<string, Registro>([...ctx.indicadores, ...ctx.maiores_variacoes_b3, ...ctx.fontes_oficiais_livres, ...ctx.assuntos_em_pauta].map((r) => [r.id, r]));
+  const registros = new Map<string, Registro>([...ctx.agenda_do_dia, ...ctx.indicadores, ...ctx.maiores_variacoes_b3, ...ctx.fontes_oficiais_livres, ...ctx.assuntos_em_pauta].map((r) => [r.id, r]));
   const idRef = (r: Record<string, unknown>) => String(r.identificador ?? r.id ?? r.registro ?? r.id_registro ?? "").trim();
   const numRef = (r: Record<string, unknown>) => String(r.numero ?? r["número"] ?? r.valor ?? "").trim();
   const inexistentes = refs.filter((r) => !registros.has(idRef(r))).map((r) => `${numRef(r)} → "${idRef(r)}" não existe no contexto`);
@@ -229,9 +244,9 @@ export async function tratar(req: Request): Promise<Response> {
     let anterior: unknown;
     if (corpo.devolvida) anterior = (await pgGet<{ gerado: unknown }[]>(`vm_materias?select=gerado&id=eq.${Number(corpo.devolvida)}`))[0]?.gerado;
     const { ctx, urls } = await montarContexto(hoje);
-    resumo.contexto = { indicadores: ctx.indicadores.length, variacoes: ctx.maiores_variacoes_b3.length,
+    resumo.contexto = { agenda: ctx.agenda_do_dia.length, indicadores: ctx.indicadores.length, variacoes: ctx.maiores_variacoes_b3.length,
       livres: ctx.fontes_oficiais_livres.length, pauta: ctx.assuntos_em_pauta.length };
-    if (!ctx.indicadores.length && !ctx.fontes_oficiais_livres.length) throw new Error("contexto vazio: sem indicadores nem achados para escrever");
+    if (!ctx.indicadores.length && !ctx.fontes_oficiais_livres.length && !ctx.agenda_do_dia.length) throw new Error("contexto vazio: sem agenda, indicadores nem achados para escrever");
     const msgs: { role: string; content: string }[] = [{ role: "user", content: pedido(hoje, ctx, anterior, corpo.instrucao) }];
     let r = await chamar(msgs), ent = r.ent, sai = r.sai, gerado: Record<string, unknown>;
     try { gerado = extrairJson(r.texto); } catch (_) {
@@ -248,12 +263,23 @@ export async function tratar(req: Request): Promise<Response> {
       if (u && !vistos.has(u.url)) { vistos.add(u.url); fontes.push({ id, ...u }); }
     }
     const custo = Math.round((ent / 1e6 * PRECO_ENT + sai / 1e6 * PRECO_SAI) * 10000) / 10000;
-    const linha = { tipo: "scanner", data_ref: iso(hoje), situacao: "rascunho", gerado, fontes, contexto: ctx, verificacoes, verificacao_ok: ok,
+    const auto = !REVISAO_HUMANA;   // v1.1: publicação automática (decisão do Thiago); a verificação fica só como registro
+    const texto = { chapeu: gerado.chapeu ?? "Scanner", titulo: gerado.titulo, linha_fina: gerado.linha_fina, paragrafos: gerado.paragrafos };
+    const linha = { tipo: "scanner", data_ref: iso(hoje), situacao: auto ? "publicada" : "rascunho", gerado, fontes, contexto: ctx, verificacoes, verificacao_ok: ok,
+      publicacao_automatica: auto, texto_aprovado: auto ? texto : null, aprovado_em: auto ? new Date().toISOString() : null,
+      aprovador_nome: auto ? "Publicação automática" : null, editado: auto ? false : null,
       gerado_por_ia: true, modelo: r.modelo, prompt_versao: PROMPT_VERSAO, prompt_sha256: sha, instrucao_extra: corpo.instrucao ?? null,
       origem_id: corpo.devolvida ? Number(corpo.devolvida) : null, tokens_entrada: ent, tokens_saida: sai, custo_usd: custo };
-    Object.assign(resumo, { titulo: gerado.titulo, verificacao_ok: ok, reprovacoes: verificacoes.filter((c) => !c.ok && c.bloqueia).map((c) => c.checagem),
+    Object.assign(resumo, { titulo: gerado.titulo, publicado: auto, verificacao_ok: ok, reprovacoes: verificacoes.filter((c) => !c.ok && c.bloqueia).map((c) => c.checagem),
       modelo: r.modelo, custo_usd: custo });
     if (corpo.so_teste) { resumo.rascunho = { gerado, verificacoes, fontes }; return Response.json(resumo); }
+    const camposOk = Array.isArray(gerado.paragrafos) && (gerado.paragrafos as unknown[]).length > 0 && String(gerado.titulo ?? "").trim();
+    if (auto && !camposOk) throw new Error("o agente não entregou título e parágrafos: nada publicado");
+    if (auto) {                      // o Scanner publicado antes, no mesmo dia, passa a "substituído"
+      const r = await fetch(`${base()}/vm_materias?tipo=eq.scanner&data_ref=eq.${iso(hoje)}&situacao=eq.publicada`,
+        { method: "PATCH", body: JSON.stringify({ situacao: "substituida" }), headers: cab({ Prefer: "return=minimal" }) });
+      if (!r.ok) throw new Error(`não foi possível substituir o Scanner anterior (${r.status})`);
+    }
     const gravada = await pgPost("vm_materias", [linha], "return=representation") as { id: number }[];
     resumo.id = gravada?.[0]?.id;
     await pgPost("vm_coletas", [{ coletor: "scanner-do-dia", situacao: "ok", novos: 1, detalhe: resumo, erro: null }]);

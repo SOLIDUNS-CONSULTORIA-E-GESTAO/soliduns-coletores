@@ -33,3 +33,12 @@ Variáveis: `COLETOR_TOKEN` (já existe), `ANTHROPIC_API_KEY` (nova, nos segredo
 Vault: `vm_radar_url`, `vm_scanner_url` (e o `vm_coletor_token` que já existe).
 Agenda: radar a cada 30 min das 6h às 20h30 (Brasília); Scanner às 6h45, dias úteis.
 Testes: `python3 testes/teste_etapa3.py` (sobe as funções com `testes/lancar.ts`) e `deno run --allow-all testes/t_numeros.ts`.
+
+## Decisões de 14/10 15h43 (migration 139) e agenda do dia
+
+- Scanner do Dia PUBLICADO AUTOMATICAMENTE (a verificação fica só como registro). `VM_REVISAO_HUMANA=1` volta a gravar rascunho.
+- A página nunca menciona IA. Na Redação, o administrador pode "Tirar do ar" (`vm_materia_despublicar`, com motivo).
+- `agenda-do-dia`: às 6h15 (dias úteis) o Sonnet pesquisa na web a agenda de hoje (CVM, Banco Central, Governo e Congresso,
+  Federal Reserve, Agenda EUA, empresas) e grava em `vm_agenda` (origem `pesquisa_web`; só links devolvidos pela busca).
+  Os coletores de calendários oficiais gravarão na mesma tabela com origem `calendario_oficial`, que tem prioridade no Scanner.
+- Vault: `vm_agenda_url`. Variáveis opcionais: `VM_BUSCAS` (padrão 10), `VM_MODELO`.
