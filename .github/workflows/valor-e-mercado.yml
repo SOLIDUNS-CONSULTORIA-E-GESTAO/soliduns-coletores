@@ -37,6 +37,10 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           VM_SO_TESTE: ${{ github.event.inputs.so_teste || '0' }}
+          # Ajustes sem mexer no código: Settings -> Secrets and variables -> Actions -> aba Variables
+          # VM_MODELO (vazio = claude-sonnet-5-5; ex.: claude-haiku-4-5) · VM_BUSCAS (vazio = 12; de 1 a 20)
+          VM_MODELO: ${{ vars.VM_MODELO }}
+          VM_BUSCAS: ${{ vars.VM_BUSCAS }}
         run: |
           mkdir -p vm-log
           set -o pipefail

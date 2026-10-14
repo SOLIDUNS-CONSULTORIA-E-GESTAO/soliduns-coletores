@@ -33,7 +33,10 @@ import requests
 
 MODELO = os.environ.get("VM_MODELO") or "claude-sonnet-5-5"
 RESERVA = os.environ.get("VM_MODELO_RESERVA") or "claude-sonnet-4-5"
-BUSCAS = int(os.environ.get("VM_BUSCAS") or 12)
+try:                                   # variável VM_BUSCAS do GitHub: 1 a 20 (inválida -> 12)
+    BUSCAS = max(1, min(20, int(str(os.environ.get("VM_BUSCAS") or "12").strip())))
+except ValueError:
+    BUSCAS = 12
 ANTHROPIC_URL = os.environ.get("ANTHROPIC_URL") or "https://api.anthropic.com/v1/messages"
 # preço aproximado por milhão de tokens (US$) — só para o registro de custo
 PRECO_ENT, PRECO_SAI, PRECO_BUSCA = 3.0, 15.0, 0.01
@@ -277,7 +280,7 @@ def main():
     hoje = (dt.datetime.now(BRT)).date()
     if os.environ.get("VM_DATA"):
         hoje = dt.date.fromisoformat(os.environ["VM_DATA"])
-    log(f"Valor e Mercado — edição de {data_extenso(hoje)} — modelo {MODELO}")
+    log(f"Valor e Mercado — edição de {data_extenso(hoje)} — modelo {MODELO}, até {BUSCAS} buscas")
     red, sistema = Redacao(), instrucoes(hoje)
     pedido = [{"role": "user", "content": f"Apure e escreva a edição de hoje ({data_extenso(hoje)}). Responda só com o JSON."}]
     texto, conversa = red.conversar(pedido, sistema, com_busca=True)
