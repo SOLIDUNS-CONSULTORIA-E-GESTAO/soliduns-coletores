@@ -17,7 +17,7 @@ capa continua com a edição anterior):
   - no mínimo 3 fontes, e só endereços que a busca realmente devolveu (nada de link inventado).
 
 Secrets: SUPABASE_URL, SUPABASE_SERVICE_KEY, ANTHROPIC_API_KEY.
-Opcionais: VM_MODELO (padrão claude-sonnet-5-5; reserva claude-sonnet-4-5), VM_BUSCAS (padrão 12),
+Opcionais: VM_MODELO (padrão claude-sonnet-5-5; reserva claude-sonnet-4-5), VM_BUSCAS (padrão 8),
 VM_SO_TESTE=1 (escreve e confere, mas não grava). ANTHROPIC_URL troca o endereço (testes).
 Tirar do ar a edição do dia (SQL Editor):  update public.vm_edicoes set publicado = false where data = current_date;
 """
@@ -33,10 +33,10 @@ import requests
 
 MODELO = os.environ.get("VM_MODELO") or "claude-sonnet-5-5"
 RESERVA = os.environ.get("VM_MODELO_RESERVA") or "claude-sonnet-4-5"
-try:                                   # variável VM_BUSCAS do GitHub: 1 a 20 (inválida -> 12)
-    BUSCAS = max(1, min(20, int(str(os.environ.get("VM_BUSCAS") or "12").strip())))
+try:                                   # variável VM_BUSCAS do GitHub: 1 a 20 (inválida -> 8)
+    BUSCAS = max(1, min(20, int(str(os.environ.get("VM_BUSCAS") or "8").strip())))
 except ValueError:
-    BUSCAS = 12
+    BUSCAS = 8
 ANTHROPIC_URL = os.environ.get("ANTHROPIC_URL") or "https://api.anthropic.com/v1/messages"
 # preço aproximado por milhão de tokens (US$) — só para o registro de custo
 PRECO_ENT, PRECO_SAI, PRECO_BUSCA = 3.0, 15.0, 0.01
@@ -94,10 +94,11 @@ BLOCO 1 — MANCHETE DE CAPA: o assunto mais relevante ou sensível que dita o h
 BLOCO 2 — SCANNER DO DIA ("O que move o dia"):
 - pos_fechamento: o que aconteceu após as 18h de ontem (horário de Brasília): decisões judiciais, resultados divulgados à noite, fatos relevantes, fechamento das bolsas asiáticas e primeiras horas na Europa. De 3 a 6 itens.
 - agenda: indicadores, decisões de bancos centrais, discursos de diretores do Fed/BC, votações, leilões do Tesouro e eventos políticos/jurídicos de hoje, cada um com horário de Brasília e consenso de mercado quando houver. Em ordem de horário.
-- semana: eventos, gatilhos de liquidez e julgamentos de maior peso nos próximos dias úteis desta semana (se hoje for sexta, sábado ou domingo, a próxima semana). De 3 a 6 itens.
+- semana: eventos, gatilhos de liquidez e julgamentos de maior peso SÓ nos próximos dias úteis desta semana, de amanhã até sexta-feira (se hoje for sexta, sábado ou domingo, a próxima semana, de segunda a sexta). Nada de datas fora dessa janela nem de eventos de hoje. De 3 a 6 itens, com o dia em "quando" (ex.: "Quinta (15/10)").
 
 [FORMATO DA RESPOSTA]
-Depois de pesquisar, entregue a edição chamando a ferramenta "entregar_edicao" (uma única vez, com todos os campos). Não escreva a edição no texto.
+Pesquise sem escrever comentários entre as buscas. Depois, entregue a edição chamando a ferramenta "entregar_edicao" (uma única vez, com todos os campos). Não escreva a edição no texto.
+Antes de entregar, releia cada frase: nenhuma frase pode ficar truncada, repetida ou com reticências; cada dado precisa dizer quando aconteceu (dia e horário), sem expressões vagas como "um dos pregões da semana".
 - data_referencia: {hoje.isoformat()}
 - agenda.hora: horário de Brasília no formato 09h00; evento sem horário definido: "Dia todo" ou "A definir".
 - fontes: de 3 a 12 páginas que você efetivamente usou, com o endereço EXATO devolvido pela busca."""
@@ -121,7 +122,7 @@ def chamar(mensagens, sistema, buscas, forcar_entrega=False):
     chave = os.environ.get("ANTHROPIC_API_KEY")
     if not chave:
         raise RuntimeError("Defina ANTHROPIC_API_KEY (Secrets do GitHub).")
-    corpo = {"max_tokens": 10000, "system": sistema, "messages": mensagens, "tools": [ENTREGA]}
+    corpo = {"max_tokens": 16000, "system": sistema, "messages": mensagens, "tools": [ENTREGA]}
     if buscas:
         corpo["tools"] = [{"type": "web_search_20250305", "name": "web_search", "max_uses": buscas}, ENTREGA]
     if forcar_entrega:
@@ -144,6 +145,25 @@ def chamar(mensagens, sistema, buscas, forcar_entrega=False):
                 continue
             raise RuntimeError(f"Erro da Anthropic {ultimo}")
     raise RuntimeError(f"Nenhum modelo respondeu ({ultimo}).")
+
+
+def desembrulhar(d):
+    """A entrega às vezes vem com campos como texto JSON ou dentro de uma chave única ({"edicao": {...}})."""
+    if isinstance(d, str):
+        try:
+            d = json.loads(d)
+        except ValueError:
+            return None
+    if isinstance(d, dict) and "manchete" not in d and len(d) == 1 and isinstance(next(iter(d.values())), (dict, str)):
+        d = desembrulhar(next(iter(d.values())))
+    if isinstance(d, dict):
+        for k in ("manchete", "scanner", "fontes"):
+            if isinstance(d.get(k), str) and d[k].strip()[:1] in "[{":
+                try:
+                    d[k] = json.loads(d[k])
+                except ValueError:
+                    pass
+    return d
 
 
 class Redacao:
@@ -174,6 +194,10 @@ class Redacao:
             texto = "".join(b.get("text", "") for b in resp.get("content", []) if b.get("type") == "text")
             entrega = next((b.get("input") for b in resp.get("content", [])
                             if b.get("type") == "tool_use" and b.get("name") == "entregar_edicao"), None)
+            entrega = desembrulhar(entrega)
+            if not (isinstance(entrega, dict) and entrega.get("manchete")):
+                log(f"  aviso: entrega incompleta (stop_reason={resp.get('stop_reason')}, "
+                    f"campos={sorted(entrega) if isinstance(entrega, dict) else type(entrega).__name__}, texto={len(texto)} caracteres)")
             return (entrega if isinstance(entrega, dict) else None), texto
         raise RuntimeError("A IA não terminou o texto (pause_turn repetido).")
 
