@@ -97,28 +97,35 @@ BLOCO 2 — SCANNER DO DIA ("O que move o dia"):
 - semana: eventos, gatilhos de liquidez e julgamentos de maior peso nos próximos dias úteis desta semana (se hoje for sexta, sábado ou domingo, a próxima semana). De 3 a 6 itens.
 
 [FORMATO DA RESPOSTA]
-Depois de pesquisar, responda SOMENTE com um objeto JSON válido, sem texto antes ou depois, sem comentários:
-{{
-  "data_referencia": "{hoje.isoformat()}",
-  "manchete": {{"cartola": "...", "titulo": "...", "linha_fina": "...", "corpo": ["parágrafo 1", "parágrafo 2", "parágrafo 3"]}},
-  "scanner": {{
-    "pos_fechamento": [{{"titulo": "rótulo curto", "texto": "1 a 3 frases"}}],
-    "agenda": [{{"hora": "09h00", "evento": "...", "consenso": "... ou vazio"}}],
-    "semana": [{{"quando": "Quinta (15/10)", "texto": "..."}}]
-  }},
-  "fontes": [{{"titulo": "título da página", "url": "endereço exato devolvido pela busca"}}]
-}}
-Em "fontes", liste de 3 a 12 páginas que você efetivamente usou, com o endereço EXATO devolvido pela busca."""
+Depois de pesquisar, entregue a edição chamando a ferramenta "entregar_edicao" (uma única vez, com todos os campos). Não escreva a edição no texto.
+- data_referencia: {hoje.isoformat()}
+- agenda.hora: horário de Brasília no formato 09h00; evento sem horário definido: "Dia todo" ou "A definir".
+- fontes: de 3 a 12 páginas que você efetivamente usou, com o endereço EXATO devolvido pela busca."""
 
 
 # ---------------------------------------------------------------- Anthropic
-def chamar(mensagens, sistema, com_busca):
+_TXT = {"type": "string"}
+ENTREGA = {"name": "entregar_edicao", "description": "Entrega a edição final do dia (Manchete de capa + Scanner do dia) para publicação.",
+  "input_schema": {"type": "object", "required": ["data_referencia", "manchete", "scanner", "fontes"], "properties": {
+    "data_referencia": _TXT,
+    "manchete": {"type": "object", "required": ["cartola", "titulo", "linha_fina", "corpo"], "properties": {
+        "cartola": _TXT, "titulo": _TXT, "linha_fina": _TXT, "corpo": {"type": "array", "items": _TXT}}},
+    "scanner": {"type": "object", "required": ["pos_fechamento", "agenda", "semana"], "properties": {
+        "pos_fechamento": {"type": "array", "items": {"type": "object", "properties": {"titulo": _TXT, "texto": _TXT}, "required": ["texto"]}},
+        "agenda": {"type": "array", "items": {"type": "object", "properties": {"hora": _TXT, "evento": _TXT, "consenso": _TXT}, "required": ["hora", "evento"]}},
+        "semana": {"type": "array", "items": {"type": "object", "properties": {"quando": _TXT, "texto": _TXT}, "required": ["texto"]}}}},
+    "fontes": {"type": "array", "items": {"type": "object", "properties": {"titulo": _TXT, "url": _TXT}, "required": ["url"]}}}}}
+
+
+def chamar(mensagens, sistema, buscas, forcar_entrega=False):
     chave = os.environ.get("ANTHROPIC_API_KEY")
     if not chave:
         raise RuntimeError("Defina ANTHROPIC_API_KEY (Secrets do GitHub).")
-    corpo = {"max_tokens": 8000, "system": sistema, "messages": mensagens}
-    if com_busca:
-        corpo["tools"] = [{"type": "web_search_20250305", "name": "web_search", "max_uses": BUSCAS}]
+    corpo = {"max_tokens": 10000, "system": sistema, "messages": mensagens, "tools": [ENTREGA]}
+    if buscas:
+        corpo["tools"] = [{"type": "web_search_20250305", "name": "web_search", "max_uses": buscas}, ENTREGA]
+    if forcar_entrega:
+        corpo["tool_choice"] = {"type": "tool", "name": "entregar_edicao"}
     ultimo = None
     for modelo in [MODELO] + ([RESERVA] if RESERVA and RESERVA != MODELO else []):
         for tentativa in range(3):
@@ -145,9 +152,10 @@ class Redacao:
         self.modelo = None
         self.urls = {}        # url normalizada -> (url, título) devolvidos pela busca
 
-    def conversar(self, mensagens, sistema, com_busca=True):
+    def conversar(self, mensagens, sistema, buscas, forcar_entrega=False):
+        """Devolve (edição entregue pela ferramenta ou None, texto livre)."""
         for _ in range(6):                                   # pause_turn: a busca pode pausar o turno
-            resp, self.modelo = chamar(mensagens, sistema, com_busca)
+            resp, self.modelo = chamar(mensagens, sistema, buscas, forcar_entrega)
             uso = resp.get("usage") or {}
             self.ent += uso.get("input_tokens", 0) + uso.get("cache_read_input_tokens", 0)
             self.sai += uso.get("output_tokens", 0)
@@ -164,7 +172,9 @@ class Redacao:
                 mensagens = mensagens + [{"role": "assistant", "content": resp["content"]}]
                 continue
             texto = "".join(b.get("text", "") for b in resp.get("content", []) if b.get("type") == "text")
-            return texto, mensagens + [{"role": "assistant", "content": resp["content"]}]
+            entrega = next((b.get("input") for b in resp.get("content", [])
+                            if b.get("type") == "tool_use" and b.get("name") == "entregar_edicao"), None)
+            return (entrega if isinstance(entrega, dict) else None), texto
         raise RuntimeError("A IA não terminou o texto (pause_turn repetido).")
 
     def custo(self):
@@ -199,6 +209,14 @@ def txt(v):
     return re.sub(r"\s+", " ", str(v or "")).strip()
 
 
+def hora_norm(h):
+    """'10:30', 'às 9h', '14h30 (Brasília)' -> '10h30', '09h00', '14h30'; sem horário: o rótulo curto ('Dia todo')."""
+    m = re.search(r"(\d{1,2})\s*[h:]\s*(\d{2})?", h or "")
+    if m and int(m.group(1)) < 24:
+        return f"{int(m.group(1)):02d}h{m.group(2) or '00'}"
+    return txt(h)[:14] or "A definir"
+
+
 def limpar(d, red):
     """Normaliza o JSON e troca as fontes pela lista conferida (só endereços que a busca devolveu)."""
     m, s = d.get("manchete") or {}, d.get("scanner") or {}
@@ -209,8 +227,9 @@ def limpar(d, red):
         "scanner": {
             "pos_fechamento": [{"titulo": txt(x.get("titulo")), "texto": txt(x.get("texto"))}
                                for x in (s.get("pos_fechamento") or []) if isinstance(x, dict) and txt(x.get("texto"))],
-            "agenda": [{"hora": txt(x.get("hora")), "evento": txt(x.get("evento")), "consenso": txt(x.get("consenso"))}
-                       for x in (s.get("agenda") or []) if isinstance(x, dict) and txt(x.get("evento"))],
+            "agenda": sorted([{"hora": hora_norm(txt(x.get("hora"))), "evento": txt(x.get("evento")), "consenso": txt(x.get("consenso"))}
+                              for x in (s.get("agenda") or []) if isinstance(x, dict) and txt(x.get("evento"))],
+                             key=lambda x: (0, x["hora"]) if re.match(r"^\d{2}h\d{2}$", x["hora"]) else (1, "")),
             "semana": [{"quando": txt(x.get("quando")), "texto": txt(x.get("texto"))}
                        for x in (s.get("semana") or []) if isinstance(x, dict) and txt(x.get("texto"))]},
     }
@@ -240,8 +259,8 @@ def problemas(ed, fontes, data_ref, hoje):
         p.append("scanner.pos_fechamento precisa de ao menos 3 itens")
     if not s["agenda"]:
         p.append("scanner.agenda vazia")
-    elif any(not re.match(r"^\d{1,2}h\d{2}$|^\d{1,2}:\d{2}$|^\d{1,2}h$", x["hora"]) for x in s["agenda"]):
-        p.append("scanner.agenda: todo item precisa de horário de Brasília no formato 09h00")
+    elif not any(re.match(r"^\d{2}h\d{2}$", x["hora"]) for x in s["agenda"]):
+        p.append("scanner.agenda: nenhum item com horário de Brasília (formato 09h00)")
     if len(s["semana"]) < 3:
         p.append("scanner.semana precisa de ao menos 3 itens")
     tudo = sem_acento(json.dumps(ed, ensure_ascii=False))
@@ -282,26 +301,32 @@ def main():
         hoje = dt.date.fromisoformat(os.environ["VM_DATA"])
     log(f"Valor e Mercado — edição de {data_extenso(hoje)} — modelo {MODELO}, até {BUSCAS} buscas")
     red, sistema = Redacao(), instrucoes(hoje)
-    pedido = [{"role": "user", "content": f"Apure e escreva a edição de hoje ({data_extenso(hoje)}). Responda só com o JSON."}]
-    texto, conversa = red.conversar(pedido, sistema, com_busca=True)
+    pedido = [{"role": "user", "content": f"Apure e escreva a edição de hoje ({data_extenso(hoje)}) e entregue pela ferramenta entregar_edicao."}]
+    entrega, texto = red.conversar(pedido, sistema, BUSCAS)
     ed = fontes = None
     for rodada in range(2):
+        bruto = entrega
         try:
-            ed, fontes, data_ref = limpar(extrair_json(texto), red)
+            if bruto is None:
+                bruto = extrair_json(texto)                 # reserva: edição escrita no texto
+            ed, fontes, data_ref = limpar(bruto, red)
             erros = problemas(ed, fontes, data_ref, hoje)
-        except (ValueError, json.JSONDecodeError) as e:
-            erros = [f"JSON inválido: {e}"]
+        except (ValueError, json.JSONDecodeError, AttributeError) as e:
+            erros = [f"edição ilegível ({e}); entregue pela ferramenta entregar_edicao"]
         log(f"Conferência (rodada {rodada + 1}): " + ("OK" if not erros else "; ".join(erros)))
         if not erros:
             break
         if rodada == 1:
             log(f"Custo estimado: US$ {red.custo()} ({red.ent} tokens de entrada, {red.sai} de saída, {red.buscas} buscas)")
             raise SystemExit("Edição NÃO publicada: a conferência falhou duas vezes. A capa segue com a edição anterior.")
-        correcao = ("A resposta não passou na conferência automática. Corrija SÓ estes pontos e devolva o JSON completo, "
-                    "sem texto fora dele. Para fontes, use apenas endereços exatos que a busca devolveu"
-                    + (" (pode buscar de novo)" if any("fontes" in e or "agenda" in e for e in erros) else "")
-                    + ":\n- " + "\n- ".join(erros))
-        texto, conversa = red.conversar(conversa + [{"role": "user", "content": correcao}], sistema, com_busca=True)
+        # correção numa conversa nova e curta: só a edição + os pontos a corrigir (não reenvia as páginas da busca)
+        rascunho = json.dumps(bruto, ensure_ascii=False) if isinstance(bruto, dict) else (texto or "")[:30000]
+        precisa_buscar = any("fontes" in e for e in erros)
+        correcao = ("Esta é a edição de hoje que você escreveu:\n" + rascunho
+                    + "\n\nEla não passou na conferência automática. Corrija SÓ estes pontos, mantenha o resto igual e entregue a edição completa pela ferramenta entregar_edicao"
+                    + (" (pode fazer até 4 buscas para achar as fontes com o endereço exato)" if precisa_buscar else "") + ":\n- " + "\n- ".join(erros))
+        entrega, texto = red.conversar([{"role": "user", "content": correcao}], sistema,
+                                       4 if precisa_buscar else 0, forcar_entrega=not precisa_buscar)
     log(f"Manchete: [{ed['manchete']['cartola']}] {ed['manchete']['titulo']}")
     log(f"Scanner: {len(ed['scanner']['pos_fechamento'])} pós-fechamento, {len(ed['scanner']['agenda'])} na agenda, "
         f"{len(ed['scanner']['semana'])} na semana; {len(fontes)} fontes")
