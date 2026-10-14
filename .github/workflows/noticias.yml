@@ -1,0 +1,37 @@
+# SOLIDUNS — Notícias (manchetes): Agência Brasil, Federal Reserve e SEC -> public.noticias.
+# Todo dia às 5h, 5h30, 7h, 8h, 12h e 18h de Brasília (UTC-3). O GitHub pode atrasar alguns minutos.
+# Também à mão em: Actions -> "Notícias - manchetes" -> Run workflow.
+name: Notícias - manchetes
+
+on:
+  schedule:
+    - cron: "0 8 * * *"    # 05h00 BRT
+    - cron: "30 8 * * *"   # 05h30 BRT
+    - cron: "0 10 * * *"   # 07h00 BRT
+    - cron: "0 11 * * *"   # 08h00 BRT
+    - cron: "0 15 * * *"   # 12h00 BRT
+    - cron: "0 21 * * *"   # 18h00 BRT
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: noticias
+  cancel-in-progress: false
+
+jobs:
+  noticias:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r coletor/requirements.txt
+      - name: Manchetes e gravar no Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python -u coletor/coletar_noticias.py
