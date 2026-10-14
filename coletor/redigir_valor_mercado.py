@@ -93,7 +93,7 @@ BLOCO 1 — MANCHETE DE CAPA: o assunto mais relevante ou sensível que dita o h
 
 BLOCO 2 — SCANNER DO DIA ("O que move o dia"):
 - pos_fechamento: o que aconteceu após as 18h de ontem (horário de Brasília): decisões judiciais, resultados divulgados à noite, fatos relevantes, fechamento das bolsas asiáticas e primeiras horas na Europa. De 3 a 6 itens.
-- agenda: indicadores, decisões de bancos centrais, discursos de diretores do Fed/BC, votações, leilões do Tesouro e eventos políticos/jurídicos de hoje, cada um com horário de Brasília e consenso de mercado quando houver. Em ordem de horário.
+- agenda: indicadores, decisões de bancos centrais, discursos de diretores do Fed/BC, votações, leilões do Tesouro e eventos políticos/jurídicos de hoje, cada um com horário de Brasília e consenso de mercado quando houver (sem consenso: deixe o campo vazio). Em ordem de horário.
 - semana: eventos, gatilhos de liquidez e julgamentos de maior peso SÓ nos próximos dias úteis desta semana, de amanhã até sexta-feira (se hoje for sexta, sábado ou domingo, a próxima semana, de segunda a sexta). Nada de datas fora dessa janela nem de eventos de hoje. De 3 a 6 itens, com o dia em "quando" (ex.: "Quinta (15/10)").
 
 [FORMATO DA RESPOSTA]
@@ -233,6 +233,14 @@ def txt(v):
     return re.sub(r"\s+", " ", str(v or "")).strip()
 
 
+def consenso_norm(c):
+    """'Sem consenso nas fontes consultadas', 'N/D', '—' -> vazio (a página só mostra 'Consenso:' quando há número)."""
+    c = txt(c).strip(" ;.")
+    if not c or c in ("-", "—", "–") or re.match(r"^(sem consenso|n/?d|n/?a|nao ha|não há|indisponivel|indisponível)\b", c.lower()):
+        return ""
+    return c
+
+
 def hora_norm(h):
     """'10:30', 'às 9h', '14h30 (Brasília)' -> '10h30', '09h00', '14h30'; sem horário: o rótulo curto ('Dia todo')."""
     m = re.search(r"(\d{1,2})\s*[h:]\s*(\d{2})?", h or "")
@@ -251,7 +259,7 @@ def limpar(d, red):
         "scanner": {
             "pos_fechamento": [{"titulo": txt(x.get("titulo")), "texto": txt(x.get("texto"))}
                                for x in (s.get("pos_fechamento") or []) if isinstance(x, dict) and txt(x.get("texto"))],
-            "agenda": sorted([{"hora": hora_norm(txt(x.get("hora"))), "evento": txt(x.get("evento")), "consenso": txt(x.get("consenso"))}
+            "agenda": sorted([{"hora": hora_norm(txt(x.get("hora"))), "evento": txt(x.get("evento")), "consenso": consenso_norm(x.get("consenso"))}
                               for x in (s.get("agenda") or []) if isinstance(x, dict) and txt(x.get("evento"))],
                              key=lambda x: (0, x["hora"]) if re.match(r"^\d{2}h\d{2}$", x["hora"]) else (1, "")),
             "semana": [{"quando": txt(x.get("quando")), "texto": txt(x.get("texto"))}
