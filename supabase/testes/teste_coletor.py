@@ -34,7 +34,10 @@ class H(BaseHTTPRequestHandler):
         if p.startswith("/SerHist/COTAHIST_D14102026.ZIP"): return self.resp(200, ZIP, "application/zip")
         if p.startswith("/SerHist/"): return self.resp(404, b"nao")
         if p.startswith("/sgs/bcdata.sgs."):
-            n = int(p.split("bcdata.sgs.")[1].split("/")[0]); return self.resp(200, json.dumps(SGS[n]).encode())
+            n = int(p.split("bcdata.sgs.")[1].split("/")[0])
+            if n == 4389 and not any("ERRO_CDI" in x for x in pedidos):    # 1ª vez: página de erro (como o BCB fez em 14/10)
+                pedidos.append("ERRO_CDI"); return self.resp(200, b"<html>erro</html>", "text/html")
+            return self.resp(200, json.dumps(SGS[n]).encode())
         if p.startswith("/olinda/"):
             m = "USD" if "%27USD%27" in p else "EUR"; return self.resp(200, json.dumps({"value": PTAX[m]}).encode())
         if p.startswith("/rest/v1/cotacoes?select=data_ref"): return self.resp(200, b'[{"data_ref":"2026-10-13"}]')
@@ -43,7 +46,10 @@ class H(BaseHTTPRequestHandler):
         corpo = self.rfile.read(int(self.headers["Content-Length"]))
         if self.path.startswith("/rest/v1/cotacoes?on_conflict=fonte,codigo,data_ref"):
             assert self.headers.get("apikey") == "sb_secret_TESTE" and "merge-duplicates" in self.headers.get("Prefer")
-            gravado.extend(json.loads(corpo)); return self.resp(201, b"")
+            lote = json.loads(corpo)
+            if len({tuple(sorted(o)) for o in lote}) > 1:              # regra real do PostgREST (PGRST102)
+                return self.resp(400, b'{"code":"PGRST102","message":"All object keys must match"}')
+            gravado.extend(lote); return self.resp(201, b"")
         self.resp(404, b"?")
 srv = HTTPServer(("127.0.0.1", 0), H); threading.Thread(target=srv.serve_forever, daemon=True).start()
 base = f"http://127.0.0.1:{srv.server_port}"
@@ -87,7 +93,8 @@ try:
     ok(any("/SerHist/COTAHIST_D14102026.ZIP" in p for p in pedidos) and not any("13102026" in p for p in pedidos), "só baixa pregões que faltam (último gravado 13/10)")
     usd = [g for g in gravado if g["codigo"] == "USD"]
     ok(sorted((g["data_ref"], g["fechamento"]) for g in usd) == [("2026-10-13", 5.0096), ("2026-10-14", 5.0402)], "PTAX: só boletim de FECHAMENTO (abertura descartada)")
-    ok({g["codigo"] for g in gravado if g["fonte"] == "BCB SGS"} == {"SELIC", "CDI", "IPCA"}, "SGS: Selic, CDI e IPCA")
+    ok({g["codigo"] for g in gravado if g["fonte"] == "BCB SGS"} == {"SELIC", "CDI", "IPCA"}, "SGS: Selic, CDI e IPCA (CDI recuperado após resposta ilegível)")
+    ok(len({tuple(sorted(g)) for g in gravado}) == 1, "todas as linhas com o mesmo conjunto de campos (PGRST102)")
     ok(next(g for g in gravado if g["codigo"] == "IPCA")["data_ref"] == "2026-09-01", "IPCA na data do mês (dd/mm/aaaa -> aaaa-mm-dd)")
     ok(all(g["unidade"] for g in gravado), "unidade em todos os registros")
     n = len(gravado); st, j = chamar({"so_teste": True})

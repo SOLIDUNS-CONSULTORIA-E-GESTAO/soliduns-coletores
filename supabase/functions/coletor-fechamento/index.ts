@@ -1,4 +1,7 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "coletor-fechamento" — v1.0 (14/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "coletor-fechamento" — v1.1 (14/10/2026)
+//
+// v1.1: todas as linhas vão ao banco com o MESMO conjunto de campos (o PostgREST recusa lote misto: PGRST102)
+//       e a série do SGS que vier ilegível é baixada de novo (até 3 tentativas).
 //
 // ETAPA 2 do plano de fontes: indicadores de FECHAMENTO para o quadro do jornal.
 //   - B3 COTAHIST (arquivo público diário, posição fixa de 245 bytes): mercado à vista (TPMERC 010),
@@ -18,7 +21,7 @@
 
 import { unzipSync } from "npm:fflate@0.8.2";
 
-const VERSAO = "1.0";
+const VERSAO = "1.1";
 const B3_BASE = Deno.env.get("VM_B3_BASE") ?? "https://bvmf.bmfbovespa.com.br/InstDados/SerHist";      // troca só em teste
 const SGS_BASE = Deno.env.get("VM_SGS_BASE") ?? "https://api.bcb.gov.br/dados/serie";                   // troca só em teste
 const OLINDA_BASE = Deno.env.get("VM_OLINDA_BASE") ?? "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata"; // idem
@@ -121,10 +124,15 @@ async function coletarSGS(coletado: string): Promise<{ linhas: Linha[]; nota: st
   const linhas: Linha[] = [], nota: string[] = [];
   for (const s of SGS) {
     const url = `${SGS_BASE}/bcdata.sgs.${s.serie}/dados/ultimos/10?formato=json`;
-    const r = await baixar(url);
-    if (!r || !r.ok) { nota.push(`${s.codigo}: sem resposta (${r?.status ?? "rede"})`); continue; }
-    let dados: { data: string; valor: string }[] = [];
-    try { dados = await r.json(); } catch (_) { nota.push(`${s.codigo}: resposta ilegível`); continue; }
+    let dados: { data: string; valor: string }[] | null = null, ultimo = "rede";
+    for (let t = 0; t < 3 && dados === null; t++) {              // v1.1: o SGS às vezes devolve página de erro
+      if (t) await new Promise((ok) => setTimeout(ok, 4000 * t));
+      const r = await baixar(url);
+      if (!r || !r.ok) { ultimo = String(r?.status ?? "rede"); continue; }
+      try { const j = await r.json(); if (Array.isArray(j)) dados = j; else ultimo = "resposta ilegível"; }
+      catch (_) { ultimo = "resposta ilegível"; }
+    }
+    if (dados === null) { nota.push(`${s.codigo}: ${ultimo} (3 tentativas)`); continue; }
     let n = 0;
     for (const x of dados) {
       const v = parseFloat(String(x.valor).replace(",", "."));
@@ -177,11 +185,20 @@ async function ultimoPregaoGravado(): Promise<string | null> {
   return j[0]?.data_ref ?? null;
 }
 
+const CAMPOS = ["fonte", "url_fonte", "codigo", "descricao", "data_ref", "abertura", "maxima", "minima", "fechamento",
+  "volume", "negocios", "codbdi", "unidade", "coletado_em"] as const;
+export function uniformizar(linhas: Linha[]): Record<string, unknown>[] {   // v1.1: mesmo conjunto de campos em todas
+  return linhas.map((l) => Object.fromEntries(CAMPOS.map((k) => [k, (l as Record<string, unknown>)[k] ?? null])));
+}
+
 async function gravar(linhas: Linha[]): Promise<number> {
   const url = `${Deno.env.get("SUPABASE_URL")}/rest/v1/cotacoes?on_conflict=fonte,codigo,data_ref`;
+  const unicas = new Map<string, Linha>();
+  for (const l of linhas) unicas.set(`${l.fonte}|${l.codigo}|${l.data_ref}`, l);   // sem repetição no mesmo lote
+  linhas = [...unicas.values()];
   let n = 0;
   for (let i = 0; i < linhas.length; i += 1000) {
-    const lote = linhas.slice(i, i + 1000);
+    const lote = uniformizar(linhas.slice(i, i + 1000));
     const r = await fetch(url, { method: "POST", body: JSON.stringify(lote),
       headers: { ...cabecalhos(), Prefer: "resolution=merge-duplicates,return=minimal" } });
     if (!r.ok) throw new Error(`gravação falhou (${r.status}): ${(await r.text()).slice(0, 200)}`);
