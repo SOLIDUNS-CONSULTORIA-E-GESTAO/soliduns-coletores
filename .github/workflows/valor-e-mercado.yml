@@ -1,0 +1,40 @@
+# SOLIDUNS — Jornal "Valor e Mercado": edição diária (Manchete de capa + Scanner do dia) escrita por IA
+# com busca na web e PUBLICADA AUTOMATICAMENTE em public.vm_edicoes (SQL 133) -> página pública #/noticias.
+# Todo dia às 06h30 de Brasília (UTC-3). O GitHub pode atrasar alguns minutos.
+# Também à mão em: Actions -> "Valor e Mercado - edição do dia" -> Run workflow.
+name: Valor e Mercado - edição do dia
+
+on:
+  schedule:
+    - cron: "30 9 * * *"   # 06h30 BRT
+  workflow_dispatch:
+    inputs:
+      so_teste:
+        description: "1 = escreve e confere, mas NÃO publica"
+        required: false
+        default: "0"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: valor-e-mercado
+  cancel-in-progress: false
+
+jobs:
+  edicao:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Escrever, conferir e publicar a edição
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          VM_SO_TESTE: ${{ github.event.inputs.so_teste || '0' }}
+        run: python -u coletor/redigir_valor_mercado.py
