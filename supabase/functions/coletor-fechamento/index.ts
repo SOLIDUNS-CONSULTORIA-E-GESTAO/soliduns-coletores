@@ -1,4 +1,6 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "coletor-fechamento" — v1.1 (14/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "coletor-fechamento" — v1.2 (14/10/2026)
+//
+// v1.2: nada com data futura — a meta Selic do SGS (série 432) vem preenchida até a próxima reunião do Copom.
 //
 // v1.1: todas as linhas vão ao banco com o MESMO conjunto de campos (o PostgREST recusa lote misto: PGRST102)
 //       e a série do SGS que vier ilegível é baixada de novo (até 3 tentativas).
@@ -21,7 +23,7 @@
 
 import { unzipSync } from "npm:fflate@0.8.2";
 
-const VERSAO = "1.1";
+const VERSAO = "1.2";
 const B3_BASE = Deno.env.get("VM_B3_BASE") ?? "https://bvmf.bmfbovespa.com.br/InstDados/SerHist";      // troca só em teste
 const SGS_BASE = Deno.env.get("VM_SGS_BASE") ?? "https://api.bcb.gov.br/dados/serie";                   // troca só em teste
 const OLINDA_BASE = Deno.env.get("VM_OLINDA_BASE") ?? "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata"; // idem
@@ -120,7 +122,7 @@ async function coletarB3(datas: string[], coletado: string): Promise<{ linhas: L
 // ------------------------------------------------------------------ Banco Central
 const brParaIso = (s: string) => `${s.slice(6, 10)}-${s.slice(3, 5)}-${s.slice(0, 2)}`;
 
-async function coletarSGS(coletado: string): Promise<{ linhas: Linha[]; nota: string[] }> {
+async function coletarSGS(coletado: string, hoje: Date): Promise<{ linhas: Linha[]; nota: string[] }> {
   const linhas: Linha[] = [], nota: string[] = [];
   for (const s of SGS) {
     const url = `${SGS_BASE}/bcdata.sgs.${s.serie}/dados/ultimos/10?formato=json`;
@@ -137,6 +139,7 @@ async function coletarSGS(coletado: string): Promise<{ linhas: Linha[]; nota: st
     for (const x of dados) {
       const v = parseFloat(String(x.valor).replace(",", "."));
       if (!/^\d{2}\/\d{2}\/\d{4}$/.test(x.data) || !Number.isFinite(v)) continue;
+      if (brParaIso(x.data) > iso(hoje)) continue;          // v1.2: só até hoje (a meta Selic vem com dias futuros)
       linhas.push({ fonte: "BCB SGS", url_fonte: url, codigo: s.codigo, descricao: s.descricao, data_ref: brParaIso(x.data),
         fechamento: v, unidade: s.unidade, coletado_em: coletado });
       n++;
@@ -159,7 +162,8 @@ async function coletarPTAX(hoje: Date, coletado: string): Promise<{ linhas: Linh
     try { j = await r.json(); } catch (_) { nota.push(`${m.codigo}: resposta ilegível`); continue; }
     let n = 0;
     for (const x of j.value ?? []) {
-      if (x.tipoBoletim !== "Fechamento" || !(x.cotacaoVenda > 0)) continue;   // só o boletim de FECHAMENTO
+      if (x.tipoBoletim !== "Fechamento" || !(x.cotacaoVenda > 0)) continue;
+      if (String(x.dataHoraCotacao).slice(0, 10) > iso(hoje)) continue;   // só o boletim de FECHAMENTO
       linhas.push({ fonte: "BCB Olinda", url_fonte: url, codigo: m.codigo, descricao: m.descricao,
         data_ref: String(x.dataHoraCotacao).slice(0, 10), fechamento: x.cotacaoVenda, unidade: m.unidade, coletado_em: coletado });
       n++;
@@ -233,7 +237,7 @@ export async function tratar(req: Request): Promise<Response> {
     const datas = corpo.data && /^\d{4}-\d{2}-\d{2}$/.test(corpo.data) ? [corpo.data]
       : pregoesPendentes(hoje, corpo.so_teste ? null : await ultimoPregaoGravado());
     const b3 = await coletarB3(datas, coletado);
-    const sgs = await coletarSGS(coletado);
+    const sgs = await coletarSGS(coletado, hoje);
     const ptax = await coletarPTAX(hoje, coletado);
     todas.push(...b3.linhas, ...sgs.linhas, ...ptax.linhas);
     Object.assign(resumo, { b3: b3.nota, sgs: sgs.nota, ptax: ptax.nota, linhas: todas.length });

@@ -18,7 +18,7 @@ LINHAS = [reg("02", "PETR4", 38.45), reg("14", "BOVA11", 204.12, nome="ISHARES B
 arq = "00COTAHIST.2026BOVESPA 20261014".ljust(245) + "\n" + "\n".join(LINHAS) + "\n" + "99COTAHIST.2026".ljust(245) + "\n"
 zb = io.BytesIO(); zf = zipfile.ZipFile(zb, "w"); zf.writestr("COTAHIST_D14102026.TXT", arq.encode("latin1")); zf.close()
 ZIP = zb.getvalue()
-SGS = {432: [{"data": "13/10/2026", "valor": "15.00"}, {"data": "14/10/2026", "valor": "15.00"}],
+SGS = {432: [{"data": "13/10/2026", "valor": "15.00"}, {"data": "14/10/2026", "valor": "15.00"}, {"data": "04/11/2099", "valor": "15.00"}],
        4389: [{"data": "14/10/2026", "valor": "14.90"}], 433: [{"data": "01/09/2026", "valor": "0.48"}]}
 PTAX = {"USD": [{"cotacaoCompra": 5.0, "cotacaoVenda": 5.0096, "dataHoraCotacao": "2026-10-13 13:09:00.0", "tipoBoletim": "Fechamento"},
                 {"cotacaoCompra": 5.03, "cotacaoVenda": 5.0310, "dataHoraCotacao": "2026-10-14 10:04:00.0", "tipoBoletim": "Abertura"},
@@ -97,6 +97,7 @@ try:
     ok(len({tuple(sorted(g)) for g in gravado}) == 1, "todas as linhas com o mesmo conjunto de campos (PGRST102)")
     ok(next(g for g in gravado if g["codigo"] == "IPCA")["data_ref"] == "2026-09-01", "IPCA na data do mês (dd/mm/aaaa -> aaaa-mm-dd)")
     ok(all(g["unidade"] for g in gravado), "unidade em todos os registros")
+    ok(max(g["data_ref"] for g in gravado) <= __import__("datetime").date.today().isoformat(), "nada com data futura (meta Selic vem até o próximo Copom)")
     n = len(gravado); st, j = chamar({"so_teste": True})
     ok(st == 200 and len(gravado) == n and j.get("amostra"), "so_teste: confere e não grava")
     st, j = chamar({"data": "2026-10-12"}); ok("2026-10-12: arquivo ainda não publicado" in j.get("b3", []), "pregão sem arquivo: avisa e segue (" + str(j.get("b3")) + ")")
