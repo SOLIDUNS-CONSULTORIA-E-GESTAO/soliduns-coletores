@@ -35,6 +35,7 @@ class H(BaseHTTPRequestHandler):
         if p.startswith("/SerHist/"): return self.resp(404, b"nao")
         if p.startswith("/sgs/bcdata.sgs."):
             n = int(p.split("bcdata.sgs.")[1].split("/")[0])
+            assert "/dados?formato=json&dataInicial=" in p and "&dataFinal=" in p, p      # v1.3: por intervalo de datas
             if n == 4389 and not any("ERRO_CDI" in x for x in pedidos):    # 1ª vez: página de erro (como o BCB fez em 14/10)
                 pedidos.append("ERRO_CDI"); return self.resp(200, b"<html>erro</html>", "text/html")
             return self.resp(200, json.dumps(SGS[n]).encode())
@@ -98,6 +99,8 @@ try:
     ok(next(g for g in gravado if g["codigo"] == "IPCA")["data_ref"] == "2026-09-01", "IPCA na data do mês (dd/mm/aaaa -> aaaa-mm-dd)")
     ok(all(g["unidade"] for g in gravado), "unidade em todos os registros")
     ok(max(g["data_ref"] for g in gravado) <= __import__("datetime").date.today().isoformat(), "nada com data futura (meta Selic vem até o próximo Copom)")
+    sgs_urls = [p for p in pedidos if p.startswith("/sgs/")]
+    ok(any("bcdata.sgs.433/dados?formato=json&dataInicial=" in p for p in sgs_urls) and not any("ultimos" in p for p in sgs_urls), "SGS pedido por intervalo de datas até hoje")
     n = len(gravado); st, j = chamar({"so_teste": True})
     ok(st == 200 and len(gravado) == n and j.get("amostra"), "so_teste: confere e não grava")
     st, j = chamar({"data": "2026-10-12"}); ok("2026-10-12: arquivo ainda não publicado" in j.get("b3", []), "pregão sem arquivo: avisa e segue (" + str(j.get("b3")) + ")")

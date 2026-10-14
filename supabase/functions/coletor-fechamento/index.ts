@@ -1,4 +1,6 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "coletor-fechamento" — v1.2 (14/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "coletor-fechamento" — v1.3 (14/10/2026)
+//
+// v1.3: o SGS é pedido por INTERVALO DE DATAS até hoje (antes: "últimos 10", que na meta Selic eram todos futuros).
 //
 // v1.2: nada com data futura — a meta Selic do SGS (série 432) vem preenchida até a próxima reunião do Copom.
 //
@@ -23,15 +25,15 @@
 
 import { unzipSync } from "npm:fflate@0.8.2";
 
-const VERSAO = "1.2";
+const VERSAO = "1.3";
 const B3_BASE = Deno.env.get("VM_B3_BASE") ?? "https://bvmf.bmfbovespa.com.br/InstDados/SerHist";      // troca só em teste
 const SGS_BASE = Deno.env.get("VM_SGS_BASE") ?? "https://api.bcb.gov.br/dados/serie";                   // troca só em teste
 const OLINDA_BASE = Deno.env.get("VM_OLINDA_BASE") ?? "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata"; // idem
 const CODBDI_OK = new Set(["02", "12", "14"]);
 const SGS = [
-  { codigo: "SELIC", serie: 432, descricao: "Meta da taxa Selic (Copom)", unidade: "% a.a." },
-  { codigo: "CDI", serie: 4389, descricao: "CDI anualizado (base 252)", unidade: "% a.a." },
-  { codigo: "IPCA", serie: 433, descricao: "IPCA, variação mensal (IBGE)", unidade: "% no mês" },
+  { codigo: "SELIC", serie: 432, descricao: "Meta da taxa Selic (Copom)", unidade: "% a.a.", dias: 15 },
+  { codigo: "CDI", serie: 4389, descricao: "CDI anualizado (base 252)", unidade: "% a.a.", dias: 15 },
+  { codigo: "IPCA", serie: 433, descricao: "IPCA, variação mensal (IBGE)", unidade: "% no mês", dias: 400 },
 ];
 const MOEDAS = [
   { codigo: "USD", descricao: "Dólar PTAX venda, boletim de fechamento", unidade: "R$ por US$" },
@@ -125,7 +127,8 @@ const brParaIso = (s: string) => `${s.slice(6, 10)}-${s.slice(3, 5)}-${s.slice(0
 async function coletarSGS(coletado: string, hoje: Date): Promise<{ linhas: Linha[]; nota: string[] }> {
   const linhas: Linha[] = [], nota: string[] = [];
   for (const s of SGS) {
-    const url = `${SGS_BASE}/bcdata.sgs.${s.serie}/dados/ultimos/10?formato=json`;
+    const dmy = (d: Date) => `${iso(d).slice(8, 10)}/${iso(d).slice(5, 7)}/${iso(d).slice(0, 4)}`;
+    const url = `${SGS_BASE}/bcdata.sgs.${s.serie}/dados?formato=json&dataInicial=${dmy(somaDias(hoje, -s.dias))}&dataFinal=${dmy(hoje)}`;
     let dados: { data: string; valor: string }[] | null = null, ultimo = "rede";
     for (let t = 0; t < 3 && dados === null; t++) {              // v1.1: o SGS às vezes devolve página de erro
       if (t) await new Promise((ok) => setTimeout(ok, 4000 * t));
