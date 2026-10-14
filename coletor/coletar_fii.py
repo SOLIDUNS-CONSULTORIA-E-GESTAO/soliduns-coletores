@@ -1,5 +1,8 @@
 """
-SOLIDUNS — Coletor de FUNDOS IMOBILIÁRIOS (FIIs) — v1.4 (05/10/2026)
+SOLIDUNS — Coletor de FUNDOS IMOBILIÁRIOS (FIIs) — v1.5 (14/10/2026)
+
+v1.5: a data do fechamento dos fundos e do BOVA11 (IBOV) pula feriados da
+B3 — antes só pulava fim de semana, e a coleta de 13/10/2026 gravou 12/10.
 
 v1.4 (ficha do FII, SQL 49): os informes mensais que já são lidos (dois
 anos) passam a ser guardados mês a mês em public.fundos_fii_hist (DY do
@@ -201,9 +204,34 @@ def ultimos_precos(fonte):
     return precos, str(linha.get("capturado_em") or "")[:10] or None
 
 
+def _pascoa(a):
+    b, c, d = a % 19, a // 100, a % 100
+    e, f, g = c // 4, c % 4, (8 * c + 13) // 25
+    h = (19 * b + c - e - g + 15) % 30
+    i, k = d // 4, d % 4
+    l = (32 + 2 * f + 2 * i - h - k) % 7
+    m = (b + 11 * h + 19 * l) // 433
+    n = (h + l - 7 * m + 90) // 25
+    return dt.date(a, n, (h + l - 7 * m + 33 * n + 19) % 32)
+
+
+def sem_pregao(d):
+    """v1.5: B3 fechada — fim de semana, feriado nacional, Carnaval, Sexta-feira Santa, Corpus Christi, 24/12 e 31/12."""
+    if d.weekday() >= 5:
+        return True
+    a, p = d.year, _pascoa(d.year)
+    fs = {dt.date(a, 1, 1), dt.date(a, 4, 21), dt.date(a, 5, 1), dt.date(a, 9, 7), dt.date(a, 10, 12),
+          dt.date(a, 11, 2), dt.date(a, 11, 15), dt.date(a, 12, 24), dt.date(a, 12, 25), dt.date(a, 12, 31),
+          p - dt.timedelta(48), p - dt.timedelta(47), p - dt.timedelta(2), p + dt.timedelta(60)}
+    if a >= 2024:
+        fs.add(dt.date(a, 11, 20))       # Consciência Negra (feriado nacional desde 2024)
+    return d in fs
+
+
 def ultimo_pregao(hoje):
+    """Último pregão ANTES de hoje (v1.5: pula feriados — antes, 13/10/2026 virava 12/10, feriado)."""
     d = hoje - dt.timedelta(days=1)
-    while d.weekday() >= 5:
+    while sem_pregao(d):
         d -= dt.timedelta(days=1)
     return d.isoformat()
 
