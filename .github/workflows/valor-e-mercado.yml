@@ -15,7 +15,7 @@ on:
         default: "0"
 
 permissions:
-  contents: read
+  contents: write   # só para gravar o registro no ramo recon-vm
 
 concurrency:
   group: valor-e-mercado
@@ -37,4 +37,14 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           VM_SO_TESTE: ${{ github.event.inputs.so_teste || '0' }}
-        run: python -u coletor/redigir_valor_mercado.py
+        run: |
+          mkdir -p vm-log
+          set -o pipefail
+          python -u coletor/redigir_valor_mercado.py 2>&1 | tee vm-log/registro.txt
+      - name: Registro no ramo recon-vm (para conferência)
+        if: always()
+        run: |
+          git config user.name "soliduns-recon"; git config user.email "recon@soliduns.com.br"
+          git checkout --orphan recon-vm-tmp
+          git rm -rq --cached . ; git add -f vm-log/
+          git commit -qm "valor e mercado $(date -u +%F' '%H:%M)" && git push -f origin recon-vm-tmp:recon-vm
