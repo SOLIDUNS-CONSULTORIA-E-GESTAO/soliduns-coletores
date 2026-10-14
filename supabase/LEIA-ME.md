@@ -20,3 +20,16 @@ Instalação (painel do Supabase, sem linha de comando):
 6. SQL Editor: rodar `migrations/137_cotacoes_fechamento.sql`.
 
 Testes locais (sem rede externa): `python3 testes/teste_coletor.py` e `deno run --allow-env --allow-net testes/t_calendario.ts`.
+
+## Etapa 3 — radar de fontes e "Scanner do Dia" com aprovação humana (migration 138)
+
+- `radar-fontes`: lê só as fontes ATIVAS e CONFERIDAS À MÃO (`verificada_em` + `url_coleta` de um feed) de `fontes_noticia`;
+  camada livre guarda o resumo do próprio feed, pauta só título e link, licenciada não roda. Grava em `vm_achados`.
+- `scanner-do-dia`: contexto = `cotacoes` + `vm_achados`; Anthropic (VM_MODELO, padrão Sonnet) SEM busca na web, com o
+  prompt de sistema v1.0 EXATO (sha256 conferido); verificação automática; grava RASCUNHO em `vm_materias`. Nunca publica.
+- Publicação só por administrador pela tela "Redação" do site (RPC `vm_materia_aprovar`), que grava nome, data e hora e o texto aprovado.
+
+Variáveis: `COLETOR_TOKEN` (já existe), `ANTHROPIC_API_KEY` (nova, nos segredos das Edge Functions), `VM_MODELO` (opcional).
+Vault: `vm_radar_url`, `vm_scanner_url` (e o `vm_coletor_token` que já existe).
+Agenda: radar a cada 30 min das 6h às 20h30 (Brasília); Scanner às 6h45, dias úteis.
+Testes: `python3 testes/teste_etapa3.py` (sobe as funções com `testes/lancar.ts`) e `deno run --allow-all testes/t_numeros.ts`.
