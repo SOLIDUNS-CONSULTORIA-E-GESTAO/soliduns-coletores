@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.1 (14/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.2 (15/10/2026)
 //
 // v1.1 (decisões do Thiago, 14/10 15h43): PUBLICA AUTOMATICAMENTE, sem revisão (a verificação fica só como registro;
 //       VM_REVISAO_HUMANA=1 volta a gravar como rascunho) e usa a agenda do dia (public.vm_agenda) no contexto.
@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.1";
+const VERSAO = "1.2";
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.0";
 const PROMPT_SHA256 = "c400ce9e9788afb6d8febbead081e47abe908d21e6f56d2fb8a564065ffffcd0";
@@ -139,19 +139,33 @@ export function pedido(hoje: Date, ctx: Contexto, anterior?: unknown, instrucao?
 }
 
 // ------------------------------------------------------------------ Anthropic
-async function chamar(mensagens: unknown[]): Promise<{ texto: string; modelo: string; ent: number; sai: number }> {
+// v1.2: a edição é entregue por uma ferramenta obrigatória (entregar_edicao), com os mesmos campos que o prompt pede.
+const TXT = { type: "string" };
+const ENTREGA = {
+  name: "entregar_edicao",
+  description: "Entrega o objeto JSON pedido: chapeu, titulo, linha_fina, paragrafos, editoria_sugerida, tags e referencias.",
+  input_schema: { type: "object", required: ["chapeu", "titulo", "linha_fina", "paragrafos", "referencias"],
+    properties: { chapeu: TXT, titulo: TXT, linha_fina: TXT, paragrafos: { type: "array", items: TXT }, editoria_sugerida: TXT,
+      tags: { type: "array", items: TXT },
+      referencias: { type: "array", items: { type: "object", required: ["numero", "identificador"], properties: { numero: TXT, identificador: TXT } } } } },
+};
+async function chamar(mensagens: unknown[]): Promise<{ texto: string; modelo: string; ent: number; sai: number; diag: string }> {
   const chave = Deno.env.get("ANTHROPIC_API_KEY");
   if (!chave) throw new Error("Defina ANTHROPIC_API_KEY nos segredos das Edge Functions.");
   let ultimo = "";
   for (const modelo of [MODELO, RESERVA].filter((m, i, a) => a.indexOf(m) === i)) {
     for (let t = 0; t < 3; t++) {
       const r = await fetch(ANTHROPIC_URL, { method: "POST", headers: { "x-api-key": chave, "anthropic-version": "2023-06-01", "content-type": "application/json" },
-        body: JSON.stringify({ model: modelo, max_tokens: 4000, system: SISTEMA, messages: mensagens }) });
+        body: JSON.stringify({ model: modelo, max_tokens: 8000, system: SISTEMA, messages: mensagens,
+          tools: [ENTREGA], tool_choice: { type: "tool", name: "entregar_edicao" } }) });
       const corpo = await r.text();
       if (r.ok) {
         const j = JSON.parse(corpo);
-        const texto = (j.content ?? []).filter((b: { type: string }) => b.type === "text").map((b: { text: string }) => b.text).join("");
-        return { texto, modelo, ent: j.usage?.input_tokens ?? 0, sai: j.usage?.output_tokens ?? 0 };
+        const blocos = (j.content ?? []) as { type: string; name?: string; input?: unknown; text?: string }[];
+        const ferramenta = blocos.find((b) => b.type === "tool_use" && b.name === "entregar_edicao");
+        const texto = ferramenta ? JSON.stringify(ferramenta.input ?? {}) : blocos.filter((b) => b.type === "text").map((b) => b.text ?? "").join("");
+        const diag = `stop_reason=${j.stop_reason}; blocos=${blocos.map((b) => b.type).join(",") || "nenhum"}; início="${texto.slice(0, 120)}"`;
+        return { texto, modelo, ent: j.usage?.input_tokens ?? 0, sai: j.usage?.output_tokens ?? 0, diag };
       }
       ultimo = `${r.status}: ${corpo.slice(0, 200)}`;
       if ((r.status === 400 || r.status === 404) && corpo.toLowerCase().includes("model")) break;      // tenta o modelo reserva
@@ -250,9 +264,11 @@ export async function tratar(req: Request): Promise<Response> {
     const msgs: { role: string; content: string }[] = [{ role: "user", content: pedido(hoje, ctx, anterior, corpo.instrucao) }];
     let r = await chamar(msgs), ent = r.ent, sai = r.sai, gerado: Record<string, unknown>;
     try { gerado = extrairJson(r.texto); } catch (_) {
-      msgs.push({ role: "assistant", content: r.texto || "(vazio)" }, { role: "user", content: "A resposta não é um objeto JSON válido. Responda apenas com o objeto JSON pedido, sem texto antes ou depois." });
-      r = await chamar(msgs); ent += r.ent; sai += r.sai;
-      gerado = extrairJson(r.texto);
+      const d1 = r.diag;
+      r = await chamar(msgs); ent += r.ent; sai += r.sai;                 // segunda tentativa, do zero
+      try { gerado = extrairJson(r.texto); } catch (e2) {
+        throw new Error(`resposta sem JSON (1ª: ${d1} | 2ª: ${r.diag}) ${String((e2 as Error).message ?? e2).slice(0, 80)}`);
+      }
     }
     const verificacoes = verificar(gerado, ctx, hoje);
     const ok = verificacoes.every((c) => c.ok || !c.bloqueia);

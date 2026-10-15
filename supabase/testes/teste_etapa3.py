@@ -48,7 +48,10 @@ def resposta_ia():
              "referencias": [{"numero": "5,10", "identificador": "cot:902"}, {"numero": "1", "identificador": "cot:999"}]}
     t = json.dumps(g, ensure_ascii=False)
     if MODO["resposta"] == "cerca": t = "```json\n" + t + "\n```"
-    return {"content": [{"type": "text", "text": t}], "usage": {"input_tokens": 9000, "output_tokens": 900}, "stop_reason": "end_turn"}
+    if MODO["resposta"] == "cerca":   # caminho antigo (texto), ainda aceito
+        return {"content": [{"type": "text", "text": t}], "usage": {"input_tokens": 9000, "output_tokens": 900}, "stop_reason": "end_turn"}
+    return {"content": [{"type": "tool_use", "id": "e1", "name": "entregar_edicao", "input": g}],
+            "usage": {"input_tokens": 9000, "output_tokens": 900}, "stop_reason": "tool_use"}
 class H(BaseHTTPRequestHandler):
     def log_message(self, *a): pass
     def resp(self, code, body, ct="application/json"):
@@ -149,7 +152,7 @@ try:
     sistema = open("/tmp/claude-0/sp/sistema_v1.txt", encoding="utf-8").read()
     a = anth[-1]
     ok(a["system"] == sistema, "instrução de sistema IGUAL ao prompt-sistema-agente.txt (abaixo da linha)")
-    ok("tools" not in a and a["model"] == "claude-sonnet-5-5", "Sonnet, sem busca na web nem outras ferramentas")
+    ok([t.get("name") for t in a.get("tools", [])] == ["entregar_edicao"] and a.get("tool_choice", {}).get("name") == "entregar_edicao" and a["model"] == "claude-sonnet-5-5", "Sonnet, sem busca na web: só a ferramenta de entrega (entregar_edicao), obrigatória")
     msg = a["messages"][0]["content"]
     ok("TEXTO PROTEGIDO" not in msg and "Agência rebaixa nota de empresa X" in msg, "contexto: pauta só com o assunto (texto do veículo fora)")
     ok("ag:" in msg and "CPI de setembro (BLS)" in msg and "Focus (calendário oficial)" in msg and '"evento":"Boletim Focus"' not in msg, "contexto: agenda do dia, com o calendário oficial na frente da pesquisa")
