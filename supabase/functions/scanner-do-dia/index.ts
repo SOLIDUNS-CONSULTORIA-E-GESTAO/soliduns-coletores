@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.5 (15/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.6 (15/10/2026)
 //
 // v1.1 (decisões do Thiago, 14/10 15h43): PUBLICA AUTOMATICAMENTE, sem revisão (a verificação fica só como registro;
 //       VM_REVISAO_HUMANA=1 volta a gravar como rascunho) e usa a agenda do dia (public.vm_agenda) no contexto.
@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.5";
+const VERSAO = "1.6";
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.0";
 const PROMPT_SHA256 = "c400ce9e9788afb6d8febbead081e47abe908d21e6f56d2fb8a564065ffffcd0";
@@ -193,6 +193,19 @@ export function extrairJson(t: string): Record<string, unknown> {
   if (!j || typeof j !== "object" || Array.isArray(j)) throw new Error("JSON não é um objeto");
   return normalizar(j);
 }
+// v1.6: referências em qualquer formato viram lista de { numero, identificador }
+export function refsComoLista(v: unknown): unknown {
+  if (Array.isArray(v)) return v.map((x) => typeof x === "string"
+    ? { numero: (x.match(/[-+]?\d[\d.,]*/) ?? [""])[0], identificador: (x.match(/\b[a-z]+:\d+\b/i) ?? [""])[0] } : x);
+  if (v && typeof v === "object") {
+    const o = v as Record<string, unknown>;
+    const dentro = Object.values(o).find(Array.isArray);
+    if (dentro && Object.keys(o).length === 1) return refsComoLista(dentro);
+    return Object.entries(o).map(([k, val]) => /^[a-z]+:\d+$/i.test(k) ? { numero: String(val), identificador: k } : { numero: k, identificador: String(val) });
+  }
+  if (typeof v === "string") return refsComoLista(v.split(/\n|;/).map((x) => x.trim()).filter(Boolean));
+  return v;
+}
 // v1.5: o modelo às vezes manda listas como texto (JSON dentro de texto, ou parágrafos separados por linha em branco)
 export function normalizar(g: Record<string, unknown>): Record<string, unknown> {
   const lista = (v: unknown, separar: boolean): unknown[] | unknown => {
@@ -203,7 +216,7 @@ export function normalizar(g: Record<string, unknown>): Record<string, unknown> 
   };
   const out: Record<string, unknown> = { ...g };
   out.paragrafos = lista(g.paragrafos ?? g["parágrafos"] ?? g.texto ?? g.corpo, true);
-  out.referencias = lista(g.referencias ?? g["referências"], false);
+  out.referencias = refsComoLista(lista(g.referencias ?? g["referências"], false));
   out.tags = lista(g.tags, false);
   if (typeof out.tags === "string") out.tags = String(out.tags).split(/[,;]/).map((x) => x.trim()).filter(Boolean);
   if (!out.linha_fina && g["linha-fina"]) out.linha_fina = g["linha-fina"];
