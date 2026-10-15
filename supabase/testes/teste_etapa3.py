@@ -152,7 +152,7 @@ try:
     sistema = open("/tmp/claude-0/sp/sistema_v1.txt", encoding="utf-8").read()
     a = anth[-1]
     ok(a["system"] == sistema, "instrução de sistema IGUAL ao prompt-sistema-agente.txt (abaixo da linha)")
-    ok([t.get("name") for t in a.get("tools", [])] == ["entregar_edicao"] and a.get("tool_choice", {}).get("name") == "entregar_edicao" and a["model"] == "claude-sonnet-5-5", "Sonnet, sem busca na web: só a ferramenta de entrega (entregar_edicao), obrigatória")
+    ok([t.get("name") for t in a.get("tools", [])] == ["entregar_edicao"] and a.get("tool_choice", {}).get("type") == "auto" and "entregar_edicao" in a["messages"][0]["content"] and a["model"] == "claude-sonnet-5-5", "Sonnet, sem busca na web: só a ferramenta de entrega (entregar_edicao), pedida na mensagem")
     msg = a["messages"][0]["content"]
     ok("TEXTO PROTEGIDO" not in msg and "Agência rebaixa nota de empresa X" in msg, "contexto: pauta só com o assunto (texto do veículo fora)")
     ok("ag:" in msg and "CPI de setembro (BLS)" in msg and "Focus (calendário oficial)" in msg and '"evento":"Boletim Focus"' not in msg, "contexto: agenda do dia, com o calendário oficial na frente da pesquisa")

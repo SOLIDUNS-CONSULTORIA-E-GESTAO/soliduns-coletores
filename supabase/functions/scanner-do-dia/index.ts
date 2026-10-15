@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.2 (15/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.3 (15/10/2026)
 //
 // v1.1 (decisões do Thiago, 14/10 15h43): PUBLICA AUTOMATICAMENTE, sem revisão (a verificação fica só como registro;
 //       VM_REVISAO_HUMANA=1 volta a gravar como rascunho) e usa a agenda do dia (public.vm_agenda) no contexto.
@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.2";
+const VERSAO = "1.3";
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.0";
 const PROMPT_SHA256 = "c400ce9e9788afb6d8febbead081e47abe908d21e6f56d2fb8a564065ffffcd0";
@@ -132,6 +132,7 @@ export function pedido(hoje: Date, ctx: Contexto, anterior?: unknown, instrucao?
     "Reúna, em ordem decrescente de importância: o que está previsto para hoje na agenda do dia (Brasil e Estados Unidos, com horário de Brasília e consenso quando houver), " +
     "o que os indicadores de fechamento mais recentes mostram, as maiores variações da bolsa no último pregão e o que as fontes oficiais publicaram nas últimas 24 horas. " +
     "Use o chapéu \"Scanner\". " +
+    "Entregue a edição chamando a ferramenta \"entregar_edicao\" uma única vez, com o objeto JSON pedido. " +
     "Os identificadores das referências são o campo \"id\" de cada registro do contexto. " +
     "Itens de \"assuntos_em_pauta\" só podem ser citados como tema, com atribuição ao veículo; não reproduza nem resuma o texto deles." +
     (instrucao ? `\n\nINSTRUÇÃO DO EDITOR PARA ESTA NOVA VERSÃO: ${instrucao}\n\nVERSÃO ANTERIOR (devolvida pelo editor):\n${JSON.stringify(anterior)}` : "") +
@@ -156,8 +157,8 @@ async function chamar(mensagens: unknown[]): Promise<{ texto: string; modelo: st
   for (const modelo of [MODELO, RESERVA].filter((m, i, a) => a.indexOf(m) === i)) {
     for (let t = 0; t < 3; t++) {
       const r = await fetch(ANTHROPIC_URL, { method: "POST", headers: { "x-api-key": chave, "anthropic-version": "2023-06-01", "content-type": "application/json" },
-        body: JSON.stringify({ model: modelo, max_tokens: 8000, system: SISTEMA, messages: mensagens,
-          tools: [ENTREGA], tool_choice: { type: "tool", name: "entregar_edicao" } }) });
+        body: JSON.stringify({ model: modelo, max_tokens: 16000, system: SISTEMA, messages: mensagens,
+          tools: [ENTREGA], tool_choice: { type: "auto" } }) });
       const corpo = await r.text();
       if (r.ok) {
         const j = JSON.parse(corpo);
@@ -167,8 +168,9 @@ async function chamar(mensagens: unknown[]): Promise<{ texto: string; modelo: st
         const diag = `stop_reason=${j.stop_reason}; blocos=${blocos.map((b) => b.type).join(",") || "nenhum"}; início="${texto.slice(0, 120)}"`;
         return { texto, modelo, ent: j.usage?.input_tokens ?? 0, sai: j.usage?.output_tokens ?? 0, diag };
       }
-      ultimo = `${r.status}: ${corpo.slice(0, 200)}`;
-      if ((r.status === 400 || r.status === 404) && corpo.toLowerCase().includes("model")) break;      // tenta o modelo reserva
+      ultimo = (ultimo ? ultimo + " | " : "") + `${modelo} ${r.status}: ${corpo.slice(0, 300)}`;
+      if (r.status === 404 || corpo.includes("not_found_error")) break;                                 // modelo inexistente: tenta o reserva
+      if (r.status === 400) throw new Error(`Pedido recusado pela Anthropic (${ultimo})`);
       if (r.status === 401 || r.status === 403) throw new Error(`Chave da Anthropic recusada (${r.status}).`);
       if ([429, 500, 502, 503, 529].includes(r.status)) { await new Promise((ok) => setTimeout(ok, 8000 * (t + 1))); continue; }
       throw new Error(`Erro da Anthropic ${ultimo}`);
