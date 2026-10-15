@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.8 (15/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.9 (15/10/2026)
 //
 // v1.1 (decisões do Thiago, 14/10 15h43): PUBLICA AUTOMATICAMENTE, sem revisão (a verificação fica só como registro;
 //       VM_REVISAO_HUMANA=1 volta a gravar como rascunho) e usa a agenda do dia (public.vm_agenda) no contexto.
@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.8";
+const VERSAO = "1.9";
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.0";
 const PROMPT_SHA256 = "c400ce9e9788afb6d8febbead081e47abe908d21e6f56d2fb8a564065ffffcd0";
@@ -142,12 +142,14 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
   }
   const desde = new Date(Date.now() - 30 * 3600e3).toISOString();
   const achados = await pgGet<Ach[]>(`vm_achados?select=id,fonte_nome,camada,titulo,resumo,link,publicado_em&coletado_em=gte.${desde}` +
-    `&order=publicado_em.desc.nullslast&limit=80`);
+    `&order=publicado_em.desc.nullslast&limit=200`);
   const livres: Registro[] = [], pauta: Registro[] = [];
   for (const a of achados) {
     const id = `ach:${a.id}`;
     urls[id] = { fonte: a.fonte_nome, url: a.link };
-    if (a.camada === "livre" && livres.length < 30) livres.push({ id, fonte: a.fonte_nome, titulo: a.titulo, resumo: a.resumo, publicado_em: a.publicado_em, link: a.link });
+    // v1.9: a CVM (fatos relevantes e comunicados) tem até 15 vagas; as demais fontes livres, até 20 — uma não sufoca a outra
+    const ehCvm = a.fonte_nome === "CVM", nCvm = livres.filter((x) => x.fonte === "CVM").length;
+    if (a.camada === "livre" && (ehCvm ? nCvm < 15 : livres.length - nCvm < 20)) livres.push({ id, fonte: a.fonte_nome, titulo: a.titulo, resumo: a.resumo, publicado_em: a.publicado_em, link: a.link });
     else if (a.camada === "pauta" && pauta.length < 30) pauta.push({ id, fonte: a.fonte_nome, assunto: a.titulo, publicado_em: a.publicado_em });
   }
   return { urls, ctx: { data_de_hoje: iso(hoje), agenda_do_dia: agenda, indicadores, maiores_variacoes_b3: variacoes, fontes_oficiais_livres: livres, assuntos_em_pauta: pauta,
