@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.4 (15/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.5 (15/10/2026)
 //
 // v1.1 (decisões do Thiago, 14/10 15h43): PUBLICA AUTOMATICAMENTE, sem revisão (a verificação fica só como registro;
 //       VM_REVISAO_HUMANA=1 volta a gravar como rascunho) e usa a agenda do dia (public.vm_agenda) no contexto.
@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.4";
+const VERSAO = "1.5";
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.0";
 const PROMPT_SHA256 = "c400ce9e9788afb6d8febbead081e47abe908d21e6f56d2fb8a564065ffffcd0";
@@ -191,7 +191,24 @@ export function extrairJson(t: string): Record<string, unknown> {
   s = s.slice(i, f + 1);
   const j = JSON.parse(s);
   if (!j || typeof j !== "object" || Array.isArray(j)) throw new Error("JSON não é um objeto");
-  return j;
+  return normalizar(j);
+}
+// v1.5: o modelo às vezes manda listas como texto (JSON dentro de texto, ou parágrafos separados por linha em branco)
+export function normalizar(g: Record<string, unknown>): Record<string, unknown> {
+  const lista = (v: unknown, separar: boolean): unknown[] | unknown => {
+    if (Array.isArray(v) || typeof v !== "string") return v;
+    const t = v.trim();
+    if (t.startsWith("[")) { try { const a = JSON.parse(t); if (Array.isArray(a)) return a; } catch (_) { /* segue */ } }
+    return separar ? t.split(/\n\s*\n|\n/).map((x) => x.trim()).filter(Boolean) : v;
+  };
+  const out: Record<string, unknown> = { ...g };
+  out.paragrafos = lista(g.paragrafos ?? g["parágrafos"] ?? g.texto ?? g.corpo, true);
+  out.referencias = lista(g.referencias ?? g["referências"], false);
+  out.tags = lista(g.tags, false);
+  if (typeof out.tags === "string") out.tags = String(out.tags).split(/[,;]/).map((x) => x.trim()).filter(Boolean);
+  if (!out.linha_fina && g["linha-fina"]) out.linha_fina = g["linha-fina"];
+  if (!out.chapeu && g["chapéu"]) out.chapeu = g["chapéu"];
+  return out;
 }
 
 // ------------------------------------------------------------------ verificação automática (Prompt 15)
@@ -306,7 +323,7 @@ export async function tratar(req: Request): Promise<Response> {
       modelo: r.modelo, custo_usd: custo });
     if (corpo.so_teste) { resumo.rascunho = { gerado, verificacoes, fontes }; return Response.json(resumo); }
     const camposOk = Array.isArray(gerado.paragrafos) && (gerado.paragrafos as unknown[]).length > 0 && String(gerado.titulo ?? "").trim();
-    if (auto && !camposOk) throw new Error("o agente não entregou título e parágrafos: nada publicado");
+    if (auto && !camposOk) throw new Error(`o agente não entregou título e parágrafos: nada publicado (campos recebidos: ${Object.entries(gerado).map(([k, v]) => `${k}=${Array.isArray(v) ? "lista" + (v as unknown[]).length : typeof v}`).join(", ")})`);
     if (auto) {                      // o Scanner publicado antes, no mesmo dia, passa a "substituído"
       const r = await fetch(`${base()}/vm_materias?tipo=eq.scanner&data_ref=eq.${iso(hoje)}&situacao=eq.publicada`,
         { method: "PATCH", body: JSON.stringify({ situacao: "substituida" }), headers: cab({ Prefer: "return=minimal" }) });
