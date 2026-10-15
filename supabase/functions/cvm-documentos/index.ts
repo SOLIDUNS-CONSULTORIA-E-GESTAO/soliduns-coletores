@@ -1,4 +1,6 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "cvm-documentos" — v1.0 (15/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "cvm-documentos" — v1.1 (15/10/2026)
+// v1.1: descarta os formulários da SEC americana (6-K, 8-K, 424B2, FWP, N-CEN…) que emissores estrangeiros de BDR reapresentam
+//       à CVM como "Comunicado ao Mercado" — no 1º teste foram ~90% dos documentos e não são notícia para o leitor brasileiro.
 //
 // Plano de correção das fontes, item 3 (decisão do Thiago, 15/10 16h12: "as duas vias"): FATOS RELEVANTES, COMUNICADOS AO
 // MERCADO e AVISOS AOS ACIONISTAS das companhias abertas, gravados em public.vm_achados (camada livre, com crédito à CVM)
@@ -16,7 +18,7 @@
 
 import { unzipSync } from "npm:fflate@0.8.2";
 
-const VERSAO = "1.0";
+const VERSAO = "1.1";
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36";
 const ENET_BASES = (Deno.env.get("VM_ENET_BASES") ?? "https://www.rad.cvm.gov.br/ENETWeb/frmConsultaExternaCVM.aspx,https://www.rad.cvm.gov.br/ENET/frmConsultaExternaCVM.aspx").split(",");
 const IPE_BASE = Deno.env.get("VM_IPE_BASE") ?? "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/IPE/DADOS";
@@ -34,6 +36,10 @@ export function hojeBrasilia(agora = new Date()): Date { return new Date(iso(new
 const dmy = (d: Date) => `${iso(d).slice(8, 10)}/${iso(d).slice(5, 7)}/${iso(d).slice(0, 4)}`;
 const semAcento = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
 export const relevante = (categoria: string) => CATEGORIAS.includes(semAcento(categoria));
+// formulário da SEC reapresentado por emissor estrangeiro (BDR): assunto/espécie = só o código do formulário
+const FORMS_SEC = /^(\d{1,2}-[A-Z]{1,2}\d?|N-[A-Z0-9-]+|[SF]-\d+[A-Z]?|424[A-Z]\d*|FWP|ARS|CORRESP|UPLOAD|DEF\s?[A-Z0-9]+|DEFA\d+[A-Z]|DEFM\d+[A-Z]|PRE\s?\d+[A-Z]|SC\s?(TO|13[DEG])[A-Z0-9-]*|SC\s?14D9|10-[KQ]\d*|20-F|40-F|11-K|13F[A-Z-]*|POS\s?AM|S-8\s?POS|425|144|EFFECT|497[A-Z]?|N-\d+[A-Z]*)(\/A)?$/i;
+export const formularioSec = (d: { assunto: string; especie: string }) =>
+  [d.assunto, d.especie].some((x) => FORMS_SEC.test(String(x ?? "").trim()));
 const limpar = (s: string) => String(s ?? "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
 // "15/10/2026 18:42" (horário de Brasília) -> ISO em UTC
 export function dataHoraBR(s: string): string | null {
@@ -166,8 +172,9 @@ export async function tratar(req: Request): Promise<Response> {
       catch (e) { notas.push(`dados abertos falhou: ${String((e as Error).message ?? e)}`); }
     } else if (!via) notas.push("dados abertos: aguardando conferência manual (verificada_em)");
     const fonte = fonteDe(via === "dados_abertos" ? CATALOGO.dados : CATALOGO.enet);
-    const sel = docs.filter((d) => relevante(d.categoria)).slice(0, MAX_POR_EXECUCAO);
-    Object.assign(resumo, { via: via || "nenhuma", lidos: docs.length, relevantes: sel.length,
+    const rel = docs.filter((d) => relevante(d.categoria)), estrangeiros = rel.filter(formularioSec).length;
+    const sel = rel.filter((d) => !formularioSec(d)).slice(0, MAX_POR_EXECUCAO);
+    Object.assign(resumo, { via: via || "nenhuma", lidos: docs.length, descartados_sec_estrangeiros: estrangeiros, relevantes: sel.length,
       por_categoria: Object.fromEntries(CATEGORIAS.map((c) => [c, sel.filter((d) => semAcento(d.categoria) === c).length])) });
     if (corpo.so_teste) resumo.amostra = sel.slice(0, 15).map((d) => `${d.entregue_em ?? ""} ${d.empresa} — ${d.categoria}: ${d.assunto}`);
     else {

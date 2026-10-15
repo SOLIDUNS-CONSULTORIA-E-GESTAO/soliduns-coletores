@@ -13,6 +13,8 @@ def reg(cod, emp, cat, tipo, esp, ent, seq, ver, prot, assunto=""):
 DADOS = "&*".join([reg("009512", "PETROBRAS", "Fato Relevante", "", "Reajuste de preços", H + " 18:42", "111", "1", "1234567", "Reajuste do diesel"),
                    reg("004170", "VALE", "Comunicado ao Mercado", "", "Esclarecimentos", H + " 09:05", "222", "1", "7654321"),
                    reg("019348", "ITAU", "Assembleia", "AGE", "Edital", H + " 10:00", "333", "1", "9999999"),
+                   reg("080000", "JPMORGAN CHASE & CO.", "Comunicado ao Mercado", "", "424B2", H + " 07:34", "444", "1", "4444444", "424B2"),
+                   reg("080001", "ASML HOLDING NV", "Comunicado ao Mercado", "", "6-K", H + " 07:35", "555", "1", "5555550", "6-K"),
                    "lixo$&sem campos"])
 VERIF = {"https://www.rad.cvm.gov.br/ENET": True, "https://dados.cvm.gov.br": True}
 modo = {"enet": "ok"}; gravado, coletas, pedidos = [], [], []
@@ -63,7 +65,7 @@ try:
         except Exception: time.sleep(0.5)
     ok(chamar({}, "x").get("_status") == 401, "sem token -> 401")
     r = chamar({"so_teste": True}); print("   ", json.dumps(r, ensure_ascii=False)[:500])
-    ok(r["via"] == "consulta_do_dia" and r["lidos"] == 3 and r["relevantes"] == 2, "consulta do dia: 3 documentos lidos, 2 relevantes (assembleia fica de fora; linha inválida descartada)")
+    ok(r["via"] == "consulta_do_dia" and r["lidos"] == 5 and r["relevantes"] == 2 and r["descartados_sec_estrangeiros"] == 2, "consulta do dia: 5 lidos, 2 relevantes (assembleia e 2 formulários SEC de estrangeiros ficam de fora; linha inválida descartada)")
     post = [x for x in pedidos if x[0] == "POST" and x[1].endswith("/ListarDocumentos")][0]
     ok(post[2]["categoria"] == "IPE_-1_-1_-1" and post[2]["dataAte"] == H and post[3] and "ASP.NET_SessionId=abc" in post[3], "consulta com as datas de hoje/ontem e o cookie da sessão")
     ok(any("PETROBRAS — Fato Relevante: Reajuste do diesel" in a for a in r["amostra"]), "título: empresa — categoria: assunto")
