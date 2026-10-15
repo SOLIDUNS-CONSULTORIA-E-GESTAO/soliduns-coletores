@@ -1,5 +1,9 @@
 """
-SOLIDUNS — Jornal "Valor e Mercado" — redator diário por IA — v1.1 (15/10/2026)
+SOLIDUNS — Jornal "Valor e Mercado" — redator diário por IA — v1.2 (15/10/2026)
+
+v1.2 (15/10): foto de capa pelo UNSPLASH (chave UNSPLASH_ACCESS_KEY — a API do Pexels está pausada); o Pexels fica de reserva
+      se só houver PEXELS_API_KEY. Unsplash: foto servida pelo próprio Unsplash, crédito "Foto: <fotógrafo> / Unsplash" com links
+      (utm_source), e o aviso de uso (download_location) exigido pelas regras da API.
 
 v1.1 (15/10): FOTO DE CAPA. A IA sugere termos de busca (em inglês) ligados à manchete; o robô busca a foto no
       banco Pexels (chave PEXELS_API_KEY; licença Pexels, crédito ao fotógrafo na página), sem repetir as fotos das
@@ -21,7 +25,7 @@ capa continua com a edição anterior):
   - nenhum clichê proibido e nenhuma recomendação de investimento;
   - no mínimo 3 fontes, e só endereços que a busca realmente devolveu (nada de link inventado).
 
-Secrets: SUPABASE_URL, SUPABASE_SERVICE_KEY, ANTHROPIC_API_KEY, PEXELS_API_KEY (foto de capa; opcional).
+Secrets: SUPABASE_URL, SUPABASE_SERVICE_KEY, ANTHROPIC_API_KEY, UNSPLASH_ACCESS_KEY (foto de capa; opcional; reserva: PEXELS_API_KEY).
 Opcionais: VM_MODELO (padrão claude-sonnet-5-5; reserva claude-sonnet-4-5), VM_BUSCAS (padrão 8),
 VM_SO_TESTE=1 (escreve e confere, mas não grava). ANTHROPIC_URL troca o endereço (testes).
 Tirar do ar a edição do dia (SQL Editor):  update public.vm_edicoes set publicado = false where data = current_date;
@@ -342,12 +346,70 @@ def fotos_recentes():
         return set()
 
 
+UNSPLASH_URL = os.environ.get("UNSPLASH_URL") or "https://api.unsplash.com"
+UTM = "utm_source=soliduns_valor_e_mercado&utm_medium=referral"
+
+
+def _com_utm(u):
+    return (u + ("&" if "?" in u else "?") + UTM) if u else ""
+
+
 def buscar_foto(m):
-    """Escolhe a foto de capa no Pexels pelos termos sugeridos para a manchete. Nunca derruba a edição."""
-    chave = os.environ.get("PEXELS_API_KEY")
-    if not chave:
-        log("Foto de capa: PEXELS_API_KEY não configurada — edição sem foto.")
-        return None
+    """Escolhe a foto de capa pelos termos sugeridos para a manchete (Unsplash; reserva Pexels). Nunca derruba a edição."""
+    if os.environ.get("UNSPLASH_ACCESS_KEY"):
+        return buscar_foto_unsplash(m, os.environ["UNSPLASH_ACCESS_KEY"])
+    if os.environ.get("PEXELS_API_KEY"):
+        return buscar_foto_pexels(m, os.environ["PEXELS_API_KEY"])
+    log("Foto de capa: UNSPLASH_ACCESS_KEY não configurada — edição sem foto.")
+    return None
+
+
+def buscar_foto_unsplash(m, chave):
+    usadas = fotos_recentes()
+    cab = {"Authorization": f"Client-ID {chave}", "Accept-Version": "v1"}
+    for termo in [m.get("foto_busca"), m.get("foto_alternativa"), FOTO_GENERICA]:
+        termo = txt(termo)
+        if not termo:
+            continue
+        try:
+            r = requests.get(f"{UNSPLASH_URL}/search/photos", headers=cab, timeout=60,
+                             params={"query": termo, "orientation": "landscape", "per_page": 20, "content_filter": "high"})
+        except requests.RequestException as e:
+            log(f"Foto de capa: falha na busca '{termo}' ({e})")
+            continue
+        if r.status_code in (401, 403):
+            log(f"Foto de capa: chave do Unsplash recusada ({r.status_code}) — edição sem foto.")
+            return None
+        if not r.ok:
+            log(f"Foto de capa: busca '{termo}' devolveu {r.status_code}")
+            continue
+        for f in (r.json().get("results") or []):
+            urls, user = f.get("urls") or {}, f.get("user") or {}
+            raw = urls.get("raw") or ""
+            if str(f.get("id")) in usadas or not raw.startswith("https://") or (f.get("width") or 0) < (f.get("height") or 1):
+                continue
+            junta = "&" if "?" in raw else "?"
+            foto = {"id": f.get("id"), "src": raw + junta + "w=1200&h=675&fit=crop&crop=entropy&q=80&auto=format",
+                    "src_grande": raw + junta + "w=1880&h=1058&fit=crop&crop=entropy&q=80&auto=format",
+                    "alt": txt(f.get("alt_description") or f.get("description")) or termo,
+                    "fotografo": txt(user.get("name")) or "Unsplash",
+                    "fotografo_url": _com_utm((user.get("links") or {}).get("html") or ""),
+                    "pagina_url": _com_utm((f.get("links") or {}).get("html") or "https://unsplash.com"),
+                    "fonte": "Unsplash", "busca": termo, "cor_media": f.get("color") or ""}
+            baixar = (f.get("links") or {}).get("download_location")
+            if baixar:                                  # regra da API do Unsplash: avisar o uso da foto
+                try:
+                    requests.get(baixar, headers=cab, timeout=30)
+                except requests.RequestException:
+                    pass
+            log(f"Foto de capa: '{termo}' -> {foto['pagina_url']} (Foto: {foto['fotografo']} / Unsplash)")
+            return foto
+        log(f"Foto de capa: nada novo para '{termo}'")
+    log("Foto de capa: nenhuma foto encontrada — edição sem foto.")
+    return None
+
+
+def buscar_foto_pexels(m, chave):
     usadas = fotos_recentes()
     for termo in [m.get("foto_busca"), m.get("foto_alternativa"), FOTO_GENERICA]:
         termo = txt(termo)

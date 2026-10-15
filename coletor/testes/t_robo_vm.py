@@ -16,7 +16,7 @@ def resposta(n):
              ["https://agenciabrasil.ebc.com.br/a", "https://bcb.gov.br/b", "https://fed.gov/c"]]}
     if CEN == "pausa" and n == 0:
         return {"stop_reason": "pause_turn", "content": [busca], "usage": {"input_tokens": 1000, "output_tokens": 10, "server_tool_use": {"web_search_requests": 3}}}
-    d = BOM if (CEN in ("pausa", "foto") or (CEN == "corrige" and n >= 1)) else RUIM
+    d = BOM if (CEN in ("pausa", "foto", "unsplash") or (CEN == "corrige" and n >= 1)) else RUIM
     if CEN == "ferramenta":
         d2 = copy.deepcopy(BOM); d2["scanner"]["agenda"] = [{"hora": "15:00", "evento": "Livro Bege"}, {"hora": "Dia todo", "evento": "Reunião do G20"}, {"hora": "às 9h", "evento": "IPCA-15"}]
         return {"stop_reason": "tool_use", "content": [busca, {"type": "text", "text": "Pronto."}, {"type": "tool_use", "id": "t1", "name": "entregar_edicao", "input": d2}],
@@ -27,6 +27,11 @@ FOTOS = {"photos": [
   {"id": 111, "width": 6000, "height": 4000, "alt": "Usada ontem", "photographer": "A", "photographer_url": "https://www.pexels.com/@a", "url": "https://www.pexels.com/photo/111/", "src": {"landscape": "https://images.pexels.com/111-l.jpg", "large2x": "https://images.pexels.com/111-2x.jpg"}},
   {"id": 222, "width": 3000, "height": 4500, "alt": "Retrato", "photographer": "B", "photographer_url": "", "url": "https://www.pexels.com/photo/222/", "src": {"landscape": "https://images.pexels.com/222-l.jpg"}},
   {"id": 333, "width": 5000, "height": 3000, "alt": "Bank building facade", "photographer": "Maria Silva", "photographer_url": "https://www.pexels.com/@maria", "url": "https://www.pexels.com/photo/333/", "src": {"landscape": "https://images.pexels.com/333-l.jpg", "large2x": "https://images.pexels.com/333-2x.jpg"}}]}
+UNS = {"results": [
+  {"id": "usada1", "width": 6000, "height": 4000, "color": "#222", "urls": {"raw": "https://images.unsplash.com/photo-usada1?ixid=x"}, "user": {"name": "U"}, "links": {"html": "https://unsplash.com/photos/usada1"}},
+  {"id": "abc", "width": 6000, "height": 4000, "color": "#2a3c5a", "alt_description": "trading screen with charts",
+   "urls": {"raw": "https://images.unsplash.com/photo-abc?ixid=x"}, "user": {"name": "João Souza", "links": {"html": "https://unsplash.com/@joao"}},
+   "links": {"html": "https://unsplash.com/photos/abc", "download_location": "BASE/baixou/abc"}}]}
 buscas_foto = []
 class H(BaseHTTPRequestHandler):
     def log_message(self, *a): pass
@@ -34,8 +39,13 @@ class H(BaseHTTPRequestHandler):
         if self.path.startswith("/v1/search"):
             buscas_foto.append((self.path, self.headers.get("Authorization")))
             out = FOTOS if "central+bank" in self.path else {"photos": []}
+        elif self.path.startswith("/search/photos"):
+            buscas_foto.append((self.path, self.headers.get("Authorization")))
+            out = UNS if "stock+exchange" in self.path else {"results": []}
+        elif self.path.startswith("/baixou/"):
+            buscas_foto.append((self.path, self.headers.get("Authorization"))); out = {}
         elif self.path.startswith("/rest/v1/vm_edicoes"):
-            out = [{"conteudo": {"manchete": {"foto": {"id": 111}}}}]
+            out = [{"conteudo": {"manchete": {"foto": {"id": 111}}}}, {"conteudo": {"manchete": {"foto": {"id": "usada1"}}}}]
         else:
             out = {}
         b = json.dumps(out).encode(); self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers(); self.wfile.write(b)
@@ -51,7 +61,11 @@ class H(BaseHTTPRequestHandler):
 srv = HTTPServer(("127.0.0.1", 0), H); threading.Thread(target=srv.serve_forever, daemon=True).start()
 base = f"http://127.0.0.1:{srv.server_port}"
 env = dict(os.environ, ANTHROPIC_URL=base + "/v1/messages", ANTHROPIC_API_KEY="x", SUPABASE_URL=base, SUPABASE_SERVICE_KEY="sb_secret_x", VM_DATA=HOJE)
-env.pop("PEXELS_API_KEY", None)
+env.pop("PEXELS_API_KEY", None); env.pop("UNSPLASH_ACCESS_KEY", None)
+UNS["results"][1]["links"]["download_location"] = base + "/baixou/abc"
+if CEN == "unsplash":
+    BOM["manchete"]["foto_busca"] = "stock exchange"
+    env.update(UNSPLASH_URL=base, UNSPLASH_ACCESS_KEY="uns-teste")
 if CEN == "foto":
     BOM["manchete"]["foto_busca"] = "oil refinery"; BOM["manchete"]["foto_alternativa"] = "central bank building"
     env.update(PEXELS_URL=base + "/v1/search", PEXELS_API_KEY="pex-teste")
@@ -81,8 +95,15 @@ if CEN == "foto":
     conf(f.get("fotografo") == "Maria Silva" and f.get("pagina_url") == "https://www.pexels.com/photo/333/" and f.get("fonte") == "Pexels" and f.get("src").endswith("333-l.jpg"), "foto: crédito, página e endereço guardados")
     conf([b[0].split("query=")[1].split("&")[0] for b in buscas_foto] == ["oil+refinery", "central+bank+building"] and all(b[1] == "pex-teste" for b in buscas_foto), "foto: tenta a busca principal e depois a alternativa, com a chave: " + str(buscas_foto))
     conf(m.get("foto_busca") == "oil refinery", "termos da busca guardados")
+if CEN == "unsplash":
+    f = gravado[0][1][0]["conteudo"]["manchete"].get("foto") or {}
+    conf(p.returncode == 0 and f.get("id") == "abc", "unsplash: pula a foto já usada -> " + str(f.get("id")))
+    conf(f.get("src", "").startswith("https://images.unsplash.com/photo-abc?ixid=x&w=1200&h=675&fit=crop") and "w=1880" in f.get("src_grande", ""), "unsplash: foto servida pelo Unsplash, recortada 16:9")
+    conf(f.get("fotografo") == "João Souza" and f.get("fonte") == "Unsplash" and "utm_source=" in f.get("fotografo_url", "") and "utm_source=" in f.get("pagina_url", ""), "unsplash: crédito com links e utm")
+    conf(any(b[0] == "/baixou/abc" and b[1] == "Client-ID uns-teste" for b in buscas_foto), "unsplash: aviso de uso (download_location) com a chave")
+    conf(f.get("alt") == "trading screen with charts" and f.get("cor_media") == "#2a3c5a", "unsplash: texto alternativo e cor")
 if CEN == "corrige":
-    conf("foto" not in gravado[0][1][0]["conteudo"]["manchete"] and "PEXELS_API_KEY não configurada" in p.stdout, "sem chave do Pexels: edição sai sem foto")
+    conf("foto" not in gravado[0][1][0]["conteudo"]["manchete"] and "UNSPLASH_ACCESS_KEY não configurada" in p.stdout, "sem chave de fotos: edição sai sem foto")
     conf(all("tool_choice" not in c for c in chamadas), "nenhuma chamada com ferramenta obrigatória")
 if CEN == "pausa":
     conf(p.returncode == 0 and len(chamadas) == 2 and chamadas[1]["messages"][-1]["role"] == "assistant", "pause_turn continua o turno")
