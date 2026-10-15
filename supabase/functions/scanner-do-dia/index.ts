@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.6 (15/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.7 (15/10/2026)
 //
 // v1.1 (decisões do Thiago, 14/10 15h43): PUBLICA AUTOMATICAMENTE, sem revisão (a verificação fica só como registro;
 //       VM_REVISAO_HUMANA=1 volta a gravar como rascunho) e usa a agenda do dia (public.vm_agenda) no contexto.
@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.6";
+const VERSAO = "1.7";
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.0";
 const PROMPT_SHA256 = "c400ce9e9788afb6d8febbead081e47abe908d21e6f56d2fb8a564065ffffcd0";
@@ -70,6 +70,18 @@ type Cot = { id: number; fonte: string; codigo: string; descricao: string | null
 type Ag = { id: number; hora: string; regiao: string; categoria: string; evento: string; consenso: string | null; fonte: string; url: string; origem: string };
 type Ach = { id: number; fonte_nome: string; camada: string; titulo: string; resumo: string | null; link: string; publicado_em: string | null };
 
+const VAZIAS = new Set(["para", "pelo", "pela", "com", "dos", "das", "nos", "nas", "que", "uma", "the", "and", "for", "eua", "brasil", "banco", "central", "dados", "divulga", "divulgacao", "indice", "taxa", "mensal", "relatorio", "reuniao", "setembro", "outubro", "agosto"]);
+function palavras(t: string): Set<string> {
+  return new Set(t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().split(/[^a-z0-9]+/).filter((w) => w.length >= 3 && !VAZIAS.has(w)));
+}
+const SIGLAS = ["ppi", "cpi", "pce", "payroll", "jolts", "focus", "copom", "fomc", "ipca", "pib", "pmc", "pms", "pim", "pnad", "caged", "ibc"];
+export function mesmoEvento(oficial: string, web: string): boolean {
+  const a = palavras(oficial), b = palavras(web);
+  if (SIGLAS.some((s) => a.has(s) && b.has(s))) return true;
+  const comuns = [...a].filter((w) => b.has(w)).length;
+  return comuns >= 2 && comuns / Math.min(a.size, b.size) >= 0.5;
+}
+
 export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls: Record<string, { fonte: string; url: string }> }> {
   const urls: Record<string, { fonte: string; url: string }> = {};
   const indicadores: Registro[] = [];
@@ -105,9 +117,12 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
   }
   const agenda: Registro[] = [];
   const ags = await pgGet<Ag[]>(`vm_agenda?select=id,hora,regiao,categoria,evento,consenso,fonte,url,origem&data_ref=eq.${iso(hoje)}&order=hora&limit=80`);
-  const temOficial = new Set(ags.filter((a) => a.origem === "calendario_oficial").map((a) => a.hora + "|" + a.categoria));
+  // v1.7: o item da pesquisa na web só sai quando é O MESMO evento de um item oficial (mesmo horário e assunto parecido),
+  // e não qualquer evento do mesmo horário (ex.: PPI oficial às 9h30 não apaga as vendas no varejo das 9h30)
+  const oficiais = ags.filter((a) => a.origem === "calendario_oficial");
+  const repetido = (a: Ag) => oficiais.some((o) => o.hora === a.hora && mesmoEvento(o.evento, a.evento));
   for (const a of ags) {
-    if (a.origem === "pesquisa_web" && temOficial.has(a.hora + "|" + a.categoria)) continue;   // calendário oficial tem prioridade
+    if (a.origem === "pesquisa_web" && repetido(a)) continue;   // calendário oficial tem prioridade
     const id = `ag:${a.id}`;
     agenda.push({ id, hora_brasilia: a.hora, regiao: a.regiao, categoria: a.categoria, evento: a.evento, consenso: a.consenso, fonte: a.fonte });
     urls[id] = { fonte: a.fonte, url: a.url };
