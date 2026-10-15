@@ -14,7 +14,10 @@ FEED_PAUTA = f"""<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom">
 <link href="https://rating.exemplo/x"/><summary>TEXTO PROTEGIDO DO VEÍCULO QUE NÃO PODE SER GUARDADO</summary><updated>{AGORA.isoformat()}</updated></entry></feed>"""
 FONTES = [{"id": 59, "nome": "Agência Brasil", "camada": "livre", "url_coleta": None},
           {"id": 41, "nome": "Fitch Ratings", "camada": "pauta", "url_coleta": None}]
-COT = {"SELIC": [{"id": 901, "fonte": "BCB SGS", "codigo": "SELIC", "descricao": "Meta da taxa Selic (Copom)", "data_ref": HOJE, "fechamento": 13.75, "unidade": "% a.a.", "url_fonte": "https://api.bcb.gov.br/x432"}],
+FOCUS_LIN = [{"id": 1201, "fonte": "BCB Focus", "codigo": "FOCUS_IPCA_2026", "descricao": "IPCA em 2026 (mediana do Focus)", "data_ref": "2026-10-09", "fechamento": 4.71, "unidade": "%", "url_fonte": "https://www.bcb.gov.br/publicacoes/focus"},
+             {"id": 1200, "fonte": "BCB Focus", "codigo": "FOCUS_IPCA_2026", "descricao": "IPCA em 2026 (mediana do Focus)", "data_ref": "2026-10-02", "fechamento": 4.75, "unidade": "%", "url_fonte": "https://www.bcb.gov.br/publicacoes/focus"}]
+COT = {"IBOV": [{"id": 1101, "fonte": "B3 Índices", "codigo": "IBOV", "descricao": "Ibovespa (pontos, fechamento)", "data_ref": HOJE, "fechamento": 204102.7, "unidade": "pontos", "url_fonte": "https://www.b3.com.br/ibov"}],
+       "SELIC": [{"id": 901, "fonte": "BCB SGS", "codigo": "SELIC", "descricao": "Meta da taxa Selic (Copom)", "data_ref": HOJE, "fechamento": 13.75, "unidade": "% a.a.", "url_fonte": "https://api.bcb.gov.br/x432"}],
        "USD": [{"id": 902, "fonte": "BCB Olinda", "codigo": "USD", "descricao": "Dólar PTAX", "data_ref": HOJE, "fechamento": 5.0441, "unidade": "R$ por US$", "url_fonte": "https://olinda.bcb.gov.br/x"},
                {"id": 903, "fonte": "BCB Olinda", "codigo": "USD", "descricao": "Dólar PTAX", "data_ref": "2026-10-13", "fechamento": 5.0096, "unidade": "R$ por US$", "url_fonte": "https://olinda.bcb.gov.br/x"}]}
 B3 = {"2026-10-14": [{"id": 1001, "codigo": "PETR4", "fechamento": 40.0, "volume": 9e8, "url_fonte": "https://b3/COTAHIST_D14102026.ZIP", "fonte": "B3 COTAHIST"},
@@ -67,6 +70,7 @@ class H(BaseHTTPRequestHandler):
         if p == "/rest/v1/cotacoes":
             if q.get("select") == ["data_ref"]:
                 return self.resp(200, [{"data_ref": "2026-10-13"}] if "data_ref" in q and q["data_ref"][0].startswith("lt.") else [{"data_ref": "2026-10-14"}])
+            if q.get("fonte") == ["eq.BCB Focus"]: return self.resp(200, FOCUS_LIN)
             if "codigo" in q: return self.resp(200, COT.get(q["codigo"][0].split(".", 1)[1], []))
             d = q["data_ref"][0].split(".", 1)[1]; return self.resp(200, B3.get(d, []))
         if p == "/rest/v1/vm_achados": return self.resp(200, [dict(a, id=i + 1) for i, a in enumerate(achados)])
@@ -156,6 +160,7 @@ try:
     msg = a["messages"][0]["content"]
     ok("TEXTO PROTEGIDO" not in msg and "Agência rebaixa nota de empresa X" in msg, "contexto: pauta só com o assunto (texto do veículo fora)")
     ok("ag:" in msg and "CPI de setembro (BLS)" in msg and "Focus (calendário oficial)" in msg and '"evento":"Boletim Focus"' not in msg, "contexto: agenda do dia, com o calendário oficial na frente da pesquisa")
+    ok("cot:1101" in msg and '"codigo":"BOVA11"' not in msg and "cot:1201" in msg and "cot:1200" not in msg and "não é dado realizado" in msg, "v1.8: Ibovespa em pontos (sem BOVA11) e a mediana mais recente do Focus no contexto")
     ok("cot:901" in msg and "ach:1" in msg and '"variacao_percentual":4.03' in msg and '"variacao_percentual":-5' in msg, "contexto: indicadores, achados livres e variações da B3 com id")
     m = materias[-1]
     ok(st == 200 and m["situacao"] == "publicada" and m["publicacao_automatica"] is True and m["texto_aprovado"]["titulo"] == m["gerado"]["titulo"], "publica automaticamente (decisão do Thiago), com o texto gerado")

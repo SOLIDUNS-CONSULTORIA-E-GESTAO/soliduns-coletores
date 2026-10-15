@@ -1,4 +1,8 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "coletor-fechamento" — v1.3 (14/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "coletor-fechamento" — v1.4 (15/10/2026)
+//
+// v1.4 (plano de correção das fontes, item 2 — 15/10): IBOVESPA EM PONTOS (B3, estatísticas de índices) e BOLETIM FOCUS
+//       (BCB Olinda, medianas anuais de IPCA, Selic, PIB e câmbio). Cada fonte nova só roda depois de conferida à mão
+//       (fontes_noticia.verificada_em). A meta Selic (decisões do Copom) já vem do SGS 432.
 //
 // v1.3: o SGS é pedido por INTERVALO DE DATAS até hoje (antes: "últimos 10", que na meta Selic eram todos futuros).
 //
@@ -25,7 +29,7 @@
 
 import { unzipSync } from "npm:fflate@0.8.2";
 
-const VERSAO = "1.3";
+const VERSAO = "1.4";
 const B3_BASE = Deno.env.get("VM_B3_BASE") ?? "https://bvmf.bmfbovespa.com.br/InstDados/SerHist";      // troca só em teste
 const SGS_BASE = Deno.env.get("VM_SGS_BASE") ?? "https://api.bcb.gov.br/dados/serie";                   // troca só em teste
 const OLINDA_BASE = Deno.env.get("VM_OLINDA_BASE") ?? "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata"; // idem
@@ -176,6 +180,84 @@ async function coletarPTAX(hoje: Date, coletado: string): Promise<{ linhas: Linh
   return { linhas, nota };
 }
 
+// ------------------------------------------------------------------ v1.4: Ibovespa em pontos (B3) e Boletim Focus (BCB)
+const B3_INDICES = Deno.env.get("VM_B3_INDICES") ?? "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetPortfolioDay";
+const B3_INDICES_PAG = "https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-amplos/ibovespa.htm";
+const FOCUS_BASE = Deno.env.get("VM_FOCUS_BASE") ?? "https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata";
+export const CATALOGO_NOVAS = { ibov: "https://www.b3.com.br/pt_br/market-data-e-indices/indices", focus: "https://www.bcb.gov.br/publicacoes/focus" };
+const numBr = (s: unknown) => { const t = String(s ?? "").trim(); if (!t) return NaN; return parseFloat(t.replace(/\./g, "").replace(",", ".")); };
+
+// estatística diária do índice: results[{day, rateValue1..rateValue12}] — o valor de fechamento de cada dia de cada mês
+export function lerIndiceAno(j: unknown, ano: number, ate: string): { data: string; valor: number }[] {
+  const out: { data: string; valor: number }[] = [];
+  for (const r of ((j as { results?: Record<string, unknown>[] })?.results ?? [])) {
+    const dia = Number(r.day);
+    if (!(dia >= 1 && dia <= 31)) continue;
+    for (let m = 1; m <= 12; m++) {
+      const v = numBr(r[`rateValue${m}`]);
+      if (!Number.isFinite(v) || v <= 0) continue;
+      const data = `${ano}-${String(m).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+      if (data <= ate) out.push({ data, valor: v });
+    }
+  }
+  return out.sort((a, b) => a.data.localeCompare(b.data));
+}
+
+async function coletarIbov(hoje: Date, coletado: string): Promise<{ linhas: Linha[]; nota: string[] }> {
+  const linhas: Linha[] = [], nota: string[] = [], ano = hoje.getUTCFullYear();
+  const param = btoa(JSON.stringify({ index: "IBOV", language: "pt-br", year: String(ano) }));
+  const url = `${B3_INDICES}/${param}`;
+  const r = await baixar(url);
+  if (!r || !r.ok) return { linhas, nota: [`IBOV: sem resposta (${r?.status ?? "rede"})`] };
+  let j: unknown; try { j = await r.json(); } catch (_) { return { linhas, nota: ["IBOV: resposta ilegível"] }; }
+  const dias = lerIndiceAno(j, ano, iso(hoje)).slice(-15);          // os últimos 15 pregões do ano (o resto já está gravado)
+  for (const d of dias) linhas.push({ fonte: "B3 Índices", url_fonte: B3_INDICES_PAG, codigo: "IBOV", descricao: "Ibovespa (pontos, fechamento)",
+    data_ref: d.data, fechamento: d.valor, unidade: "pontos", coletado_em: coletado });
+  nota.push(`IBOV: ${linhas.length}` + (dias.length ? ` (último ${dias[dias.length - 1].data}: ${dias[dias.length - 1].valor})` : ""));
+  return { linhas, nota };
+}
+
+const FOCUS_IND: { nome: string; codigo: string; unidade: string; desc: string }[] = [
+  { nome: "IPCA", codigo: "IPCA", unidade: "%", desc: "IPCA no ano (mediana do Focus)" },
+  { nome: "Selic", codigo: "SELIC", unidade: "% a.a.", desc: "Selic no fim do ano (mediana do Focus)" },
+  { nome: "PIB Total", codigo: "PIB", unidade: "%", desc: "PIB no ano (mediana do Focus)" },
+  { nome: "Câmbio", codigo: "CAMBIO", unidade: "R$ por US$", desc: "Dólar no fim do ano (mediana do Focus)" },
+];
+export function lerFocus(j: unknown, codigo: string, anos: string[]): { ano: string; data: string; mediana: number }[] {
+  const out: { ano: string; data: string; mediana: number }[] = [];
+  for (const x of ((j as { value?: Record<string, unknown>[] })?.value ?? [])) {
+    const ano = String(x.DataReferencia ?? ""), data = String(x.Data ?? "").slice(0, 10), med = Number(x.Mediana);
+    if (!anos.includes(ano) || !/^\d{4}-\d{2}-\d{2}$/.test(data) || !Number.isFinite(med)) continue;
+    if (x.baseCalculo !== undefined && Number(x.baseCalculo) !== 0) continue;
+    out.push({ ano, data, mediana: med });
+  }
+  return out;
+}
+async function coletarFocus(hoje: Date, coletado: string): Promise<{ linhas: Linha[]; nota: string[] }> {
+  const linhas: Linha[] = [], nota: string[] = [], a = hoje.getUTCFullYear(), anos = [String(a), String(a + 1)];
+  for (const f of FOCUS_IND) {
+    const filtro = `Indicador eq '${f.nome}' and baseCalculo eq 0 and (DataReferencia eq '${anos[0]}' or DataReferencia eq '${anos[1]}')`;
+    const url = `${FOCUS_BASE}/ExpectativasMercadoAnuais?$top=12&$filter=${encodeURIComponent(filtro)}&$orderby=${encodeURIComponent("Data desc")}` +
+      `&$select=Indicador,Data,DataReferencia,Mediana,baseCalculo&$format=json`;
+    const r = await baixar(url);
+    if (!r || !r.ok) { nota.push(`Focus ${f.codigo}: sem resposta (${r?.status ?? "rede"})`); continue; }
+    let j: unknown; try { j = await r.json(); } catch (_) { nota.push(`Focus ${f.codigo}: resposta ilegível`); continue; }
+    const ls = lerFocus(j, f.codigo, anos);
+    for (const x of ls) linhas.push({ fonte: "BCB Focus", url_fonte: "https://www.bcb.gov.br/publicacoes/focus", codigo: `FOCUS_${f.codigo}_${x.ano}`,
+      descricao: f.desc.replace("no ano", `em ${x.ano}`).replace("no fim do ano", `no fim de ${x.ano}`), data_ref: x.data, fechamento: x.mediana,
+      unidade: f.unidade, coletado_em: coletado });
+    nota.push(`Focus ${f.codigo}: ${ls.length}`);
+  }
+  return { linhas, nota };
+}
+async function fontesConferidas(): Promise<Set<string>> {
+  const urls = Object.values(CATALOGO_NOVAS).map((u) => `"${u}"`).join(",");
+  const r = await fetch(`${Deno.env.get("SUPABASE_URL")}/rest/v1/fontes_noticia?select=url,verificada_em,situacao&url=in.(${encodeURIComponent(urls)})`, { headers: cabecalhos() });
+  if (!r.ok) return new Set();
+  const j = await r.json() as { url: string; verificada_em: string | null; situacao: string }[];
+  return new Set(Object.entries(CATALOGO_NOVAS).filter(([, u]) => j.some((x) => x.url === u && x.verificada_em && x.situacao === "ativa")).map(([k]) => k));
+}
+
 // ------------------------------------------------------------------ Supabase (PostgREST)
 function cabecalhos(): Record<string, string> {
   const chave = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -243,9 +325,13 @@ export async function tratar(req: Request): Promise<Response> {
     const sgs = await coletarSGS(coletado, hoje);
     const ptax = await coletarPTAX(hoje, coletado);
     todas.push(...b3.linhas, ...sgs.linhas, ...ptax.linhas);
-    Object.assign(resumo, { b3: b3.nota, sgs: sgs.nota, ptax: ptax.nota, linhas: todas.length });
+    const conferidas = await fontesConferidas();                                   // v1.4
+    const ibov = conferidas.has("ibov") ? await coletarIbov(hoje, coletado) : { linhas: [], nota: ["IBOV: aguardando conferência manual (verificada_em)"] };
+    const focus = conferidas.has("focus") ? await coletarFocus(hoje, coletado) : { linhas: [], nota: ["Focus: aguardando conferência manual (verificada_em)"] };
+    todas.push(...ibov.linhas, ...focus.linhas);
+    Object.assign(resumo, { b3: b3.nota, sgs: sgs.nota, ptax: ptax.nota, ibov: ibov.nota, focus: focus.nota, linhas: todas.length });
     if (!corpo.so_teste && todas.length) resumo.gravadas = await gravar(todas);
-    if (corpo.so_teste) resumo.amostra = todas.filter((x) => ["BOVA11", "PETR4", "SELIC", "CDI", "IPCA", "USD", "EUR"].includes(x.codigo)).slice(-12);
+    if (corpo.so_teste) resumo.amostra = todas.filter((x) => ["BOVA11", "PETR4", "SELIC", "CDI", "IPCA", "USD", "EUR", "IBOV"].includes(x.codigo) || x.codigo.startsWith("FOCUS_")).slice(-24);
     return Response.json(resumo, { status: todas.length ? 200 : 502 });
   } catch (e) {
     resumo.erro = String((e as Error).message ?? e);

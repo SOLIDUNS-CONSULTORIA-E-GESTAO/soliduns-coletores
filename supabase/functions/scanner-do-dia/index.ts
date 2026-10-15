@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.7 (15/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "scanner-do-dia" — v1.8 (15/10/2026)
 //
 // v1.1 (decisões do Thiago, 14/10 15h43): PUBLICA AUTOMATICAMENTE, sem revisão (a verificação fica só como registro;
 //       VM_REVISAO_HUMANA=1 volta a gravar como rascunho) e usa a agenda do dia (public.vm_agenda) no contexto.
@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.7";
+const VERSAO = "1.8";
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.0";
 const PROMPT_SHA256 = "c400ce9e9788afb6d8febbead081e47abe908d21e6f56d2fb8a564065ffffcd0";
@@ -29,7 +29,7 @@ const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = "claude-sonnet-4-5";
 const ANTHROPIC_URL = Deno.env.get("VM_ANTHROPIC_URL") ?? "https://api.anthropic.com/v1/messages";   // troca só em teste
 const PRECO_ENT = 3.0, PRECO_SAI = 15.0;    // US$ por milhão de tokens (estimativa para o registro de custo)
-const INDICADORES = ["SELIC", "CDI", "IPCA", "USD", "EUR", "BOVA11"];
+const INDICADORES = ["SELIC", "CDI", "IPCA", "USD", "EUR", "IBOV", "BOVA11"];   // v1.8: IBOV em pontos (B3); BOVA11 só se faltar o índice
 const VOLUME_MIN = 50e6;                    // maiores variações: só papéis com R$ 50 milhões ou mais negociados
 const VETADAS = ["disparar", "dispara", "disparou", "despencar", "despenca", "despencou", "desabar", "desaba", "desabou",
   "derreter", "derrete", "derreteu", "euforia", "pânico", "sangria", "massacre", "festa", "no radar dos investidores",
@@ -86,7 +86,8 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
   const urls: Record<string, { fonte: string; url: string }> = {};
   const indicadores: Registro[] = [];
   for (const cod of INDICADORES) {
-    const fonte = cod === "BOVA11" ? "&fonte=eq.B3%20COTAHIST" : "";
+    if (cod === "BOVA11" && indicadores.some((i) => i.codigo === "IBOV")) continue;   // v1.8: com o índice em pontos, o BOVA11 sai
+    const fonte = cod === "BOVA11" ? "&fonte=eq.B3%20COTAHIST" : cod === "IBOV" ? "&fonte=eq.B3%20%C3%8Dndices" : "";
     const ls = await pgGet<Cot[]>(`cotacoes?select=id,fonte,codigo,descricao,data_ref,fechamento,unidade,url_fonte&codigo=eq.${cod}${fonte}` +
       `&data_ref=lte.${iso(hoje)}&order=data_ref.desc&limit=2`);
     for (const c of ls) {
@@ -95,6 +96,18 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
         data_de_referencia: c.data_ref, valor: c.fechamento, unidade: c.unidade, fonte: c.fonte });
       urls[id] = { fonte: c.fonte, url: c.url_fonte };
     }
+  }
+  // v1.8: expectativas do Boletim Focus (mediana mais recente de cada série: IPCA, Selic, PIB e dólar, ano corrente e seguinte)
+  const focus = await pgGet<Cot[]>(`cotacoes?select=id,fonte,codigo,descricao,data_ref,fechamento,unidade,url_fonte&fonte=eq.BCB%20Focus` +
+    `&data_ref=lte.${iso(hoje)}&order=data_ref.desc&limit=60`);
+  const vistosFocus = new Set<string>();
+  for (const c of focus) {
+    if (vistosFocus.has(c.codigo)) continue;
+    vistosFocus.add(c.codigo);
+    const id = `cot:${c.id}`;
+    indicadores.push({ id, codigo: c.codigo, descricao: (c.descricao || c.codigo) + " — Boletim Focus (expectativa de mercado, não é dado realizado)",
+      data_de_referencia: c.data_ref, valor: c.fechamento, unidade: c.unidade, fonte: "Banco Central (Boletim Focus)" });
+    urls[id] = { fonte: "Banco Central (Boletim Focus)", url: c.url_fonte };
   }
   const variacoes: Registro[] = [];
   const d1 = (await pgGet<{ data_ref: string }[]>(`cotacoes?select=data_ref&fonte=eq.B3%20COTAHIST&data_ref=lte.${iso(hoje)}&order=data_ref.desc&limit=1`))[0]?.data_ref;
