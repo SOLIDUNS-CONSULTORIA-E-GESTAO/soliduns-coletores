@@ -1,4 +1,7 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "radar-fontes" — v1.0 (14/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "radar-fontes" — v1.1 (15/10/2026)
+// v1.1 (plano de fontes, item 5): filtro de links por fonte (coluna filtro_link, expressão regular — ex.: feeds "do site
+//       inteiro" do gov.br, que misturam notícias com PDFs e imagens: só passam links de /noticias) e intervalo mínimo
+//       entre dois pedidos ao mesmo site quando o robots.txt pede (Agência Brasil: Crawl-delay 10).
 //
 // ETAPA 3 do plano de fontes (Prompts 12 e 19, partes 1 e 2): varre as fontes ATIVAS e CONFERIDAS À MÃO de
 // public.fontes_noticia (verificada_em preenchida + url_coleta de um feed RSS/Atom) e grava em public.vm_achados,
@@ -12,13 +15,25 @@
 // Chamada: pg_cron a cada 30 min (6h–20h30 de Brasília) via pg_net, com "Authorization: Bearer <COLETOR_TOKEN>".
 // Variáveis: COLETOR_TOKEN (manual, a mesma do coletor de fechamento); SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas).
 
-const VERSAO = "1.0";
+const VERSAO = "1.1";
 const UA = "SOLIDUNS Valor e Mercado (soliduns.com.br) radar de fontes";
 const JANELA_H = 48;            // só itens publicados nas últimas 48 horas
 const MAX_POR_FONTE = 40;
 const RESUMO_MAX = 600;
+const CRAWL_DELAY_S: Record<string, number> = { "agenciabrasil.ebc.com.br": 10 };   // robots.txt de cada site
+const ultimoPedido: Record<string, number> = {};
+async function respeitarIntervalo(url: string): Promise<void> {
+  const host = new URL(url).host, espera = (CRAWL_DELAY_S[host] ?? 0) * 1000;
+  const falta = (ultimoPedido[host] ?? 0) + espera - Date.now();
+  if (falta > 0) await new Promise((r) => setTimeout(r, falta));
+  ultimoPedido[host] = Date.now();
+}
+export function passaFiltro(link: string, filtro: string | null | undefined): boolean {
+  if (!filtro) return true;
+  try { return new RegExp(filtro, "i").test(link); } catch (_) { return true; }   // filtro inválido não derruba a fonte
+}
 
-type Fonte = { id: number; nome: string; camada: string; url_coleta: string };
+type Fonte = { id: number; nome: string; camada: string; url_coleta: string; filtro_link?: string | null };
 export type Item = { titulo: string; link: string; resumo: string | null; publicado_em: string | null };
 
 // ------------------------------------------------------------------ leitura do feed (RSS 2.0 e Atom)
@@ -79,7 +94,7 @@ export async function tratar(req: Request): Promise<Response> {
   const resumo: Record<string, unknown> = { versao: VERSAO }, notas: string[] = [];
   let novos = 0, falhas = 0;
   try {
-    const fontes = await pgGet<Fonte[]>("fontes_noticia?select=id,nome,camada,url_coleta&situacao=eq.ativa" +
+    const fontes = await pgGet<Fonte[]>("fontes_noticia?select=id,nome,camada,url_coleta,filtro_link&situacao=eq.ativa" +
       "&verificada_em=not.is.null&url_coleta=not.is.null&camada=neq.licenciada&order=id");
     const pendentes = await pgGet<{ id: number }[]>("fontes_noticia?select=id&situacao=eq.ativa&verificada_em=is.null");
     resumo.fontes_lidas = fontes.length;
@@ -88,10 +103,12 @@ export async function tratar(req: Request): Promise<Response> {
     for (const f of fontes) {
       if (f.camada !== "livre" && f.camada !== "pauta") continue;          // licenciada nunca roda
       try {
+        await respeitarIntervalo(f.url_coleta);
         const r = await fetch(f.url_coleta, { headers: { "User-Agent": UA, Accept: "application/rss+xml, application/atom+xml, application/xml, text/xml" } });
         if (!r.ok) { falhas++; notas.push(`${f.nome}: HTTP ${r.status}`); continue; }
         const itens = lerFeed(await r.text())
-          .filter((i) => !i.publicado_em || Date.parse(i.publicado_em) >= corte).slice(0, MAX_POR_FONTE);
+          .filter((i) => !i.publicado_em || Date.parse(i.publicado_em) >= corte)
+          .filter((i) => passaFiltro(i.link, f.filtro_link)).slice(0, MAX_POR_FONTE);
         const linhas = itens.map((i) => ({ fonte_id: f.id, fonte_nome: f.nome, camada: f.camada, titulo: i.titulo, link: i.link,
           resumo: f.camada === "livre" ? i.resumo : null,                     // pauta: o texto nunca é guardado
           publicado_em: i.publicado_em }));
