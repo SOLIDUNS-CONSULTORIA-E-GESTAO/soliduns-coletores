@@ -36,6 +36,7 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}   # foto de capa (pexels.com/api); sem ela, a edição sai sem foto
           VM_SO_TESTE: ${{ github.event.inputs.so_teste || '0' }}
           # Ajustes sem mexer no código: Settings -> Secrets and variables -> Actions -> aba Variables
           # VM_MODELO (vazio = claude-sonnet-5-5; ex.: claude-haiku-4-5) · VM_BUSCAS (vazio = 12; de 1 a 20)

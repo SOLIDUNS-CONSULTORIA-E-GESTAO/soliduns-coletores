@@ -1,5 +1,10 @@
 """
-SOLIDUNS — Jornal "Valor e Mercado" — redator diário por IA — v1.0 (14/10/2026)
+SOLIDUNS — Jornal "Valor e Mercado" — redator diário por IA — v1.1 (15/10/2026)
+
+v1.1 (15/10): FOTO DE CAPA. A IA sugere termos de busca (em inglês) ligados à manchete; o robô busca a foto no
+      banco Pexels (chave PEXELS_API_KEY; licença Pexels, crédito ao fotógrafo na página), sem repetir as fotos das
+      últimas 15 edições. Sem chave ou sem resultado: a edição sai sem foto. Também: entrega da correção sem
+      ferramenta obrigatória e modelo reserva só quando o principal não existe (404).
 
 Todo dia às 06h30 de Brasília (valor-e-mercado.yml) escreve a edição do dia da capa do jornal
 (página pública #/noticias da SOLIDUNS):
@@ -16,7 +21,7 @@ capa continua com a edição anterior):
   - nenhum clichê proibido e nenhuma recomendação de investimento;
   - no mínimo 3 fontes, e só endereços que a busca realmente devolveu (nada de link inventado).
 
-Secrets: SUPABASE_URL, SUPABASE_SERVICE_KEY, ANTHROPIC_API_KEY.
+Secrets: SUPABASE_URL, SUPABASE_SERVICE_KEY, ANTHROPIC_API_KEY, PEXELS_API_KEY (foto de capa; opcional).
 Opcionais: VM_MODELO (padrão claude-sonnet-5-5; reserva claude-sonnet-4-5), VM_BUSCAS (padrão 8),
 VM_SO_TESTE=1 (escreve e confere, mas não grava). ANTHROPIC_URL troca o endereço (testes).
 Tirar do ar a edição do dia (SQL Editor):  update public.vm_edicoes set publicado = false where data = current_date;
@@ -89,7 +94,9 @@ BLOCO 1 — MANCHETE DE CAPA: o assunto mais relevante ou sensível que dita o h
 - cartola: etiqueta curta de assunto, em caixa alta (ex.: POLÍTICA MONETÁRIA, SUPREMO TRIBUNAL FEDERAL, REFORMA TRIBUTÁRIA);
 - titulo: direto, factual, no presente do indicativo, destacando o impacto principal;
 - linha_fina: frase de apoio com dados complementares cruciais, sem repetir palavras do título;
-- corpo: 3 a 4 parágrafos curtos em pirâmide invertida (causas, o dado exato, o movimento dos ativos, paralelo histórico quando relevante, visão das mesas de operação).
+- corpo: 3 a 4 parágrafos curtos em pirâmide invertida (causas, o dado exato, o movimento dos ativos, paralelo histórico quando relevante, visão das mesas de operação);
+- foto_busca: de 2 a 4 palavras EM INGLÊS para buscar a FOTO DE CAPA num banco de imagens, ligadas ao assunto concreto da manchete (ex.: "central bank building", "oil refinery", "soybean harvest", "stock exchange screen", "brazilian real banknotes", "container port cranes"). Nada de nomes de pessoas, marcas ou logotipos;
+- foto_alternativa: outra busca em inglês, mais genérica, para o caso de a primeira não achar foto.
 
 BLOCO 2 — SCANNER DO DIA ("O que move o dia"):
 - pos_fechamento: o que aconteceu após as 18h de ontem (horário de Brasília): decisões judiciais, resultados divulgados à noite, fatos relevantes, fechamento das bolsas asiáticas e primeiras horas na Europa. De 3 a 6 itens.
@@ -110,7 +117,8 @@ ENTREGA = {"name": "entregar_edicao", "description": "Entrega a edição final d
   "input_schema": {"type": "object", "required": ["data_referencia", "manchete", "scanner", "fontes"], "properties": {
     "data_referencia": _TXT,
     "manchete": {"type": "object", "required": ["cartola", "titulo", "linha_fina", "corpo"], "properties": {
-        "cartola": _TXT, "titulo": _TXT, "linha_fina": _TXT, "corpo": {"type": "array", "items": _TXT}}},
+        "cartola": _TXT, "titulo": _TXT, "linha_fina": _TXT, "corpo": {"type": "array", "items": _TXT},
+        "foto_busca": _TXT, "foto_alternativa": _TXT}},
     "scanner": {"type": "object", "required": ["pos_fechamento", "agenda", "semana"], "properties": {
         "pos_fechamento": {"type": "array", "items": {"type": "object", "properties": {"titulo": _TXT, "texto": _TXT}, "required": ["texto"]}},
         "agenda": {"type": "array", "items": {"type": "object", "properties": {"hora": _TXT, "evento": _TXT, "consenso": _TXT}, "required": ["hora", "evento"]}},
@@ -125,8 +133,7 @@ def chamar(mensagens, sistema, buscas, forcar_entrega=False):
     corpo = {"max_tokens": 16000, "system": sistema, "messages": mensagens, "tools": [ENTREGA]}
     if buscas:
         corpo["tools"] = [{"type": "web_search_20250305", "name": "web_search", "max_uses": buscas}, ENTREGA]
-    if forcar_entrega:
-        corpo["tool_choice"] = {"type": "tool", "name": "entregar_edicao"}
+    # v1.1: sem tool_choice obrigatório (o Sonnet 5.5 recusou a ferramenta forçada no Scanner de 15/10); o pedido já manda usar a ferramenta
     ultimo = None
     for modelo in [MODELO] + ([RESERVA] if RESERVA and RESERVA != MODELO else []):
         for tentativa in range(3):
@@ -135,7 +142,7 @@ def chamar(mensagens, sistema, buscas, forcar_entrega=False):
             if r.status_code == 200:
                 return r.json(), modelo
             ultimo = f"{r.status_code}: {r.text[:300]}"
-            if r.status_code in (400, 404) and "model" in r.text.lower():
+            if r.status_code == 404 or "not_found_error" in r.text:
                 log(f"  modelo {modelo} indisponível — tentando a reserva")
                 break
             if r.status_code in (401, 403):
@@ -255,7 +262,8 @@ def limpar(d, red):
     out = {
         "manchete": {"cartola": txt(m.get("cartola")).upper(), "titulo": txt(m.get("titulo")),
                      "linha_fina": txt(m.get("linha_fina")),
-                     "corpo": [txt(p) for p in (m.get("corpo") or []) if txt(p)]},
+                     "corpo": [txt(p) for p in (m.get("corpo") or []) if txt(p)],
+                     "foto_busca": txt(m.get("foto_busca")), "foto_alternativa": txt(m.get("foto_alternativa"))},
         "scanner": {
             "pos_fechamento": [{"titulo": txt(x.get("titulo")), "texto": txt(x.get("texto"))}
                                for x in (s.get("pos_fechamento") or []) if isinstance(x, dict) and txt(x.get("texto"))],
@@ -305,6 +313,71 @@ def problemas(ed, fontes, data_ref, hoje):
     if len(fontes) < 3:
         p.append(f"menos de 3 fontes com endereço exato devolvido pela busca (vieram {len(fontes)})")
     return p
+
+
+# ---------------------------------------------------------------- foto de capa (Pexels)
+PEXELS_URL = os.environ.get("PEXELS_URL") or "https://api.pexels.com/v1/search"
+FOTO_GENERICA = "financial market trading"
+
+
+def _cab_supabase():
+    url, chave = os.environ.get("SUPABASE_URL"), os.environ.get("SUPABASE_SERVICE_KEY")
+    if not url or not chave:
+        return None, None
+    cab = {"apikey": chave}
+    if not chave.startswith("sb_"):
+        cab["Authorization"] = f"Bearer {chave}"
+    return url, cab
+
+
+def fotos_recentes():
+    """Ids das fotos das últimas 15 edições (para não repetir a mesma foto na capa)."""
+    url, cab = _cab_supabase()
+    if not url:
+        return set()
+    try:
+        r = requests.get(f"{url}/rest/v1/vm_edicoes?select=conteudo&order=data.desc&limit=15", headers=cab, timeout=60)
+        return {str(((x.get("conteudo") or {}).get("manchete") or {}).get("foto", {}).get("id")) for x in r.json()} if r.ok else set()
+    except (requests.RequestException, ValueError, AttributeError):
+        return set()
+
+
+def buscar_foto(m):
+    """Escolhe a foto de capa no Pexels pelos termos sugeridos para a manchete. Nunca derruba a edição."""
+    chave = os.environ.get("PEXELS_API_KEY")
+    if not chave:
+        log("Foto de capa: PEXELS_API_KEY não configurada — edição sem foto.")
+        return None
+    usadas = fotos_recentes()
+    for termo in [m.get("foto_busca"), m.get("foto_alternativa"), FOTO_GENERICA]:
+        termo = txt(termo)
+        if not termo:
+            continue
+        try:
+            r = requests.get(PEXELS_URL, headers={"Authorization": chave}, timeout=60,
+                             params={"query": termo, "orientation": "landscape", "size": "large", "per_page": 20, "locale": "en-US"})
+        except requests.RequestException as e:
+            log(f"Foto de capa: falha na busca '{termo}' ({e})")
+            continue
+        if r.status_code in (401, 403):
+            log(f"Foto de capa: chave do Pexels recusada ({r.status_code}) — edição sem foto.")
+            return None
+        if not r.ok:
+            log(f"Foto de capa: busca '{termo}' devolveu {r.status_code}")
+            continue
+        for f in (r.json().get("photos") or []):
+            src = f.get("src") or {}
+            if str(f.get("id")) in usadas or not src.get("landscape") or (f.get("width") or 0) < (f.get("height") or 1):
+                continue
+            foto = {"id": f.get("id"), "src": src.get("landscape"), "src_grande": src.get("large2x") or src.get("large"),
+                    "alt": txt(f.get("alt")) or termo, "fotografo": txt(f.get("photographer")) or "Pexels",
+                    "fotografo_url": f.get("photographer_url") or "", "pagina_url": f.get("url") or "https://www.pexels.com",
+                    "fonte": "Pexels", "busca": termo, "cor_media": f.get("avg_color") or ""}
+            log(f"Foto de capa: '{termo}' -> {foto['pagina_url']} (Foto: {foto['fotografo']} / Pexels)")
+            return foto
+        log(f"Foto de capa: nada novo para '{termo}'")
+    log("Foto de capa: nenhuma foto encontrada — edição sem foto.")
+    return None
 
 
 # ---------------------------------------------------------------- Supabase
@@ -363,6 +436,9 @@ def main():
     log(f"Scanner: {len(ed['scanner']['pos_fechamento'])} pós-fechamento, {len(ed['scanner']['agenda'])} na agenda, "
         f"{len(ed['scanner']['semana'])} na semana; {len(fontes)} fontes")
     log(f"Custo estimado: US$ {red.custo()} ({red.ent} tokens de entrada, {red.sai} de saída, {red.buscas} buscas) — {red.modelo}")
+    foto = buscar_foto(ed["manchete"])
+    if foto:
+        ed["manchete"]["foto"] = foto
     if os.environ.get("VM_SO_TESTE") == "1":
         print(json.dumps({"conteudo": ed, "fontes": fontes}, ensure_ascii=False, indent=2))
         log("VM_SO_TESTE=1: nada gravado.")
