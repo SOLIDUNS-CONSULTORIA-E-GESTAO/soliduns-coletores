@@ -1,0 +1,1509 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redação · Valor e Mercado</title>
+<!-- v131: Redação do Valor e Mercado (CMS). Só para o editor; a página pública nunca carrega este arquivo. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="cms.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Jost:wght@300;400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+<script src="icones.js"></script>
+<style>
+  body{background:#000;color:#f2ecd8;font-family:"IBM Plex Sans",system-ui,sans-serif;}
+  .f-mono{font-family:"IBM Plex Mono",ui-monospace,monospace;} .f-jornal{font-family:Newsreader,Georgia,serif;} .f-marca{font-family:Jost,system-ui,sans-serif;}
+  .editor-bloco:empty:before{content:attr(data-placeholder);color:#6f6857;}
+  .editor-bloco:focus{outline:none;}
+  .prev-corpo p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-wrap:pretty;}
+  .prev-titulo{text-wrap:balance;}
+  .arrastando{opacity:.45;}
+  .alvo-drop{outline:2px dashed #eec617;outline-offset:2px;}
+  :focus-visible{outline:2px solid #eec617;outline-offset:2px;}
+  ::selection{background:#eec61755;}
+</style>
+</head>
+<body class="antialiased">
+<div class="min-h-screen md:flex">
+
+  <!-- ================= BARRA LATERAL ================= -->
+  <aside class="md:w-64 md:min-h-screen bg-[#0d0d0c] border-b md:border-b-0 md:border-r border-[#2e2a1e] flex md:flex-col">
+    <div class="px-5 py-4 md:py-6 border-r md:border-r-0 md:border-b border-[#2e2a1e] shrink-0">
+      <div class="f-marca tracking-[.18em] text-sm text-[#f2ecd8]">VALOR E MERCADO</div>
+      <div class="f-mono text-[11px] text-[#eec617] mt-1 tracking-widest">REDAÇÃO</div>
+    </div>
+    <nav class="flex md:flex-col overflow-x-auto md:overflow-visible flex-1 py-2 md:py-4 text-sm" aria-label="Módulos da Redação">
+      <button data-aba="painel" class="nav-item flex items-center gap-3 px-5 py-2.5 whitespace-nowrap text-[#a89f88] hover:text-[#f2ecd8] hover:bg-[#141411]"><i data-lucide="layout-dashboard" class="w-4 h-4"></i>Painel</button>
+      <button data-aba="fila" class="nav-item flex items-center gap-3 px-5 py-2.5 whitespace-nowrap text-[#a89f88] hover:text-[#f2ecd8] hover:bg-[#141411]"><i data-lucide="inbox" class="w-4 h-4"></i>Fila de revisão <span id="n-fila" class="hidden ml-auto f-mono text-[11px] bg-[#2e2a1e] text-[#f2ecd8] px-1.5 rounded">0</span></button>
+      <button data-aba="escrever" class="nav-item flex items-center gap-3 px-5 py-2.5 whitespace-nowrap text-[#a89f88] hover:text-[#f2ecd8] hover:bg-[#141411]"><i data-lucide="pen-line" class="w-4 h-4"></i>Escrever artigo</button>
+      <button data-aba="publicados" class="nav-item flex items-center gap-3 px-5 py-2.5 whitespace-nowrap text-[#a89f88] hover:text-[#f2ecd8] hover:bg-[#141411]"><i data-lucide="newspaper" class="w-4 h-4"></i>Publicados</button>
+      <button data-aba="layout" class="nav-item flex items-center gap-3 px-5 py-2.5 whitespace-nowrap text-[#a89f88] hover:text-[#f2ecd8] hover:bg-[#141411]"><i data-lucide="layout-template" class="w-4 h-4"></i>Layout da capa</button>
+      <button data-aba="midia" class="nav-item flex items-center gap-3 px-5 py-2.5 whitespace-nowrap text-[#a89f88] hover:text-[#f2ecd8] hover:bg-[#141411]"><i data-lucide="images" class="w-4 h-4"></i>Mídia</button>
+      <button data-aba="banners" class="nav-item flex items-center gap-3 px-5 py-2.5 whitespace-nowrap text-[#a89f88] hover:text-[#f2ecd8] hover:bg-[#141411]"><i data-lucide="megaphone" class="w-4 h-4"></i>Publicidade</button>
+      <button data-aba="auditoria" class="nav-item flex items-center gap-3 px-5 py-2.5 whitespace-nowrap text-[#a89f88] hover:text-[#f2ecd8] hover:bg-[#141411]"><i data-lucide="scroll-text" class="w-4 h-4"></i>Registro de auditoria</button>
+      <a href="#/noticias" class="flex items-center gap-3 px-5 py-2.5 whitespace-nowrap text-[#a89f88] hover:text-[#f2ecd8] md:mt-auto"><i data-lucide="arrow-left" class="w-4 h-4"></i>Voltar ao jornal</a>
+    </nav>
+    <div class="hidden md:flex items-center gap-3 px-5 py-4 border-t border-[#2e2a1e]">
+      <div id="u-ini" class="w-9 h-9 rounded-full bg-[#2e2a1e] flex items-center justify-center f-marca text-[#eec617]">TV</div>
+      <div class="min-w-0">
+        <div id="u-nome" class="text-sm text-[#f2ecd8] truncate">Dr. Thiago Viegas</div>
+        <div class="text-[11px] text-[#a89f88]">Editor</div>
+      </div>
+      <button id="btn-sair" class="ml-auto text-[#a89f88] hover:text-[#e2564f]" title="Voltar ao jornal" aria-label="Voltar ao jornal"><i data-lucide="log-out" class="w-4 h-4"></i></button>
+    </div>
+  </aside>
+
+  <!-- ================= ÁREA PRINCIPAL ================= -->
+  <main class="flex-1 min-w-0">
+    <header class="sticky top-0 z-20 bg-[#000000]/95 backdrop-blur border-b border-[#2e2a1e]">
+      <div class="flex flex-wrap items-center gap-3 px-4 md:px-8 py-3">
+        <div class="text-sm text-[#a89f88]">Redação <span class="mx-1">›</span> <span id="trilha" class="text-[#f2ecd8]">Escrever artigo</span></div>
+        <div id="salvo" class="text-xs f-mono text-[#a89f88] flex items-center gap-1.5" aria-live="polite"><i data-lucide="cloud" class="w-3.5 h-3.5"></i><span>Rascunho ainda não salvo</span></div>
+        <span id="sit-artigo" class="text-xs f-mono text-[#a89f88]">Artigo novo</span>
+        <div id="acoes-artigo" class="ml-auto flex flex-wrap gap-2">
+          <button id="btn-novo" class="inline-flex items-center gap-2 px-3 py-2 text-sm border border-[#2e2a1e] rounded hover:border-[#a89f88]"><i data-lucide="plus" class="w-4 h-4"></i>Novo artigo</button>
+          <button id="btn-previa" class="inline-flex items-center gap-2 px-3 py-2 text-sm border border-[#2e2a1e] rounded hover:border-[#a89f88]"><i data-lucide="eye" class="w-4 h-4"></i>Pré-visualizar</button>
+          <button id="btn-salvar" class="inline-flex items-center gap-2 px-3 py-2 text-sm border border-[#2e2a1e] rounded hover:border-[#a89f88]"><i data-lucide="save" class="w-4 h-4"></i>Salvar rascunho</button>
+          <button id="btn-agendar" class="inline-flex items-center gap-2 px-3 py-2 text-sm border border-[#2e2a1e] rounded hover:border-[#a89f88]"><i data-lucide="calendar-clock" class="w-4 h-4"></i>Agendar</button>
+          <button id="btn-publicar" class="inline-flex items-center gap-2 px-4 py-2 text-sm rounded bg-[#eec617] text-black font-semibold hover:brightness-110"><i data-lucide="send" class="w-4 h-4"></i>Publicar</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ---------- ABA: ESCREVER ARTIGO ---------- -->
+    <section id="aba-escrever" class="aba px-4 md:px-8 py-6">
+      <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px] gap-6">
+
+        <!-- Coluna principal -->
+        <div class="space-y-5 min-w-0">
+          <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-5 space-y-5">
+            <div>
+              <label for="f-chapeu" class="block text-xs uppercase tracking-widest text-[#a89f88] mb-1.5">Chapéu</label>
+              <input id="f-chapeu" maxlength="40" class="w-full md:w-72 bg-black border border-[#2e2a1e] rounded px-3 py-2 text-sm focus:border-[#eec617]" placeholder="Ex.: Juros">
+              <p class="text-[11px] text-[#a89f88] mt-1">Uma palavra. Em opinião: "Opinião · nome da coluna".</p>
+            </div>
+            <div>
+              <div class="flex items-end justify-between mb-1.5">
+                <label for="f-titulo" class="text-xs uppercase tracking-widest text-[#a89f88]">Título</label>
+                <span id="c-titulo" class="f-mono text-[11px] text-[#a89f88]">0/70</span>
+              </div>
+              <input id="f-titulo" maxlength="90" class="w-full bg-black border border-[#2e2a1e] rounded px-3 py-3 text-xl f-jornal focus:border-[#eec617]" placeholder="Verbo no presente, voz ativa, sem ponto final">
+            </div>
+            <div>
+              <div class="flex items-end justify-between mb-1.5">
+                <label for="f-linha" class="text-xs uppercase tracking-widest text-[#a89f88]">Linha fina</label>
+                <span id="c-linha" class="f-mono text-[11px] text-[#a89f88]">0 · faixa 140–200</span>
+              </div>
+              <textarea id="f-linha" rows="3" maxlength="260" class="w-full bg-black border border-[#2e2a1e] rounded px-3 py-2 f-jornal text-base focus:border-[#eec617]" placeholder="Acrescenta informação ao título, sem repeti-lo"></textarea>
+            </div>
+          </div>
+
+          <!-- Editor de blocos -->
+          <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg">
+            <div class="flex items-center justify-between px-5 pt-4">
+              <span class="text-xs uppercase tracking-widest text-[#a89f88]">Corpo da matéria</span>
+              <span class="text-[11px] text-[#a89f88]">Corpo sai justificado na página</span>
+            </div>
+            <div role="toolbar" aria-label="Ferramentas do texto" class="flex flex-wrap gap-1 px-4 py-3 border-b border-[#2e2a1e]">
+              <button data-cmd="paragrafo" class="ferr inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Novo parágrafo"><i data-lucide="pilcrow" class="w-4 h-4"></i><span class="hidden sm:inline">Parágrafo</span></button>
+              <button data-cmd="intertitulo" class="ferr inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Intertítulo"><i data-lucide="heading-2" class="w-4 h-4"></i><span class="hidden sm:inline">Intertítulo</span></button>
+              <button data-cmd="citacao" class="ferr inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Citação destacada"><i data-lucide="quote" class="w-4 h-4"></i><span class="hidden sm:inline">Citação</span></button>
+              <span class="w-px bg-[#2e2a1e] mx-1" aria-hidden="true"></span>
+              <button data-cmd="negrito" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617]" title="Negrito — importância (Ctrl+B)" aria-label="Negrito"><b>B</b></button>
+              <button data-cmd="italico" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617]" title="Itálico — ênfase (Ctrl+I)" aria-label="Itálico"><i class="f-jornal">I</i></button>
+              <button data-cmd="sublinhado" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617]" title="Sublinhado (Ctrl+U)" aria-label="Sublinhado"><u>U</u></button>
+              <button data-cmd="riscado" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617]" title="Riscado — texto apagado" aria-label="Riscado"><s>S</s></button>
+              <button data-cmd="marcador" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617]" title="Marcador de texto" aria-label="Marcador de texto"><mark class="bg-[#eec617] text-black px-1 rounded-sm">M</mark></button>
+              <button data-cmd="menor" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617]" title="Texto menor" aria-label="Texto menor"><small>a</small><span class="text-[10px]">A</span></button>
+              <button data-cmd="sobrescrito" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617]" title="Sobrescrito (ex.: m²)" aria-label="Sobrescrito">x<sup>2</sup></button>
+              <button data-cmd="subscrito" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617]" title="Subscrito (ex.: H₂O)" aria-label="Subscrito">x<sub>2</sub></button>
+              <button data-cmd="codigo" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617] f-mono text-xs" title="Código / texto monoespaçado (ex.: PETR4)" aria-label="Código">&lt;/&gt;</button>
+              <span class="w-px bg-[#2e2a1e] mx-1" aria-hidden="true"></span>
+              <label for="sel-fonte" class="sr-only">Família da fonte</label>
+              <select id="sel-fonte" class="ferr-sel w-auto max-w-[11rem] h-8 bg-black border border-[#2e2a1e] rounded px-2 text-xs" title="Família da fonte">
+                <option value="">Fonte do jornal</option><option value="newsreader">Newsreader (serifa)</option><option value="georgia">Georgia (serifa)</option>
+                <option value="jost">Jost (sem serifa)</option><option value="plex">IBM Plex Sans (sem serifa)</option><option value="mono">IBM Plex Mono (monoespaçada)</option>
+              </select>
+              <label for="sel-tam" class="sr-only">Tamanho da fonte</label>
+              <select id="sel-tam" class="ferr-sel w-auto max-w-[11rem] h-8 bg-black border border-[#2e2a1e] rounded px-2 text-xs" title="Tamanho da fonte">
+                <option value="">Tamanho normal</option><option value="p">Pequeno (85%)</option><option value="g">Grande (120%)</option><option value="gg">Muito grande (150%)</option>
+              </select>
+              <button data-cmd="limpar" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617] text-xs" title="Limpar formatação do trecho" aria-label="Limpar formatação">T<span class="text-[#e2564f]">×</span></button>
+              <span class="w-px bg-[#2e2a1e] mx-1" aria-hidden="true"></span>
+              <button data-cmd="link" class="ferr inline-flex items-center justify-center min-w-[2rem] h-8 px-2 text-sm rounded hover:bg-[#141411] aria-pressed:bg-[#2e2a1e] aria-pressed:text-[#eec617]" title="Inserir link (só https)" aria-label="Link"><i data-lucide="link" class="w-4 h-4"></i><span class="ml-1 text-xs">Link</span></button>
+              <button data-cmd="imagem" class="ferr inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Imagem no texto"><i data-lucide="image-plus" class="w-4 h-4"></i><span class="ml-1 text-xs hidden sm:inline">Imagem</span></button>
+              <button data-cmd="lista" class="ferr inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Lista com marcadores ou numerada"><span class="text-sm leading-none">•≡</span><span class="hidden sm:inline">Lista</span></button>
+              <button data-cmd="tabela" class="ferr inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Tabela de dados"><span class="text-sm leading-none">▦</span><span class="hidden sm:inline">Tabela</span></button>
+              <button data-cmd="numero" class="ferr inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Box de destaque numérico"><span class="text-sm leading-none font-semibold">%</span><span class="hidden sm:inline">Box numérico</span></button>
+              <button data-cmd="anexo" class="ferr inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Anexar PDF para download (até 20 MB)"><span class="text-sm leading-none">⇩</span><span class="hidden sm:inline">Anexar PDF</span></button>
+              <span class="w-px bg-[#2e2a1e] mx-1" aria-hidden="true"></span>
+              <button data-cmd="importar-word" class="ferr inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded hover:bg-[#141411] border border-[#2e2a1e]" title="Importar um arquivo Word (.docx): parágrafos, intertítulos, negrito, itálico, listas, tabelas e links"><span class="text-sm leading-none">W</span><span>Importar Word</span></button>
+              <button data-cmd="importar-pdf" class="ferr inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs rounded hover:bg-[#141411] border border-[#2e2a1e]" title="Importar o texto de um PDF (texto corrido; revise tabelas e colunas)"><span class="text-sm leading-none">P</span><span>Importar PDF</span></button>
+              <input id="arq-word" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="hidden">
+              <input id="arq-pdf" type="file" accept=".pdf,application/pdf" class="hidden">
+              <input id="arq-anexo" type="file" accept=".pdf,application/pdf" class="hidden">
+              <input id="arq-img" type="file" accept="image/jpeg,image/png,image/webp" class="hidden">
+              <span class="w-px bg-[#2e2a1e] mx-1" aria-hidden="true"></span>
+              <button data-cmd="desfazer" class="ferr inline-flex items-center px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Desfazer"><span class="text-base leading-none">↶</span></button>
+              <button data-cmd="refazer" class="ferr inline-flex items-center px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Refazer"><span class="text-base leading-none">↷</span></button>
+            </div>
+            <div id="blocos" class="p-5 space-y-3 min-h-[260px]"></div>
+            <div class="flex flex-wrap gap-x-6 gap-y-1 px-5 py-3 border-t border-[#2e2a1e] text-[11px] f-mono text-[#a89f88]">
+              <span id="m-palavras">0 palavras</span><span id="m-leitura">0 min de leitura</span><span>Colar texto do Word ou da web limpa a formatação</span>
+            </div>
+          </div>
+
+          <!-- Fontes -->
+          <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-5">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs uppercase tracking-widest text-[#a89f88]">Fontes consultadas</span>
+              <button id="btn-fonte" class="inline-flex items-center gap-1.5 text-xs text-[#eec617] hover:underline"><i data-lucide="plus" class="w-3.5 h-3.5"></i>Fonte</button>
+            </div>
+            <ul id="fontes" class="space-y-2"></ul>
+          </div>
+        </div>
+
+        <!-- Coluna lateral -->
+        <div class="space-y-5 min-w-0">
+          <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-5">
+            <h2 class="text-xs uppercase tracking-widest text-[#a89f88] mb-4">Publicação</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-1 gap-6 items-end">
+              <div>
+                <label for="f-tipo" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5 h-4">Tipo</label>
+                <select id="f-tipo" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-2 text-sm"><option>Reportagem</option><option>Opinião</option><option>Nota</option></select>
+              </div>
+              <div>
+                <label for="f-editoria" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5 h-4">Editoria</label>
+                <select id="f-editoria" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-2 text-sm"><option>Mercados</option><option>Economia</option><option>Empresas</option><option>Política Econômica</option><option>Internacional</option><option>Investimentos</option><option>Opinião</option></select>
+              </div>
+              <div>
+                <label for="f-lugar" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5 h-4">Lugar na capa</label>
+                <select id="f-lugar" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-2 text-sm"><option>Seção Artigos</option><option>Manchete do dia</option><option>Só na lista de notícias</option></select>
+              </div>
+            </div>
+            <div class="mt-5">
+              <label for="f-quando" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5">Agendar para (horário de Brasília)</label>
+              <input id="f-quando" type="datetime-local" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-2 text-sm [color-scheme:dark]">
+            </div>
+          </div>
+
+          <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-5">
+            <h2 class="text-xs uppercase tracking-widest text-[#a89f88] mb-3">Autor</h2>
+            <label for="f-autor" class="sr-only">Autor</label>
+            <input id="f-autor" value="Dr. Thiago Viegas" maxlength="60" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-3 text-sm">
+            <p class="text-[11px] text-[#a89f88] mt-2">Na página: "Por <span id="a-prev">Dr. Thiago Viegas</span> · Editor: Dr. Thiago Viegas".</p>
+          </div>
+
+          <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-5">
+            <h2 class="text-xs uppercase tracking-widest text-[#a89f88] mb-3">Foto de capa</h2>
+            <div id="drop" tabindex="0" role="button" aria-label="Enviar foto de capa: arraste ou pressione Enter"
+                 class="relative flex flex-col items-center justify-center text-center gap-2 h-44 border-2 border-dashed border-[#2e2a1e] rounded-lg cursor-pointer hover:border-[#a89f88] overflow-hidden">
+              <img id="thumb" alt="" class="hidden absolute inset-0 w-full h-full object-cover">
+              <div id="drop-txt" class="flex flex-col items-center gap-2 px-4">
+                <i data-lucide="upload-cloud" class="w-7 h-7 text-[#a89f88]"></i>
+                <span class="text-sm">Arraste a foto ou clique</span>
+                <span class="text-[11px] text-[#a89f88]">JPG, PNG ou WEBP · até 5 MB</span>
+              </div>
+              <button id="foto-remover" class="hidden absolute top-2 right-2 bg-black/80 border border-[#2e2a1e] rounded p-1.5 hover:text-[#e2564f]" aria-label="Remover foto"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+            <input id="foto-arq" type="file" accept="image/jpeg,image/png,image/webp" class="hidden">
+            <p id="foto-info" class="text-[11px] f-mono text-[#a89f88] mt-2" aria-live="polite"></p>
+            <div class="space-y-3 mt-3">
+              <div><label for="f-alt" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1">Texto alternativo (obrigatório)</label>
+                <input id="f-alt" maxlength="160" class="w-full h-9 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="Descreva a imagem para quem não a vê"></div>
+              <div class="grid grid-cols-2 gap-3">
+                <div><label for="f-fotografo" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1">Fotógrafo</label>
+                  <input id="f-fotografo" maxlength="60" class="w-full h-9 bg-black border border-[#2e2a1e] rounded px-3 text-sm"></div>
+                <div><label for="f-origem" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1">Origem</label>
+                  <select id="f-origem" class="w-full h-9 bg-black border border-[#2e2a1e] rounded px-2 text-sm"><option>Foto própria</option><option>Unsplash</option><option>Outra, com autorização</option></select></div>
+              </div>
+              <p class="text-[11px] text-[#a89f88]">Legenda sob a foto: só o fotógrafo. Crédito completo no fim da reportagem.</p>
+            </div>
+          </div>
+
+          <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-5">
+            <div class="flex items-center justify-between mb-3"><h2 class="text-xs uppercase tracking-widest text-[#a89f88]">Compartilhamento e Google</h2>
+              <button id="btn-prev-social" class="text-xs text-[#eec617] hover:underline">Ver prévia</button></div>
+            <div class="space-y-3">
+              <div><div class="flex justify-between mb-1"><label for="f-seo-tit" class="text-[11px] uppercase tracking-wider text-[#a89f88]">Título para busca e WhatsApp</label><span id="c-seo-tit" class="f-mono text-[11px] text-[#a89f88]">0/60</span></div>
+                <input id="f-seo-tit" maxlength="90" class="w-full h-9 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="Em branco = usa o título"></div>
+              <div><div class="flex justify-between mb-1"><label for="f-seo-desc" class="text-[11px] uppercase tracking-wider text-[#a89f88]">Descrição</label><span id="c-seo-desc" class="f-mono text-[11px] text-[#a89f88]">0/155</span></div>
+                <textarea id="f-seo-desc" rows="2" maxlength="220" class="w-full bg-black border border-[#2e2a1e] rounded px-3 py-2 text-sm" placeholder="Em branco = usa a linha fina"></textarea></div>
+            </div>
+          </div>
+
+          <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-5">
+            <h2 class="text-xs uppercase tracking-widest text-[#a89f88] mb-3">Tags <span id="c-tags" class="f-mono normal-case tracking-normal">0/8</span></h2>
+            <div id="tags" class="flex flex-wrap gap-2 mb-2"></div>
+            <label for="f-tag" class="sr-only">Nova tag</label>
+            <input id="f-tag" maxlength="30" class="w-full h-9 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="Digite e tecle Enter">
+          </div>
+
+          <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-5">
+            <h2 class="text-xs uppercase tracking-widest text-[#a89f88] mb-3">Verificação de estilo</h2>
+            <ul id="verif" class="space-y-2 text-sm" aria-live="polite"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- ABA: LAYOUT DA CAPA ---------- -->
+    <section id="aba-layout" class="aba hidden px-4 md:px-8 py-6">
+      <div class="flex flex-wrap items-center gap-3 mb-5">
+        <h1 class="text-lg">Layout da capa</h1>
+        <span class="f-mono text-[11px] text-[#a89f88]">versão no ar: <span id="lay-ver">v1</span></span>
+        <div class="ml-auto flex gap-2">
+          <button id="btn-hist" class="inline-flex items-center gap-2 px-3 py-2 text-sm border border-[#2e2a1e] rounded hover:border-[#a89f88]"><i data-lucide="history" class="w-4 h-4"></i>Histórico de versões</button>
+          <button id="btn-prev-capa" class="inline-flex items-center gap-2 px-3 py-2 text-sm border border-[#2e2a1e] rounded hover:border-[#a89f88]"><i data-lucide="eye" class="w-4 h-4"></i>Pré-visualizar capa</button>
+          <button id="btn-aplicar" class="inline-flex items-center gap-2 px-4 py-2 text-sm rounded bg-[#eec617] text-black font-semibold"><i data-lucide="check" class="w-4 h-4"></i>Aplicar</button>
+        </div>
+      </div>
+      <p class="text-sm text-[#a89f88] mb-4">Arraste pela alça ou use ↑ ↓. O Scanner do Dia fica sempre na coluna "O que move o dia".</p>
+      <ol id="lay-blocos" class="space-y-3"></ol>
+    </section>
+
+    <!-- ---------- ABAS SIMPLES (dados fictícios) ---------- -->
+    <section id="aba-painel" class="aba hidden px-4 md:px-8 py-6">
+      <h1 class="text-lg mb-5">Painel</h1>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88]">Artigos publicados hoje</div><div id="p-hoje" class="f-mono text-2xl mt-1">–</div></div>
+        <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88]">Rascunhos e agendados</div><div id="p-fila" class="f-mono text-2xl mt-1">–</div></div>
+        <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88]">Scanner com alerta (mês)</div><div id="p-alertas" class="f-mono text-2xl mt-1 text-[#dba22a]">–</div></div>
+        <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88]">Custo dos robôs (mês)</div><div id="p-custo" class="f-mono text-2xl mt-1">–</div></div>
+      </div>
+      <h2 class="text-xs uppercase tracking-widest text-[#a89f88] mt-8 mb-3">Últimas coletas dos robôs</h2>
+      <div class="overflow-x-auto bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg"><table class="w-full text-xs f-mono"><tbody id="p-coletas"></tbody></table></div>
+    </section>
+    <section id="aba-fila" class="aba hidden px-4 md:px-8 py-6"><h1 class="text-lg mb-5">Fila de revisão</h1><div id="lista-fila" class="space-y-3"></div></section>
+    <section id="aba-publicados" class="aba hidden px-4 md:px-8 py-6"><h1 class="text-lg mb-5">Publicados</h1><div id="lista-pub" class="space-y-3"></div></section>
+    <section id="aba-midia" class="aba hidden px-4 md:px-8 py-6"><h1 class="text-lg mb-5">Mídia</h1><div id="lista-midia" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"></div></section>
+    <section id="aba-banners" class="aba hidden px-4 md:px-8 py-6">
+      <h1 class="text-lg mb-1">Publicidade</h1>
+      <p class="text-sm text-[#a89f88] mb-5">Padrão dos grandes portais. Só imagem + link https + período; cada banner aparece com a etiqueta "Publicidade". Código de terceiros (scripts de anúncio) não é aceito.</p>
+      <h2 class="text-xs uppercase tracking-widest text-[#a89f88] mb-3">Espaços</h2>
+      <div id="espacos" class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8"></div>
+      <h2 class="text-xs uppercase tracking-widest text-[#a89f88] mb-3">Novo banner</h2>
+      <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-5 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+          <div><label for="b-espaco" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5">Espaço</label>
+            <select id="b-espaco" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-2 text-sm"><option value="lateral">Retângulo lateral · 300 × 250</option><option value="artigo">Dentro do artigo · 728 × 90 (celular 300 × 250)</option><option value="topo">Faixa do topo · 970 × 250 (celular 320 × 100)</option></select></div>
+          <div><label for="b-anunciante" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5">Anunciante</label>
+            <input id="b-anunciante" maxlength="80" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="Ex.: Banco X"></div>
+          <div><label for="b-link" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5">Link do anúncio (https)</label>
+            <input id="b-link" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="https://"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end mt-5">
+          <div><span class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5">Imagem (computador)</span>
+            <label class="flex items-center justify-center h-20 border-2 border-dashed border-[#2e2a1e] rounded cursor-pointer hover:border-[#a89f88] text-xs text-[#a89f88] overflow-hidden"><input id="b-img" type="file" accept="image/jpeg,image/png,image/webp" class="hidden"><img id="b-img-prev" alt="" class="hidden max-h-full"><span id="b-img-txt">JPG, PNG ou WEBP · tamanho do espaço</span></label></div>
+          <div><span class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5">Imagem (celular, opcional)</span>
+            <label class="flex items-center justify-center h-20 border-2 border-dashed border-[#2e2a1e] rounded cursor-pointer hover:border-[#a89f88] text-xs text-[#a89f88] overflow-hidden"><input id="b-imgcel" type="file" accept="image/jpeg,image/png,image/webp" class="hidden"><img id="b-imgcel-prev" alt="" class="hidden max-h-full"><span id="b-imgcel-txt">Em branco = usa a do computador</span></label></div>
+          <div><label for="b-alt" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5">Texto alternativo</label>
+            <input id="b-alt" maxlength="200" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="Descreva o anúncio"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end mt-5">
+          <div><label for="b-ini" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5">Início</label><input id="b-ini" type="date" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-2 text-sm [color-scheme:dark]"></div>
+          <div><label for="b-fim" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1.5">Fim</label><input id="b-fim" type="date" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-2 text-sm [color-scheme:dark]"></div>
+          <div class="flex gap-2"><button id="b-prev" class="flex-1 h-10 text-sm border border-[#2e2a1e] rounded hover:border-[#a89f88]">Pré-visualizar</button><button id="b-salvar" class="flex-1 h-10 text-sm rounded bg-[#eec617] text-black font-semibold">Salvar banner</button></div>
+        </div>
+      </div>
+      <h2 class="text-xs uppercase tracking-widest text-[#a89f88] mb-3">Banners cadastrados</h2>
+      <div id="lista-banners" class="space-y-3"></div>
+    </section>
+    <section id="aba-auditoria" class="aba hidden px-4 md:px-8 py-6">
+      <h1 class="text-lg mb-5">Registro de auditoria</h1>
+      <div class="overflow-x-auto bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg">
+        <table class="w-full text-sm"><thead class="text-[11px] uppercase tracking-wider text-[#a89f88]"><tr class="border-b border-[#2e2a1e]"><th class="text-left p-3">Quando</th><th class="text-left p-3">Quem</th><th class="text-left p-3">Ação</th><th class="text-left p-3">Item</th></tr></thead>
+        <tbody id="lista-aud" class="f-mono text-xs"></tbody></table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ================= JANELAS ================= -->
+<div id="modal" class="hidden fixed inset-0 z-40 bg-black/70 flex items-start md:items-center justify-center p-3 md:p-8" role="dialog" aria-modal="true" aria-labelledby="modal-tit">
+  <div class="w-full max-w-3xl max-h-[92vh] overflow-auto rounded-lg border border-[#2e2a1e] bg-[#0d0d0c]">
+    <div class="flex items-center justify-between px-5 py-3 border-b border-[#2e2a1e] sticky top-0 bg-[#0d0d0c] z-10">
+      <h2 id="modal-tit" class="text-sm uppercase tracking-widest text-[#a89f88]">Janela</h2>
+      <button id="modal-fechar" class="text-[#a89f88] hover:text-[#f2ecd8] text-xl leading-none px-1" aria-label="Fechar (Esc)">✕</button>
+    </div>
+    <div id="modal-corpo"></div>
+  </div>
+</div>
+<div id="portao" class="fixed inset-0 z-[60] bg-black flex items-center justify-center p-6 text-center">
+  <div><div class="f-marca tracking-[.18em] text-sm">VALOR E MERCADO</div><div class="f-mono text-[11px] text-[#eec617] mt-1 tracking-widest">REDAÇÃO</div>
+  <p id="portao-msg" class="mt-6 text-sm text-[#a89f88] leading-relaxed">Abrindo a Redação…</p></div>
+</div>
+<div id="toasts" class="fixed bottom-4 right-4 z-50 space-y-2 w-[calc(100%-2rem)] sm:w-80" aria-live="assertive"></div>
+
+<script>
+/* =====================================================================
+   REDAÇÃO DO VALOR E MERCADO (v131) — interface do editor. TODA gravação passa
+   por RPC no Supabase protegida por _vm_exige_editor() (ver integração no fim).
+   ===================================================================== */
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const escapar = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const icones = () => { if (window.lucide) lucide.createIcons(); };
+function toast(msg, tipo = 'ok') {
+  const cor = {ok:'border-[#3ecb99]', aviso:'border-[#dba22a]', erro:'border-[#e2564f]'}[tipo];
+  const el = document.createElement('div');
+  el.className = `bg-[#0d0d0c] border-l-4 ${cor} border border-[#2e2a1e] rounded px-4 py-3 text-sm shadow-lg`;
+  el.textContent = msg; $('#toasts').appendChild(el);
+  setTimeout(() => el.remove(), 3800);
+}
+
+/* ---------- abas ---------- */
+const NOMES = {painel:'Painel', fila:'Fila de revisão', escrever:'Escrever artigo', publicados:'Publicados', layout:'Layout da capa', midia:'Mídia', banners:'Publicidade', auditoria:'Registro de auditoria'};
+function abrirAba(id) {
+  $$('.aba').forEach(a => a.classList.toggle('hidden', a.id !== 'aba-' + id));
+  $$('.nav-item').forEach(b => {
+    const at = b.dataset.aba === id;
+    b.classList.toggle('text-[#eec617]', at); b.classList.toggle('bg-[#141411]', at); b.classList.toggle('text-[#a89f88]', !at);
+    b.setAttribute('aria-current', at ? 'page' : 'false');
+  });
+  $('#trilha').textContent = NOMES[id];
+  $('#acoes-artigo').classList.toggle('hidden', id !== 'escrever');
+  $('#salvo').classList.toggle('hidden', id !== 'escrever');
+}
+$$('.nav-item').forEach(b => b.addEventListener('click', () => abrirAba(b.dataset.aba)));
+
+/* ---------- contadores ---------- */
+function contadores() {
+  const t = $('#f-titulo').value.length, l = $('#f-linha').value.length;
+  $('#c-titulo').textContent = `${t}/70`; $('#c-titulo').className = 'f-mono text-[11px] ' + (t > 70 ? 'text-[#e2564f]' : 'text-[#a89f88]');
+  const ok = l >= 140 && l <= 200;
+  $('#c-linha').textContent = `${l} · faixa 140–200`;
+  $('#c-linha').className = 'f-mono text-[11px] ' + (l === 0 ? 'text-[#a89f88]' : ok ? 'text-[#3ecb99]' : 'text-[#dba22a]');
+  $('#a-prev').textContent = $('#f-autor').value || 'Dr. Thiago Viegas';
+}
+
+/* ---------- editor de blocos ---------- */
+const TIPOS = {
+  paragrafo:   {rot:'Parágrafo',   cls:'f-jornal text-[17px] leading-relaxed', ph:'Escreva o parágrafo…'},
+  intertitulo: {rot:'Intertítulo', cls:'f-jornal text-xl font-medium',          ph:'Intertítulo'},
+  citacao:     {rot:'Citação',     cls:'f-jornal text-lg italic border-l-2 border-[#eec617] pl-4', ph:'"Frase destacada", com o nome de quem falou'},
+};
+let blocoAtual = null;
+function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
+  const w = document.createElement('div');
+  w.className = 'group relative bg-black/40 border border-transparent hover:border-[#2e2a1e] rounded px-3 py-2';
+  w.dataset.tipo = tipo;
+  if (tipo === 'lista' || tipo === 'tabela' || tipo === 'numero' || tipo === 'anexo') {
+    montarBlocoEspecial(w, tipo, texto || {});
+  } else if (tipo === 'imagem') {
+    if (texto && texto.src) w.dataset.src = texto.src;
+    w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2">Imagem no texto</div>
+      ${w.dataset.src ? `<img src="${escapar(w.dataset.src)}" alt="" class="max-h-40 rounded">` : '<div class="h-28 rounded bg-[#141411] border border-dashed border-[#2e2a1e] flex items-center justify-center text-xs text-[#a89f88]">imagem escolhida na Mídia</div>'}
+      <input class="mt-2 w-full h-8 bg-black border border-[#2e2a1e] rounded px-2 text-xs" maxlength="200" placeholder="Legenda (só o nome do fotógrafo)" aria-label="Legenda da imagem">`;
+    if (texto && texto.legenda) w.querySelector('input').value = texto.legenda;
+  } else {
+    const t = TIPOS[tipo];
+    w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-1">${t.rot}</div>
+      <div class="editor-bloco ${t.cls}" contenteditable="true" spellcheck="true" lang="pt-BR" data-placeholder="${t.ph}" role="textbox" aria-multiline="true" aria-label="${t.rot}"></div>`;
+    const ed = w.querySelector('.editor-bloco'); if (typeof texto === 'string') ed.textContent = texto; else if (texto && texto.html) ed.innerHTML = texto.html;
+    ed.addEventListener('focus', () => { blocoAtual = ed; });
+    ed.addEventListener('input', atualizar);
+    ed.addEventListener('paste', e => {          // colar sempre limpa a formatação
+      e.preventDefault();
+      const txt = (e.clipboardData || window.clipboardData).getData('text/plain').replace(/\r/g, '');
+      const partes = txt.split(/\n\s*\n/).map(s => s.replace(/\s+/g, ' ').trim()).filter(Boolean);
+      if (!partes.length) return;
+      document.execCommand('insertText', false, partes.shift());
+      let ref = w; partes.forEach(p => { ref = novoBloco('paragrafo', p, ref); });
+      atualizar(); toast('Texto colado sem formatação.');
+    });
+    ed.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey && tipo !== 'citacao') { e.preventDefault(); novoBloco('paragrafo', '', w).querySelector('.editor-bloco').focus(); }
+      if (e.key === 'Backspace' && !ed.textContent && $$('#blocos > div').length > 1) { e.preventDefault(); const ant = w.previousElementSibling; w.remove(); ant?.querySelector('.editor-bloco')?.focus(); atualizar(); }
+      if ((e.ctrlKey || e.metaKey) && !e.shiftKey) { const k = e.key.toLowerCase(), m = {b:'negrito', i:'italico', u:'sublinhado'}[k]; if (m) { e.preventDefault(); formatar(m); } if (k === 'z' && desfazerFmt(ed, false)) e.preventDefault(); if (k === 'y' && desfazerFmt(ed, true)) e.preventDefault(); }
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'z' && desfazerFmt(ed, true)) e.preventDefault();
+    });
+  }
+  const tirar = document.createElement('button');
+  tirar.className = 'absolute top-1.5 right-1.5 opacity-0 group-hover:opacity-100 focus:opacity-100 text-[#a89f88] hover:text-[#e2564f]';
+  tirar.setAttribute('aria-label', 'Remover bloco'); tirar.innerHTML = '<i data-lucide="x" class="w-3.5 h-3.5"></i>';
+  tirar.onclick = () => { if ($$('#blocos > div').length > 1) { w.remove(); atualizar(); } };
+  w.appendChild(tirar);
+  depois ? depois.after(w) : $('#blocos').appendChild(w);
+  w.addEventListener('focusin', () => { blocoRef = w; });
+  if (depois) blocoRef = w;
+  icones(); return w;
+}
+/* v131: o bloco novo entra depois do último bloco tocado ou inserido (assim lista, tabela e box saem na ordem em que foram pedidos) */
+let blocoRef = null;
+function blocoDoCursor() { return blocoRef && blocoRef.isConnected ? blocoRef : $('#blocos').lastElementChild; }
+$$('.ferr').forEach(b => b.addEventListener('mousedown', e => e.preventDefault()));
+$$('.ferr').forEach(b => b.addEventListener('click', () => {
+  const c = b.dataset.cmd;
+  if (c === 'anexo') return $('#arq-anexo').click();
+  if (c === 'imagem') return $('#arq-img').click();
+  if (c === 'importar-word') return $('#arq-word').click();
+  if (c === 'importar-pdf') return $('#arq-pdf').click();
+  if (['lista','tabela','numero'].includes(c)) { const n = novoBloco(c, {}, blocoDoCursor()); n.querySelector('input,textarea,[contenteditable]')?.focus(); atualizar(); return; }
+  if (['paragrafo','intertitulo','citacao'].includes(c)) {
+    if (c === 'intertitulo' && $('#f-tipo').value === 'Nota') return toast('Nota curta não tem intertítulo.', 'aviso');
+    const n = novoBloco(c, '', blocoDoCursor()); n.querySelector('.editor-bloco')?.focus(); atualizar(); return;
+  }
+  if (MARCAS[c] || c === 'limpar') return formatar(c);
+  if (c === 'desfazer') { const ed = blocoAtual; if (!desfazerFmt(ed, false)) document.execCommand('undo'); return; }
+  if (c === 'refazer') { const ed = blocoAtual; if (!desfazerFmt(ed, true)) document.execCommand('redo'); return; }
+  if (c === 'link') return janelaLink();
+}));
+
+/* link: só https, sempre com rel e target seguros */
+function janelaLink() {
+  const sel = window.getSelection();
+  if (!blocoAtual || !sel.rangeCount || sel.isCollapsed) return toast('Selecione o trecho que vira link.', 'aviso');
+  const faixa = sel.getRangeAt(0).cloneRange();
+  abrirModal('Inserir link', `<div class="p-5 space-y-3">
+      <p class="text-sm">Texto: <b class="f-jornal">${escapar(faixa.toString())}</b></p>
+      <label for="l-url" class="block text-[11px] uppercase tracking-wider text-[#a89f88]">Endereço</label>
+      <input id="l-url" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="https://">
+      <p id="l-erro" class="text-xs text-[#e2564f] hidden">Só endereços que começam com https:// são aceitos.</p>
+      <div class="flex justify-end gap-2 pt-2"><button id="l-ok" class="px-4 py-2 text-sm rounded bg-[#eec617] text-black font-semibold">Inserir link</button></div></div>`);
+  $('#l-url').focus();
+  $('#l-ok').onclick = () => {
+    const u = $('#l-url').value.trim();
+    let ok = false; try { ok = new URL(u).protocol === 'https:'; } catch (_) {}
+    if (!ok) { $('#l-erro').classList.remove('hidden'); return; }
+    fecharModal(); blocoAtual.focus(); sel.removeAllRanges(); sel.addRange(faixa);
+    const a = document.createElement('a'); a.href = u; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    a.className = 'text-[#eec617] underline underline-offset-2';
+    a.textContent = faixa.toString(); faixa.deleteContents(); faixa.insertNode(a);
+    atualizar(); toast('Link inserido.');
+  };
+}
+
+/* ---------- formatação do trecho (lista fechada de marcas; nada de HTML livre) ---------- */
+const MARCAS = {negrito:'STRONG', italico:'EM', sublinhado:'U', riscado:'S', marcador:'MARK', menor:'SMALL', sobrescrito:'SUP', subscrito:'SUB', codigo:'CODE'};
+const TAG_MARCA = {STRONG:'negrito', B:'negrito', EM:'italico', I:'italico', U:'sublinhado', S:'riscado', DEL:'riscado', STRIKE:'riscado', MARK:'marcador', SMALL:'menor', SUP:'sobrescrito', SUB:'subscrito', CODE:'codigo'};
+const FONTES = {newsreader:'Newsreader,Georgia,serif', georgia:'Georgia,serif', jost:'Jost,sans-serif', plex:'"IBM Plex Sans",sans-serif', mono:'"IBM Plex Mono",monospace'};
+const TAMANHOS = {p:'.85em', g:'1.2em', gg:'1.5em'};
+function selecaoNoEditor() {
+  const sel = getSelection(); if (!sel.rangeCount || sel.isCollapsed) return null;
+  const r = sel.getRangeAt(0), c = r.commonAncestorContainer, ed = (c.nodeType === 1 ? c : c.parentNode).closest('.editor-bloco');
+  return ed ? {sel, r, ed} : null;
+}
+function ancestral(no, ed, teste) { for (let n = no.nodeType === 1 ? no : no.parentNode; n && n !== ed; n = n.parentNode) if (teste(n)) return n; return null; }
+function desembrulhar(el) { const p = el.parentNode; while (el.firstChild) p.insertBefore(el.firstChild, el); p.removeChild(el); }
+/* seleção guardada por posição de caractere: sobrevive a qualquer mudança no HTML do trecho */
+function posicoes(ed, r) { const pre = document.createRange(); pre.selectNodeContents(ed); pre.setEnd(r.startContainer, r.startOffset); const a = pre.toString().length; return [a, a + r.toString().length]; }
+function selecionar(ed, a, b) {
+  const nos = [], w = document.createTreeWalker(ed, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) nos.push(n);
+  const r = document.createRange(); let pos = 0, ini = null, fim = null;
+  for (const t of nos) { const L = t.nodeValue.length;
+    if (ini === null && (a < pos + L || (a === pos + L && t === nos[nos.length - 1]))) ini = [t, a - pos];
+    if (fim === null && b <= pos + L && (b > pos || L === 0 || b === 0)) fim = [t, b - pos];
+    pos += L; }
+  if (ini && fim) { r.setStart(...ini); r.setEnd(...fim); } else { r.selectNodeContents(ed); r.collapse(false); }
+  ed.focus({preventScroll: true}); const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+/* ---------- motor de formatação por "trechos" ----------
+   O texto do bloco vira uma lista de trechos {texto, marcas}. Cada botão só liga ou desliga uma marca nos trechos
+   selecionados e o bloco é redesenhado a partir da lista (sempre com as mesmas tags, na mesma ordem). Assim:
+   - clicar de novo DESLIGA a marca no mesmo trecho (inclusive parcial e combinada com outras);
+   - a seleção e o foco continuam no texto até o editor clicar em outro lugar;
+   - nenhuma tag fora da lista fechada sobrevive. */
+const ORDEM = ['link', 'fonte', 'tamanho', 'negrito', 'italico', 'sublinhado', 'riscado', 'marcador', 'menor', 'sobrescrito', 'subscrito', 'codigo'];
+function lerTrechos(ed) {
+  const out = [];
+  const andar = (n, m) => n.childNodes.forEach(f => {
+    if (f.nodeType === 3) { if (f.nodeValue) out.push({texto: f.nodeValue, m: {...m}}); return; }
+    if (f.nodeType !== 1) return;
+    if (f.nodeName === 'BR') { out.push({texto: ' ', m: {...m}}); return; }
+    const mm = {...m}, t = TAG_MARCA[f.nodeName];
+    if (t) mm[t] = true;
+    if (f.nodeName === 'A' && /^https:\/\//i.test(f.getAttribute('href') || '')) mm.link = f.getAttribute('href');
+    if (f.dataset && FONTES[f.dataset.fonte]) mm.fonte = f.dataset.fonte;
+    if (f.dataset && TAMANHOS[f.dataset.tam]) mm.tamanho = f.dataset.tam;
+    andar(f, mm);
+  });
+  andar(ed, {}); return out;
+}
+const mesmas = (x, y) => ORDEM.every(k => (x[k] || false) === (y[k] || false));
+function desenharTrechos(ed, tr) {
+  const juntos = [];
+  tr.forEach(t => { if (!t.texto) return; const u = juntos[juntos.length - 1]; if (u && mesmas(u.m, t.m)) u.texto += t.texto; else juntos.push({texto: t.texto, m: {...t.m}}); });
+  ed.textContent = '';
+  juntos.forEach(t => {
+    let raiz = document.createTextNode(t.texto);
+    [...ORDEM].reverse().forEach(k => {
+      const v = t.m[k]; if (!v) return; let el;
+      if (k === 'link') { el = document.createElement('a'); el.href = v; el.target = '_blank'; el.rel = 'noopener noreferrer'; el.className = 'text-[#eec617] underline underline-offset-2'; }
+      else if (k === 'fonte') { el = document.createElement('span'); el.dataset.fonte = v; el.style.fontFamily = FONTES[v]; }
+      else if (k === 'tamanho') { el = document.createElement('span'); el.dataset.tam = v; el.style.fontSize = TAMANHOS[v]; }
+      else el = document.createElement(MARCAS[k]);
+      if (k === 'marcador') el.className = 'bg-[#eec617] text-black px-0.5 rounded-sm';
+      if (k === 'codigo') el.className = 'f-mono text-[.9em] bg-[#2e2a1e] px-1 rounded';
+      el.appendChild(raiz); raiz = el;
+    });
+    ed.appendChild(raiz);
+  });
+}
+function partir(tr, a, b) {           // devolve os trechos com cortes exatos em a e b, e os índices do miolo
+  const out = []; let pos = 0;
+  tr.forEach(t => { const L = t.texto.length, cortes = [0, L];
+    [a, b].forEach(c => { if (c > pos && c < pos + L) cortes.push(c - pos); });
+    [...new Set(cortes)].sort((x, y) => x - y).reduce((ini, fim) => { if (fim > ini) out.push({texto: t.texto.slice(ini, fim), m: {...t.m}}); return fim; });
+    pos += L; });
+  let p = 0; const dentro = [];
+  out.forEach((t, i) => { if (p >= a && p + t.texto.length <= b && t.texto.length) dentro.push(i); p += t.texto.length; });
+  return {out, dentro};
+}
+const historicoFmt = new WeakMap();   // desfazer/refazer das formatações, por bloco
+function formatar(cmd, valor) {
+  const x = selecaoNoEditor(); if (!x) return toast('Selecione o trecho que quer formatar.', 'aviso');
+  const {r, ed} = x, [a, b] = posicoes(ed, r);
+  const antes = ed.innerHTML, {out, dentro} = partir(lerTrechos(ed), a, b);
+  if (!dentro.length) return;
+  const sel = dentro.map(i => out[i]);
+  if (cmd === 'limpar') sel.forEach(t => { t.m = t.m.link ? {link: t.m.link} : {}; });      // o link fica; o resto sai
+  else if (cmd === 'fonte' || cmd === 'tamanho') sel.forEach(t => { if (valor) t.m[cmd] = valor; else delete t.m[cmd]; });
+  else {
+    const ligar = !sel.every(t => t.m[cmd]);                       // tudo ligado -> desliga; senão -> liga em tudo
+    sel.forEach(t => { if (ligar) { t.m[cmd] = true; if (cmd === 'sobrescrito') delete t.m.subscrito; if (cmd === 'subscrito') delete t.m.sobrescrito; } else delete t.m[cmd]; });
+  }
+  desenharTrechos(ed, out);
+  const h = historicoFmt.get(ed) || {voltar: [], ir: []}; h.voltar.push({html: antes, a, b}); h.ir = []; h.ultimo = ed.innerHTML; historicoFmt.set(ed, h);
+  selecionar(ed, a, b);                                            // o trecho continua selecionado e com o foco
+  atualizar(); estadoBotoes();
+}
+function desfazerFmt(ed, refazer) {
+  const h = ed && historicoFmt.get(ed); if (!h) return false;
+  const pilha = refazer ? h.ir : h.voltar, outra = refazer ? h.voltar : h.ir;
+  if (!pilha.length || ed.innerHTML !== h.ultimo) return false;        // houve digitação depois: usa o desfazer do navegador
+  const passo = pilha.pop(); outra.push({html: ed.innerHTML, a: passo.a, b: passo.b});
+  ed.innerHTML = passo.html; h.ultimo = ed.innerHTML; selecionar(ed, passo.a, passo.b); atualizar(); estadoBotoes(); return true;
+}
+/* a lista de fonte/tamanho tira o foco do texto: guarda a seleção, aplica e devolve o foco ao trecho */
+let faixaGuardada = null;
+function guardarFaixa() { const x = selecaoNoEditor(); if (x) faixaGuardada = {ed: x.ed, pos: posicoes(x.ed, x.r)}; }
+document.addEventListener('selectionchange', () => { guardarFaixa(); estadoBotoes(); });
+$$('.ferr-sel').forEach(el => ['pointerdown', 'mousedown', 'focus', 'keydown'].forEach(ev => el.addEventListener(ev, guardarFaixa)));
+function aplicarLista(cmd, el) {
+  const v = el.value; el.value = '';
+  if (selecaoNoEditor()) return formatar(cmd, v);                 // a seleção continua no texto: usa ela
+  if (!faixaGuardada) return toast('Selecione o trecho que quer formatar.', 'aviso');
+  selecionar(faixaGuardada.ed, ...faixaGuardada.pos); formatar(cmd, v);
+}
+$('#sel-fonte').addEventListener('change', e => aplicarLista('fonte', e.target));
+$('#sel-tam').addEventListener('change', e => aplicarLista('tamanho', e.target));
+/* estado dos botões conforme a seleção (dourado = marca ligada em todo o trecho) */
+function estadoBotoes() {
+  const s = getSelection(); if (!s.rangeCount) return;
+  const r = s.getRangeAt(0), no = r.startContainer, ed = (no.nodeType === 1 ? no : no.parentNode)?.closest?.('.editor-bloco');
+  if (!ed) return;
+  let marcas;
+  if (r.collapsed) { marcas = [{}]; for (let n = no.nodeType === 1 ? no : no.parentNode; n && n !== ed; n = n.parentNode) { const t = TAG_MARCA[n.nodeName]; if (t) marcas[0][t] = true; } }
+  else { const [a, b] = posicoes(ed, r), {out, dentro} = partir(lerTrechos(ed), a, b); marcas = dentro.map(i => out[i].m); }
+  $$('.ferr[data-cmd]').forEach(bt => { const c = bt.dataset.cmd; if (!MARCAS[c]) return; bt.setAttribute('aria-pressed', String(marcas.length > 0 && marcas.every(m => m[c]))); });
+}
+/* corpo -> JSON de blocos (formato que vai para o banco): árvore com lista fechada de marcas */
+function noJSON(n) {
+  if (n.nodeType === 3) return n.nodeValue ? {texto: n.nodeValue.replace(/\s+/g, ' ')} : null;
+  if (n.nodeType !== 1) return null;
+  const filhos = [...n.childNodes].map(noJSON).filter(Boolean);
+  if (!filhos.length) return null;
+  const marca = TAG_MARCA[n.nodeName];
+  if (marca) return {marca, conteudo: filhos};
+  if (n.nodeName === 'A' && /^https:\/\//i.test(n.getAttribute('href') || '')) return {marca: 'link', url: n.getAttribute('href'), conteudo: filhos};
+  if (n.dataset && FONTES[n.dataset.fonte]) return {marca: 'fonte', valor: n.dataset.fonte, conteudo: filhos};
+  if (n.dataset && TAMANHOS[n.dataset.tam]) return {marca: 'tamanho', valor: n.dataset.tam, conteudo: filhos};
+  return filhos.length === 1 ? filhos[0] : {marca: 'grupo', conteudo: filhos};   // qualquer outra tag é descartada (só o texto fica)
+}
+const textoDe = c => (c || []).map(x => x.texto ?? textoDe(x.conteudo)).join('');
+/* corpo -> JSON de blocos (formato antigo, só para a contagem) */
+function corpoJSON() {
+  return $$('#blocos > div').map(w => {
+    const tipo = w.dataset.tipo;
+    if (tipo === 'imagem') return {tipo, legenda: w.querySelector('input').value.trim(), ...(w.dataset.src ? {src: w.dataset.src} : {})};
+    if (w._json) return w._json();
+    const conteudo = [...w.querySelector('.editor-bloco').childNodes].map(noJSON).filter(Boolean);
+    return {tipo, texto: textoDe(conteudo).replace(/\s+/g, ' ').trim(), conteudo};
+  }).filter(b => !['paragrafo','intertitulo','citacao'].includes(b.tipo) || b.texto);
+}
+/* JSON -> HTML seguro (mesma regra da página pública: escape + só marcas da lista; nada vindo do usuário vira tag) */
+const TAG_SAIDA = {negrito:'strong', italico:'em', sublinhado:'u', riscado:'s', marcador:'mark', menor:'small', sobrescrito:'sup', subscrito:'sub', codigo:'code'};
+function conteudoHTML(c) {
+  return (c || []).map(x => {
+    if (x.texto !== undefined) return escapar(x.texto);
+    const dentro = conteudoHTML(x.conteudo);
+    if (TAG_SAIDA[x.marca]) return x.marca === 'codigo' ? `<code class="f-mono text-[.9em] bg-[#ECE7D6] px-1 rounded">${dentro}</code>` : x.marca === 'marcador' ? `<mark class="bg-[#E4D79B] px-0.5">${dentro}</mark>` : `<${TAG_SAIDA[x.marca]}>${dentro}</${TAG_SAIDA[x.marca]}>`;
+    if (x.marca === 'link' && /^https:\/\//i.test(x.url || '')) return `<a href="${escapar(x.url)}" target="_blank" rel="noopener noreferrer" class="underline text-[#414A38]">${dentro}</a>`;
+    if (x.marca === 'fonte' && FONTES[x.valor]) return `<span style="font-family:${FONTES[x.valor]}">${dentro}</span>`;
+    if (x.marca === 'tamanho' && TAMANHOS[x.valor]) return `<span style="font-size:${TAMANHOS[x.valor]}">${dentro}</span>`;
+    return dentro;                                          // marca desconhecida: só o texto, nunca a tag
+  }).join('');
+}
+/* ticker automático: PETR4, VALE3, ITUB4, BOVA11… viram link para a página da empresa na SOLIDUNS (fora de links e de código) */
+const RE_TICKER = /\b([A-Z]{4}(?:3|4|5|6|11|34))\b/g;
+const URL_TICKER = t => 'https://soliduns.com.br/#/investimentos/mercado-financeiro/relatorios?ticker=' + t;
+function comTickers(html) {
+  return html.split(/(<a\b[\s\S]*?<\/a>|<code\b[\s\S]*?<\/code>|<[^>]+>)/).map((parte, i) => i % 2 ? parte
+    : parte.replace(RE_TICKER, t => `<a href="${URL_TICKER(t)}" target="_blank" rel="noopener" class="font-medium text-[#414A38] underline decoration-dotted underline-offset-2" title="Ver ${t} na SOLIDUNS">${t}</a>`)).join('');
+}
+function blocosHTML(blocos) {
+  return blocos.map(b => {
+    if (b.tipo === 'imagem') return `<figure class="my-5">${b.src ? `<img src="${escapar(b.src)}" alt="" class="w-full rounded-sm">` : '<div class="h-40 bg-[#D9D3BF]/60"></div>'}<figcaption class="text-xs f-marca text-[#4F5446] mt-1">${escapar(b.legenda ? 'Foto: ' + b.legenda : '')}</figcaption></figure>`;
+    if (b.tipo === 'lista') { const tg = b.ordenada ? 'ol' : 'ul';
+      return `<${tg} class="${b.ordenada ? 'list-decimal' : 'list-disc'} pl-6 my-4 space-y-1.5 f-jornal text-[1.13rem] leading-[1.6] text-[#1C1F18] marker:text-[#7A6629]">${(b.itens || []).map(it => `<li class="pl-1">${comTickers(conteudoHTML(it.conteudo))}</li>`).join('')}</${tg}>`; }
+    if (b.tipo === 'tabela') return `<figure class="my-6"><div class="overflow-x-auto"><table class="w-full border-collapse f-marca text-[14px] text-[#1C1F18]">
+        <thead><tr>${(b.cabecalho || []).map(c => `<th class="text-left font-medium uppercase tracking-wider text-[11px] text-[#F5F2E7] bg-[#414A38] px-3 py-2">${escapar(c)}</th>`).join('')}</tr></thead>
+        <tbody>${(b.linhas || []).map(l => `<tr class="border-b border-[#D9D3BF] even:bg-[#ECE7D6]/60">${l.map((c, i) => `<td class="px-3 py-2 ${/^[-+−]?[\d.,]+%?$/.test(String(c).trim()) ? 'text-right tabular-nums' : ''}">${comTickers(escapar(c))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+        ${b.legenda || b.fonte ? `<figcaption class="f-marca text-[12px] text-[#4F5446] mt-1.5">${escapar(b.legenda || '')}${b.fonte ? ` <span class="text-[#7A6629]">Fonte: ${escapar(b.fonte)}</span>` : ''}</figcaption>` : ''}</figure>`;
+    if (b.tipo === 'numero') return `<aside class="my-6 flex items-center gap-5 border-l-4 border-[#7A6629] bg-[#ECE7D6] px-5 py-4"><div class="f-jornal text-5xl leading-none text-[#414A38] whitespace-nowrap">${escapar(b.valor)}</div><div class="f-marca text-[14px] leading-snug text-[#1C1F18]">${escapar(b.legenda)}</div></aside>`;
+    if (b.tipo === 'anexo') return `<a href="${escapar(b.url || '#')}" target="_blank" rel="noopener noreferrer" class="my-5 flex items-center gap-4 border border-[#D9D3BF] bg-white/60 px-4 py-3 no-underline hover:border-[#414A38]"><span class="f-marca text-[11px] font-medium bg-[#414A38] text-[#F5F2E7] px-2 py-1">PDF</span><span class="flex-1"><span class="block f-jornal text-[1.05rem] text-[#1C1F18]">${escapar(b.titulo || b.nome)}</span><span class="block f-marca text-[12px] text-[#4F5446]">${escapar(b.nome)} · ${escapar(b.tamanho || '')} · baixar</span></span><span aria-hidden="true" class="text-[#414A38] text-xl">⇩</span></a>`;
+    const h = comTickers(conteudoHTML(b.conteudo));
+    if (b.tipo === 'intertitulo') return `<h3 class="f-jornal text-2xl font-medium mt-6 mb-2 text-[#1C1F18]">${h}</h3>`;
+    if (b.tipo === 'citacao') return `<blockquote class="f-jornal text-xl italic border-l-4 border-[#414A38] pl-4 my-5 text-[#1C1F18]">${h}</blockquote>`;
+    return `<p class="f-jornal text-[1.13rem] leading-[1.7] mb-4 text-[#1C1F18]">${h}</p>`;
+  }).join('');
+}
+
+/* ---------- blocos especiais: lista, tabela, box numérico, anexo PDF ---------- */
+const CAMPO = 'bg-black border border-[#2e2a1e] rounded px-2 text-sm focus:border-[#eec617]';
+function montarBlocoEspecial(w, tipo, d) {
+  if (tipo === 'lista') {
+    w.innerHTML = `<div class="flex items-center gap-3 mb-1"><span class="text-[10px] uppercase tracking-widest text-[#a89f88]">Lista</span>
+      <label class="text-[11px] text-[#a89f88] flex items-center gap-1"><input type="checkbox" class="l-ord accent-[#eec617]" ${d.ordenada ? 'checked' : ''}> numerada</label>
+      <span class="text-[11px] text-[#a89f88]">· um item por linha</span></div>
+      <textarea class="l-itens w-full ${CAMPO} py-2 f-jornal text-[16px] leading-relaxed" rows="4" placeholder="Primeiro item&#10;Segundo item&#10;Terceiro item" aria-label="Itens da lista, um por linha"></textarea>`;
+    w.querySelector('.l-itens').value = (d.itens || []).join('\n');
+    w._json = () => ({tipo, ordenada: w.querySelector('.l-ord').checked,
+      itens: w.querySelector('.l-itens').value.split('\n').map(x => x.replace(/^\s*([-•*]|\d+[.)])\s+/, '').replace(/\s+/g, ' ').trim()).filter(Boolean).slice(0, 50).map(t => ({conteudo: [{texto: t}]}))});
+  }
+  if (tipo === 'tabela') {
+    const cab = d.cabecalho || ['Empresa', 'Lucro (R$ mi)', 'Variação'], lin = d.linhas || [['', '', ''], ['', '', '']];
+    w.innerHTML = `<div class="flex flex-wrap items-center gap-2 mb-2"><span class="text-[10px] uppercase tracking-widest text-[#a89f88]">Tabela</span>
+      <button type="button" class="t-mais-l text-[11px] border border-[#2e2a1e] rounded px-2 py-0.5 hover:border-[#a89f88]">+ linha</button>
+      <button type="button" class="t-menos-l text-[11px] border border-[#2e2a1e] rounded px-2 py-0.5 hover:border-[#a89f88]">− linha</button>
+      <button type="button" class="t-mais-c text-[11px] border border-[#2e2a1e] rounded px-2 py-0.5 hover:border-[#a89f88]">+ coluna</button>
+      <button type="button" class="t-menos-c text-[11px] border border-[#2e2a1e] rounded px-2 py-0.5 hover:border-[#a89f88]">− coluna</button>
+      <span class="text-[11px] text-[#a89f88]">1ª linha = cabeçalho · colar do Excel funciona</span></div>
+      <div class="t-grade overflow-x-auto"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2"><input class="t-leg h-8 ${CAMPO}" placeholder="Legenda da tabela" aria-label="Legenda da tabela" maxlength="200"><input class="t-fonte h-8 ${CAMPO}" placeholder="Fonte (ex.: balanços das companhias)" aria-label="Fonte da tabela" maxlength="120"></div>`;
+    w.querySelector('.t-leg').value = d.legenda || ''; w.querySelector('.t-fonte').value = d.fonte || '';
+    let dados = [cab, ...lin];
+    const ler = () => { dados = [...w.querySelectorAll('.t-grade tr')].map(tr => [...tr.querySelectorAll('input')].map(i => i.value)); };
+    const desenhar = () => {
+      w.querySelector('.t-grade').innerHTML = `<table class="border-collapse">${dados.map((l, r) => `<tr>${l.map((c, k) => `<td class="p-0.5"><input data-r="${r}" data-k="${k}" class="h-8 w-36 ${CAMPO} ${r === 0 ? 'font-semibold text-[#eec617]' : ''}" value="${escapar(c)}" aria-label="${r === 0 ? 'Cabeçalho' : 'Linha ' + r}, coluna ${k + 1}"></td>`).join('')}</tr>`).join('')}</table>`;
+      w.querySelectorAll('.t-grade input').forEach(inp => { inp.addEventListener('input', () => { ler(); atualizar(); });
+        inp.addEventListener('paste', e => {      // colar bloco do Excel/Sheets (tabulação e quebra de linha)
+          const t = e.clipboardData.getData('text/plain'); if (!/\t|\n/.test(t)) return; e.preventDefault(); ler();
+          const r0 = +inp.dataset.r, k0 = +inp.dataset.k, linhas = t.replace(/\r/g, '').split('\n').filter((x, i, a) => x !== '' || i < a.length - 1);
+          linhas.forEach((ln, i) => ln.split('\t').forEach((v, j) => { while (dados.length <= r0 + i) dados.push(dados[0].map(() => '')); while (dados[0].length <= k0 + j) dados.forEach(l => l.push('')); dados[r0 + i][k0 + j] = v.trim(); }));
+          desenhar(); atualizar(); toast('Tabela colada.'); }); });
+    };
+    w.querySelector('.t-mais-l').onclick = () => { ler(); if (dados.length < 41) dados.push(dados[0].map(() => '')); desenhar(); atualizar(); };
+    w.querySelector('.t-menos-l').onclick = () => { ler(); if (dados.length > 2) dados.pop(); desenhar(); atualizar(); };
+    w.querySelector('.t-mais-c').onclick = () => { ler(); if (dados[0].length < 8) dados.forEach(l => l.push('')); desenhar(); atualizar(); };
+    w.querySelector('.t-menos-c').onclick = () => { ler(); if (dados[0].length > 1) dados.forEach(l => l.pop()); desenhar(); atualizar(); };
+    desenhar();
+    w._json = () => { ler(); const limpa = v => String(v).replace(/\s+/g, ' ').trim().slice(0, 200);
+      return {tipo, cabecalho: dados[0].map(limpa), linhas: dados.slice(1).map(l => l.map(limpa)).filter(l => l.some(Boolean)),
+              legenda: w.querySelector('.t-leg').value.trim(), fonte: w.querySelector('.t-fonte').value.trim()}; };
+  }
+  if (tipo === 'numero') {
+    w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2">Box de destaque numérico</div>
+      <div class="grid grid-cols-1 sm:grid-cols-[10rem_1fr] gap-2 items-end">
+        <input class="n-valor h-12 ${CAMPO} f-jornal text-3xl text-[#eec617]" placeholder="13,75%" maxlength="16" aria-label="Número em destaque">
+        <input class="n-leg h-12 ${CAMPO}" placeholder="Selic mantida pela 4ª reunião seguida" maxlength="120" aria-label="Legenda do número"></div>`;
+    w.querySelector('.n-valor').value = d.valor || ''; w.querySelector('.n-leg').value = d.legenda || '';
+    w._json = () => ({tipo, valor: w.querySelector('.n-valor').value.trim(), legenda: w.querySelector('.n-leg').value.trim()});
+  }
+  if (tipo === 'anexo') {
+    w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2">PDF para download</div>
+      <div class="flex flex-wrap items-center gap-3"><span class="f-mono text-[11px] bg-[#eec617] text-black px-2 py-1 rounded">PDF</span>
+        <span class="a-nome text-sm"></span><span class="a-tam f-mono text-[11px] text-[#a89f88]"></span></div>
+      <input class="a-tit mt-2 w-full h-8 ${CAMPO}" placeholder="Título do link (ex.: Relatório completo do Copom)" maxlength="140" aria-label="Título do anexo">`;
+    w.querySelector('.a-nome').textContent = d.nome || ''; w.querySelector('.a-tam').textContent = d.tamanho || ''; w.querySelector('.a-tit').value = d.titulo || '';
+    w._d = d;
+    w._json = () => ({tipo, nome: (d.nome || '').slice(0, 160), tamanho: d.tamanho, url: d.url || '', titulo: w.querySelector('.a-tit').value.trim()});
+  }
+  w.addEventListener('input', atualizar);
+}
+
+/* anexo: só PDF de verdade (assinatura %PDF), até 20 MB. No site real vai para o bucket vm-anexos. */
+$('#arq-anexo').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (f.size > 20 * 1048576) return toast('PDF acima de 20 MB.', 'erro');
+  const b = new Uint8Array(await f.slice(0, 5).arrayBuffer());
+  if (String.fromCharCode(...b) !== '%PDF-') return toast('Arquivo recusado: não é um PDF de verdade.', 'erro');
+  const w = novoBloco('anexo', {nome: f.name.replace(/[^\w.\- ()À-ú]/g, '_'), tamanho: (f.size / 1048576).toFixed(1).replace('.', ',') + ' MB', url: '', titulo: f.name.replace(/\.pdf$/i, '')}, blocoDoCursor());
+  w._arquivo = f; atualizar(); toast('PDF anexado: sobe quando salvar.');
+});
+
+/* bibliotecas de importação: só baixadas quando o editor usa (nunca para o leitor) */
+const LIBS = {mammoth: 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js',
+              pdf: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+              pdfWorker: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'};
+const _libs = {};
+function carregarScript(url) { return _libs[url] || (_libs[url] = new Promise((ok, erro) => { const sc = document.createElement('script'); sc.src = url; sc.onload = ok; sc.onerror = () => { delete _libs[url]; erro(new Error('não carregou')); }; document.head.appendChild(sc); })); }
+function substituirCorpo(blocos, titulo, aviso) {
+  const aplicar = modo => {
+    if (modo === 'trocar') $('#blocos').innerHTML = '';
+    blocos.forEach(b => novoBloco(b.tipo, b.dado));
+    if (!$('#blocos').children.length) novoBloco('paragrafo', '');
+    if (titulo && !$('#f-titulo').value.trim()) $('#f-titulo').value = titulo.slice(0, 90);
+    fecharModal(); atualizar(); contadoresSeo(); if (aviso) toast(aviso);
+  };
+  if (!corpoJSON().length) { $('#blocos').innerHTML = ''; return aplicar('acrescentar'); }
+  abrirModal('Conteúdo importado', `<div class="p-5 space-y-4"><p class="text-sm">O artigo já tem texto. O que fazer com os ${blocos.length} blocos importados?</p>
+    <div class="flex flex-wrap justify-end gap-2"><button id="imp-fim" class="px-4 py-2 text-sm border border-[#2e2a1e] rounded">Acrescentar no fim</button>
+    <button id="imp-trocar" class="px-4 py-2 text-sm rounded bg-[#eec617] text-black font-semibold">Substituir o texto atual</button></div></div>`);
+  $('#imp-fim').onclick = () => aplicar('acrescentar'); $('#imp-trocar').onclick = () => aplicar('trocar');
+}
+
+/* Word (.docx) -> blocos do jornal, sem IA. O HTML do conversor nunca é usado direto: passa pelo mesmo filtro de marcas. */
+function inlineParaHTML(el) {      // devolve HTML só com as marcas da lista (o bloco converte para JSON depois)
+  const t = document.createElement('div');
+  const copiar = (de, para) => de.childNodes.forEach(n => {
+    if (n.nodeType === 3) { para.appendChild(document.createTextNode(n.nodeValue)); return; }
+    if (n.nodeType !== 1) return;
+    const m = TAG_MARCA[n.nodeName]; let novo = null;
+    if (m) novo = document.createElement(MARCAS[m]);
+    else if (n.nodeName === 'A' && /^https:\/\//i.test(n.getAttribute('href') || '')) { novo = document.createElement('a'); novo.href = n.getAttribute('href'); novo.target = '_blank'; novo.rel = 'noopener noreferrer'; novo.className = 'text-[#eec617] underline underline-offset-2'; }
+    if (novo) { copiar(n, novo); para.appendChild(novo); } else copiar(n, para);
+  });
+  copiar(el, t); return t.innerHTML.replace(/\s+/g, ' ').trim();
+}
+function htmlParaBlocos(html) {
+  const doc = new DOMParser().parseFromString(html, 'text/html'), out = []; let titulo = '';
+  doc.body.childNodes.forEach(n => {
+    if (n.nodeType !== 1) return; const tag = n.nodeName, txt = n.textContent.replace(/\s+/g, ' ').trim();
+    if (tag === 'H1' && !titulo) { titulo = txt; return; }
+    if (/^H[1-6]$/.test(tag)) { if (txt) out.push({tipo: 'intertitulo', dado: {html: inlineParaHTML(n)}}); return; }
+    if (tag === 'UL' || tag === 'OL') { out.push({tipo: 'lista', dado: {ordenada: tag === 'OL', itens: [...n.querySelectorAll(':scope > li')].map(li => li.textContent.replace(/\s+/g, ' ').trim()).filter(Boolean)}}); return; }
+    if (tag === 'TABLE') { const rows = [...n.querySelectorAll('tr')].map(tr => [...tr.children].map(td => td.textContent.replace(/\s+/g, ' ').trim()));
+      if (rows.length) { const w = Math.max(...rows.map(r => r.length)); rows.forEach(r => { while (r.length < w) r.push(''); }); out.push({tipo: 'tabela', dado: {cabecalho: rows[0].slice(0, 8), linhas: rows.slice(1, 41).map(r => r.slice(0, 8))}}); } return; }
+    if (tag === 'BLOCKQUOTE') { if (txt) out.push({tipo: 'citacao', dado: {html: inlineParaHTML(n)}}); return; }
+    n.querySelectorAll('img').forEach(img => { if (/^data:image\/(jpeg|png|webp);base64,/.test(img.src)) out.push({tipo: 'imagem', dado: {src: img.src}}); });
+    if (txt) out.push({tipo: 'paragrafo', dado: {html: inlineParaHTML(n)}});
+  });
+  return {blocos: out, titulo};
+}
+$('#arq-word').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (f.size > 25 * 1048576) return toast('Arquivo Word acima de 25 MB.', 'erro');
+  const cab = new Uint8Array(await f.slice(0, 4).arrayBuffer());
+  if (!(cab[0] === 0x50 && cab[1] === 0x4B)) return toast('Arquivo recusado: não é um .docx (o .doc antigo precisa ser salvo como .docx).', 'erro');
+  toast('Lendo o arquivo Word…');
+  try {
+    await carregarScript(LIBS.mammoth);
+    const r = await mammoth.convertToHtml({arrayBuffer: await f.arrayBuffer()}, {
+      styleMap: ['p[style-name=\'Title\'] => h1:fresh', 'p[style-name=\'Título\'] => h1:fresh', 'p[style-name=\'Subtitle\'] => h2:fresh', 'u => u', 'strike => s'],
+      convertImage: mammoth.images.imgElement(img => img.read('base64').then(b64 => ({src: 'data:' + img.contentType + ';base64,' + b64})))});
+    const {blocos, titulo} = htmlParaBlocos(r.value);
+    if (!blocos.length) return toast('Não encontrei texto no arquivo.', 'aviso');
+    substituirCorpo(blocos, titulo, `Word importado: ${blocos.length} blocos. Revise e ajuste.`);
+  } catch (err) { toast('Não foi possível ler o arquivo Word (' + err.message + ').', 'erro'); }
+});
+
+/* PDF -> parágrafos, sem IA: junta linhas, separa parágrafos pelo espaçamento, emenda hifenização e tira cabeçalho/rodapé repetido */
+$('#arq-pdf').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (f.size > 30 * 1048576) return toast('PDF acima de 30 MB.', 'erro');
+  const b = new Uint8Array(await f.slice(0, 5).arrayBuffer());
+  if (String.fromCharCode(...b) !== '%PDF-') return toast('Arquivo recusado: não é um PDF de verdade.', 'erro');
+  toast('Lendo o PDF…');
+  try {
+    await carregarScript(LIBS.pdf); pdfjsLib.GlobalWorkerOptions.workerSrc = LIBS.pdfWorker;
+    const doc = await pdfjsLib.getDocument({data: await f.arrayBuffer(), isEvalSupported: false}).promise;
+    const paginas = [];
+    for (let i = 1; i <= Math.min(doc.numPages, 200); i++) {
+      const pg = await doc.getPage(i), tc = await pg.getTextContent(), linhas = [];
+      tc.items.filter(it => it.str.trim()).forEach(it => { const y = Math.round(it.transform[5]), h = Math.abs(it.transform[3]) || 10;
+        let l = linhas.find(x => Math.abs(x.y - y) <= h * 0.4); if (!l) linhas.push(l = {y, h, partes: []}); l.partes.push({x: it.transform[4], s: it.str}); });
+      linhas.sort((a, z) => z.y - a.y).forEach(l => { l.partes.sort((a, z) => a.x - z.x); l.texto = l.partes.map(p => p.s).join(' ').replace(/\s+/g, ' ').trim(); });
+      paginas.push(linhas.filter(l => l.texto));
+    }
+    if (!paginas.some(p => p.length)) return toast('Este PDF parece ser uma imagem digitalizada: não há texto para importar.', 'aviso');
+    const freq = {}; paginas.forEach(p => [...new Set(p.map(l => l.texto.replace(/\d+/g, '#')))].forEach(t => { freq[t] = (freq[t] || 0) + 1; }));
+    const repetida = t => paginas.length > 2 && freq[t.replace(/\d+/g, '#')] > paginas.length * 0.5;
+    const pars = []; let atual = '', yAnt = null, hAnt = 10;
+    paginas.forEach(p => { yAnt = null; p.forEach(l => {
+      if (repetida(l.texto) || /^\d{1,4}$/.test(l.texto) || /^p(á|a)gina \d+/i.test(l.texto)) return;
+      const salto = yAnt !== null && (yAnt - l.y) > Math.max(l.h, hAnt) * 1.6;
+      if (salto && atual) { pars.push(atual); atual = ''; }
+      atual = atual ? (/[-‐]$/.test(atual) && /^[a-zà-ú]/.test(l.texto) ? atual.replace(/[-‐]$/, '') + l.texto : atual + ' ' + l.texto) : l.texto;
+      if (/[.!?:]$/.test(l.texto) && l.texto.length < 60) { pars.push(atual); atual = ''; }
+      yAnt = l.y; hAnt = l.h; }); });
+    if (atual) pars.push(atual);
+    const blocos = pars.map(t => t.trim()).filter(t => t.length > 1).map(t => ({tipo: t.length < 90 && !/[.!?]$/.test(t) && /^[A-ZÀ-Ú0-9]/.test(t) ? 'intertitulo' : 'paragrafo', dado: t}));
+    substituirCorpo(blocos, '', `PDF importado: ${blocos.length} blocos de ${doc.numPages} página(s). Revise tabelas e colunas.`);
+  } catch (err) { toast('Não foi possível ler o PDF (' + err.message + ').', 'erro'); }
+});
+
+/* prévia de compartilhamento: WhatsApp e Google */
+function seoCampos() {
+  const tit = ($('#f-seo-tit').value.trim() || $('#f-titulo').value.trim() || 'Título da matéria');
+  const desc = ($('#f-seo-desc').value.trim() || $('#f-linha').value.trim() || 'Descrição da matéria.');
+  return {tit, desc};
+}
+function contadoresSeo() {
+  const t = $('#f-seo-tit').value.length || $('#f-titulo').value.length, d = $('#f-seo-desc').value.length || $('#f-linha').value.length;
+  $('#c-seo-tit').textContent = `${t}/60`; $('#c-seo-tit').className = 'f-mono text-[11px] ' + (t > 60 ? 'text-[#dba22a]' : 'text-[#a89f88]');
+  $('#c-seo-desc').textContent = `${d}/155`; $('#c-seo-desc').className = 'f-mono text-[11px] ' + (d > 155 ? 'text-[#dba22a]' : 'text-[#a89f88]');
+}
+['#f-seo-tit', '#f-seo-desc', '#f-titulo', '#f-linha'].forEach(sel => $(sel).addEventListener('input', contadoresSeo));
+$('#btn-prev-social').onclick = () => {
+  const {tit, desc} = seoCampos(), foto = !$('#thumb').classList.contains('hidden') ? $('#thumb').src : '';
+  const corta = (x, n) => x.length > n ? x.slice(0, n - 1).trimEnd() + '…' : x;
+  abrirModal('Prévia de compartilhamento', `<div class="p-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div><div class="text-[11px] uppercase tracking-widest text-[#a89f88] mb-2">WhatsApp</div>
+      <div class="bg-[#0b141a] rounded-lg p-3"><div class="ml-auto max-w-[340px] bg-[#005c4b] rounded-lg p-1.5 text-[#e9edef]">
+        <div class="bg-[#025144] rounded overflow-hidden">${foto ? `<img src="${foto}" alt="" class="w-full h-40 object-cover">` : '<div class="h-40 bg-[#414A38] flex items-center justify-center f-marca tracking-[.2em] text-[#F5F2E7]">VALOR E MERCADO</div>'}
+          <div class="p-2"><div class="text-[13px] font-semibold leading-snug">${escapar(corta(tit, 80))}</div><div class="text-[12px] text-[#c5d0d3] leading-snug mt-0.5">${escapar(corta(desc, 110))}</div><div class="text-[11px] text-[#8fa3a8] mt-1">soliduns.com.br</div></div></div>
+        <div class="px-1 pt-1.5 text-[13px] text-[#53bdeb] underline break-all">https://soliduns.com.br/noticias/?artigo=…</div></div></div></div>
+    <div><div class="text-[11px] uppercase tracking-widest text-[#a89f88] mb-2">Google</div>
+      <div class="bg-white rounded-lg p-4 font-[arial,sans-serif]"><div class="text-[12px] text-[#202124]">soliduns.com.br › noticias</div>
+        <div class="text-[19px] leading-snug text-[#1a0dab] mt-0.5">${escapar(corta(tit, 60))}</div><div class="text-[13px] leading-snug text-[#4d5156] mt-1">${escapar(corta(desc, 155))}</div></div>
+      <p class="text-[11px] text-[#a89f88] mt-3">O Google mostra até ~60 caracteres no título e ~155 na descrição; o WhatsApp corta antes no celular.</p></div></div>`);
+};
+
+/* ---------- verificação de estilo (avisa, não bloqueia) ---------- */
+const VETADAS = ['disparar','dispara','disparou','despencar','despenca','despencou','desabar','desabou','derreter','derreteu','euforia','pânico','sangria','massacre','em meio a','cenário desafiador'];
+const VEICULOS = ['reuters','bloomberg','valor econômico','folha','estadão','o globo','infomoney','cnn','g1','exame','broadcast','financial times','wall street journal','agência brasil'];
+function verificar() {
+  const blocos = corpoJSON(), corpo = blocos.map(b => b.texto || '').join(' ');
+  const tudo = (' ' + [$('#f-titulo').value, $('#f-linha').value, corpo].join(' ') + ' ').toLowerCase();
+  const itens = [], l = $('#f-linha').value.length, t = $('#f-titulo').value.trim();
+  const add = (ok, txt) => itens.push({ok, txt});
+  add(t.length > 0 && t.length <= 70 && !/\.$/.test(t), t ? (t.length > 70 ? `Título com ${t.length} caracteres (máx. 70)` : /\.$/.test(t) ? 'Título termina com ponto' : 'Título dentro do padrão') : 'Título vazio');
+  add(l >= 140 && l <= 200, l ? `Linha fina com ${l} caracteres (faixa 140–200)` : 'Linha fina vazia');
+  const vet = VETADAS.filter(v => new RegExp(`[^a-zà-ú]${v}[^a-zà-ú]`, 'i').test(tudo));
+  add(!vet.length, vet.length ? `Vocabulário vetado: ${vet.join(', ')}` : 'Sem vocabulário vetado');
+  const abre = /(^|[.!?]\s+)(segundo|de acordo com|conforme) (a|o) (agenda|calendário)/i.test(corpo);
+  add(!abre, abre ? 'Abertura "Segundo a agenda do dia" (redundante)' : 'Sem atribuição à agenda');
+  const nv = VEICULOS.reduce((n, v) => n + (tudo.split(v).length - 1), 0);
+  add(nv <= 1, `Citações a outros veículos: ${nv} (máx. 1, fora do título)`);
+  const longos = blocos.filter(b => b.tipo === 'paragrafo' && (b.texto.match(/[.!?](\s|$)/g) || []).length > 4).length;
+  add(!longos, longos ? `${longos} parágrafo(s) com mais de 4 frases` : 'Parágrafos com até 4 frases');
+  const nums = [...new Set(corpo.match(/\d+(?:[.,]\d+)?/g) || [])].filter(n => !/^(19|20)\d{2}$/.test(n));
+  const temFonte = $$('#fontes li').length > 0;
+  add(!nums.length || temFonte, nums.length && !temFonte ? `${nums.length} número(s) sem nenhuma fonte listada` : 'Números com fonte listada');
+  const tks = [...new Set((corpo.match(RE_TICKER) || []))];
+  if (tks.length) add(true, `${tks.length} código(s) de ação vira(m) link para a SOLIDUNS: ${tks.slice(0, 6).join(', ')}`);
+  add(!!$('#f-alt').value.trim() || $('#thumb').classList.contains('hidden'), 'Texto alternativo da foto ' + ($('#f-alt').value.trim() || $('#thumb').classList.contains('hidden') ? 'ok' : 'faltando'));
+  $('#verif').innerHTML = itens.map(i => `<li class="flex gap-2 items-start"><span class="${i.ok ? 'text-[#3ecb99]' : 'text-[#dba22a]'} mt-0.5">${i.ok ? '✓' : '!'}</span><span class="${i.ok ? 'text-[#a89f88]' : ''}">${escapar(i.txt)}</span></li>`).join('');
+  const pal = corpo.split(/\s+/).filter(Boolean).length;
+  $('#m-palavras').textContent = `${pal} palavra${pal === 1 ? '' : 's'}`;
+  $('#m-leitura').textContent = `${Math.max(pal ? 1 : 0, Math.round(pal / 200))} min de leitura`;
+  return itens.filter(i => !i.ok).length;
+}
+
+/* ---------- fontes ---------- */
+function novaFonte(tit = '', url = '') {
+  const li = document.createElement('li'); li.className = 'grid grid-cols-1 sm:grid-cols-[1fr_1.3fr_auto] gap-2';
+  li.innerHTML = `<input class="h-9 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="Título da fonte" aria-label="Título da fonte" value="${escapar(tit)}">
+    <input class="h-9 bg-black border border-[#2e2a1e] rounded px-3 text-sm f-mono" placeholder="https://" aria-label="Endereço da fonte" value="${escapar(url)}">
+    <button class="text-[#a89f88] hover:text-[#e2564f] px-2" aria-label="Remover fonte"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`;
+  const u = li.children[1];
+  u.addEventListener('blur', () => { const v = u.value.trim(); u.classList.toggle('border-[#e2564f]', !!v && !/^https:\/\//i.test(v)); });
+  li.children[2].onclick = () => { li.remove(); atualizar(); };
+  $('#fontes').appendChild(li); icones(); atualizar();
+}
+$('#btn-fonte').onclick = () => novaFonte();
+
+/* ---------- tags ---------- */
+let tags = [];
+function desenharTags() {
+  $('#tags').innerHTML = tags.map((t, i) => `<span class="inline-flex items-center gap-1 text-xs bg-[#141411] border border-[#2e2a1e] rounded-full pl-3 pr-1.5 py-1">${escapar(t)}<button data-i="${i}" class="tag-x text-[#a89f88] hover:text-[#e2564f]" aria-label="Remover tag ${escapar(t)}">×</button></span>`).join('');
+  $('#c-tags').textContent = `${tags.length}/8`;
+  $$('.tag-x').forEach(b => b.onclick = () => { tags.splice(+b.dataset.i, 1); desenharTags(); });
+}
+$('#f-tag').addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return; e.preventDefault();
+  const v = e.target.value.trim().replace(/\s+/g, ' ');
+  if (!v) return; if (tags.length >= 8) return toast('Máximo de 8 tags.', 'aviso');
+  if (!tags.some(t => t.toLowerCase() === v.toLowerCase())) tags.push(v);
+  e.target.value = ''; desenharTags();
+});
+
+/* ---------- foto de capa: tipo conferido pelos primeiros bytes ---------- */
+const MAX = 5 * 1024 * 1024;
+function tipoPelosBytes(b) {
+  if (b[0] === 0xFF && b[1] === 0xD8 && b[2] === 0xFF) return 'JPG';
+  if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47) return 'PNG';
+  if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 && b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50) return 'WEBP';
+  return null;
+}
+async function receberFoto(arq) {
+  if (!arq) return;
+  if (arq.size > MAX) return toast(`Arquivo com ${(arq.size / 1048576).toFixed(1)} MB: o limite é 5 MB.`, 'erro');
+  const cab = new Uint8Array(await arq.slice(0, 12).arrayBuffer()), tipo = tipoPelosBytes(cab);
+  if (!tipo) return toast('Arquivo recusado: não é JPG, PNG ou WEBP de verdade.', 'erro');
+  fotoArquivo = arq; fotoAtual = null;
+  const r = new FileReader();
+  r.onload = () => {
+    const img = $('#thumb'); img.src = r.result; img.classList.remove('hidden');
+    img.onload = () => { $('#foto-info').textContent = `${tipo} · ${img.naturalWidth}×${img.naturalHeight} px · ${(arq.size / 1024).toFixed(0)} KB · no envio: até 1880 px e sem EXIF`; };
+    $('#drop-txt').classList.add('hidden'); $('#foto-remover').classList.remove('hidden'); atualizar(); toast('Foto pronta.');
+  };
+  r.readAsDataURL(arq);
+}
+$('#drop').addEventListener('click', e => { if (!e.target.closest('#foto-remover')) $('#foto-arq').click(); });
+$('#drop').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('#foto-arq').click(); } });
+$('#foto-arq').addEventListener('change', e => receberFoto(e.target.files[0]));
+['dragenter','dragover'].forEach(ev => $('#drop').addEventListener(ev, e => { e.preventDefault(); $('#drop').classList.add('alvo-drop'); }));
+['dragleave','drop'].forEach(ev => $('#drop').addEventListener(ev, e => { e.preventDefault(); $('#drop').classList.remove('alvo-drop'); }));
+$('#drop').addEventListener('drop', e => receberFoto(e.dataTransfer.files[0]));
+$('#foto-remover').addEventListener('click', e => {
+  e.stopPropagation(); const img = $('#thumb'); img.removeAttribute('src'); img.classList.add('hidden');
+  $('#drop-txt').classList.remove('hidden'); $('#foto-remover').classList.add('hidden'); $('#foto-info').textContent = ''; $('#foto-arq').value = ''; fotoArquivo = null; fotoAtual = null; atualizar();
+});
+
+/* ---------- janelas ---------- */
+let focoAntes = null;
+function abrirModal(tit, html) { focoAntes = document.activeElement; $('#modal-tit').textContent = tit; $('#modal-corpo').innerHTML = html; $('#modal').classList.remove('hidden'); icones(); $('#modal-fechar').focus(); }
+function fecharModal() { $('#modal').classList.add('hidden'); focoAntes?.focus?.(); }
+$('#modal-fechar').onclick = fecharModal;
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') fecharModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').classList.contains('hidden')) fecharModal(); });
+
+/* pré-visualização no tema do jornal */
+function previa() {
+  const b = corpoJSON(), foto = !$('#thumb').classList.contains('hidden');
+  const fotog = $('#f-fotografo').value.trim(), autor = $('#f-autor').value.trim() || 'Dr. Thiago Viegas';
+  const h = new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}).replace(':', 'h');
+  const fontes = $$('#fontes li').map(li => ({t: li.children[0].value.trim(), u: li.children[1].value.trim()})).filter(f => /^https:\/\//i.test(f.u));
+  const pal = b.map(x => x.texto || '').join(' ').split(/\s+/).filter(Boolean).length;
+  abrirModal('Pré-visualização · como fica no jornal', `<div class="bg-[#F5F2E7] text-[#1C1F18]">
+    <div class="bg-[#414A38] text-center py-5"><div class="f-marca text-[#F5F2E7] tracking-[.19em] text-2xl">VALOR E MERCADO</div><div class="f-marca text-[#E4D79B] text-[10px] tracking-[.5em] mt-1">CONTEÚDO E NOTÍCIAS</div></div>
+    <article class="max-w-2xl mx-auto px-5 py-8" lang="pt-BR">
+      <span class="f-marca text-[11px] tracking-[.18em] uppercase text-[#7A6629]">${escapar($('#f-chapeu').value || 'Chapéu')}</span>
+      <h1 class="prev-titulo f-jornal text-4xl leading-tight mt-2 mb-3">${escapar($('#f-titulo').value || 'Título da matéria')}</h1>
+      <p class="f-jornal text-xl text-[#4F5446] leading-snug mb-4 text-justify [hyphens:auto]">${escapar($('#f-linha').value || 'Linha fina da matéria.')}</p>
+      <div class="f-marca text-[13px] text-[#4F5446] flex flex-wrap gap-3 pb-4 mb-5 border-b border-[#D9D3BF]"><span>Por ${escapar(autor)}</span><span class="text-[#7A6629]">Editor: Dr. Thiago Viegas</span><span class="text-[#7A6629]">${h}</span><span class="text-[#7A6629]">${Math.max(1, Math.round(pal / 200))} min de leitura</span></div>
+      ${foto ? `<figure class="mb-5"><img src="${$('#thumb').src}" alt="${escapar($('#f-alt').value)}" class="w-full rounded-sm"><figcaption class="text-right f-marca text-[11px] text-[#4F5446] mt-1">${fotog ? 'Foto: ' + escapar(fotog) : ''}</figcaption></figure>` : ''}
+      <div class="prev-corpo">${(() => { if (!b.length) return '<p class="f-jornal text-[#4F5446]">O corpo aparece aqui.</p>';
+        const esp = ESPACOS.find(x => x.id === 'artigo'), ban = banners.find(x => x.espaco === 'artigo');
+        let n = 0, corte = b.findIndex(x => x.tipo === 'paragrafo' && ++n === 2);
+        if (!esp.ativo || corte < 0) return blocosHTML(b);
+        const slot = ban ? slotHTML(ban, esp, false) : '<div class="my-6"><div class="f-marca text-[10px] tracking-[.18em] uppercase text-[#4F5446] mb-1">Publicidade</div><div class="border border-dashed border-[#7A6629] f-marca text-[11px] text-[#7A6629] flex items-center justify-center" style="aspect-ratio:728/90">espaço do anúncio · 728 × 90 (celular 300 × 250)</div></div>';
+        return blocosHTML(b.slice(0, corte + 1)) + slot + blocosHTML(b.slice(corte + 1)); })()}</div>
+      ${fontes.length ? `<div class="mt-6 pt-4 border-t border-[#D9D3BF] f-marca text-[13px] text-[#4F5446]"><h3 class="text-[12px] tracking-[.15em] uppercase text-[#7A6629] mb-2">Fontes consultadas</h3><ol class="list-decimal pl-5 space-y-1">${fontes.map(f => `<li><a class="underline" target="_blank" rel="noopener noreferrer" href="${escapar(f.u)}">${escapar(f.t || f.u)}</a></li>`).join('')}</ol></div>` : ''}
+      ${foto && fotog ? `<p class="f-marca text-[12px] text-[#4F5446] mt-3">Foto de capa: ${escapar(fotog)} / ${escapar($('#f-origem').value)}</p>` : ''}
+    </article></div>`);
+}
+$('#btn-previa').onclick = previa;
+
+/* =====================================================================
+   v131 — INTEGRAÇÃO COM O BANCO (Supabase). Toda gravação passa por RPC
+   protegida por _vm_exige_editor(); arquivos vão para os baldes públicos
+   vm-imagens e vm-anexos pelo Storage, com a sessão do próprio editor.
+   Nenhuma chave secreta aqui: só a chave pública do site e o token da sessão.
+   ===================================================================== */
+const SUPA = 'https://evcsniicnrlrtzpdmeza.supabase.co';
+const CHAVE_PUBLICA = 'sb_publishable_ueRLfhNKU3NH1716UGqtow_NdAB7KNR';
+const SESSAO_KEY = 'gestao-fiscal-auth-session';          // a mesma sessão do site (mesmo endereço)
+const EDITOR_FIXO = 'Dr. Thiago Viegas';
+let sessao = null;
+function lerSessao() { try { return JSON.parse(localStorage.getItem(SESSAO_KEY) || 'null'); } catch (_) { return null; } }
+async function token() {
+  sessao = lerSessao();
+  if (!sessao || !sessao.access_token) throw new Error('SEM_SESSAO');
+  if (sessao.expires_at && Date.now() < sessao.expires_at - 60000) return sessao.access_token;
+  const r = await fetch(SUPA + '/auth/v1/token?grant_type=refresh_token', {method: 'POST',
+    headers: {'apikey': CHAVE_PUBLICA, 'Content-Type': 'application/json'}, body: JSON.stringify({refresh_token: sessao.refresh_token})});
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok || !d.access_token) throw new Error('SEM_SESSAO');
+  sessao = {...sessao, access_token: d.access_token, refresh_token: d.refresh_token, user: d.user || sessao.user, expires_at: Date.now() + (d.expires_in || 3600) * 1000};
+  try { localStorage.setItem(SESSAO_KEY, JSON.stringify(sessao)); } catch (_) {}
+  return sessao.access_token;
+}
+const ERROS = {SEM_PERMISSAO: 'Só o editor pode fazer isso.', USE_CORRIGIR: 'Artigo publicado: use "Salvar correção".', CORPO_INVALIDO: 'O corpo tem um bloco inválido (confira links e imagens).',
+  CORPO_VAZIO: 'O artigo está sem texto.', FOTO_SEM_TEXTO_ALTERNATIVO: 'Preencha o texto alternativo da foto.', MOTIVO_OBRIGATORIO: 'Escreva o motivo (pelo menos 5 letras).',
+  NOTA_DE_CORRECAO_OBRIGATORIA: 'Preencha a nota de correção (o que mudou e o que dizia antes).', SITUACAO_INVALIDA: 'A situação do artigo mudou. Atualize a lista.',
+  LAYOUT_INVALIDO: 'Layout inválido.', IMAGEM_EM_USO: 'Imagem em uso em algum artigo: não pode ser apagada.', ARQUIVO_NAO_ENVIADO: 'O arquivo não chegou ao armazenamento. Tente de novo.',
+  NAO_ENCONTRADO: 'Item não encontrado.', DADOS_INVALIDOS: 'Dados inválidos.'};
+async function rpc(nome, corpo) {
+  const r = await fetch(SUPA + '/rest/v1/rpc/' + nome, {method: 'POST', headers: {'apikey': CHAVE_PUBLICA, 'Authorization': 'Bearer ' + await token(),
+    'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(corpo || {})});
+  const j = await r.json().catch(() => null);
+  if (!r.ok) { const m = (j && (j.message || j.hint)) || ('HTTP ' + r.status), k = Object.keys(ERROS).find(x => m.indexOf(x) >= 0);
+    const e = new Error(k ? ERROS[k] : (/check constraint|violates/i.test(m) ? 'O banco recusou um campo (tamanho ou formato). Confira e salve de novo.' : m)); e.codigo = k || m; throw e; }
+  return j;
+}
+const falha = e => toast(e.message === 'SEM_SESSAO' ? 'Sessão expirada: entre de novo no site.' : e.message, 'erro');
+
+/* ---------- arquivos: nome = AAAA/MM/<sha-256>.<ext>; o mesmo arquivo nunca sobe duas vezes ---------- */
+async function sha256Hex(buf) { const h = await crypto.subtle.digest('SHA-256', buf); return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, '0')).join(''); }
+const EXT = {'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'application/pdf': 'pdf'};
+async function prepararImagem(blob) {            // até 1880 px no lado maior, sem EXIF (redesenha no canvas)
+  const url = URL.createObjectURL(blob);
+  try {
+    const img = await new Promise((ok, erro) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => erro(new Error('imagem ilegível')); i.src = url; });
+    const k = Math.min(1, 1880 / Math.max(img.naturalWidth, img.naturalHeight));
+    const w = Math.max(1, Math.round(img.naturalWidth * k)), h = Math.max(1, Math.round(img.naturalHeight * k));
+    const c = document.createElement('canvas'); c.width = w; c.height = h; c.getContext('2d').drawImage(img, 0, 0, w, h);
+    const tipo = blob.type === 'image/png' ? 'image/png' : 'image/jpeg';
+    const out = await new Promise(ok => c.toBlob(ok, tipo, 0.86));
+    return {blob: out, tipo, largura: w, altura: h};
+  } finally { URL.revokeObjectURL(url); }
+}
+async function enviarArquivo(blob, opc = {}) {
+  let tipo = blob.type, largura = null, altura = null;
+  if (/^image\//.test(tipo)) ({blob, tipo, largura, altura} = await prepararImagem(blob));
+  if (!EXT[tipo]) throw new Error('Tipo de arquivo não aceito.');
+  const balde = tipo === 'application/pdf' ? 'vm-anexos' : 'vm-imagens';
+  const buf = await blob.arrayBuffer(), d = new Date();
+  const caminho = d.getFullYear() + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + (await sha256Hex(buf)).slice(0, 40) + '.' + EXT[tipo];
+  const r = await fetch(SUPA + '/storage/v1/object/' + balde + '/' + caminho, {method: 'POST',
+    headers: {'apikey': CHAVE_PUBLICA, 'Authorization': 'Bearer ' + await token(), 'Content-Type': tipo, 'cache-control': '31536000'}, body: blob});
+  if (!r.ok) { const t = await r.text(); if (!/exist|duplicate/i.test(t)) throw new Error('Envio do arquivo falhou (' + r.status + ').'); }
+  const url = SUPA + '/storage/v1/object/public/' + balde + '/' + caminho;
+  try { const m = await rpc('vm_midia_registrar', {p_caminho: caminho, p_tipo: tipo, p_bytes: blob.size, p_largura: largura, p_altura: altura,
+      p_alt: opc.alt || null, p_fotografo: opc.fotografo || null, p_origem: opc.origem || null}); return {url: m.url, id: m.id, largura, altura}; }
+  catch (e) { if (/duplicate|unique|23505/i.test(String(e.codigo || e.message))) return {url, id: null, largura, altura}; throw e; }
+}
+const dataURLparaBlob = async u => (await fetch(u)).blob();
+
+/* ---------- estado do artigo em edição ---------- */
+let artigo = {id: null, situacao: 'rascunho', versao: 1};
+let fotoArquivo = null, fotoAtual = null;          // foto de capa: arquivo novo (a enviar) ou a já gravada
+const TIPO_DB = {'Reportagem': 'reportagem', 'Opinião': 'opiniao', 'Nota': 'nota'}, TIPO_TELA = {reportagem: 'Reportagem', opiniao: 'Opinião', nota: 'Nota'};
+const LUGAR_DB = {'Seção Artigos': 'artigos', 'Manchete do dia': 'manchete', 'Só na lista de notícias': 'lista'}, LUGAR_TELA = {artigos: 'Seção Artigos', manchete: 'Manchete do dia', lista: 'Só na lista de notícias'};
+const SIT = {rascunho: 'Rascunho', revisao: 'Em revisão', agendado: 'Agendado', publicado: 'Publicado', despublicado: 'Fora do ar'};
+function estadoArtigo() {
+  const pub = artigo.situacao === 'publicado';
+  $('#btn-publicar').innerHTML = pub ? '<i data-lucide="check" class="w-4 h-4"></i>Salvar correção' : '<i data-lucide="send" class="w-4 h-4"></i>Publicar';
+  $('#btn-agendar').classList.toggle('hidden', pub); $('#btn-salvar').classList.toggle('hidden', pub);
+  $('#sit-artigo').textContent = artigo.id ? `nº ${artigo.id} · ${SIT[artigo.situacao] || artigo.situacao}${artigo.versao > 1 ? ' · versão ' + artigo.versao : ''}` : 'Artigo novo';
+  icones();
+}
+function selo(txt, cor = 'text-[#a89f88]') { $('#salvo').innerHTML = `<i data-lucide="cloud" class="w-3.5 h-3.5 ${cor}"></i><span>${escapar(txt)}</span>`; icones(); }
+
+/* JSON do banco -> trechos do editor (o inverso de noJSON), para abrir um artigo salvo */
+function trechosDeConteudo(c, m = {}) {
+  const out = [];
+  (c || []).forEach(x => {
+    if (x.texto !== undefined) { out.push({texto: x.texto, m: {...m}}); return; }
+    const mm = {...m};
+    if (MARCAS[x.marca]) mm[x.marca] = true;
+    else if (x.marca === 'link' && /^https:\/\//i.test(x.url || '')) mm.link = x.url;
+    else if (x.marca === 'fonte' && FONTES[x.valor]) mm.fonte = x.valor;
+    else if (x.marca === 'tamanho' && TAMANHOS[x.valor]) mm.tamanho = x.valor;
+    out.push(...trechosDeConteudo(x.conteudo, mm));
+  });
+  return out;
+}
+
+/* envia o que ainda está só no navegador (foto de capa, imagens no texto, PDFs) e devolve os dados para o banco */
+async function dadosDoArtigo() {
+  for (const w of $$('#blocos > div')) {
+    if (w.dataset.tipo === 'imagem' && w.dataset.src && !/^https:\/\//.test(w.dataset.src)) {
+      const blob = w._arquivo || await dataURLparaBlob(w.dataset.src);
+      const r = await enviarArquivo(blob, {fotografo: w.querySelector('input').value.trim() || null});
+      w.dataset.src = r.url; w._arquivo = null;
+    }
+    if (w.dataset.tipo === 'anexo' && w._d && w._arquivo) {
+      const r = await enviarArquivo(w._arquivo); w._d.url = r.url; w._arquivo = null;
+    }
+  }
+  if (fotoArquivo) {
+    const r = await enviarArquivo(fotoArquivo, {alt: $('#f-alt').value.trim(), fotografo: $('#f-fotografo').value.trim(), origem: $('#f-origem').value});
+    fotoAtual = {src: r.url, midia_id: r.id || undefined}; fotoArquivo = null;
+  }
+  const corpo = corpoJSON().filter(b => b.tipo !== 'imagem' || /^https:\/\//.test(b.src || ''))
+    .filter(b => b.tipo !== 'anexo' || /^https:\/\//.test(b.url || ''))
+    .map(b => b.tipo === 'imagem' ? {tipo: 'imagem', src: b.src, ...(b.legenda ? {legenda: b.legenda.slice(0, 200)} : {})} : b);
+  const foto = fotoAtual && !$('#thumb').classList.contains('hidden') ? Object.fromEntries(Object.entries({src: fotoAtual.src, alt: $('#f-alt').value.trim(),
+    fotografo: $('#f-fotografo').value.trim() || undefined, origem: $('#f-origem').value, midia_id: fotoAtual.midia_id}).filter(([, v]) => v !== undefined && v !== '')) : null;
+  const fontes = $$('#fontes li').map(li => ({titulo: li.children[0].value.trim().slice(0, 200), url: li.children[1].value.trim()})).filter(f => /^https:\/\//i.test(f.url));
+  return {tipo: TIPO_DB[$('#f-tipo').value] || 'reportagem', editoria: $('#f-editoria').value, lugar: LUGAR_DB[$('#f-lugar').value] || 'artigos',
+    chapeu: $('#f-chapeu').value.trim(), titulo: $('#f-titulo').value.trim(), linha_fina: $('#f-linha').value.trim(), autor: $('#f-autor').value.trim() || EDITOR_FIXO,
+    corpo, foto, fontes, tags, seo_titulo: $('#f-seo-tit').value.trim(), seo_descricao: $('#f-seo-desc').value.trim()};
+}
+
+/* ---------- salvar rascunho (automático a cada 30 s, ao sair de um campo e no botão) ---------- */
+let sujo = false, salvando = null;
+function atualizar() { contadores(); verificar(); sujo = true; if (artigo.id || $('#f-titulo').value.trim()) selo('Alterações não salvas'); }
+async function salvar(manual = false) {
+  if (artigo.situacao === 'publicado' || artigo.situacao === 'despublicado') { if (manual) toast('Artigo publicado: use "Salvar correção".', 'aviso'); return false; }
+  if (!manual && (!sujo || !$('#f-titulo').value.trim())) return false;
+  if (!$('#f-titulo').value.trim()) { toast('Dê um título antes de salvar.', 'aviso'); return false; }
+  if (salvando) return salvando;
+  sujo = false; selo('Salvando…');
+  salvando = (async () => {
+    try {
+      const r = await rpc('vm_artigo_salvar', {p_id: artigo.id, p_dados: await dadosDoArtigo()});
+      artigo.id = r.id; estadoArtigo();
+      const h = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}).replace(':', 'h');
+      $('#salvo').innerHTML = `<i data-lucide="cloud-check" class="w-3.5 h-3.5 text-[#3ecb99]"></i><span>Rascunho salvo às ${h}</span>`; icones();
+      if (manual) toast('Rascunho salvo.');
+      return true;
+    } catch (e) { sujo = true; selo('Não salvo', 'text-[#e2564f]'); falha(e); return false; }
+    finally { salvando = null; }
+  })();
+  return salvando;
+}
+setInterval(() => salvar(false), 30000);
+['#f-chapeu','#f-titulo','#f-linha','#f-autor','#f-alt','#f-fotografo','#f-seo-tit','#f-seo-desc'].forEach(s => { $(s).addEventListener('input', atualizar); $(s).addEventListener('blur', () => salvar(false)); });
+['#f-tipo','#f-editoria','#f-lugar','#f-origem'].forEach(s => $(s).addEventListener('change', atualizar));
+$('#btn-salvar').onclick = () => salvar(true);
+window.addEventListener('beforeunload', e => { if (sujo && artigo.situacao !== 'publicado' && $('#f-titulo').value.trim()) { e.preventDefault(); e.returnValue = ''; } });
+
+/* ---------- abrir artigo salvo / novo artigo ---------- */
+function limparEditor() {
+  artigo = {id: null, situacao: 'rascunho', versao: 1}; fotoArquivo = null; fotoAtual = null;
+  ['#f-chapeu','#f-titulo','#f-linha','#f-alt','#f-fotografo','#f-seo-tit','#f-seo-desc','#f-quando','#f-tag'].forEach(s => { $(s).value = ''; });
+  $('#f-autor').value = EDITOR_FIXO; $('#f-tipo').value = 'Reportagem'; $('#f-editoria').value = 'Mercados'; $('#f-lugar').value = 'Seção Artigos'; $('#f-origem').value = 'Foto própria';
+  $('#blocos').innerHTML = ''; novoBloco('paragrafo', ''); $('#fontes').innerHTML = ''; tags = []; desenharTags();
+  const img = $('#thumb'); img.removeAttribute('src'); img.classList.add('hidden'); $('#drop-txt').classList.remove('hidden'); $('#foto-remover').classList.add('hidden'); $('#foto-info').textContent = '';
+  contadores(); contadoresSeo(); verificar(); sujo = false; selo('Rascunho ainda não salvo'); estadoArtigo();
+}
+async function abrirArtigo(id) {
+  if (sujo && artigo.situacao !== 'publicado' && $('#f-titulo').value.trim()) await salvar(false);
+  try {
+    const a = await rpc('vm_artigo_editar', {p_id: id});
+    if (!a) return toast('Artigo não encontrado.', 'erro');
+    limparEditor();
+    artigo = {id: a.id, situacao: a.situacao, versao: a.versao || 1};
+    $('#f-chapeu').value = a.chapeu || ''; $('#f-titulo').value = a.titulo || ''; $('#f-linha').value = a.linha_fina || ''; $('#f-autor').value = a.autor || EDITOR_FIXO;
+    $('#f-tipo').value = TIPO_TELA[a.tipo] || 'Reportagem'; $('#f-editoria').value = a.editoria || 'Mercados'; $('#f-lugar').value = LUGAR_TELA[a.lugar] || 'Seção Artigos';
+    $('#f-seo-tit').value = a.seo_titulo || ''; $('#f-seo-desc').value = a.seo_descricao || '';
+    if (a.publicar_em) { const d = new Date(new Date(a.publicar_em).getTime() - 3 * 3600e3); $('#f-quando').value = d.toISOString().slice(0, 16); }
+    $('#blocos').innerHTML = '';
+    (a.corpo || []).forEach(b => {
+      if (['paragrafo', 'intertitulo', 'citacao'].includes(b.tipo)) { const w = novoBloco(b.tipo, ''); desenharTrechos(w.querySelector('.editor-bloco'), trechosDeConteudo(b.conteudo)); }
+      else if (b.tipo === 'lista') novoBloco('lista', {ordenada: b.ordenada, itens: (b.itens || []).map(i => textoDe(i.conteudo))});
+      else if (b.tipo === 'imagem') novoBloco('imagem', {src: b.src, legenda: b.legenda});
+      else novoBloco(b.tipo, b);
+    });
+    if (!$('#blocos').children.length) novoBloco('paragrafo', '');
+    (a.fontes || []).forEach(f => novaFonte(f.titulo || '', f.url || ''));
+    tags = (a.tags || []).slice(0, 8); desenharTags();
+    if (a.foto && a.foto.src) {
+      fotoAtual = {src: a.foto.src, midia_id: a.foto.midia_id};
+      const img = $('#thumb'); img.src = a.foto.src; img.classList.remove('hidden'); $('#drop-txt').classList.add('hidden'); $('#foto-remover').classList.remove('hidden');
+      $('#f-alt').value = a.foto.alt || ''; $('#f-fotografo').value = a.foto.fotografo || ''; $('#f-origem').value = a.foto.origem || 'Foto própria';
+      $('#foto-info').textContent = 'Foto já gravada';
+    }
+    contadores(); contadoresSeo(); verificar(); sujo = false;
+    selo(a.situacao === 'publicado' ? 'Publicado: alterações viram correção' : 'Aberto do banco');
+    estadoArtigo(); abrirAba('escrever');
+  } catch (e) { falha(e); }
+}
+$('#btn-novo').onclick = async () => { if (sujo && $('#f-titulo').value.trim() && artigo.situacao !== 'publicado') await salvar(false); limparEditor(); abrirAba('escrever'); $('#f-titulo').focus(); };
+
+/* ---------- publicar, agendar e corrigir ---------- */
+const quandoISO = v => v ? new Date(v + ':00-03:00').toISOString() : null;      // o campo é horário de Brasília
+function confirmar(acao) {
+  if (artigo.situacao === 'publicado') return corrigir();
+  const alertas = verificar(), quando = $('#f-quando').value;
+  if (acao === 'agendar' && !quando) return toast('Escolha a data e a hora do agendamento.', 'aviso');
+  if (acao === 'agendar' && new Date(quandoISO(quando)) <= new Date()) return toast('O agendamento precisa ser no futuro.', 'aviso');
+  if (!$('#f-titulo').value.trim()) return toast('O artigo precisa de título.', 'erro');
+  if (!corpoJSON().length) return toast('O artigo está sem texto.', 'erro');
+  if (!$('#thumb').classList.contains('hidden') && $('#f-alt').value.trim().length < 3) return toast('Preencha o texto alternativo da foto.', 'erro');
+  const quandoTxt = quando ? new Date(quandoISO(quando)).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short'}) : '';
+  abrirModal(acao === 'agendar' ? 'Confirmar agendamento' : 'Confirmar publicação', `<div class="p-5 space-y-4">
+    <p class="text-sm">${acao === 'agendar' ? `O artigo será publicado em <b>${escapar(quandoTxt)}</b>` : 'O artigo vai para o ar <b>agora</b>'}, em <b>${escapar($('#f-lugar').value)}</b>.</p>
+    ${alertas ? `<p class="text-sm text-[#dba22a]">A verificação de estilo tem ${alertas} aviso(s). Você pode publicar assim mesmo.</p>` : '<p class="text-sm text-[#3ecb99]">Verificação de estilo sem avisos.</p>'}
+    <p class="text-[11px] text-[#a89f88]">No horário da publicação, o link vai também para o canal e os grupos do Telegram.</p>
+    <div class="flex justify-end gap-2"><button id="cf-nao" class="px-4 py-2 text-sm border border-[#2e2a1e] rounded">Voltar</button><button id="cf-sim" class="px-4 py-2 text-sm rounded bg-[#eec617] text-black font-semibold">${acao === 'agendar' ? 'Agendar' : 'Publicar agora'}</button></div></div>`);
+  $('#cf-nao').onclick = fecharModal;
+  $('#cf-sim').onclick = async () => {
+    $('#cf-sim').disabled = true; $('#cf-sim').textContent = 'Enviando…';
+    try {
+      sujo = true; if (!(await salvar(true))) { fecharModal(); return; }
+      const r = await rpc('vm_artigo_publicar', {p_id: artigo.id, p_quando: acao === 'agendar' ? quandoISO(quando) : null});
+      artigo.situacao = r.situacao; estadoArtigo(); fecharModal();
+      selo(r.situacao === 'publicado' ? 'Publicado agora' : 'Agendado', 'text-[#3ecb99]');
+      toast(r.situacao === 'publicado' ? 'Artigo publicado.' : 'Artigo agendado.');
+      carregarListas();
+    } catch (e) { fecharModal(); falha(e); }
+  };
+}
+function corrigir() {
+  abrirModal('Salvar correção do artigo publicado', `<div class="p-5 space-y-3">
+    <p class="text-sm">A versão anterior fica guardada e a nota de correção aparece no fim do artigo (Manual, cap. 9).</p>
+    <label for="cr-oque" class="block text-[11px] uppercase tracking-wider text-[#a89f88]">O que foi corrigido</label>
+    <input id="cr-oque" maxlength="300" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="Ex.: a variação do IPCA em 12 meses">
+    <label for="cr-antes" class="block text-[11px] uppercase tracking-wider text-[#a89f88]">O que a versão anterior dizia</label>
+    <textarea id="cr-antes" rows="2" maxlength="500" class="w-full bg-black border border-[#2e2a1e] rounded px-3 py-2 text-sm" placeholder="Ex.: informava 4,8%"></textarea>
+    <div class="flex justify-end gap-2 pt-2"><button id="cr-nao" class="px-4 py-2 text-sm border border-[#2e2a1e] rounded">Voltar</button><button id="cr-sim" class="px-4 py-2 text-sm rounded bg-[#eec617] text-black font-semibold">Salvar correção</button></div></div>`);
+  $('#cr-nao').onclick = fecharModal;
+  $('#cr-sim').onclick = async () => {
+    const oque = $('#cr-oque').value.trim(), antes = $('#cr-antes').value.trim();
+    if (oque.length < 3 || antes.length < 3) return toast('Preencha os dois campos da nota de correção.', 'aviso');
+    $('#cr-sim').disabled = true;
+    try {
+      const d = await dadosDoArtigo();
+      const r = await rpc('vm_artigo_corrigir', {p_id: artigo.id, p_dados: {titulo: d.titulo, linha_fina: d.linha_fina, corpo: d.corpo, fontes: d.fontes}, p_o_que: oque, p_versao_anterior_informava: antes});
+      artigo.versao = r.versao; sujo = false; estadoArtigo(); fecharModal(); selo('Correção publicada', 'text-[#3ecb99]'); toast('Correção publicada.'); carregarListas();
+    } catch (e) { $('#cr-sim').disabled = false; falha(e); }
+  };
+}
+$('#btn-publicar').onclick = () => confirmar('publicar');
+$('#btn-agendar').onclick = () => confirmar('agendar');
+
+/* ---------- imagem no texto e anexo PDF: ficam no navegador até salvar ---------- */
+$('#arq-img').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (f.size > MAX) return toast('Imagem acima de 5 MB.', 'erro');
+  if (!tipoPelosBytes(new Uint8Array(await f.slice(0, 12).arrayBuffer()))) return toast('Arquivo recusado: não é JPG, PNG ou WEBP de verdade.', 'erro');
+  const w = novoBloco('imagem', {src: URL.createObjectURL(f)}, blocoDoCursor()); w._arquivo = f; atualizar(); toast('Imagem pronta: sobe quando salvar.');
+});
+
+/* ---------- listas: fila, publicados, painel ---------- */
+let listaArtigos = [], filaScanner = null;
+const dataHora = iso => iso ? new Date(iso).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'}).replace(',', '').replace(':', 'h') : '';
+async function carregarListas() {
+  try {
+    [listaArtigos, filaScanner] = await Promise.all([rpc('vm_artigos_redacao', {p_situacao: null, p_limite: 200}), rpc('vm_materias_fila').catch(() => null)]);
+    desenharFila(); desenharPublicados(); desenharPainel();
+  } catch (e) { falha(e); }
+}
+function cartao(titulo, sub, botoes) {
+  return `<div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4 flex flex-wrap items-center gap-3"><div class="flex-1 min-w-[14rem]"><div class="f-jornal text-lg">${escapar(titulo)}</div>
+    <div class="text-xs text-[#a89f88] mt-1 f-mono">${sub}</div></div>${botoes}</div>`;
+}
+const BT = 'px-3 py-1.5 text-xs border border-[#2e2a1e] rounded hover:border-[#a89f88]', BT_PERIGO = 'px-3 py-1.5 text-xs border border-[#2e2a1e] rounded hover:border-[#e2564f] hover:text-[#e2564f]';
+function desenharFila() {
+  const abertos = listaArtigos.filter(a => ['rascunho', 'revisao', 'agendado'].includes(a.situacao));
+  const sc = (filaScanner && filaScanner.fila) || [];
+  $('#n-fila').textContent = abertos.length + sc.length; $('#n-fila').classList.toggle('hidden', !(abertos.length + sc.length));
+  $('#lista-fila').innerHTML = (abertos.map(a => cartao(a.titulo, `nº ${a.id} · ${SIT[a.situacao]}${a.situacao === 'agendado' ? ' para ' + dataHora(a.publicar_em) : ''} · ${escapar(a.editoria)} · atualizado ${dataHora(a.atualizado_em)}`,
+      `<button class="${BT}" data-abrir="${a.id}">Abrir</button>`)).join('')
+    + sc.map(m => cartao((m.gerado || {}).titulo || 'Scanner do Dia', `Scanner nº ${m.id} · ${escapar(String(m.data_ref))} · ${m.verificacao_ok ? 'verificação aprovada' : 'com alerta da verificação'}`,
+      `<a class="${BT}" href="/#/noticias">Revisar no jornal</a>`)).join(''))
+    || '<p class="text-sm text-[#a89f88]">Nada na fila. Rascunhos e agendados aparecem aqui.</p>';
+  $$('[data-abrir]').forEach(b => b.onclick = () => abrirArtigo(+b.dataset.abrir));
+}
+function desenharPublicados() {
+  const pubs = listaArtigos.filter(a => ['publicado', 'despublicado'].includes(a.situacao));
+  const scs = (filaScanner && filaScanner.publicados) || [];
+  $('#lista-pub').innerHTML = '<h2 class="text-xs uppercase tracking-widest text-[#a89f88] mb-1">Artigos</h2>'
+    + (pubs.map(a => cartao(a.titulo, `nº ${a.id} · ${SIT[a.situacao]} · ${dataHora(a.publicado_em)}${a.versao > 1 ? ' · versão ' + a.versao : ''}`,
+        (a.situacao === 'publicado' ? `<a class="${BT}" href="/#/noticias/artigo/${a.id}" target="_blank" rel="noopener">Ver no jornal</a><button class="${BT}" data-abrir="${a.id}">Corrigir</button><button class="${BT_PERIGO}" data-tirar="${a.id}">Tirar do ar</button>` : '')
+      )).join('') || '<p class="text-sm text-[#a89f88]">Nenhum artigo publicado ainda.</p>')
+    + '<h2 class="text-xs uppercase tracking-widest text-[#a89f88] mt-6 mb-1">Scanner do Dia (publicação automática)</h2>'
+    + (scs.map(m => cartao(((m.texto_aprovado || m.gerado) || {}).titulo || 'Scanner', `nº ${m.id} · ${escapar(String(m.data_ref))} · ${dataHora(m.aprovado_em)}`,
+        `<button class="${BT_PERIGO}" data-tirar-sc="${m.id}">Tirar do ar</button>`)).join('') || '<p class="text-sm text-[#a89f88]">Nenhum Scanner nos últimos dias.</p>');
+  $$('#lista-pub [data-abrir]').forEach(b => b.onclick = () => abrirArtigo(+b.dataset.abrir));
+  $$('[data-tirar]').forEach(b => b.onclick = () => pedirMotivo('Tirar o artigo do ar', m => rpc('vm_artigo_despublicar', {p_id: +b.dataset.tirar, p_motivo: m})));
+  $$('[data-tirar-sc]').forEach(b => b.onclick = () => pedirMotivo('Tirar o Scanner do ar', m => rpc('vm_materia_despublicar', {p_id: +b.dataset.tirarSc, p_motivo: m})));
+}
+function pedirMotivo(titulo, acao) {
+  abrirModal(titulo, `<div class="p-5 space-y-3"><label for="mt-txt" class="block text-[11px] uppercase tracking-wider text-[#a89f88]">Motivo (fica no registro de auditoria)</label>
+    <textarea id="mt-txt" rows="3" maxlength="500" class="w-full bg-black border border-[#2e2a1e] rounded px-3 py-2 text-sm"></textarea>
+    <div class="flex justify-end gap-2"><button id="mt-nao" class="px-4 py-2 text-sm border border-[#2e2a1e] rounded">Voltar</button><button id="mt-sim" class="px-4 py-2 text-sm rounded bg-[#e2564f] text-black font-semibold">Tirar do ar</button></div></div>`);
+  $('#mt-nao').onclick = fecharModal;
+  $('#mt-sim').onclick = async () => { const m = $('#mt-txt').value.trim(); if (m.length < 5) return toast('Escreva o motivo (pelo menos 5 letras).', 'aviso');
+    try { await acao(m); fecharModal(); toast('Tirado do ar.'); carregarListas(); } catch (e) { falha(e); } };
+}
+function desenharPainel() {
+  const hoje = new Date(Date.now() - 3 * 3600e3).toISOString().slice(0, 10);
+  const pubHoje = listaArtigos.filter(a => a.situacao === 'publicado' && a.publicado_em && new Date(new Date(a.publicado_em).getTime() - 3 * 3600e3).toISOString().slice(0, 10) === hoje).length;
+  const mt = (filaScanner && filaScanner.metricas) || {};
+  $('#p-hoje').textContent = pubHoje; $('#p-fila').textContent = listaArtigos.filter(a => ['rascunho', 'revisao', 'agendado'].includes(a.situacao)).length;
+  $('#p-alertas').textContent = mt.reprovados_na_verificacao || 0;
+  $('#p-custo').textContent = 'US$ ' + Number(mt.custo_usd || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const col = (filaScanner && filaScanner.ultimas_coletas) || [];
+  $('#p-coletas').innerHTML = col.slice(0, 12).map(c => `<tr class="border-b border-[#2e2a1e]"><td class="p-2">${escapar(c.coletor)}</td><td class="p-2">${dataHora(c.iniciado_em)}</td>
+    <td class="p-2 ${c.situacao === 'ok' ? 'text-[#3ecb99]' : 'text-[#e2564f]'}">${escapar(c.situacao)}</td><td class="p-2">${c.novos ?? ''}</td><td class="p-2 text-[#a89f88]">${escapar((c.erro || '').slice(0, 80))}</td></tr>`).join('')
+    || '<tr><td class="p-2 text-[#a89f88]" colspan="5">Nenhuma coleta registrada.</td></tr>';
+}
+
+/* ---------- layout da capa (vm_layout_historico / vm_layout_salvar / vm_layout_voltar) ---------- */
+const NOME_BLOCO = {manchete: 'Manchete', scanner: 'Scanner do Dia (lateral)', indicadores: 'Indicadores de fechamento', artigos: 'Artigos', ultimas: 'Últimas notícias', agenda: 'Agenda', radar: 'Radar de Ações Exponenciais'};
+let versao = 1, capa = [], historico = [], publicadosCapa = [], arrastado = null;
+async function carregarLayout() {
+  try {
+    [historico, publicadosCapa] = await Promise.all([rpc('vm_layout_historico'), rpc('vm_artigos_publicos', {p_limite: 30})]);
+    const at = historico.find(h => h.ativo) || historico[0];
+    const blocos = (at && at.layout && at.layout.blocos) || Object.keys(NOME_BLOCO).map(t => ({tipo: t, ativo: t !== 'radar'}));
+    versao = at ? at.versao : 1;
+    capa = blocos.map(b => ({tipo: b.tipo, nome: NOME_BLOCO[b.tipo] || b.tipo, ativo: !!b.ativo, fixo: b.tipo === 'scanner', ...(b.tipo === 'artigos' ? {destaques: b.destaques || []} : {})}));
+    Object.keys(NOME_BLOCO).forEach(t => { if (!capa.some(b => b.tipo === t)) capa.push({tipo: t, nome: NOME_BLOCO[t], ativo: false, fixo: t === 'scanner', ...(t === 'artigos' ? {destaques: []} : {})}); });
+    desenharCapa();
+  } catch (e) { falha(e); }
+}
+function desenharCapa() {
+  $('#lay-ver').textContent = 'v' + versao;
+  const MATERIAS = publicadosCapa.map(a => ({id: a.id, t: a.titulo}));
+  $('#lay-blocos').innerHTML = capa.map((b, i) => `<li draggable="${!b.fixo}" data-i="${i}" class="lay-item bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4 flex flex-wrap items-center gap-3 ${b.ativo ? '' : 'opacity-60'}">
+    <span class="${b.fixo ? 'text-[#2e2a1e]' : 'cursor-grab text-[#a89f88]'} select-none text-lg leading-none" aria-hidden="true">⋮⋮</span>
+    <span class="f-mono text-[11px] text-[#a89f88] w-5">${i + 1}</span>
+    <span class="flex-1 min-w-[10rem]">${escapar(b.nome)} ${b.fixo ? '<span class="ml-2 text-[10px] uppercase tracking-wider text-[#a89f88] border border-[#2e2a1e] rounded px-1.5 py-0.5">fixo</span>' : ''}</span>
+    ${b.tipo === 'artigos' ? `<details class="relative text-xs"><summary class="cursor-pointer list-none px-3 py-1.5 border border-[#2e2a1e] rounded text-[#a89f88] hover:text-[#f2ecd8]">Destaques (${b.destaques.length}/3) ▾</summary>
+      <div class="absolute right-0 mt-1 z-10 w-72 max-h-72 overflow-auto bg-[#141411] border border-[#2e2a1e] rounded p-2 space-y-1">${MATERIAS.length ? MATERIAS.map(m => `<label class="flex items-start gap-2 p-1.5 rounded hover:bg-black cursor-pointer"><input type="checkbox" data-dest="${i}" value="${m.id}" class="mt-0.5 accent-[#eec617]" ${b.destaques.includes(m.id) ? 'checked' : ''}><span>${escapar(m.t)}</span></label>`).join('') : '<p class="p-2 text-[#a89f88]">Publique um artigo para escolher destaques.</p>'}</div></details>` : ''}
+    <div class="flex items-center gap-1">
+      <button data-sobe="${i}" class="w-8 h-8 text-base rounded hover:bg-[#141411] disabled:opacity-30" ${b.fixo || i === 0 ? 'disabled' : ''} aria-label="Subir ${escapar(b.nome)}">↑</button>
+      <button data-desce="${i}" class="w-8 h-8 text-base rounded hover:bg-[#141411] disabled:opacity-30" ${b.fixo || i === capa.length - 1 ? 'disabled' : ''} aria-label="Descer ${escapar(b.nome)}">↓</button>
+      <button role="switch" aria-checked="${b.ativo}" data-liga="${i}" ${b.fixo ? 'disabled' : ''} class="ml-2 relative w-10 h-5 rounded-full transition ${b.ativo ? 'bg-[#3ecb99]' : 'bg-[#2e2a1e]'} disabled:opacity-40" aria-label="${b.ativo ? 'Desligar' : 'Ligar'} ${escapar(b.nome)}"><span class="absolute top-0.5 ${b.ativo ? 'left-5' : 'left-0.5'} w-4 h-4 rounded-full bg-black transition-all"></span></button>
+    </div></li>`).join('');
+  icones();
+  $$('[data-sobe]').forEach(b => b.onclick = () => mover(+b.dataset.sobe, -1));
+  $$('[data-desce]').forEach(b => b.onclick = () => mover(+b.dataset.desce, 1));
+  $$('[data-liga]').forEach(b => b.onclick = () => { const x = capa[+b.dataset.liga]; x.ativo = !x.ativo; desenharCapa(); });
+  $$('[data-dest]').forEach(c => c.onchange = () => {
+    const blk = capa[+c.dataset.dest], id = +c.value;
+    if (c.checked && blk.destaques.length >= 3) { c.checked = false; return toast('Até 3 matérias em destaque.', 'aviso'); }
+    blk.destaques = c.checked ? [...blk.destaques, id] : blk.destaques.filter(x => x !== id);
+    c.closest('details').querySelector('summary').textContent = `Destaques (${blk.destaques.length}/3) ▾`;
+  });
+  $$('.lay-item').forEach(li => {
+    li.addEventListener('dragstart', () => { arrastado = +li.dataset.i; li.classList.add('arrastando'); });
+    li.addEventListener('dragend', () => li.classList.remove('arrastando'));
+    li.addEventListener('dragover', e => { e.preventDefault(); li.classList.add('alvo-drop'); });
+    li.addEventListener('dragleave', () => li.classList.remove('alvo-drop'));
+    li.addEventListener('drop', e => { e.preventDefault(); li.classList.remove('alvo-drop'); const alvo = +li.dataset.i;
+      if (arrastado === null || arrastado === alvo || capa[alvo].fixo) return; const [x] = capa.splice(arrastado, 1); capa.splice(alvo, 0, x); arrastado = null; desenharCapa(); });
+  });
+}
+function mover(i, d) { const j = i + d; if (j < 0 || j >= capa.length || capa[j].fixo) return; [capa[i], capa[j]] = [capa[j], capa[i]]; desenharCapa(); }
+function layoutJSON() { return {versao, blocos: capa.map(b => ({tipo: b.tipo, ativo: b.ativo, ...(b.destaques ? {destaques: b.destaques} : {})}))}; }
+$('#btn-aplicar').onclick = async () => {
+  try { const r = await rpc('vm_layout_salvar', {p_layout: layoutJSON()}); toast('Layout aplicado: capa v' + r.versao + ' no ar.'); await carregarLayout(); carregarAud(); } catch (e) { falha(e); }
+};
+$('#btn-hist').onclick = () => {
+  abrirModal('Histórico de versões', `<ul class="divide-y divide-[#2e2a1e]">${historico.map(h => `<li class="flex items-center gap-3 px-5 py-3 text-sm"><span class="f-mono">v${h.versao}</span>
+    <span class="text-[#a89f88]">${dataHora(h.criado_em)}${h.ativo ? ' · <b class="text-[#3ecb99]">no ar</b>' : ''}</span>
+    ${h.ativo ? '' : `<button class="ml-auto text-xs text-[#eec617] hover:underline" data-voltar="${h.versao}">Voltar para esta versão</button>`}</li>`).join('') || '<li class="px-5 py-3 text-sm text-[#a89f88]">Sem versões.</li>'}</ul>`);
+  $$('[data-voltar]').forEach(b => b.onclick = async () => { try { await rpc('vm_layout_voltar', {p_versao: +b.dataset.voltar}); fecharModal(); toast('Capa v' + b.dataset.voltar + ' de volta ao ar.'); carregarLayout(); carregarAud(); } catch (e) { falha(e); } });
+};
+$('#btn-prev-capa').onclick = () => {
+  const ativos = capa.filter(b => b.ativo), MAT = publicadosCapa;
+  abrirModal('Pré-visualização da capa', `<div class="bg-[#F5F2E7] text-[#1C1F18] p-5">
+    <div class="bg-[#414A38] text-center py-4 mb-4"><div class="f-marca text-[#F5F2E7] tracking-[.19em] text-xl">VALOR E MERCADO</div></div>
+    <div class="grid grid-cols-1 md:grid-cols-[1.85fr_1fr] gap-4">
+      <div class="space-y-3">${ESPACOS[0].ativo ? '<div class="border border-dashed border-[#7A6629] p-3 f-marca text-[11px] text-[#7A6629] text-center">PUBLICIDADE · faixa do topo 970 × 250</div>' : ''}${ativos.filter(b => b.tipo !== 'scanner').map(b => `<div class="border border-[#D9D3BF] bg-white/50 p-4 f-marca text-sm">${escapar(b.nome)}${b.destaques && b.destaques.length ? `<div class="text-xs text-[#4F5446] mt-1">Destaques: ${b.destaques.map(id => escapar((MAT.find(m => m.id === id) || {}).titulo || ('nº ' + id))).join(' · ')}</div>` : ''}</div>`).join('')}</div>
+      <div class="border-t-2 border-[#1C1F18] pt-2"><div class="f-jornal text-lg mb-2">O que move o dia</div><div class="bg-[#ECE7D6] border-t-4 border-[#414A38] p-3 f-marca text-sm">Scanner do Dia</div>${ESPACOS[1].ativo ? '<div class="mt-3 border border-dashed border-[#7A6629] p-3 f-marca text-[11px] text-[#7A6629] text-center">PUBLICIDADE · 300 × 250</div>' : ''}</div>
+    </div></div>`);
+};
+
+/* ---------- mídia (vm_midias_lista / vm_midia_excluir) ---------- */
+async function carregarMidia() {
+  try {
+    const ms = await rpc('vm_midias_lista', {p_limite: 120});
+    $('#lista-midia').innerHTML = ms.map(m => `<figure class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg overflow-hidden">
+      ${m.tipo === 'application/pdf' ? '<div class="h-24 flex items-center justify-center f-mono text-xs bg-[#141411]">PDF</div>' : `<img src="${escapar(m.url)}" alt="${escapar(m.alt || '')}" loading="lazy" class="h-24 w-full object-cover">`}
+      <figcaption class="p-2 text-xs space-y-1"><div class="truncate">${escapar(m.alt || m.fotografo || m.caminho)}</div><div class="text-[#a89f88] f-mono">${(m.bytes / 1024).toFixed(0)} KB · em ${m.usos} artigo(s)</div>
+      <div class="flex gap-2"><button class="text-[#eec617] hover:underline" data-copiar="${escapar(m.url)}">Copiar endereço</button>${m.usos ? '' : `<button class="ml-auto text-[#a89f88] hover:text-[#e2564f]" data-apagar="${m.id}" data-caminho="${escapar(m.caminho)}" data-balde="${m.tipo === 'application/pdf' ? 'vm-anexos' : 'vm-imagens'}">Apagar</button>`}</div></figcaption></figure>`).join('')
+      || '<p class="text-sm text-[#a89f88] col-span-full">Nenhuma imagem enviada ainda. As fotos dos artigos aparecem aqui.</p>';
+    $$('[data-copiar]').forEach(b => b.onclick = () => { navigator.clipboard?.writeText(b.dataset.copiar); toast('Endereço copiado.'); });
+    $$('[data-apagar]').forEach(b => b.onclick = async () => {
+      try { await rpc('vm_midia_excluir', {p_id: +b.dataset.apagar});
+        await fetch(SUPA + '/storage/v1/object/' + b.dataset.balde + '/' + b.dataset.caminho, {method: 'DELETE', headers: {'apikey': CHAVE_PUBLICA, 'Authorization': 'Bearer ' + await token()}});
+        toast('Arquivo apagado.'); carregarMidia(); } catch (e) { falha(e); } });
+  } catch (e) { falha(e); }
+}
+
+/* ---------- publicidade (vm_banners_redacao / vm_banner_salvar / vm_espaco_publicidade_ligar) ---------- */
+const ESPACOS = [
+  {id:'topo', nome:'Faixa do topo (billboard)', onde:'acima da manchete', pc:'970 × 250', cel:'320 × 100', ativo:false, nota:'O mais caro: patrocínio da capa. Pronto, desligado até haver patrocinador.'},
+  {id:'lateral', nome:'Retângulo lateral', onde:'coluna "O que move o dia", entre o Scanner e os Indicadores', pc:'300 × 250', cel:'300 × 250', ativo:true, nota:'O formato mais usado no mundo; quase todo anunciante já tem a peça pronta.'},
+  {id:'artigo', nome:'Dentro do artigo', onde:'depois do 2º parágrafo da manchete e dos artigos', pc:'728 × 90', cel:'300 × 250', ativo:true, nota:'O mais visto de fato; no celular é o espaço principal.'}];
+let banners = [];
+async function carregarBanners() {
+  try {
+    const d = await rpc('vm_banners_redacao');
+    (d.espacos || []).forEach(e => { const x = ESPACOS.find(y => y.id === e.espaco); if (x) { x.ativo = !!e.ativo; x.pc = e.largura + ' × ' + e.altura; x.cel = e.largura_cel + ' × ' + e.altura_cel; } });
+    banners = (d.banners || []).map(b => ({id: b.id, espaco: b.espaco, anunciante: b.anunciante || '', link: b.link, alt: b.alt, ini: b.inicio, fim: b.fim, img: b.imagem_url, imgcel: b.imagem_cel_url || '', ativo: b.ativo}));
+    desenharEspacos(); desenharBanners();
+  } catch (e) { falha(e); }
+}
+function desenharEspacos() {
+  $('#espacos').innerHTML = ESPACOS.map((e, i) => `<div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4 ${e.ativo ? '' : 'opacity-70'}">
+    <div class="flex items-start gap-3"><div class="flex-1"><div class="text-sm">${escapar(e.nome)}</div><div class="text-[11px] text-[#a89f88] mt-0.5">${escapar(e.onde)}</div></div>
+      <button role="switch" aria-checked="${e.ativo}" data-esp="${i}" class="relative w-10 h-5 rounded-full shrink-0 ${e.ativo ? 'bg-[#3ecb99]' : 'bg-[#2e2a1e]'}" aria-label="${e.ativo ? 'Desligar' : 'Ligar'} ${escapar(e.nome)}"><span class="absolute top-0.5 ${e.ativo ? 'left-5' : 'left-0.5'} w-4 h-4 rounded-full bg-black"></span></button></div>
+    <div class="f-mono text-[11px] text-[#a89f88] mt-3">computador ${e.pc} · celular ${e.cel}</div>
+    <p class="text-[11px] text-[#a89f88] mt-2">${escapar(e.nota)}</p>
+    <div class="text-[11px] mt-2 ${e.ativo ? 'text-[#3ecb99]' : 'text-[#a89f88]'}">${e.ativo ? 'Ligado' : 'Desligado'} · ${banners.filter(b => b.espaco === e.id && b.ativo).length} banner(s)</div></div>`).join('');
+  $$('[data-esp]').forEach(b => b.onclick = async () => { const e = ESPACOS[+b.dataset.esp];
+    try { await rpc('vm_espaco_publicidade_ligar', {p_espaco: e.id, p_ativo: !e.ativo}); e.ativo = !e.ativo; desenharEspacos(); toast(`${e.nome}: ${e.ativo ? 'ligado' : 'desligado'}.`); carregarAud(); } catch (er) { falha(er); } });
+}
+function desenharBanners() {
+  const hoje = new Date(Date.now() - 3 * 3600e3).toISOString().slice(0, 10);
+  $('#lista-banners').innerHTML = banners.length ? banners.map((b, i) => { const no_ar = b.ativo && b.ini <= hoje && hoje <= b.fim, e = ESPACOS.find(x => x.id === b.espaco) || ESPACOS[1];
+    return `<div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4 flex flex-wrap items-center gap-4 ${b.ativo ? '' : 'opacity-60'}">
+      <div class="w-28 h-16 rounded bg-[#141411] border border-[#2e2a1e] overflow-hidden flex items-center justify-center text-[10px] text-[#a89f88]">${b.img ? `<img src="${escapar(b.img)}" alt="" class="max-h-full">` : e.pc}</div>
+      <div class="flex-1 min-w-[12rem]"><div class="text-sm">${escapar(b.anunciante || b.alt)}</div><div class="text-[11px] text-[#a89f88]">${escapar(e.nome)} · ${b.ini.split('-').reverse().join('/')} a ${b.fim.split('-').reverse().join('/')}</div>
+        <div class="text-[11px] f-mono text-[#a89f88] break-all">${escapar(b.link)}</div></div>
+      <span class="text-[11px] ${no_ar && e.ativo ? 'text-[#3ecb99]' : 'text-[#dba22a]'}">${!b.ativo ? 'Desativado' : no_ar ? (e.ativo ? 'No ar' : 'Espaço desligado') : (b.ini > hoje ? 'Agendado' : 'Encerrado')}</span>
+      ${b.ativo ? `<button data-bx="${i}" class="text-xs border border-[#2e2a1e] rounded px-3 py-1.5 hover:border-[#e2564f] hover:text-[#e2564f]">Desativar</button>` : ''}</div>`; }).join('')
+    : '<p class="text-sm text-[#a89f88]">Nenhum banner cadastrado.</p>';
+  $$('[data-bx]').forEach(bt => bt.onclick = async () => { const b = banners[+bt.dataset.bx];
+    try { await rpc('vm_banner_salvar', {p_id: b.id, p_espaco: b.espaco, p_imagem_url: b.img, p_link: b.link, p_alt: b.alt, p_inicio: b.ini, p_fim: b.fim, p_ativo: false, p_imagem_cel_url: b.imgcel || null, p_anunciante: b.anunciante || null});
+      toast('Banner desativado.'); carregarBanners(); carregarAud(); } catch (e) { falha(e); } });
+}
+async function imagemBanner(inp, prev, txt) {
+  const f = inp.files[0]; if (!f) return '';
+  if (f.size > 2 * 1048576) { toast('Banner acima de 2 MB: reduza a imagem.', 'erro'); inp.value = ''; return ''; }
+  const tipo = tipoPelosBytes(new Uint8Array(await f.slice(0, 12).arrayBuffer()));
+  if (!tipo) { toast('Arquivo recusado: não é JPG, PNG ou WEBP de verdade.', 'erro'); inp.value = ''; return ''; }
+  const url = URL.createObjectURL(f); $(prev).src = url; $(prev).classList.remove('hidden'); $(txt).classList.add('hidden'); inp._arquivo = f;
+  const img = new Image(); img.onload = () => { const e = ESPACOS.find(x => x.id === $('#b-espaco').value), [w, h] = (inp.id === 'b-imgcel' ? e.cel : e.pc).split(' × ').map(Number);
+    if (Math.abs(img.width / img.height - w / h) > 0.15) toast(`Proporção da imagem (${img.width} × ${img.height}) diferente do espaço (${w} × ${h}).`, 'aviso'); }; img.src = url;
+  return url;
+}
+$('#b-img').addEventListener('change', async e => { e.target._url = await imagemBanner(e.target, '#b-img-prev', '#b-img-txt'); });
+$('#b-imgcel').addEventListener('change', async e => { e.target._url = await imagemBanner(e.target, '#b-imgcel-prev', '#b-imgcel-txt'); });
+function bannerDoForm() {
+  const link = $('#b-link').value.trim(); let ok = false; try { ok = new URL(link).protocol === 'https:'; } catch (_) {}
+  if (!$('#b-img')._url) { toast('Escolha a imagem do banner.', 'aviso'); return null; }
+  if (!ok) { toast('O link do anúncio precisa começar com https://', 'erro'); return null; }
+  if ($('#b-alt').value.trim().length < 3) { toast('Preencha o texto alternativo.', 'aviso'); return null; }
+  if (!$('#b-ini').value || !$('#b-fim').value || $('#b-fim').value < $('#b-ini').value) { toast('Confira o período (início e fim).', 'aviso'); return null; }
+  return {espaco: $('#b-espaco').value, anunciante: $('#b-anunciante').value.trim(), link, alt: $('#b-alt').value.trim(), ini: $('#b-ini').value, fim: $('#b-fim').value, img: $('#b-img')._url, imgcel: $('#b-imgcel')._url || ''};
+}
+function slotHTML(b, e, cel) {
+  const [w, h] = (cel ? e.cel : e.pc).split(' × ').map(Number);
+  return `<div class="mx-auto" style="max-width:${w}px"><div class="f-marca text-[10px] tracking-[.18em] uppercase text-[#4F5446] mb-1">Publicidade</div>
+    <a href="${escapar(b.link)}" target="_blank" rel="noopener noreferrer sponsored" class="block bg-[#ECE7D6] border border-[#D9D3BF]" style="aspect-ratio:${w}/${h}">${(cel && b.imgcel) || b.img ? `<img src="${escapar((cel && b.imgcel) || b.img)}" alt="${escapar(b.alt)}" class="w-full h-full object-cover">` : ''}</a></div>`;
+}
+$('#b-prev').onclick = () => { const b = bannerDoForm(); if (!b) return; const e = ESPACOS.find(x => x.id === b.espaco);
+  abrirModal('Pré-visualização do banner', `<div class="bg-[#F5F2E7] p-5 space-y-6"><div class="f-marca text-[11px] text-[#4F5446]">${escapar(e.nome)} — computador</div>${slotHTML(b, e, false)}
+    <div class="f-marca text-[11px] text-[#4F5446]">celular</div><div class="max-w-[390px] mx-auto">${slotHTML(b, e, true)}</div></div>`); };
+$('#b-salvar').onclick = async () => { const b = bannerDoForm(); if (!b) return;
+  $('#b-salvar').disabled = true; $('#b-salvar').textContent = 'Enviando…';
+  try {
+    const img = (await enviarArquivo($('#b-img')._arquivo, {alt: b.alt})).url;
+    const cel = $('#b-imgcel')._arquivo ? (await enviarArquivo($('#b-imgcel')._arquivo, {alt: b.alt})).url : null;
+    await rpc('vm_banner_salvar', {p_id: null, p_espaco: b.espaco, p_imagem_url: img, p_link: b.link, p_alt: b.alt, p_inicio: b.ini, p_fim: b.fim, p_ativo: true, p_imagem_cel_url: cel, p_anunciante: b.anunciante || null});
+    ['#b-link', '#b-alt', '#b-anunciante', '#b-ini', '#b-fim'].forEach(s => { $(s).value = ''; });
+    ['b-img', 'b-imgcel'].forEach(id => { const i = $('#' + id); i.value = ''; i._url = ''; i._arquivo = null; $('#' + id + '-prev').classList.add('hidden'); $('#' + id + '-txt').classList.remove('hidden'); });
+    toast('Banner salvo.'); carregarBanners(); carregarAud();
+  } catch (e) { falha(e); }
+  finally { $('#b-salvar').disabled = false; $('#b-salvar').textContent = 'Salvar banner'; }
+};
+
+/* ---------- registro de auditoria (vm_eventos_lista) ---------- */
+async function carregarAud() {
+  try { const ev = await rpc('vm_eventos_lista', {p_limite: 150});
+    $('#lista-aud').innerHTML = ev.map(r => `<tr class="border-b border-[#2e2a1e]">${[dataHora(r.quando), r.quem || 'sistema', r.acao + (r.motivo ? ' — ' + r.motivo : ''), (r.titulo || r.item || '') + (r.id ? ' · nº ' + r.id : '')].map(c => `<td class="p-3">${escapar(c)}</td>`).join('')}</tr>`).join('')
+      || '<tr><td class="p-3 text-[#a89f88]" colspan="4">Nada registrado ainda.</td></tr>';
+  } catch (e) { falha(e); }
+}
+
+/* ---------- abas carregam o que mostram ---------- */
+const CARREGA = {painel: carregarListas, fila: carregarListas, publicados: carregarListas, layout: carregarLayout, midia: carregarMidia, banners: carregarBanners, auditoria: carregarAud};
+$$('.nav-item').forEach(b => b.addEventListener('click', () => { const f = CARREGA[b.dataset.aba]; if (f) f(); }));
+$('#btn-sair').onclick = async () => { if (sujo && $('#f-titulo').value.trim()) await salvar(false); location.href = '/#/noticias'; };
+
+/* ---------- entrada: só com a sessão do site e perfil de editor ---------- */
+function portao(msg, comLink) {
+  $('#portao').classList.remove('hidden');
+  $('#portao-msg').innerHTML = escapar(msg) + (comLink ? '<br><a class="text-[#eec617] underline" href="/#/noticias">Ir para o jornal e entrar</a>' : '');
+}
+(async () => {
+  novoBloco('paragrafo', '');
+  desenharTags(); desenharEspacos(); contadores(); contadoresSeo(); verificar(); estadoArtigo();
+  abrirAba('escrever'); icones();
+  try {
+    await token();
+    const ok = await rpc('vm_eh_editor');
+    if (ok !== true) return portao('Esta conta não tem acesso à Redação.', true);
+    const nome = (sessao.nome || (sessao.user && sessao.user.user_metadata && sessao.user.user_metadata.full_name) || sessao.email || EDITOR_FIXO).trim();
+    $('#u-nome').textContent = nome; $('#u-ini').textContent = nome.replace(/^(Dr\.?|Dra\.?)\s+/i, '').split(/\s+/).map(p => p[0]).slice(0, 2).join('').toUpperCase();
+    $('#portao').classList.add('hidden');
+    const q = new URLSearchParams(location.search), id = +(q.get('artigo') || 0);
+    if (id) abrirArtigo(id);
+    carregarListas();
+  } catch (e) { portao(e.message === 'SEM_SESSAO' ? 'Entre no site com a conta de editor para abrir a Redação.' : 'Não foi possível abrir a Redação: ' + e.message, true); }
+})();
+</script>
+</body>
+</html>
