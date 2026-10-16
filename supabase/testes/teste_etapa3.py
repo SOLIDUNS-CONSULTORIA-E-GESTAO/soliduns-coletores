@@ -3,6 +3,10 @@ import json, os, subprocess, sys, threading, time, urllib.request, hashlib, date
 from http.server import BaseHTTPRequestHandler, HTTPServer
 HOJE = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=3)).date().isoformat()
 AGORA = dt.datetime.now(dt.timezone.utc)
+_d = dt.date.fromisoformat(HOJE); _DIAS = ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado", "domingo"]
+_AB = ["Hoje a agenda do dia começa com", "Por hoje na agenda, teremos", "A agenda de hoje abre com", "Para hoje, a agenda reserva",
+       "O dia começa, na agenda, com", "Na agenda de hoje, o primeiro destaque é", "Logo cedo, a agenda traz", "A agenda {d} começa com"]
+ABERTURA = _AB[(_d - dt.date(1970, 1, 1)).days % 8].replace("{d}", ("deste " if _d.weekday() >= 5 else "desta ") + _DIAS[_d.weekday()])
 rfc = lambda d: d.strftime("%a, %d %b %Y %H:%M:%S +0000")
 FEED_LIVRE = f"""<?xml version="1.0"?><rss><channel><title>Agência Brasil</title>
 <item><title>Copom mantém Selic em 13,75% ao ano</title><link>https://agenciabrasil.ebc.com.br/economia/selic</link>
@@ -39,7 +43,7 @@ def resposta_ia():
     if MODO["resposta"] == "boa":
         g = {"chapeu": "Scanner", "titulo": "Copom mantém Selic em 13,75% e dólar fecha a R$ 5,0441",
              "linha_fina": "Petrobras sobe 4,03% no último pregão com volume de R$ 900 milhões, enquanto a Vale recua 5,00%; a PTAX do dólar avança sobre o fechamento de 13 de outubro",
-             "paragrafos": ["O Comitê de Política Monetária manteve a Selic em 13,75% ao ano, segundo a Agência Brasil.",
+             "paragrafos": [ABERTURA + " a decisão do Copom: o Comitê de Política Monetária manteve a Selic em 13,75% ao ano, segundo a Agência Brasil.",
                             "A PTAX do dólar fechou a R$ 5,0441, de acordo com o Banco Central. PETR4 subiu 4,03% e VALE3 caiu 5,00%, segundo a B3."],
              "editoria_sugerida": "Mercados", "tags": ["Selic"],
              "referencias": [{"numero": "13,75", "identificador": "cot:901"}, {"numero": "5,0441", "identificador": "cot:902"},

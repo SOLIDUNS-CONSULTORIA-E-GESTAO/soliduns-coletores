@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "2.0";
+const VERSAO = "2.1";
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.1";   // v2.0: revisão do plano editorial (Thiago, 15/10 20h55)
 const PROMPT_SHA256 = "06aae17da245203084750035fc2425aac49cd754240e496a4c25a1dd15438134";
@@ -282,7 +282,7 @@ function decimais(s: string) { const p = s.split(","); return p.length > 1 ? p[1
 export function numerosDoTexto(t: string): string[] {
   const limpo = t.replace(/\b\d{1,2}\/\d{1,2}(\/\d{2,4})?\b/g, " ")
     .replace(new RegExp(`\\b\\d{1,2}(º)? de (${MESES.join("|")})\\b`, "gi"), " ").replace(/\b\d{1,2}h\d{0,2}\b/gi, " ")
-    .replace(/\b\d+[ºª]/g, " ").replace(/\b\d+ (horas|dias|meses|anos)\b/gi, " ").replace(/\((\d{1,2})\)/g, " ");
+    .replace(/\b\d+[ºª]/g, " ").replace(/\b\d+ (horas|dias|meses|anos)\b/gi, " ").replace(/\bbase 252\b/gi, " ").replace(/\((\d{1,2})\)/g, " ");
   return (limpo.match(/(?<![\w.,])[-+−]?\d{1,3}(?:\.\d{3})+(?:,\d+)?|(?<![\w.,])[-+−]?\d+(?:,\d+)?/g) ?? [])
     .map((x) => x.replace(/^[+−-]/, "")).filter((x) => !/^(19|20)\d{2}$/.test(x));
 }
@@ -306,12 +306,15 @@ export function verificar(g: Record<string, unknown>, ctx: Contexto, hoje: Date)
   const inexistentes = refs.filter((r) => !registros.has(idRef(r))).map((r) => `${numRef(r)} → "${idRef(r)}" não existe no contexto`);
   ch.push({ checagem: "referencias_existem", ok: !inexistentes.length, bloqueia: true, detalhe: inexistentes });
   const divergentes: string[] = [];
+  // v2.1: o agente às vezes dá uma referência por registro para a mesma variação ("0,69" -> cot:890 e "0,69" -> cot:889)
+  const idsPorNumero = new Map<string, string[]>();
+  for (const r of refs) { const n = numRef(r); if (n) idsPorNumero.set(n, [...(idsPorNumero.get(n) ?? []), ...idsDaRef(r)]); }
   for (const r of refs) {
     const reg = registros.get(idRef(r)), n = numRef(r);
     if (!reg || !n) continue;
     const v = numBr(n), d = decimais(n), vals = valoresDoRegistro(reg);
     // v1.4: variação calculada entre dois registros citados (ex.: PTAX de hoje sobre a de ontem) também confere
-    const outros = idsDaRef(r).map((i) => registros.get(i)).filter(Boolean).flatMap((x) => valoresDoRegistro(x));
+    const outros = [...new Set([...idsDaRef(r), ...(idsPorNumero.get(n) ?? [])])].map((i) => registros.get(i)).filter(Boolean).flatMap((x) => valoresDoRegistro(x));
     for (const a of outros) for (const b of outros) if (a !== b && b) vals.push((a / b - 1) * 100, a - b);
     // compara em módulo (queda "de 5,00%" = −5) e aceita escala de mil, milhão e bilhão (R$ 900 milhões = 900000000)
     const bate = (x: number) => [1, 1e3, 1e6, 1e9].some((k) => Math.abs(Math.round(Math.abs(x) / k * 10 ** d) / 10 ** d - Math.abs(v)) < 0.5 / 10 ** d + 1e-9);
@@ -319,6 +322,10 @@ export function verificar(g: Record<string, unknown>, ctx: Contexto, hoje: Date)
       divergentes.push(`${numRef(r)} não confere com o registro ${idRef(r)} (${vals.join(" / ")})`);
   }
   ch.push({ checagem: "valores_conferem", ok: !divergentes.length, bloqueia: true, detalhe: divergentes });
+  // v2.1: abertura do Scanner (plano editorial 1.2) — registro; a correção é pedida uma vez na geração
+  const ab = String(ctx.abertura_do_dia ?? "");
+  const abOk = !ab || !ctx.agenda_do_dia.length || String(pars[0] ?? "").trim().startsWith(ab);
+  ch.push({ checagem: "abertura", ok: abOk, bloqueia: false, detalhe: abOk ? [] : [`o primeiro parágrafo não começa com "${ab}"`] });
   const texto = [g.titulo, g.linha_fina, ...pars].map(String).join(" \n ");
   const citados = new Set(refs.map((r) => numRef(r)));
   const semRef = [...new Set(numerosDoTexto(texto))].filter((n) => !citados.has(n));
@@ -362,6 +369,17 @@ export async function tratar(req: Request): Promise<Response> {
       try { gerado = extrairJson(r.texto); } catch (e2) {
         throw new Error(`resposta sem JSON (1ª: ${d1} | 2ª: ${r.diag}) ${String((e2 as Error).message ?? e2).slice(0, 80)}`);
       }
+    }
+    // v2.1: se o Scanner não abriu pela agenda com a abertura do dia, pede UMA reescrita (o plano editorial exige)
+    const ab = String(ctx.abertura_do_dia ?? "");
+    const comeca = (g: Record<string, unknown>) => String((Array.isArray(g.paragrafos) ? g.paragrafos[0] : "") ?? "").trim().startsWith(ab);
+    if (ab && ctx.agenda_do_dia.length && !comeca(gerado)) {
+      const ped = pedido(hoje, ctx, gerado, `O primeiro parágrafo precisa começar exatamente com "${ab}" e tratar da agenda do dia. Reescreva a edição inteira com essa abertura, mantendo todas as demais regras.` + (corpo.instrucao ? ` ${corpo.instrucao}` : ""));
+      try {
+        const r2 = await chamar([{ role: "user", content: ped }]); ent += r2.ent; sai += r2.sai;
+        const g2 = extrairJson(r2.texto);
+        if (comeca(g2)) { gerado = g2; r = r2; resumo.reescrita_abertura = "ok"; } else resumo.reescrita_abertura = "sem efeito";
+      } catch (e) { resumo.reescrita_abertura = `falhou: ${String((e as Error).message ?? e).slice(0, 80)}`; }
     }
     const verificacoes = verificar(gerado, ctx, hoje);
     const ok = verificacoes.every((c) => c.ok || !c.bloqueia);

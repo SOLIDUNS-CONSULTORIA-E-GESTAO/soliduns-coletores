@@ -91,6 +91,8 @@ Parágrafos de duas a quatro frases. Cada parágrafo carrega uma informação no
 
 Ao final, sempre: o documento de origem, com link. Quando o fato tiver sido revelado por outro veículo, o crédito a ele vem aqui — e não no corpo do texto (ver capítulo 6).
 
+**Foto de capa** (decisão do editor, 16/10/2026). A legenda sob a foto traz só o nome do fotógrafo: "Foto: Nome do Fotógrafo". O crédito completo exigido pelo banco de imagens (fotógrafo e Unsplash, com links) vai ao final da reportagem, logo depois das fontes: "Foto de capa: Nome / Unsplash".
+
 ## **4.8 Tamanho por tipo**
 
 | **Tipo**                                         | **Palavras** |
@@ -313,7 +315,7 @@ Guarde a versão do prompt junto de cada matéria gerada. Quando o texto melhora
 
 # **12. Histórico de versões**
 
-**Versão 1.2, 15 de outubro de 2026 (revisão do editor, Dr. Thiago Viegas).** Assinatura do editor na manchete e no Scanner (4.4); suspensa a nota de IA por decisão do editor (4.4); proibida a abertura "Segundo a agenda do dia" e criadas as aberturas variadas do Scanner (4.5); menos citações a outros veículos, crédito na lista de fontes e atribuição à fonte primária (4.7 e 6); novo item 7.7 sobre marcas de texto automatizado; prompt do agente na versão 1.1 (10).
+**Versão 1.2, 15 de outubro de 2026 (revisão do editor, Dr. Thiago Viegas).** Assinatura do editor na manchete e no Scanner (4.4); legenda da foto de capa só com o fotógrafo e crédito completo ao final (4.7, 16/10); suspensa a nota de IA por decisão do editor (4.4); proibida a abertura "Segundo a agenda do dia" e criadas as aberturas variadas do Scanner (4.5); menos citações a outros veículos, crédito na lista de fontes e atribuição à fonte primária (4.7 e 6); novo item 7.7 sobre marcas de texto automatizado; prompt do agente na versão 1.1 (10).
 
 Auditoria dos três pedidos de revisão (15/10/2026):
 
