@@ -1,0 +1,1960 @@
+[
+ {
+  "nome": "Banco da Amazônia – Leilões de Imóveis",
+  "url": "bancoamazonia.com.br/licitacao/leiloes-de-imoveis",
+  "uf": "Norte",
+  "tipo": "banco",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Leiloeiro: Norte Leilões",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Banco do Nordeste – Bens à Venda",
+  "url": "bnb.gov.br/acesso-a-informacao/licitacoes-e-contratos/bens-a-venda",
+  "uf": "Nordeste",
+  "tipo": "banco",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Lotes também na RJ Leilões e na Superbid",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Bandes – Leilão de Imóveis",
+  "url": "bandes.com.br/Site/Dinamico/Show/315/Leilao-de-Imoveis",
+  "uf": "ES",
+  "tipo": "banco",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Também faz venda direta",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Banestes – Alienação de Imóveis",
+  "url": "banestes.com.br/publicacoes_legais/leilao-bem-imovel.html",
+  "uf": "ES",
+  "tipo": "banco",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Leiloeiros: Buaiz e Em Leilão",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Banrisul – Bens à venda",
+  "url": "banrisul.com.br/bob/site/link/bens-a-venda.html",
+  "uf": "RS",
+  "tipo": "banco",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Seção lançada em abr/2026",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "BNDES – Leilões",
+  "url": "bndes.gov.br/wps/portal/site/home/transparencia/licitacoes-contratos/licitacoes/leiloes",
+  "uf": "nacional",
+  "tipo": "banco",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Poucos lotes, de alto valor",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Bradesco – Imóveis e Veículos em Leilão",
+  "url": "banco.bradesco/html/classic/produtos-servicos/leiloes/index.shtm",
+  "uf": "nacional",
+  "tipo": "banco",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Vitrine do banco; lotes também em Zuk, Sodré e Mega",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Feirão BRB",
+  "url": "feiraobrb.com.br",
+  "uf": "DF",
+  "tipo": "banco",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Plataforma 100% digital de imóveis do BRB",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Imóveis Itaú",
+  "url": "itau.com.br/imoveis-itau",
+  "uf": "nacional",
+  "tipo": "banco",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Vitrine própria; leilões em 2026 com a Frazão",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Porto Seguro Leilões",
+  "url": "portoseguro.com.br/leiloes",
+  "uf": "Nacional",
+  "tipo": "seguradora",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Página própria de leilões (sinistrados e recuperados).",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Santander Imóveis",
+  "url": "santanderimoveis.com.br",
+  "uf": "nacional",
+  "tipo": "banco",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Vitrine própria do Santander",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Sicoob – Leilão",
+  "url": "sicoob.com.br/web/sicoob/leilao",
+  "uf": "nacional",
+  "tipo": "banco/cooperativa",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Leilões feitos com a Sato",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Sicredi (por cooperativa)",
+  "url": "sicredi.com.br/coop/rotadasterras/leiloes/",
+  "uf": "Sul/Centro-Oeste",
+  "tipo": "banco/cooperativa",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Sem vitrine única; cada cooperativa tem página própria",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Vitrine de Leilões Bradesco",
+  "url": "vitrinebradesco.com.br",
+  "uf": "Nacional",
+  "tipo": "banco-financeira",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Plataforma própria do Bradesco, aberta a não clientes.",
+  "grupo": "Banco / seguradora"
+ },
+ {
+  "nome": "Detran-AL",
+  "url": "detran.al.gov.br (editais em static.detran.al.gov.br)",
+  "uf": "AL",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Leilões Freire.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-BA",
+  "url": "ba.gov.br/detran",
+  "uf": "BA",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Vários editais em 2026; Daniel Garcia é um dos leiloeiros.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-CE",
+  "url": "ce.gov.br/detran",
+  "uf": "CE",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Editais 2026 (ex.: Camocim); Montenegro Leilões.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-DF",
+  "url": "detran.df.gov.br/leiloes-realizados/",
+  "uf": "DF",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Leiloeiro: Flex Leilões.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-GO",
+  "url": "goias.gov.br/detran/leiloes/",
+  "uf": "GO",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Até 11 mil veículos por rodada (out/2026).",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-MA",
+  "url": "detran.ma.gov.br",
+  "uf": "MA",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Seção de leilões no portal; leiloeiras não identificadas.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-MG",
+  "url": "detran.mg.gov.br/veiculos/leiloes/calendario-de-leiloes-2026",
+  "uf": "MG",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Sistema de leilão próprio; mais de 4.300 veículos só em set/2026.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-MS",
+  "url": "detran.ms.gov.br",
+  "uf": "MS",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Lances no site da Marca Leilões.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-PB",
+  "url": "detran.pb.gov.br",
+  "uf": "PB",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Aba \"Leilão\"; VL Leilões.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-PE",
+  "url": "detran.pe.gov.br",
+  "uf": "PE",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Lance Certo e Coliseum.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-PR",
+  "url": "detran.pr.gov.br/leilaodeveiculos",
+  "uf": "PR",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Editais 1 a 8 de 2026 (conservados e sucata).",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-RJ",
+  "url": "www5.detran.rj.gov.br",
+  "uf": "RJ",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Só vi edital de 2019 nesse domínio; atividade em 2026 não confirmada.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-RO",
+  "url": "leilaoonline.detran.ro.gov.br",
+  "uf": "RO",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Portal próprio de lances.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Detran-SP",
+  "url": "detran.sp.gov.br (Informações > Editais de Leilão)",
+  "uf": "SP",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Meta de 100 mil veículos em 2026; 149 leiloeiros credenciados, escalados por sorteio.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "DetranRS",
+  "url": "detran.rs.gov.br/calendario-leiloes",
+  "uf": "RS",
+  "tipo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Leilões virtuais quase semanais.",
+  "grupo": "DETRAN"
+ },
+ {
+  "nome": "Agostinho Leilões",
+  "url": "agostinholeiloes.com.br",
+  "uf": "MG",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Agência de Leilões Freire",
+  "url": "leiloesfreire.com.br",
+  "uf": "PE",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Detran-AL (mais de 4 mil inservíveis, jul/2026).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Akimoto Leilões",
+  "url": "akimotoleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Parceiro do Leilão Imóvel",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Alberto Lopes",
+  "url": "albertolopesleiloeiro.com.br",
+  "uf": "RJ",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Lotes do Santander (financeira).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Alessandra Leilões",
+  "url": "alessandraleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Parceiro do Leilão Imóvel",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Alessandro Teixeira Leilões",
+  "url": "alessandroteixeiraleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Parceiro do Leilão Imóvel",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Alexandro Lacerda",
+  "url": "alexandroleiloeiro.com.br",
+  "uf": "RJ",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detro-RJ (apreendidos).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Andrade Leilões",
+  "url": "andradeleiloes.com.br",
+  "uf": "SP",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Edital PRF-SP recente.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Aragão Leilões",
+  "url": "aragaoleiloes.com.br",
+  "uf": "PE",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "SAD-PE e outros órgãos de PE (2026).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Arremate Leilão",
+  "url": "arremateleilao.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Na lista Gazeta MS 2024",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Bahia Leilões",
+  "url": "bahialeiloes.lel.br",
+  "uf": "BA",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Bruno Leilões",
+  "url": "brunoleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Parceiro do Leilão Imóvel",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "BSB Leilões",
+  "url": "bsbleiloes.com.br",
+  "uf": "DF",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Buaiz Leilões",
+  "url": "buaizleiloes.com.br",
+  "uf": "ES",
+  "tipo": "extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Leilões do Banestes (2025–2026)",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Calil Leilões",
+  "url": "calilleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Parceiro do Leilão Imóvel",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Capital Valor Leilões",
+  "url": "capitalvalorleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Parceiro do Leilão Imóvel",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Cargnelutti Leilões",
+  "url": "cargneluttileiloes.com.br",
+  "uf": "RS",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Carlo Ferrari Leiloeiro",
+  "url": "carloferrarileiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Parceiro do Leilão Imóvel",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Cassiano Leilões",
+  "url": "cassianoleiloes.com.br",
+  "uf": "PE/NE",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Imóveis em Recife",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Central Sul de Leilões",
+  "url": "centralsuldeleiloes.com.br",
+  "uf": "RS/SC",
+  "tipo": "extrajudicial/judicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Faz leilões extrajudiciais do Banrisul",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Chui Leilões",
+  "url": "chuileiloes.com.br",
+  "uf": "SP",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-SP (Guarulhos).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Claudio Kuss Leilões",
+  "url": "claudiokuss.com.br",
+  "uf": "Curitiba/PR",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Faz leilões do Banco Pan; forte em pesados.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Coliseum Leilões",
+  "url": "coliseumleiloes.com.br",
+  "uf": "PE",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-PE.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Compra Certa Leilões",
+  "url": "compracertaleiloes.com.br",
+  "uf": "SP",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-SP.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Construbem Leilões",
+  "url": "construbemleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Cravo Leilões",
+  "url": "cravoleiloes.com.br",
+  "uf": "BA",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Daux Leilões",
+  "url": "daux.com",
+  "uf": "SC",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Desde 2003",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "EBL Online",
+  "url": "eblonline.com.br",
+  "uf": "AP",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "PRF-AP.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Edgar de Carvalho",
+  "url": "edgarcarvalholeiloeiro.com.br",
+  "uf": "RJ",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Seop-Rio e prefeituras da Baixada.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Em Leilão",
+  "url": "emleilao.com.br",
+  "uf": "n/c",
+  "tipo": "extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Edital Caixa 2026; 33 imóveis financiáveis do Banestes",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "ES Leilões",
+  "url": "esleiloes.com.br",
+  "uf": "ES",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "FA Leilões",
+  "url": "faleiloes.com.br",
+  "uf": "MT",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "PRF-MT 2026 (leiloeiro Flares Aguiar).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Federal Leilões",
+  "url": "leiloesfederal.com.br",
+  "uf": "DF",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Fernanda Leilões",
+  "url": "fernandaleiloes.lel.br",
+  "uf": "RS",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Ferreira Leilões",
+  "url": "ferreiraleiloes.com.br",
+  "uf": "MG",
+  "tipo": "judicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "\"Leilão Judicial em Minas Gerais\"",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Flex Leilões",
+  "url": "flexleiloes.com.br",
+  "uf": "DF",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Leilões do Detran-DF.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Flávio Costa Leilões",
+  "url": "flaviocostaleiloes.com.br",
+  "uf": "PE",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Gestor Leilões",
+  "url": "gestorleiloes.com.br",
+  "uf": "RS",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Giordano Leilões",
+  "url": "giordanoleiloes.com.br",
+  "uf": "SP",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-SP (Guarulhos, Itaquá, Vale do Paraíba).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Globo Leilões",
+  "url": "globoleiloes.com.br",
+  "uf": "n/c / nacional",
+  "tipo": "extrajudicial/judicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Leiloeira de edital Caixa 2026 (0048/0226)",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Granado Leilões",
+  "url": "granadoleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "extrajudicial/judicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Edital Caixa 2026",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Grandes Leilões",
+  "url": "grandesleiloes.com.br",
+  "uf": "RS",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Grupo Carvalho Leilões",
+  "url": "grupocarvalholeiloes.com.br",
+  "uf": "SP",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-SP (edital 287/2026).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Gustavo Lourenço Leiloeiro",
+  "url": "gustavoleiloeiro.com.br",
+  "uf": "RJ",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Hammer Casa de Leilões",
+  "url": "hammer.lel.br",
+  "uf": "n/c",
+  "tipo": "extrajudicial/judicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Edital Caixa 2026",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Hasta Leilões",
+  "url": "hastaleiloes.com.br",
+  "uf": "BA (n/c)",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Faz leilão público da Caixa",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Hasta Pública Leilões",
+  "url": "hastapublica.com.br",
+  "uf": "SP",
+  "tipo": "judicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Lotes por tribunal (TJSP etc.)",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Innova Leilões",
+  "url": "innovaleiloes.com.br",
+  "uf": "GO",
+  "tipo": "leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Consta na lista da JUCEG; foco em veículos não confirmado.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Isaias Jr. Leiloeiro (JUCEMG 831)",
+  "url": "isaiasleiloes.com.br",
+  "uf": "MG",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Joyce Ribeiro Leilões",
+  "url": "jrleiloes.com.br",
+  "uf": "RS",
+  "tipo": "extrajudicial/judicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Leilões Caixa (130 imóveis); vende imóveis do BTG",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "João Emílio Leiloeiros",
+  "url": "joaoemilio.com.br",
+  "uf": "RJ",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Na lista \"30 sites seguros\" (Gazeta MS, 2024) · Comitentes: Bradesco (financeira), SulAmérica, PRF-RJ e Marinha. Grande no RJ.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "João Luiz Leilões",
+  "url": "joaoluizleiloes.com.br",
+  "uf": "PR",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Juliana Vettorazzo Leiloeira",
+  "url": "jvleiloes.lel.br",
+  "uf": "RJ",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Lance Certo Leilões",
+  "url": "lancecertoleiloes.com.br",
+  "uf": "RN/PE",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-RN, Detran-PE e PRF-PE. Volume alto no Nordeste.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Lance Já",
+  "url": "lanceja.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Na lista Gazeta MS 2024",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Lance Leilões",
+  "url": "lanceleiloes.com.br",
+  "uf": "SP",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-SP (Jundiaí e região).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Lance SE",
+  "url": "lancese.com.br",
+  "uf": "SE",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "PRF-SE.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Lance Total",
+  "url": "lancetotal.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Na lista Gazeta MS 2024",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Lance VIP",
+  "url": "lancevip.com.br",
+  "uf": "RO",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "PRF-RO 2026.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Lecape Leilões",
+  "url": "lecapeleiloes.com.br",
+  "uf": "SP",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Legis Leilões",
+  "url": "legisleiloes.com.br",
+  "uf": "SP",
+  "tipo": "judicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "LeiloMaster",
+  "url": "leilomaster.com.br",
+  "uf": "Goiânia/GO",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-GO e financeiras (Banco Pan).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Leilão Brasil",
+  "url": "leilaobrasil.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Na lista Gazeta MS 2024",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Leilão Pernambuco",
+  "url": "leilaopernambuco.com.br",
+  "uf": "PE",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Leilão VIP",
+  "url": "leilaovip.com.br",
+  "uf": "SP / nacional",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Grande; leilões de imóveis Bradesco e Caixa, lotes TJSP, venda direta Itaú. Não é a VIP Leilões já cadastrada",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Leilões Araújo",
+  "url": "leiloesaraujo.com.br",
+  "uf": "Nordeste (n/c)",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Leilões Brasil",
+  "url": "leiloesbrasil.com.br",
+  "uf": "GO",
+  "tipo": "leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Três leiloeiros da JUCEG usam o domínio.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Leilões Gold",
+  "url": "leiloesgold.com.br",
+  "uf": "SP",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Leiloeiro de SP",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Leilões Nova Serrana",
+  "url": "leiloesnovaserrana.com.br",
+  "uf": "ES/MG",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "PRF-ES.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Leilões Online MS",
+  "url": "leiloesonlinems.com.br",
+  "uf": "MS",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Faz leilão de imóveis da Caixa em MS",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Leilões PB",
+  "url": "leiloespb.com.br",
+  "uf": "PB",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "PRF-PB (leiloeiro Cléber da Silva Melo).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Leilões Rio Negro",
+  "url": "leiloesrionegro.com.br",
+  "uf": "AM/RR",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "PRF-RR e PRF-AM.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Líder Leilões",
+  "url": "liderleiloes.com.br",
+  "uf": "SP",
+  "tipo": "extrajudicial/judicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Edital Caixa 2026 · Detran-SP (Itapecerica da Serra e Juquitiba).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Machado Leiloeiro",
+  "url": "machadoleiloeiro.com.br",
+  "uf": "SP/SC",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Apareceu em buscas de SP e SC",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Marangoni Leilões",
+  "url": "marangonileiloes.com.br",
+  "uf": "AP",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Na lista Gazeta MS 2024 · Aparece no edital da PRF-AP.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Marca Leilões",
+  "url": "marcaleiloes.com.br",
+  "uf": "MS",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-MS (2026).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Marcio Pinho",
+  "url": "marciopinho.com.br",
+  "uf": "RJ",
+  "tipo": "leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Seguradoras e financeiras no RJ.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Marco Antônio Leiloeiro",
+  "url": "marcoantonioleiloeiro.com.br",
+  "uf": "MG/MA (n/c)",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Maria Fixer Leilões",
+  "url": "mariafixerleiloes.com.br",
+  "uf": "MS",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "PRF-MS.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "MC Leilão",
+  "url": "mcleilao.com.br",
+  "uf": "GO",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-GO (2026) e PRF-GO.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Mega Leilões MS",
+  "url": "megaleiloesms.com.br",
+  "uf": "MS / nacional",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Domínio próprio, separado da Mega Leilões",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "MGL – Minas Gerais Leilões",
+  "url": "mgl.com.br",
+  "uf": "MG / nacional",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Edital Caixa 2026; também lotes BRB · Leilões da Sejusp-MG (veículos do tráfico) e de outros órgãos.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "MJ Leilões",
+  "url": "mjleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "MN Leilão",
+  "url": "mnleilao.com.br",
+  "uf": "RN/PB/AL (n/c)",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "PRF-RN.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Montenegro Leilões",
+  "url": "montenegroleiloes.com.br",
+  "uf": "CE",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-CE.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Moraes Leilões",
+  "url": "moraesleiloes.com.br",
+  "uf": "RS",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "DetranRS (leiloeiro Tiago Brunelli de Moraes).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "MV Leilões (Maicon & Valéria Kahn)",
+  "url": "mvleiloes.com.br",
+  "uf": "RJ",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Müller Leilões",
+  "url": "mullerleiloes.com.br",
+  "uf": "RS",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Nasar Leilões",
+  "url": "nasarleiloes.com.br",
+  "uf": "CE",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Nogari Leilões",
+  "url": "nogarileiloes.com.br",
+  "uf": "PR",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Faz disputa aberta da Caixa",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Norte Leilões",
+  "url": "norteleiloes.com.br",
+  "uf": "PA/Norte",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Leilão eletrônico do Banco da Amazônia · PRF-TO (viaturas e apreendidos).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Nosso Leilão",
+  "url": "nossoleilao.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Na lista Gazeta MS 2024",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "OA Leilões",
+  "url": "oaleiloes.com.br",
+  "uf": "DF",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "OLeilões",
+  "url": "oleiloes.com.br",
+  "uf": "PR",
+  "tipo": "judicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Paulo Botelho Leiloeiro",
+  "url": "paulobotelholeiloeiro.com.br",
+  "uf": "RJ",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Pereira Leilões",
+  "url": "pereiraleiloesce.com.br",
+  "uf": "CE",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Rech Leilões",
+  "url": "rechleiloes.com.br",
+  "uf": "RS",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Ricart Leilões",
+  "url": "ricartleiloes.com.br",
+  "uf": "RJ",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Rigolon Leilões",
+  "url": "rigolonleiloes.com.br",
+  "uf": "SP",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-SP (set/2026).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "RJ Leilões",
+  "url": "rjleiloes.com.br",
+  "uf": "Nordeste (BA) / nacional",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Edital Caixa 2026, TRT5 Salvador, bens do Banco do Nordeste · Ativo no RJ; também na lista da JUCEG.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Sancar Leilões",
+  "url": "sancarleiloes.com.br",
+  "uf": "TO",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-TO (Palmas e Araguaína, 2026).",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Santa Catarina Leilões",
+  "url": "santacatarinaleiloes.com.br",
+  "uf": "SC",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Schmitz Leiloeiros (Clic Leilões)",
+  "url": "clicleiloes.com.br",
+  "uf": "SC / nacional",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Edital Caixa 2026; apareceu em buscas de RJ e MS",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Schulmann Leilões",
+  "url": "schulmannleiloes.com.br",
+  "uf": "RJ",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "SFrazão",
+  "url": "sfrazao.com.br",
+  "uf": "SP",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Grupo Frazão; foco em bens móveis",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Simon Leilões",
+  "url": "simonleiloes.com.br",
+  "uf": "PR",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Sublime Leilões",
+  "url": "sublimeleiloes.com.br",
+  "uf": "SP",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Sumaré Leilões",
+  "url": "sumareleiloes.com.br",
+  "uf": "SP/GO",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-SP (Pederneiras) e PRF-ES.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Ten Leilão",
+  "url": "tenleilao.com.br",
+  "uf": "SP",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Plataforma \"judiciais e extrajudiciais\"",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Trustbid",
+  "url": "trustbid.com.br",
+  "uf": "n/c / nacional",
+  "tipo": "extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Leilão de imóveis do Banco Inter",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Vasconcelos Leilões",
+  "url": "vasconcelosleiloes.com.br",
+  "uf": "SC",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Lotes judiciais, federais e trabalhistas",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Vecchi Leilões",
+  "url": "vecchileiloes.com.br",
+  "uf": "GO (n/c)",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Victor Dorta Leilões",
+  "url": "victordortaleiloes.com.br",
+  "uf": "MA/PI/TO (n/c)",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Viva Leilões",
+  "url": "vivaleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Na lista Gazeta MS 2024",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "VIX Leilões",
+  "url": "vixleiloes.com.br",
+  "uf": "ES",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Vizeu Leiloeiros",
+  "url": "vizeu.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Na lista Gazeta MS 2024",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "VL Leilões",
+  "url": "vlleiloes.com.br",
+  "uf": "PB",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-PB.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "WMS Leilões",
+  "url": "wmsleiloes.com.br",
+  "uf": "RJ",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Lotes de imóveis no RJ",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "WR Leilões",
+  "url": "wrleiloes.com.br",
+  "uf": "AM/RR/AC",
+  "tipo": "leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Detran-AM, Detran-RR, PRF-AM e PRF-AC.",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Álvaro Leilões",
+  "url": "alvaroleiloes.com.br",
+  "uf": "GO",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Parceiro do Leilão Imóvel",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "Ápice Leilões",
+  "url": "apiceleiloes.com.br",
+  "uf": "n/c",
+  "tipo": "judicial/extrajudicial",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Parceiro do Leilão Imóvel",
+  "grupo": "Leiloeiro"
+ },
+ {
+  "nome": "BR Bid",
+  "url": "brbid.com",
+  "uf": "RJ",
+  "tipo": "plataforma",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Plataforma online usada por leiloeiros do RJ (ex.: Marinha).",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "Capta Leilões",
+  "url": "captaleiloes.com.br",
+  "uf": "nacional",
+  "tipo": "plataforma",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Agregador com páginas por banco (BRB etc.)",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "Deu Lance",
+  "url": "deulance.com.br",
+  "uf": "MG / nacional",
+  "tipo": "plataforma",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Agregador lançado em mai/2025; diz reunir mais de 200 leiloeiros, com filtro por IA",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "Encontre Leilões",
+  "url": "encontreleiloes.com.br",
+  "uf": "nacional",
+  "tipo": "plataforma",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Agregador (ex.: 352 imóveis em Salvador)",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "Gestão de Leilões",
+  "url": "gestaodeleiloes.com.br",
+  "uf": "ES",
+  "tipo": "plataforma",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Portal dos leilões do Detran-ES.",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "Leilão Curitiba",
+  "url": "leilaocuritiba.com.br",
+  "uf": "PR",
+  "tipo": "plataforma",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Agregador regional",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "Monitor Leilão",
+  "url": "monitorleilao.com.br",
+  "uf": "nacional",
+  "tipo": "plataforma",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Agregador por UF e cidade",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "PublicJud",
+  "url": "publicjud.com.br",
+  "uf": "nacional",
+  "tipo": "plataforma",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Publica editais de leilão de vários leiloeiros",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "Rebocar Leilões",
+  "url": "rebocarleiloes.com.br",
+  "uf": "RJ",
+  "tipo": "plataforma",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Leilões do Detro-RJ.",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "Spy Leilões",
+  "url": "spyleiloes.com.br",
+  "uf": "nacional",
+  "tipo": "plataforma",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Agregador com páginas por leiloeiro",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "Venda Direta Imóvel",
+  "url": "vendadiretaimovel.com.br",
+  "uf": "nacional",
+  "tipo": "plataforma",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Agregador de imóveis de bancos",
+  "grupo": "Plataforma / agregador"
+ },
+ {
+  "nome": "AFEAM – Imóveis à venda",
+  "url": "afeam.am.gov.br/imoveis-a-venda/",
+  "uf": "AM",
+  "tipo": "órgão público",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Agência de fomento do Amazonas",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "Governo RS – Venda de imóveis",
+  "url": "planejamento.rs.gov.br/venda-imoveis",
+  "uf": "RS",
+  "tipo": "órgão público",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Editais de cerca de 100 imóveis do Estado",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "Governo SP – Leilões (SGGD)",
+  "url": "sggd.sp.gov.br/sggd/transparencia/licitacoes_contratos/leiloes",
+  "uf": "SP",
+  "tipo": "órgão público",
+  "bens": [
+   "imóveis"
+  ],
+  "obs": "Imóveis do Estado de SP",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "Licitações-e (BB)",
+  "url": "licitacoes-e.com.br",
+  "uf": "Nacional",
+  "tipo": "outro órgão",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Usado pelos Correios para vender a frota (LCA 011/2026).",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "Petrobras – Negócios/Leilões",
+  "url": "petrobras.com.br/w/negocios/leilao-n-pea0369181",
+  "uf": "Nacional",
+  "tipo": "outro órgão",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Leilão de veículos baixados no Detran.",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "Polícia Federal – Leilões",
+  "url": "gov.br/pf/pt-br/assuntos/leiloes",
+  "uf": "Nacional",
+  "tipo": "órgão federal",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Leilões das superintendências (2026: MG, MA, AM).",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "PRF – Leilões",
+  "url": "gov.br/prf/pt-br/assuntos/leiloes-prf",
+  "uf": "27 UFs",
+  "tipo": "órgão federal",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Editais por UF; cada um aponta o leiloeiro contratado.",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "Receita Federal – SLE",
+  "url": "www25.receita.fazenda.gov.br/leilaoEletronicoInterPub/",
+  "uf": "Nacional",
+  "tipo": "órgão federal",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Sistema de Leilão Eletrônico; o endereço vem de matéria de 2017 e pode ter mudado.",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "Senad/MJSP",
+  "url": "gov.br/mj/pt-br",
+  "uf": "Nacional",
+  "tipo": "órgão federal",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Bens apreendidos do tráfico (Funad); anúncios na página do MJ.",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "Seop-Rio (Prefeitura do Rio)",
+  "url": "ordempublica.prefeitura.rio",
+  "uf": "RJ",
+  "tipo": "outro órgão",
+  "bens": [
+   "veículos"
+  ],
+  "obs": "Editais Seop 2026 de veículos removidos.",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "TJCE – Leilões",
+  "url": "tjce.jus.br/leiloes/",
+  "uf": "CE",
+  "tipo": "órgão público",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Leilão eletrônico com leiloeiros credenciados",
+  "grupo": "Órgão público"
+ },
+ {
+  "nome": "TJSP – Leilões",
+  "url": "tjsp.jus.br/Leiloes",
+  "uf": "SP",
+  "tipo": "órgão público",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "obs": "Não publica lotes; lista os gestores credenciados (serve para descobrir mais fontes)",
+  "grupo": "Órgão público"
+ }
+]
