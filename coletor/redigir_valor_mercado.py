@@ -1,5 +1,9 @@
 """
-SOLIDUNS — Jornal "Valor e Mercado" — redator diário por IA — v1.2 (15/10/2026)
+SOLIDUNS — Jornal "Valor e Mercado" — redator diário por IA — v1.3 (15/10/2026)
+
+v1.3 (15/10, revisão do plano editorial pelo Thiago): a manchete não abre com "Segundo a agenda do dia" (o robô tira, se
+      vier); no máximo UMA citação a outro jornal/agência no corpo e nenhuma no título e na linha fina (crédito vai na
+      lista de fontes); proibidas as expressões que denunciam texto automatizado. Tudo isso volta para correção.
 
 v1.2 (15/10): foto de capa pelo UNSPLASH (chave UNSPLASH_ACCESS_KEY — a API do Pexels está pausada); o Pexels fica de reserva
       se só houver PEXELS_API_KEY. Unsplash: foto servida pelo próprio Unsplash, crédito "Foto: <fotógrafo> / Unsplash" com links
@@ -57,7 +61,28 @@ MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "a
 
 CLICHES = ["em suma", "por fim", "vale destacar", "vale ressaltar", "é importante lembrar", "é importante destacar",
            "portanto", "uma jornada", "mergulhar de cabeça", "um olhar atento", "em resumo", "em conclusão",
-           "nesse sentido", "cenário desafiador", "impressionante"]
+           "nesse sentido", "cenário desafiador", "impressionante",
+           # v1.3: atribuição redundante e marcas de texto automatizado
+           "segundo a agenda", "de acordo com a agenda", "conforme a agenda", "com base nos dados", "com base nas informações",
+           "dados fornecidos", "informações disponíveis", "é importante notar", "cabe destacar", "neste cenário"]
+# v1.3: veículos de imprensa — no máximo 1 citação no corpo da manchete e nenhuma no título/linha fina
+VEICULOS = ["reuters", "bloomberg", "valor econômico", "valor economico", "folha de s.paulo", "folha de são paulo", "estadão",
+            "estado de s. paulo", "o globo", "infomoney", "cnn", "g1", "exame", "broadcast", "financial times", "wall street journal",
+            "agência brasil", "agencia brasil", "poder360", "money times", "bbc", "cnbc", "associated press", "afp", "the economist",
+            "neofeed", "brazil journal", "veja", "istoé dinheiro", "agência estado", "uol", "metrópoles", "correio braziliense"]
+
+
+def sem_formulas(t):
+    """Tira 'Segundo a agenda do dia,' (e variações) do começo ou do meio das frases."""
+    t = re.sub(r"(^|[.!?]\s+)(segundo|de acordo com|conforme)\s+(a|o)\s+(agenda|calend[aá]rio)(\s+(do dia|de hoje|oficial))?\s*,\s*(\S)",
+               lambda m: m.group(1) + m.group(7).upper(), t or "", flags=re.I)
+    t = re.sub(r",\s*(segundo|de acordo com|conforme)\s+(a|o)\s+(agenda|calend[aá]rio)(\s+(do dia|de hoje))?(?=[,.;])", "", t, flags=re.I)
+    return t.strip()
+
+
+def citacoes_de_veiculos(t):
+    a = " " + sem_acento(t) + " "
+    return sum(len(re.findall(r"[^a-z0-9]" + re.escape(sem_acento(v)) + r"[^a-z0-9]", a)) for v in VEICULOS)
 RECOMENDACAO = ["recomendamos", "recomenda-se", "nossa recomendação", "vale a pena comprar", "hora de comprar",
                 "hora de vender", "aproveite para comprar", "compre ", "venda já"]
 
@@ -92,6 +117,9 @@ Hoje é {data_extenso(hoje)} ({hoje.isoformat()}). Toda a análise considera est
 4. Nada de adjetivos vazios ("uma alta impressionante"): use precisão numérica ("uma alta de 2,4 pontos percentuais").
 5. Jornalismo, não consultoria: NUNCA recomende comprar, vender ou manter ativos.
 6. Números no padrão brasileiro: vírgula decimal, câmbio com 4 casas, percentuais com 2 casas, variação com sinal, índices em pontos.
+7. Nunca abra a manchete, o título, a linha fina ou um parágrafo com a origem da pauta ("Segundo a agenda do dia", "De acordo com a agenda", "Conforme o calendário"): é redundante. Vá direto ao fato.
+8. Atribua à FONTE PRIMÁRIA (Banco Central, IBGE, Tesouro, a empresa, o governo, o tribunal), não a outros jornais. Título e linha fina nunca citam jornais ou agências de notícias; no corpo, no máximo UMA vez, e só quando a informação for exclusiva daquele veículo. O crédito aos veículos consultados fica na lista de fontes.
+9. Escreva como o repórter que apurou os fatos. Nada de expressões que denunciem texto automatizado ("com base nos dados", "com base nas informações disponíveis", "é importante notar", "cabe destacar", "neste cenário") e nenhuma menção a pesquisa, busca, ferramentas, instruções ou falta de informação.
 
 [O QUE ENTREGAR]
 BLOCO 1 — MANCHETE DE CAPA: o assunto mais relevante ou sensível que dita o humor e o volume de negócios no mercado de capitais hoje.
@@ -264,9 +292,9 @@ def limpar(d, red):
     """Normaliza o JSON e troca as fontes pela lista conferida (só endereços que a busca devolveu)."""
     m, s = d.get("manchete") or {}, d.get("scanner") or {}
     out = {
-        "manchete": {"cartola": txt(m.get("cartola")).upper(), "titulo": txt(m.get("titulo")),
-                     "linha_fina": txt(m.get("linha_fina")),
-                     "corpo": [txt(p) for p in (m.get("corpo") or []) if txt(p)],
+        "manchete": {"cartola": txt(m.get("cartola")).upper(), "titulo": sem_formulas(txt(m.get("titulo"))),
+                     "linha_fina": sem_formulas(txt(m.get("linha_fina"))),
+                     "corpo": [sem_formulas(txt(p)) for p in (m.get("corpo") or []) if sem_formulas(txt(p))],
                      "foto_busca": txt(m.get("foto_busca")), "foto_alternativa": txt(m.get("foto_alternativa"))},
         "scanner": {
             "pos_fechamento": [{"titulo": txt(x.get("titulo")), "texto": txt(x.get("texto"))}
@@ -307,6 +335,11 @@ def problemas(ed, fontes, data_ref, hoje):
         p.append("scanner.agenda: nenhum item com horário de Brasília (formato 09h00)")
     if len(s["semana"]) < 3:
         p.append("scanner.semana precisa de ao menos 3 itens")
+    if citacoes_de_veiculos(m["titulo"] + " " + m["linha_fina"]):
+        p.append("título e linha fina não citam jornais nem agências de notícias (crédito só na lista de fontes)")
+    nv = citacoes_de_veiculos(" ".join(m["corpo"]))
+    if nv > 1:
+        p.append(f"o corpo da manchete cita jornais/agências {nv} vezes: no máximo 1 (atribua à fonte primária — Banco Central, empresa, governo — e deixe o crédito na lista de fontes)")
     tudo = sem_acento(json.dumps(ed, ensure_ascii=False))
     for c in CLICHES:
         if re.search(r"\b" + re.escape(sem_acento(c)) + r"\b", tudo):

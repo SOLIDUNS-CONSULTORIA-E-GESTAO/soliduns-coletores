@@ -18,12 +18,12 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.9";
+const VERSAO = "2.0";
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
-const PROMPT_VERSAO = "1.0";
-const PROMPT_SHA256 = "c400ce9e9788afb6d8febbead081e47abe908d21e6f56d2fb8a564065ffffcd0";
+const PROMPT_VERSAO = "1.1";   // v2.0: revisão do plano editorial (Thiago, 15/10 20h55)
+const PROMPT_SHA256 = "06aae17da245203084750035fc2425aac49cd754240e496a4c25a1dd15438134";
 // prompt-sistema-agente.txt, versão 1.0 — texto EXATO abaixo da linha de "=" (sem alterações)
-export const SISTEMA = "Você escreve para o Valor e Mercado, portal brasileiro de economia e mercado financeiro. Escreve em português do Brasil, para profissionais de finanças, empresários e investidores informados.\n\n**Material.** Você só pode afirmar o que estiver no contexto fornecido nesta mensagem. Não use conhecimento próprio sobre o assunto. Se um dado necessário não estiver no contexto, escreva a lacuna entre colchetes, assim: [verificar valor]. Nunca estime, nunca complete, nunca suponha.\n\n**Estrutura.** Produza: chapéu com uma palavra, título, linha fina, texto em parágrafos e lista de referências. Título com verbo no presente, voz ativa, sem ponto final, até 70 caracteres. Linha fina de 140 a 200 caracteres, acrescentando informação e nunca repetindo o título. Primeiro parágrafo de 35 a 50 palavras com o que aconteceu, quanto, quando e segundo qual documento. Parágrafos seguintes com duas a quatro frases cada, em ordem decrescente de importância.\n\n**Números.** Vírgula decimal e ponto de milhar. Câmbio com quatro casas, percentual com duas, pontos de índice sem decimal. Variação sempre com sinal. Diferença entre taxas se expressa em pontos percentuais, nunca em por cento. Toda variação declara a base de comparação. Índice de bolsa se expressa em pontos, jamais em reais. Horário no formato 18h30.\n\n**Atribuição.** Toda informação declara sua origem: segundo o comunicado, de acordo com a ata, dados do IBGE mostram. Cada número do texto precisa constar na lista de referências, ligado ao identificador do registro que o originou no contexto.\n\n**Proibições, sem exceção.** Não atribua causa a movimento de mercado, a menos que a causa esteja declarada no próprio documento; use \"em sessão marcada por\" ou \"no mesmo dia em que\". Não faça previsão; pode relatar previsão de terceiro, com atribuição. Não recomende compra, venda ou alocação. Não use primeira pessoa. Não invente declaração nem atribua fala a ninguém. Não escreva \"fontes de mercado\", \"pessoas próximas\" ou \"apurou o Valor e Mercado\". Não reproduza texto de terceiros.\n\n**Vocabulário vetado.** disparar, despencar, desabar, derreter, euforia, pânico, sangria, massacre, festa, no radar dos investidores, o mercado precifica, em meio a, cenário desafiador, diante das incertezas.\n\n**Saída.** Responda apenas com um objeto JSON, sem texto antes ou depois, sem marcação de código, contendo: chapeu, titulo, linha_fina, paragrafos (lista de textos), editoria_sugerida, tags (lista) e referencias (lista de objetos com o número citado e o identificador do registro de origem).";
+export const SISTEMA = "Você escreve para o Valor e Mercado, portal brasileiro de economia e mercado financeiro. Escreve em português do Brasil, para profissionais de finanças, empresários e investidores informados.\n\n**Material.** Você só pode afirmar o que estiver no contexto fornecido nesta mensagem. Não use conhecimento próprio sobre o assunto. Se um dado necessário não estiver no contexto, escreva a lacuna entre colchetes, assim: [verificar valor]. Nunca estime, nunca complete, nunca suponha.\n\n**Estrutura.** Produza: chapéu com uma palavra, título, linha fina, texto em parágrafos e lista de referências. Título com verbo no presente, voz ativa, sem ponto final, até 70 caracteres. Linha fina de 140 a 200 caracteres, acrescentando informação e nunca repetindo o título. Primeiro parágrafo de 35 a 50 palavras abrindo pela agenda do dia: comece exatamente com a frase de \"abertura_do_dia\" do contexto e siga com os eventos de maior peso e seus horários; se a agenda estiver vazia, abra pelo fato de maior peso, sem fórmula de abertura. Parágrafos seguintes com duas a quatro frases cada, em ordem decrescente de importância.\n\n**Números.** Vírgula decimal e ponto de milhar. Câmbio com quatro casas, percentual com duas, pontos de índice sem decimal. Variação sempre com sinal. Diferença entre taxas se expressa em pontos percentuais, nunca em por cento. Toda variação declara a base de comparação. Índice de bolsa se expressa em pontos, jamais em reais. Horário no formato 18h30.\n\n**Atribuição.** Atribua a origem só quando ela acrescenta informação: dado oficial (B3, Banco Central, IBGE, Tesouro, CVM, Fed) e decisão ou declaração de autoridade, no máximo uma vez por parágrafo e sem repetir a mesma fórmula. Nunca apresente a agenda, o contexto ou o próprio jornal como origem (proibido: \"segundo a agenda do dia\", \"de acordo com a agenda\", \"conforme os dados\"). Não cite jornais, agências de notícias ou outros veículos de imprensa no texto: o crédito das fontes fica na lista de referências. Cada número do texto precisa constar na lista de referências, ligado ao identificador do registro que o originou no contexto.\n\n**Proibições, sem exceção.** Não atribua causa a movimento de mercado, a menos que a causa esteja declarada no próprio documento; use \"em sessão marcada por\" ou \"no mesmo dia em que\". Não faça previsão; pode relatar previsão de terceiro, com atribuição. Não recomende compra, venda ou alocação. Não use primeira pessoa. Não invente declaração nem atribua fala a ninguém. Não escreva \"fontes de mercado\", \"pessoas próximas\" ou \"apurou o Valor e Mercado\". Não reproduza texto de terceiros.\n\n**Voz.** Escreva como o repórter que apurou os fatos. Nunca mencione o material recebido, o contexto, instruções ou falta de informação, e não use expressões típicas de texto automatizado: \"com base nos dados\", \"com base nas informações\", \"dados fornecidos\", \"informações disponíveis\", \"vale ressaltar\", \"vale destacar\", \"é importante notar\", \"cabe destacar\", \"em resumo\", \"em suma\", \"em conclusão\", \"neste cenário\", \"nesse contexto\".\n\n**Vocabulário vetado.** disparar, despencar, desabar, derreter, euforia, pânico, sangria, massacre, festa, no radar dos investidores, o mercado precifica, em meio a, cenário desafiador, diante das incertezas.\n\n**Saída.** Responda apenas com um objeto JSON, sem texto antes ou depois, sem marcação de código, contendo: chapeu, titulo, linha_fina, paragrafos (lista de textos), editoria_sugerida, tags (lista) e referencias (lista de objetos com o número citado e o identificador do registro de origem).";
 
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = "claude-sonnet-4-5";
@@ -33,12 +33,31 @@ const INDICADORES = ["SELIC", "CDI", "IPCA", "USD", "EUR", "IBOV", "BOVA11"];   
 const VOLUME_MIN = 50e6;                    // maiores variações: só papéis com R$ 50 milhões ou mais negociados
 const VETADAS = ["disparar", "dispara", "disparou", "despencar", "despenca", "despencou", "desabar", "desaba", "desabou",
   "derreter", "derrete", "derreteu", "euforia", "pânico", "sangria", "massacre", "festa", "no radar dos investidores",
-  "o mercado precifica", "em meio a", "cenário desafiador", "diante das incertezas"];
+  "o mercado precifica", "em meio a", "cenário desafiador", "diante das incertezas",
+  // v2.0 (plano editorial, 15/10): atribuição redundante e marcas de texto automatizado
+  "segundo a agenda", "de acordo com a agenda", "conforme a agenda", "contexto fornecido", "dados fornecidos", "informações fornecidas",
+  "informações disponíveis", "com base nos dados", "com base nas informações", "vale ressaltar", "vale destacar", "é importante notar",
+  "cabe destacar", "em suma", "em resumo", "em conclusão"];
+// v2.0: aberturas do Scanner (Thiago, 15/10: "Hoje a agenda do dia começa com…", "Por hoje na agenda, teremos…" e variações)
+export const ABERTURAS = ["Hoje a agenda do dia começa com", "Por hoje na agenda, teremos", "A agenda de hoje abre com", "Para hoje, a agenda reserva",
+  "O dia começa, na agenda, com", "Na agenda de hoje, o primeiro destaque é", "Logo cedo, a agenda traz", "A agenda {desta_dia} começa com"];
+export function aberturaDoDia(hoje: Date): string {
+  const n = Math.floor(hoje.getTime() / 864e5);
+  return ABERTURAS[((n % ABERTURAS.length) + ABERTURAS.length) % ABERTURAS.length].replace("{desta_dia}", (hoje.getUTCDay() % 6 === 0 ? "deste " : "desta ") + DIAS[hoje.getUTCDay()]);
+}
+// v2.0: rede de segurança — tira a atribuição à agenda/contexto se o texto vier com ela ("Segundo a agenda do dia, ...")
+export function semFormulasVetadas(s: unknown): string {
+  return String(s ?? "")
+    .replace(/(^|[.!?]\s+)(segundo|de acordo com|conforme)\s+(a|o)\s+(agenda|contexto|calend[aá]rio)(\s+(do dia|de hoje|oficial))?\s*,\s*(\S)/gi,
+      (_m, ini: string, _a, _b, _c, _d, _e, letra: string) => ini + letra.toUpperCase())
+    .replace(/,\s*(segundo|de acordo com|conforme)\s+(a|o)\s+(agenda|contexto)(\s+(do dia|de hoje))?(?=[,.;])/gi, "")
+    .trim();
+}
 const DIAS = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
 const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
 type Registro = Record<string, unknown> & { id: string };
-export type Contexto = { data_de_hoje: string; agenda_do_dia: Registro[]; indicadores: Registro[]; maiores_variacoes_b3: Registro[];
+export type Contexto = { data_de_hoje: string; abertura_do_dia?: string; agenda_do_dia: Registro[]; indicadores: Registro[]; maiores_variacoes_b3: Registro[];
   fontes_oficiais_livres: Registro[]; assuntos_em_pauta: Registro[]; observacao: string };
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
@@ -152,7 +171,7 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
     if (a.camada === "livre" && (ehCvm ? nCvm < 15 : livres.length - nCvm < 20)) livres.push({ id, fonte: a.fonte_nome, titulo: a.titulo, resumo: a.resumo, publicado_em: a.publicado_em, link: a.link });
     else if (a.camada === "pauta" && pauta.length < 30) pauta.push({ id, fonte: a.fonte_nome, assunto: a.titulo, publicado_em: a.publicado_em });
   }
-  return { urls, ctx: { data_de_hoje: iso(hoje), agenda_do_dia: agenda, indicadores, maiores_variacoes_b3: variacoes, fontes_oficiais_livres: livres, assuntos_em_pauta: pauta,
+  return { urls, ctx: { data_de_hoje: iso(hoje), abertura_do_dia: aberturaDoDia(hoje), agenda_do_dia: agenda, indicadores, maiores_variacoes_b3: variacoes, fontes_oficiais_livres: livres, assuntos_em_pauta: pauta,
     observacao: "'agenda_do_dia' traz os eventos previstos para hoje, com horário de Brasília e fonte. Indicadores e cotações são de FECHAMENTO. 'fontes_oficiais_livres' trazem só o resumo publicado pela própria fonte (uso com crédito). " +
       "'assuntos_em_pauta' trazem só o assunto: o texto desses veículos não está no contexto e não pode ser reproduzido nem resumido." } };
 }
@@ -164,7 +183,7 @@ export function pedido(hoje: Date, ctx: Contexto, anterior?: unknown, instrucao?
     "Use o chapéu \"Scanner\". " +
     "Entregue a edição chamando a ferramenta \"entregar_edicao\" uma única vez, com o objeto JSON pedido. " +
     "Os identificadores das referências são o campo \"id\" de cada registro do contexto. " +
-    "Itens de \"assuntos_em_pauta\" só podem ser citados como tema, com atribuição ao veículo; não reproduza nem resuma o texto deles." +
+    "Itens de \"assuntos_em_pauta\" servem só para indicar temas: não os cite, não atribua nada aos veículos e não reproduza nem resuma o texto deles; escreva sobre um desses temas apenas se houver registro oficial ou livre no contexto que o sustente." +
     (instrucao ? `\n\nINSTRUÇÃO DO EDITOR PARA ESTA NOVA VERSÃO: ${instrucao}\n\nVERSÃO ANTERIOR (devolvida pelo editor):\n${JSON.stringify(anterior)}` : "") +
     `\n\nCONTEXTO:\n${JSON.stringify(ctx)}`;
 }
@@ -355,8 +374,10 @@ export async function tratar(req: Request): Promise<Response> {
     const custo = Math.round((ent / 1e6 * PRECO_ENT + sai / 1e6 * PRECO_SAI) * 10000) / 10000;
     const auto = !REVISAO_HUMANA;   // v1.1: publicação automática (decisão do Thiago); a verificação fica só como registro
     // v1.4: na publicação automática, a frase com lacuna ("[verificar ...]") não vai para a página; o original fica em "gerado"
-    const texto = { chapeu: gerado.chapeu ?? "Scanner", titulo: gerado.titulo, linha_fina: gerado.linha_fina,
-      paragrafos: auto && !MANTER_LACUNAS ? semLacunas(gerado.paragrafos) : gerado.paragrafos };
+    const pars0 = auto && !MANTER_LACUNAS ? semLacunas(gerado.paragrafos) : gerado.paragrafos;
+    const texto = { chapeu: gerado.chapeu ?? "Scanner", titulo: auto ? semFormulasVetadas(gerado.titulo) : gerado.titulo,
+      linha_fina: auto ? semFormulasVetadas(gerado.linha_fina) : gerado.linha_fina,
+      paragrafos: auto && Array.isArray(pars0) ? pars0.map(semFormulasVetadas).filter(Boolean) : pars0 };
     const linha = { tipo: "scanner", data_ref: iso(hoje), situacao: auto ? "publicada" : "rascunho", gerado, fontes, contexto: ctx, verificacoes, verificacao_ok: ok,
       publicacao_automatica: auto, texto_aprovado: auto ? texto : null, aprovado_em: auto ? new Date().toISOString() : null,
       aprovador_nome: auto ? "Publicação automática" : null, editado: auto ? false : null,
