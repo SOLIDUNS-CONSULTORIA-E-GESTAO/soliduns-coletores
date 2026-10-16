@@ -1,4 +1,4 @@
-// telegram-envio v1.1 — Valor e Mercado: envia o link de cada matéria publicada aos grupos e ao canal do Telegram.
+// telegram-envio v1.2 — Valor e Mercado: envia o link de cada matéria publicada aos grupos e ao canal do Telegram.
 // Decisão do Thiago (16/10/2026 09h04): "quero inserir o robô nos grupos e publicar". Opção B: Manchete, Scanner e artigos do CMS.
 //
 // Dois tipos de chamada:
@@ -10,9 +10,13 @@
 // Variáveis: TELEGRAM_TOKEN, TELEGRAM_DONO_ID, COLETOR_TOKEN (manuais); SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas).
 // Nenhuma chave neste arquivo. A mensagem nunca menciona IA.
 
-export const VERSAO = "1.1";
+export const VERSAO = "1.2";
 const SITE = "https://soliduns.com.br/noticias/";
 const JANELA_H = 12;
+// v1.2 (Thiago, 16/10 10h16): o Scanner vai com a logomarca "Scanner do Dia" (Opção 2 — Radar). Imagem pública no Storage do
+// Supabase (balde vm-imagens, pasta marca). Se a imagem não estiver lá, o Scanner vai no mesmo layout, só em texto.
+const IMAGEM_SCANNER = Deno.env.get("VM_TG_IMAGEM_SCANNER") ??
+  "https://evcsniicnrlrtzpdmeza.supabase.co/storage/v1/object/public/vm-imagens/marca/og-scanner-do-dia.jpg";
 
 type Tg = (metodo: string, dados: Record<string, unknown>) => Promise<{ ok: boolean; result?: unknown; error_code?: number; description?: string; parameters?: { migrate_to_chat_id?: number; retry_after?: number } }>;
 export type Foto = { src: string; fotografo: string; fonte: string };
@@ -48,7 +52,7 @@ const botao = (texto: string, url: string) => ({ inline_keyboard: [[{ text: text
 
 // v1.1 (Thiago, 16/10 10h05): cada tipo com um formato próprio, para o leitor ver que são posts diferentes.
 //   LAYOUT 1 — Manchete: FOTO de capa grande, faixa "📰 MANCHETE DO DIA", cartola, título, linha fina, crédito da foto, botão "Ler a manchete".
-//   LAYOUT 2 — Scanner: só texto, sem prévia de link, faixa "📊 SCANNER DO DIA", título e "Na agenda de hoje" com até 4 horários,
+//   LAYOUT 2 — Scanner: imagem da logomarca Scanner do Dia (v1.2; sem ela, só texto e sem prévia de link), faixa "📊 SCANNER DO DIA", título e "Na agenda de hoje" com até 4 horários,
 //              botão "Abrir o Scanner".
 //   LAYOUT 3 — Artigo do CMS: faixa "✍️ ARTIGO · editoria", título, linha fina, assinatura, foto se houver, botão "Ler o artigo".
 export function envio(it: Item, chat_id: string): { metodo: string; dados: Record<string, unknown> } {
@@ -69,8 +73,10 @@ export function envio(it: Item, chat_id: string): { metodo: string; dados: Recor
       `━━━━━━━━━━━━━━━\n\n<b>${esc(corta(it.titulo, 160))}</b>` +
       (ag.length ? `\n\n🗓 <b>Na agenda de hoje</b>\n${ag.join("\n")}` : (it.linha ? `\n\n${esc(corta(it.linha, 300))}` : "")) +
       `\n\n<i>Agenda completa, indicadores e maiores altas e baixas no Scanner.</i>`;
+    const markup = botao("📊 Abrir o Scanner", it.link);
+    if (it.foto) return { metodo: "sendPhoto", dados: { chat_id, photo: it.foto.src, caption: texto, parse_mode: "HTML", reply_markup: markup } };
     return { metodo: "sendMessage", dados: { chat_id, text: texto, parse_mode: "HTML",
-      link_preview_options: { is_disabled: true }, reply_markup: botao("📊 Abrir o Scanner", it.link) } };
+      link_preview_options: { is_disabled: true }, reply_markup: markup } };
   }
   const texto = `✍️ <b>ARTIGO</b>${it.editoria ? ` · ${esc(it.editoria)}` : ""}\n` +
     (it.chapeu && it.chapeu !== "Artigo" ? `<i>${esc(it.chapeu.toUpperCase())}</i>\n` : "") +
@@ -125,7 +131,8 @@ export function itensDe(edicoes: Ed[], scanners: Sc[], artigos: Ar[], agendas: R
     const titulo = limpo(t.titulo);
     if (!titulo) continue;
     out.push({ chave: `scanner:${s.id}`, tipo: "scanner", data: s.data_ref, chapeu: "Scanner do Dia", titulo,
-      linha: limpo(t.linha_fina) || primeiraFrase(t.paragrafos), link: `${SITE}?scanner=${s.data_ref}`, agenda: agendas[s.data_ref] ?? [] });
+      linha: limpo(t.linha_fina) || primeiraFrase(t.paragrafos), link: `${SITE}?scanner=${s.data_ref}`, agenda: agendas[s.data_ref] ?? [],
+      foto: { src: IMAGEM_SCANNER, fotografo: "", fonte: "" } });
   }
   for (const a of artigos) {
     const titulo = limpo(a.titulo);
