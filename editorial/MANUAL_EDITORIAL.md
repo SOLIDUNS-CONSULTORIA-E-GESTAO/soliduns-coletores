@@ -93,7 +93,19 @@ Ao final, sempre: o documento de origem, com link. Quando o fato tiver sido reve
 
 **Foto de capa** (decisão do editor, 16/10/2026). A legenda sob a foto traz só o nome do fotógrafo: "Foto: Nome do Fotógrafo". O crédito completo exigido pelo banco de imagens (fotógrafo e Unsplash, com links) vai ao final da reportagem, logo depois das fontes: "Foto de capa: Nome / Unsplash".
 
-## **4.8 Tamanho por tipo**
+## **4.8 Formatação na página** (decisão do editor, 16/10/2026)
+
+Regras de apresentação de todos os textos do jornal (manchete, Scanner na coluna e na página de leitura, itens do Scanner):
+
+- **Corpo do texto e linha fina:** justificados, com hifenização automática em português, para não abrir buracos entre as palavras.
+- **Títulos:** alinhados à esquerda, com quebra de linha equilibrada; nunca justificados nem hifenizados.
+- **Texto corrido, sem marcação:** nada de asteriscos, negrito, itálico, títulos internos, listas, marcadores, numeração de itens, emojis ou quebras de linha dentro do parágrafo. Cada parágrafo é um bloco único de frases completas.
+- **Caixa alta:** só em siglas e códigos de negociação (IPCA, PETR4) e na cartola.
+- **Rede de segurança:** se um texto chegar com marcação, a página e os robôs a retiram antes de mostrar.
+
+Auditoria de 16/10/2026: o corpo da manchete, o Scanner (coluna e página de leitura), as linhas finas e os itens do Scanner estavam alinhados à esquerda, por causa de uma regra geral do site que alinhava todo parágrafo do jornal à esquerda. Corrigido na versão do site v129; regra incluída no prompt do agente (versão 1.2, item "Formatação") e no robô da manchete (restrição 10).
+
+## **4.9 Tamanho por tipo**
 
 | **Tipo**                                         | **Palavras** |
 |--------------------------------------------------|--------------|
@@ -281,7 +293,7 @@ Toda correção entra também na página pública de correções. Isso parece ex
 
 # **10. Prompt de sistema do agente**
 
-O texto abaixo vai literal para o campo de instrução do agente redator. Não é resumo deste manual — é a versão executável dele. **Versão do prompt: 1.1 (15/10/2026)** — a mesma do arquivo prompt-sistema-agente.txt e da Edge Function scanner-do-dia v2.0 (impressão digital SHA-256 06aae17d…). O robô da manchete de capa (redigir_valor_mercado.py v1.3) segue as mesmas regras nas restrições 7 a 9.
+O texto abaixo vai literal para o campo de instrução do agente redator. Não é resumo deste manual — é a versão executável dele. **Versão do prompt: 1.2 (16/10/2026)** — a mesma do arquivo prompt-sistema-agente.txt e da Edge Function scanner-do-dia v2.2 (impressão digital SHA-256 0da9531d…). O robô da manchete de capa (redigir_valor_mercado.py v1.4) segue as mesmas regras nas restrições 7 a 10.
 
 > Você escreve para o Valor e Mercado, portal brasileiro de economia e mercado financeiro. Escreve em português do Brasil, para profissionais de finanças, empresários e investidores informados.
 >
@@ -296,6 +308,8 @@ O texto abaixo vai literal para o campo de instrução do agente redator. Não �
 > **Proibições, sem exceção.** Não atribua causa a movimento de mercado, a menos que a causa esteja declarada no próprio documento; use "em sessão marcada por" ou "no mesmo dia em que". Não faça previsão; pode relatar previsão de terceiro, com atribuição. Não recomende compra, venda ou alocação. Não use primeira pessoa. Não invente declaração nem atribua fala a ninguém. Não escreva "fontes de mercado", "pessoas próximas" ou "apurou o Valor e Mercado". Não reproduza texto de terceiros.
 >
 > **Voz.** Escreva como o repórter que apurou os fatos. Nunca mencione o material recebido, o contexto, instruções ou falta de informação, e não use expressões típicas de texto automatizado: "com base nos dados", "com base nas informações", "dados fornecidos", "informações disponíveis", "vale ressaltar", "vale destacar", "é importante notar", "cabe destacar", "em resumo", "em suma", "em conclusão", "neste cenário", "nesse contexto".
+>
+> **Formatação.** Texto corrido, sem nenhuma marcação: nada de asteriscos, negrito, itálico, títulos internos, listas, marcadores, numeração de itens, emojis ou quebras de linha dentro do parágrafo. Cada parágrafo é um único bloco de texto com frases completas. Caixa alta só em siglas e códigos de negociação (IPCA, PETR4). Espaço simples entre palavras.
 >
 > **Vocabulário vetado.** disparar, despencar, desabar, derreter, euforia, pânico, sangria, massacre, festa, no radar dos investidores, o mercado precifica, em meio a, cenário desafiador, diante das incertezas.
 >
@@ -315,7 +329,7 @@ Guarde a versão do prompt junto de cada matéria gerada. Quando o texto melhora
 
 # **12. Histórico de versões**
 
-**Versão 1.2, 15 de outubro de 2026 (revisão do editor, Dr. Thiago Viegas).** Assinatura do editor na manchete e no Scanner (4.4); legenda da foto de capa só com o fotógrafo e crédito completo ao final (4.7, 16/10); suspensa a nota de IA por decisão do editor (4.4); proibida a abertura "Segundo a agenda do dia" e criadas as aberturas variadas do Scanner (4.5); menos citações a outros veículos, crédito na lista de fontes e atribuição à fonte primária (4.7 e 6); novo item 7.7 sobre marcas de texto automatizado; prompt do agente na versão 1.1 (10).
+**Versão 1.2, 15 de outubro de 2026 (revisão do editor, Dr. Thiago Viegas).** Assinatura do editor na manchete e no Scanner (4.4); legenda da foto de capa só com o fotógrafo e crédito completo ao final (4.7, 16/10); formatação na página — corpo justificado, texto sem marcação — com auditoria (novo 4.8, 16/10; antigo 4.8 vira 4.9); suspensa a nota de IA por decisão do editor (4.4); proibida a abertura "Segundo a agenda do dia" e criadas as aberturas variadas do Scanner (4.5); menos citações a outros veículos, crédito na lista de fontes e atribuição à fonte primária (4.7 e 6); novo item 7.7 sobre marcas de texto automatizado; prompt do agente na versão 1.1 (10).
 
 Auditoria dos três pedidos de revisão (15/10/2026):
 

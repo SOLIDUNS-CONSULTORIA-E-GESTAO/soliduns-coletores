@@ -169,7 +169,7 @@ try:
     m = materias[-1]
     ok(st == 200 and m["situacao"] == "publicada" and m["publicacao_automatica"] is True and m["texto_aprovado"]["titulo"] == m["gerado"]["titulo"], "publica automaticamente (decisão do Thiago), com o texto gerado")
     ok(m["contexto"].get("abertura_do_dia", "") != "", "v2.0: contexto traz a abertura do dia (variação do começo do Scanner)")
-    ok(m["prompt_versao"] == "1.1" and m["prompt_sha256"] == hashlib.sha256(sistema.encode()).hexdigest() and m["modelo"] == "claude-sonnet-5-5", "guarda modelo, versão e impressão digital do prompt")
+    ok(m["prompt_versao"] == "1.2" and m["prompt_sha256"] == hashlib.sha256(sistema.encode()).hexdigest() and m["modelo"] == "claude-sonnet-5-5", "guarda modelo, versão e impressão digital do prompt")
     ok(m["verificacao_ok"] is True, "texto bom passa na verificação: " + str([c for c in m["verificacoes"] if not c["ok"]]))
     ok({f["id"] for f in m["fontes"]} >= {"cot:901", "cot:902", "cot:1001"} and all(f["url"].startswith("http") for f in m["fontes"]), "fontes resolvidas com endereço da consulta")
     ok(m["contexto"]["indicadores"] and m["custo_usd"] > 0 and m["tokens_entrada"] == 9000, "contexto e custo guardados")

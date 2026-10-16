@@ -1,6 +1,7 @@
 """
-SOLIDUNS — Jornal "Valor e Mercado" — redator diário por IA — v1.3 (15/10/2026)
+SOLIDUNS — Jornal "Valor e Mercado" — redator diário por IA — v1.4 (16/10/2026)
 
+v1.4 (16/10): regra 10 de formatação (texto corrido, sem marcação) e limpeza de asteriscos/marcadores no texto entregue.
 v1.3 (15/10, revisão do plano editorial pelo Thiago): a manchete não abre com "Segundo a agenda do dia" (o robô tira, se
       vier); no máximo UMA citação a outro jornal/agência no corpo e nenhuma no título e na linha fina (crédito vai na
       lista de fontes); proibidas as expressões que denunciam texto automatizado. Tudo isso volta para correção.
@@ -76,6 +77,9 @@ def sem_formulas(t):
     """Tira 'Segundo a agenda do dia,' (e variações) do começo ou do meio das frases."""
     t = re.sub(r"(^|[.!?]\s+)(segundo|de acordo com|conforme)\s+(a|o)\s+(agenda|calend[aá]rio)(\s+(do dia|de hoje|oficial))?\s*,\s*(\S)",
                lambda m: m.group(1) + m.group(7).upper(), t or "", flags=re.I)
+    t = re.sub(r"\*\*|__", "", t or "")
+    t = re.sub(r"^\s*([-•*]|\d+[.)])\s+", "", t)
+    t = re.sub(r"\s+", " ", t)
     t = re.sub(r",\s*(segundo|de acordo com|conforme)\s+(a|o)\s+(agenda|calend[aá]rio)(\s+(do dia|de hoje))?(?=[,.;])", "", t, flags=re.I)
     return t.strip()
 
@@ -120,6 +124,7 @@ Hoje é {data_extenso(hoje)} ({hoje.isoformat()}). Toda a análise considera est
 7. Nunca abra a manchete, o título, a linha fina ou um parágrafo com a origem da pauta ("Segundo a agenda do dia", "De acordo com a agenda", "Conforme o calendário"): é redundante. Vá direto ao fato.
 8. Atribua à FONTE PRIMÁRIA (Banco Central, IBGE, Tesouro, a empresa, o governo, o tribunal), não a outros jornais. Título e linha fina nunca citam jornais ou agências de notícias; no corpo, no máximo UMA vez, e só quando a informação for exclusiva daquele veículo. O crédito aos veículos consultados fica na lista de fontes.
 9. Escreva como o repórter que apurou os fatos. Nada de expressões que denunciem texto automatizado ("com base nos dados", "com base nas informações disponíveis", "é importante notar", "cabe destacar", "neste cenário") e nenhuma menção a pesquisa, busca, ferramentas, instruções ou falta de informação.
+10. Formatação: texto corrido, sem marcação nenhuma (asteriscos, negrito, títulos internos, listas, marcadores, emojis, quebras de linha dentro do parágrafo). Cada parágrafo do corpo é um bloco único de frases completas; caixa alta só em siglas e tickers.
 
 [O QUE ENTREGAR]
 BLOCO 1 — MANCHETE DE CAPA: o assunto mais relevante ou sensível que dita o humor e o volume de negócios no mercado de capitais hoje.
