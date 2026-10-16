@@ -1,5 +1,6 @@
 -- 146_vm_cms.sql — Valor e Mercado: CMS da Redação (artigos do editor, layout da capa, mídia, banners e auditoria)
--- Pedido do Thiago (16/10/2026): escrever e publicar artigos sem acionar o Claude; visual aprovado em 16/10 07h55
+-- Pedido do Thiago (16/10/2026): escrever e publicar artigos sem acionar o Claude; visual aprovado em 16/10 07h55.
+-- Revisão 08h10: blocos lista, tabela, box numérico e anexo PDF; título/descrição para Google e WhatsApp; bucket vm-anexos.
 -- (claude/cms_valor_e_mercado_previa.html). Projeto: claude/PROMPT_CMS_VALOR_E_MERCADO_v2.md (v2.1).
 --
 -- SEGURANÇA (a barreira real é o banco, não a tela):
@@ -56,6 +57,26 @@ begin
       for k in select jsonb_object_keys(b) loop if k not in ('tipo', 'src', 'alt', 'legenda') then return false; end if; end loop;
       if b ? 'src' and not public.vm_https(b->>'src') then return false; end if;
       if length(coalesce(b->>'legenda', '')) > 200 or length(coalesce(b->>'alt', '')) > 300 then return false; end if;
+    elsif (b->>'tipo') = 'lista' then
+      for k in select jsonb_object_keys(b) loop if k not in ('tipo', 'ordenada', 'itens') then return false; end if; end loop;
+      if jsonb_typeof(b->'ordenada') <> 'boolean' or jsonb_typeof(b->'itens') <> 'array' or jsonb_array_length(b->'itens') > 50 then return false; end if;
+      if exists (select 1 from jsonb_array_elements(b->'itens') i where jsonb_typeof(i) <> 'object' or (select count(*) from jsonb_object_keys(i) kk where kk <> 'conteudo') > 0
+                 or not public.vm_conteudo_valido(i->'conteudo')) then return false; end if;
+    elsif (b->>'tipo') = 'tabela' then
+      for k in select jsonb_object_keys(b) loop if k not in ('tipo', 'cabecalho', 'linhas', 'legenda', 'fonte') then return false; end if; end loop;
+      if jsonb_typeof(b->'cabecalho') <> 'array' or jsonb_array_length(b->'cabecalho') not between 1 and 8 or jsonb_typeof(b->'linhas') <> 'array'
+         or jsonb_array_length(b->'linhas') > 40 then return false; end if;
+      if exists (select 1 from jsonb_array_elements(b->'cabecalho') c where jsonb_typeof(c) <> 'string' or length(c #>> '{}') > 200) then return false; end if;
+      if exists (select 1 from jsonb_array_elements(b->'linhas') l where jsonb_typeof(l) <> 'array' or jsonb_array_length(l) > 8
+                 or exists (select 1 from jsonb_array_elements(l) c where jsonb_typeof(c) <> 'string' or length(c #>> '{}') > 200)) then return false; end if;
+      if length(coalesce(b->>'legenda', '')) > 200 or length(coalesce(b->>'fonte', '')) > 120 then return false; end if;
+    elsif (b->>'tipo') = 'numero' then
+      for k in select jsonb_object_keys(b) loop if k not in ('tipo', 'valor', 'legenda') then return false; end if; end loop;
+      if length(coalesce(b->>'valor', '')) not between 1 and 16 or length(coalesce(b->>'legenda', '')) > 120 then return false; end if;
+    elsif (b->>'tipo') = 'anexo' then
+      for k in select jsonb_object_keys(b) loop if k not in ('tipo', 'url', 'nome', 'tamanho', 'titulo') then return false; end if; end loop;
+      if (b->>'url') !~ '^https://evcsniicnrlrtzpdmeza\.supabase\.co/storage/v1/object/public/vm-anexos/[0-9]{4}/[0-9]{2}/[a-f0-9]{16,64}\.pdf$' then return false; end if;
+      if length(coalesce(b->>'nome', '')) > 160 or length(coalesce(b->>'titulo', '')) > 140 or length(coalesce(b->>'tamanho', '')) > 20 then return false; end if;
     elsif (b->>'tipo') in ('paragrafo', 'intertitulo', 'citacao') then
       for k in select jsonb_object_keys(b) loop if k not in ('tipo', 'texto', 'conteudo') then return false; end if; end loop;
       if not public.vm_conteudo_valido(b->'conteudo') then return false; end if;
@@ -136,6 +157,8 @@ create table if not exists public.vm_artigos (
   atualizado_por uuid, atualizado_em timestamptz not null default now()
 );
 create index if not exists vm_artigos_pub_idx on public.vm_artigos (situacao, publicado_em desc);
+alter table public.vm_artigos add column if not exists seo_titulo text check (length(seo_titulo) <= 90);
+alter table public.vm_artigos add column if not exists seo_descricao text check (length(seo_descricao) <= 220);
 
 create table if not exists public.vm_artigos_versoes (
   id bigint generated always as identity primary key,
@@ -153,15 +176,21 @@ create unique index if not exists vm_layout_capa_um_ativo on public.vm_layout_ca
 
 create table if not exists public.vm_midias (
   id bigint generated always as identity primary key,
-  caminho text not null unique check (caminho ~ '^[0-9]{4}/[0-9]{2}/[a-f0-9]{16,64}\.(jpg|png|webp)$'),
+  caminho text not null unique,
   url text not null check (public.vm_https(url)),
-  tipo text not null check (tipo in ('image/jpeg', 'image/png', 'image/webp')),
-  bytes int not null check (bytes between 1 and 5242880),
+  tipo text not null,
+  bytes int not null,
   largura int check (largura between 1 and 6000), altura int check (altura between 1 and 6000),
   alt text check (length(alt) <= 300), fotografo text check (length(fotografo) <= 80),
   origem text check (origem in ('Foto própria', 'Unsplash', 'Outra, com autorização')),
   criado_por uuid, criado_em timestamptz not null default now()
 );
+
+-- imagens (até 5 MB) e PDFs de anexo (até 20 MB); a regra fica numa só restrição, refeita se a migration rodar de novo
+alter table public.vm_midias drop constraint if exists vm_midias_arquivo_ok;
+alter table public.vm_midias add constraint vm_midias_arquivo_ok check (
+  (tipo in ('image/jpeg', 'image/png', 'image/webp') and caminho ~ '^[0-9]{4}/[0-9]{2}/[a-f0-9]{16,64}\.(jpg|png|webp)$' and bytes between 1 and 5242880)
+  or (tipo = 'application/pdf' and caminho ~ '^[0-9]{4}/[0-9]{2}/[a-f0-9]{16,64}\.pdf$' and bytes between 1 and 20971520));
 
 create table if not exists public.vm_banners (
   id bigint generated always as identity primary key,
@@ -244,11 +273,12 @@ begin
   if not public.vm_corpo_valido(coalesce(p_dados->'corpo', '[]'::jsonb)) then raise exception 'CORPO_INVALIDO' using errcode = '22023'; end if;
   select coalesce(array_agg(left(btrim(t), 30)), '{}') into v_tags from jsonb_array_elements_text(coalesce(p_dados->'tags', '[]'::jsonb)) t where btrim(t) <> '';
   if p_id is null then
-    insert into public.vm_artigos (tipo, chapeu, titulo, linha_fina, autor, editoria, lugar, corpo, foto, fontes, tags, criado_por, atualizado_por)
+    insert into public.vm_artigos (tipo, chapeu, titulo, linha_fina, autor, editoria, lugar, corpo, foto, fontes, tags, seo_titulo, seo_descricao, criado_por, atualizado_por)
     values (coalesce(p_dados->>'tipo', 'reportagem'), nullif(btrim(p_dados->>'chapeu'), ''), btrim(coalesce(p_dados->>'titulo', '')),
             nullif(btrim(p_dados->>'linha_fina'), ''), coalesce(nullif(btrim(p_dados->>'autor'), ''), 'Dr. Thiago Viegas'),
             coalesce(p_dados->>'editoria', 'Mercados'), coalesce(p_dados->>'lugar', 'artigos'), coalesce(p_dados->'corpo', '[]'::jsonb),
-            nullif(p_dados->'foto', 'null'::jsonb), coalesce(p_dados->'fontes', '[]'::jsonb), v_tags, auth.uid(), auth.uid())
+            nullif(p_dados->'foto', 'null'::jsonb), coalesce(p_dados->'fontes', '[]'::jsonb), v_tags,
+            nullif(btrim(p_dados->>'seo_titulo'), ''), nullif(btrim(p_dados->>'seo_descricao'), ''), auth.uid(), auth.uid())
     returning id into v_id;
   else
     select * into a from public.vm_artigos where id = p_id for update;
@@ -259,7 +289,8 @@ begin
       linha_fina = nullif(btrim(p_dados->>'linha_fina'), ''), autor = coalesce(nullif(btrim(p_dados->>'autor'), ''), autor),
       editoria = coalesce(p_dados->>'editoria', editoria), lugar = coalesce(p_dados->>'lugar', lugar),
       corpo = coalesce(p_dados->'corpo', corpo), foto = nullif(p_dados->'foto', 'null'::jsonb), fontes = coalesce(p_dados->'fontes', fontes),
-      tags = v_tags, atualizado_por = auth.uid(), atualizado_em = now()
+      tags = v_tags, seo_titulo = nullif(btrim(p_dados->>'seo_titulo'), ''), seo_descricao = nullif(btrim(p_dados->>'seo_descricao'), ''),
+      atualizado_por = auth.uid(), atualizado_em = now()
     where id = p_id;
     v_id := p_id;
   end if;
@@ -377,9 +408,9 @@ returns jsonb language plpgsql security definer set search_path to '' as $$
 declare v_id bigint; v_url text;
 begin
   perform public._vm_exige_editor();
-  if not exists (select 1 from storage.objects o where o.bucket_id = 'vm-imagens' and o.name = p_caminho) then
+  if not exists (select 1 from storage.objects o where o.bucket_id = case when p_tipo = 'application/pdf' then 'vm-anexos' else 'vm-imagens' end and o.name = p_caminho) then
     raise exception 'ARQUIVO_NAO_ENVIADO' using errcode = '22023'; end if;
-  v_url := 'https://evcsniicnrlrtzpdmeza.supabase.co/storage/v1/object/public/vm-imagens/' || p_caminho;
+  v_url := 'https://evcsniicnrlrtzpdmeza.supabase.co/storage/v1/object/public/' || case when p_tipo = 'application/pdf' then 'vm-anexos/' else 'vm-imagens/' end || p_caminho;
   insert into public.vm_midias (caminho, url, tipo, bytes, largura, altura, alt, fotografo, origem, criado_por)
   values (p_caminho, v_url, p_tipo, p_bytes, p_largura, p_altura, nullif(btrim(p_alt), ''), nullif(btrim(p_fotografo), ''), p_origem, auth.uid())
   returning id into v_id;
@@ -443,7 +474,8 @@ create or replace function public.vm_artigo_publico(p_id bigint)
 returns jsonb language sql stable security definer set search_path to '' as $$
   select jsonb_build_object('id', a.id, 'tipo', a.tipo, 'chapeu', a.chapeu, 'titulo', a.titulo, 'linha_fina', a.linha_fina, 'autor', a.autor,
            'editoria', a.editoria, 'corpo', a.corpo, 'foto', a.foto, 'fontes', a.fontes, 'tags', a.tags, 'correcoes', a.correcoes,
-           'publicado_em', a.publicado_em, 'atualizado_em', a.atualizado_em)
+           'publicado_em', a.publicado_em, 'atualizado_em', a.atualizado_em,
+           'seo_titulo', coalesce(a.seo_titulo, a.titulo), 'seo_descricao', coalesce(a.seo_descricao, a.linha_fina))
     from public.vm_artigos a where a.id = p_id and a.situacao = 'publicado'
 $$;
 
@@ -514,6 +546,16 @@ begin
     create policy vm_imagens_editor_apaga on storage.objects for delete to authenticated
       using (bucket_id = 'vm-imagens' and public.vm_eh_editor());
     -- leitura: o bucket é público (endereço /object/public/vm-imagens/...), sem política de listagem
+
+    insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+    values ('vm-anexos', 'vm-anexos', true, 20971520, array['application/pdf'])
+    on conflict (id) do update set public = true, file_size_limit = 20971520, allowed_mime_types = array['application/pdf'];
+    drop policy if exists vm_anexos_editor_envia on storage.objects;
+    create policy vm_anexos_editor_envia on storage.objects for insert to authenticated
+      with check (bucket_id = 'vm-anexos' and public.vm_eh_editor() and name ~ '^[0-9]{4}/[0-9]{2}/[a-f0-9]{16,64}\.pdf$');
+    drop policy if exists vm_anexos_editor_apaga on storage.objects;
+    create policy vm_anexos_editor_apaga on storage.objects for delete to authenticated
+      using (bucket_id = 'vm-anexos' and public.vm_eh_editor());
   end if;
 end $$;
 
@@ -522,7 +564,7 @@ insert into public.vm_layout_capa (versao, layout, ativo)
 select 1, '{"versao":1,"blocos":[{"tipo":"manchete","ativo":true},{"tipo":"scanner","ativo":true},{"tipo":"indicadores","ativo":true},{"tipo":"artigos","ativo":true,"destaques":[]},{"tipo":"ultimas","ativo":true},{"tipo":"agenda","ativo":true},{"tipo":"radar","ativo":false}]}'::jsonb, true
 where not exists (select 1 from public.vm_layout_capa);
 
--- conferência: esperado 1 linha "6 tabelas | rls em todas | 18 funções | bucket ok | layout v1"
+-- conferência: esperado 1 linha "6 tabelas | rls em todas | 18 funções | buckets ok | layout v1"
 select (select count(*) from pg_class where relnamespace = 'public'::regnamespace and relname in ('vm_artigos', 'vm_artigos_versoes', 'vm_layout_capa', 'vm_midias', 'vm_banners', 'vm_eventos_redacao')) || ' tabelas' as tabelas,
        case when (select bool_and(relrowsecurity) from pg_class where relnamespace = 'public'::regnamespace and relname in ('vm_artigos', 'vm_artigos_versoes', 'vm_layout_capa', 'vm_midias', 'vm_banners', 'vm_eventos_redacao'))
             then 'rls em todas' else 'RLS FALTANDO' end as rls,
@@ -530,5 +572,5 @@ select (select count(*) from pg_class where relnamespace = 'public'::regnamespac
           'vm_artigos_redacao', 'vm_artigo_editar', 'vm_layout_salvar', 'vm_layout_voltar', 'vm_layout_historico', 'vm_midia_registrar', 'vm_midias_lista', 'vm_midia_excluir',
           'vm_banner_salvar', 'vm_eventos_lista', 'vm_artigos_publicos', 'vm_artigo_publico', 'vm_layout_publico', 'vm_banners_publicos')) || ' funções' as funcoes,
        case when exists (select 1 from information_schema.tables where table_schema = 'storage' and table_name = 'buckets')
-            then (select case when count(*) = 1 then 'bucket ok' else 'BUCKET FALTANDO' end from storage.buckets where id = 'vm-imagens') else 'sem storage' end as bucket,
+            then (select case when count(*) = 2 then 'buckets ok' else 'BUCKET FALTANDO' end from storage.buckets where id in ('vm-imagens', 'vm-anexos')) else 'sem storage' end as bucket,
        'layout v' || (select versao from public.vm_layout_capa where ativo) as layout;
