@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "calendario-oficial" — v1.2 (15/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "calendario-oficial" — v1.3 (15/10/2026)
 //
 // Plano de correção das fontes, item 1 (pedido do Thiago, 15/10 12h25): a agenda do dia passa a vir, em primeiro lugar,
 // dos CALENDÁRIOS OFICIAIS do catálogo (public.fontes_noticia), gravados em public.vm_agenda com origem = 'calendario_oficial'.
@@ -17,7 +17,7 @@
 // "Authorization: Bearer <COLETOR_TOKEN>". Corpo opcional: {"so_teste": true} (lê e mostra, não grava) · {"dias": 10}.
 // Variáveis: COLETOR_TOKEN (manual); SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.2";
+const VERSAO = "1.3";
 const UA = "SOLIDUNS Valor e Mercado/1.0 (+https://soliduns.com.br; calendário de divulgações para agenda jornalística)";
 const IBGE_API = Deno.env.get("VM_IBGE_URL") ?? "https://servicodados.ibge.gov.br/api/v3/calendario/";
 const BLS_ICS = Deno.env.get("VM_BLS_URL") ?? "https://www.bls.gov/schedule/news_release/bls.ics";
@@ -202,7 +202,10 @@ export function ibgeItens(json: unknown, dias: string[]): { itens: Item[]; lidos
     if (!nome) continue;
     const tipo = String(x.tipo_release ?? x.nome_tipo_release ?? "").trim();
     const url = [x.link_produto, x.url_produto, x.link, x.url].map((u) => String(u ?? "")).find((u) => /^https:\/\//.test(u)) ?? "https://www.ibge.gov.br/calendario-indicadores-novoportal.html";
-    out.push(item(data, m[4] ? hh(+m[4], +m[5]) : "A definir", "br", "Governo e Congresso",
+    // v1.3: a API do IBGE grava 12:00:00 em quase todas as divulgações (horário padrão, não o real; o IPCA-15 sai às 09h00):
+    // 12h00 exato vira "A definir" para o Scanner não publicar horário errado
+    const horaReal = m[4] && !(m[4] === "12" && m[5] === "00") && !(m[4] === "00" && m[5] === "00");
+    out.push(item(data, horaReal ? hh(+m[4], +m[5]) : "A definir", "br", "Governo e Congresso",
       `IBGE: ${nome}` + (tipo && !/divulga/i.test(tipo) ? ` (${tipo})` : ""), "IBGE", url));
   }
   return { itens: out, lidos: Array.isArray(lista) ? lista.length : 0 };
