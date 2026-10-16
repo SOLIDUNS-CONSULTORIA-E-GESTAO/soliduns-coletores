@@ -16,7 +16,7 @@ def resposta(n):
              ["https://agenciabrasil.ebc.com.br/a", "https://bcb.gov.br/b", "https://fed.gov/c"]]}
     if CEN == "pausa" and n == 0:
         return {"stop_reason": "pause_turn", "content": [busca], "usage": {"input_tokens": 1000, "output_tokens": 10, "server_tool_use": {"web_search_requests": 3}}}
-    d = BOM if (CEN in ("pausa", "foto", "unsplash") or (CEN == "corrige" and n >= 1)) else RUIM
+    d = BOM if (CEN in ("pausa", "foto", "unsplash", "reserva_falta") or (CEN == "corrige" and n >= 1)) else RUIM
     if CEN == "ferramenta":
         d2 = copy.deepcopy(BOM); d2["scanner"]["agenda"] = [{"hora": "15:00", "evento": "Livro Bege"}, {"hora": "Dia todo", "evento": "Reunião do G20"}, {"hora": "às 9h", "evento": "IPCA-15"}]
         return {"stop_reason": "tool_use", "content": [busca, {"type": "text", "text": "Pronto."}, {"type": "tool_use", "id": "t1", "name": "entregar_edicao", "input": d2}],
@@ -44,6 +44,8 @@ class H(BaseHTTPRequestHandler):
             out = UNS if "stock+exchange" in self.path else {"results": []}
         elif self.path.startswith("/baixou/"):
             buscas_foto.append((self.path, self.headers.get("Authorization"))); out = {}
+        elif self.path.startswith("/rest/v1/vm_edicoes") and "publicado=is.true" in self.path:
+            out = [] if CEN == "reserva_falta" else [{"data": HOJE}]          # v1.5: já há edição publicada hoje?
         elif self.path.startswith("/rest/v1/vm_edicoes"):
             out = [{"conteudo": {"manchete": {"foto": {"id": 111}}}}, {"conteudo": {"manchete": {"foto": {"id": "usada1"}}}}]
         else:
@@ -63,6 +65,8 @@ base = f"http://127.0.0.1:{srv.server_port}"
 env = dict(os.environ, ANTHROPIC_URL=base + "/v1/messages", ANTHROPIC_API_KEY="x", SUPABASE_URL=base, SUPABASE_SERVICE_KEY="sb_secret_x", VM_DATA=HOJE)
 env.pop("PEXELS_API_KEY", None); env.pop("UNSPLASH_ACCESS_KEY", None)
 UNS["results"][1]["links"]["download_location"] = base + "/baixou/abc"
+if CEN in ("reserva", "reserva_falta"):
+    env.update(VM_SO_SE_FALTAR="1")
 if CEN == "unsplash":
     BOM["manchete"]["foto_busca"] = "stock exchange"
     env.update(UNSPLASH_URL=base, UNSPLASH_ACCESS_KEY="uns-teste")
@@ -105,6 +109,10 @@ if CEN == "unsplash":
 if CEN == "corrige":
     conf("foto" not in gravado[0][1][0]["conteudo"]["manchete"] and "UNSPLASH_ACCESS_KEY não configurada" in p.stdout, "sem chave de fotos: edição sai sem foto")
     conf(all("tool_choice" not in c for c in chamadas), "nenhuma chamada com ferramenta obrigatória")
+if CEN == "reserva":
+    conf(p.returncode == 0 and not chamadas and not gravado and "já publicada pelo Supabase" in p.stdout, "reserva: edição do Supabase já publicada, não escreve nada")
+if CEN == "reserva_falta":
+    conf(p.returncode == 0 and len(chamadas) == 1 and len(gravado) == 1, "reserva: sem edição publicada hoje, escreve e grava")
 if CEN == "pausa":
     conf(p.returncode == 0 and len(chamadas) == 2 and chamadas[1]["messages"][-1]["role"] == "assistant", "pause_turn continua o turno")
     conf(len(gravado) == 1, "grava após pausa")

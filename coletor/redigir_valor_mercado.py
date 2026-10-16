@@ -1,5 +1,9 @@
 """
-SOLIDUNS — Jornal "Valor e Mercado" — redator diário por IA — v1.4 (16/10/2026)
+SOLIDUNS — Jornal "Valor e Mercado" — redator diário por IA — v1.5 (16/10/2026)
+
+v1.5 (16/10, "MANCHETE PELO SUPABASE"): a edição passa a ser escrita pela Edge Function manchete-do-dia (SQL 154), que publica
+      às 06h30. Este robô vira RESERVA: na execução agendada (07h15, VM_SO_SE_FALTAR=1) só escreve se não houver edição
+      publicada hoje, e confere de novo antes de gravar para não sobrescrever a do Supabase. À mão (Run workflow) roda sempre.
 
 v1.4 (16/10): regra 10 de formatação (texto corrido, sem marcação) e limpeza de asteriscos/marcadores no texto entregue.
 v1.3 (15/10, revisão do plano editorial pelo Thiago): a manchete não abre com "Segundo a agenda do dia" (o robô tira, se
@@ -500,10 +504,26 @@ def gravar(hoje, ed, fontes, red):
     raise RuntimeError("Não foi possível gravar a edição no Supabase (rodou o SQL 133?).")
 
 
+def ja_publicada(hoje):
+    """True se já há edição publicada hoje (a da Edge Function manchete-do-dia). Em dúvida (sem acesso), False."""
+    url, cab = _cab_supabase()
+    if not url:
+        return False
+    try:
+        r = requests.get(f"{url}/rest/v1/vm_edicoes?select=data&data=eq.{hoje.isoformat()}&publicado=is.true", headers=cab, timeout=60)
+        return r.ok and len(r.json()) > 0
+    except (requests.RequestException, ValueError):
+        return False
+
+
 def main():
     hoje = (dt.datetime.now(BRT)).date()
     if os.environ.get("VM_DATA"):
         hoje = dt.date.fromisoformat(os.environ["VM_DATA"])
+    reserva = os.environ.get("VM_SO_SE_FALTAR") == "1" and os.environ.get("VM_SO_TESTE") != "1"
+    if reserva and ja_publicada(hoje):
+        log(f"Edição de {data_extenso(hoje)} já publicada pelo Supabase (manchete-do-dia). Reserva não precisa agir.")
+        return
     log(f"Valor e Mercado — edição de {data_extenso(hoje)} — modelo {MODELO}, até {BUSCAS} buscas")
     red, sistema = Redacao(), instrucoes(hoje)
     pedido = [{"role": "user", "content": f"Apure e escreva a edição de hoje ({data_extenso(hoje)}) e entregue pela ferramenta entregar_edicao."}]
@@ -542,6 +562,9 @@ def main():
     if os.environ.get("VM_SO_TESTE") == "1":
         print(json.dumps({"conteudo": ed, "fontes": fontes}, ensure_ascii=False, indent=2))
         log("VM_SO_TESTE=1: nada gravado.")
+        return
+    if reserva and ja_publicada(hoje):
+        log("A edição do Supabase foi publicada enquanto a reserva escrevia: mantida a do Supabase, nada gravado.")
         return
     gravar(hoje, ed, fontes, red)
     log("Edição gravada e PUBLICADA em public.vm_edicoes.")
