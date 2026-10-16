@@ -99,7 +99,8 @@ Regras de apresentação de todos os textos do jornal (manchete, Scanner na colu
 
 - **Corpo do texto e linha fina:** justificados, com hifenização automática em português, para não abrir buracos entre as palavras.
 - **Títulos:** alinhados à esquerda, com quebra de linha equilibrada; nunca justificados nem hifenizados.
-- **Texto corrido, sem marcação:** nada de asteriscos, negrito, itálico, títulos internos, listas, marcadores, numeração de itens, emojis ou quebras de linha dentro do parágrafo. Cada parágrafo é um bloco único de frases completas.
+- **Textos dos robôs (manchete automática e Scanner) — texto corrido, sem marcação:** nada de asteriscos, negrito, itálico, títulos internos, listas, marcadores, numeração de itens, emojis ou quebras de linha dentro do parágrafo. Cada parágrafo é um bloco único de frases completas.
+- **Artigos escritos pelo editor no CMS (decisão do editor, 16/10/2026):** podem usar a formatação da lista fechada — negrito, itálico, sublinhado, riscado, marcador de texto, texto menor, sobrescrito, subscrito, código, cinco fontes do jornal (Newsreader, Georgia, Jost, IBM Plex Sans, IBM Plex Mono) e quatro tamanhos fixos. Recomendação de uso: negrito para o dado principal, no máximo uma vez por parágrafo; itálico para termos estrangeiros, obras e veículos; riscado só em correção; código para tickers. Alinhamento e cor não mudam: o corpo continua justificado.
 - **Caixa alta:** só em siglas e códigos de negociação (IPCA, PETR4) e na cartola.
 - **Rede de segurança:** se um texto chegar com marcação, a página e os robôs a retiram antes de mostrar.
 
