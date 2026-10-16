@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function "calendario-oficial" — v1.1 (15/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function "calendario-oficial" — v1.2 (15/10/2026)
 //
 // Plano de correção das fontes, item 1 (pedido do Thiago, 15/10 12h25): a agenda do dia passa a vir, em primeiro lugar,
 // dos CALENDÁRIOS OFICIAIS do catálogo (public.fontes_noticia), gravados em public.vm_agenda com origem = 'calendario_oficial'.
@@ -17,7 +17,7 @@
 // "Authorization: Bearer <COLETOR_TOKEN>". Corpo opcional: {"so_teste": true} (lê e mostra, não grava) · {"dias": 10}.
 // Variáveis: COLETOR_TOKEN (manual); SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.1";
+const VERSAO = "1.2";
 const UA = "SOLIDUNS Valor e Mercado/1.0 (+https://soliduns.com.br; calendário de divulgações para agenda jornalística)";
 const IBGE_API = Deno.env.get("VM_IBGE_URL") ?? "https://servicodados.ibge.gov.br/api/v3/calendario/";
 const BLS_ICS = Deno.env.get("VM_BLS_URL") ?? "https://www.bls.gov/schedule/news_release/bls.ics";
@@ -207,8 +207,9 @@ export function ibgeItens(json: unknown, dias: string[]): { itens: Item[]; lidos
   }
   return { itens: out, lidos: Array.isArray(lista) ? lista.length : 0 };
 }
-// v1.1: a API v3 do calendário do IBGE recebe as datas como ddMMyyyy (ex.: 16102026); com MM-DD-YYYY ela devolvia 400
-export const dmA = (d: string) => { const [a, m, dd] = d.split("-"); return `${dd}${m}${a}`; };
+// v1.2: a API v3 do IBGE filtra com de/ate em MM-DD-YYYY (conferido 16/10: ddMMyyyy é ignorado). O 400 vinha do servidor
+// do IBGE recusando a rede das Edge Functions; o banco (pg_net) é aceito -> o banco busca (vm_ibge_buscar, SQL 153) e a função lê.
+export const mdA = (d: string) => { const [a, m, dd] = d.split("-"); return `${m}-${dd}-${a}`; };
 
 // ------------------------------------------------------------------ Supabase (PostgREST)
 function cab(extra: Record<string, string> = {}): Record<string, string> {
@@ -260,7 +261,16 @@ export async function tratar(req: Request): Promise<Response> {
     if (ok("ibge")) {
       try {
         let x = { itens: [] as Item[], lidos: 0 }, ultimoErro = "";
-        for (const q of [`?qtd=100&de=${dmA(dias[0])}&ate=${dmA(dias[n - 1])}`, `?de=${dmA(dias[0])}&ate=${dmA(dias[n - 1])}`, `?qtd=50`]) {
+        // 1º: a resposta que o banco já buscou (vm_ibge_resposta); 2º: busca direta (reserva)
+        try {
+          const rb = await fetch(`${base()}/rpc/vm_ibge_resposta`, { method: "POST", headers: cab(), body: "{}" });
+          const jb = rb.ok ? await rb.json() : null;
+          if (jb && (Array.isArray(jb) || Array.isArray(jb.items))) {
+            if (corpo.so_teste && !resumo.ibge_exemplo) resumo.ibge_exemplo = JSON.stringify((Array.isArray(jb) ? jb : jb.items)[0] ?? jb).slice(0, 600);
+            x = ibgeItens(jb, dias); notas.push("IBGE: lido pelo banco");
+          }
+        } catch (_) { /* segue para a busca direta */ }
+        for (const q of x.lidos ? [] : [`?qtd=100&de=${mdA(dias[0])}&ate=${mdA(dias[n - 1])}`]) {
           const r = await fetch(IBGE_API + q, { headers: { "User-Agent": UA, Accept: "application/json" } });
           if (!r.ok) { ultimoErro = `HTTP ${r.status}`; continue; }
           const j = await r.json();
