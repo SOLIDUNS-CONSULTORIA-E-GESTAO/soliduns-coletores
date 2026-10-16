@@ -1,0 +1,40 @@
+# SOLIDUNS — Triagem de leiloeiros (16/10/2026): confere página inicial, robots.txt e termos de uso das fontes candidatas.
+# NÃO coleta lotes. Só à mão: Actions -> "Leilões - triagem de leiloeiros" -> Run workflow. Resultado no ramo "triagem".
+name: Leilões - triagem de leiloeiros
+
+on:
+  workflow_dispatch:
+    inputs:
+      so:
+        description: "Só estes (partes do nome, separadas por vírgula). Vazio = todos os candidatos."
+        required: false
+      atuais:
+        description: "1 = confere também as fontes que já estão na plataforma"
+        required: false
+        default: "0"
+
+permissions:
+  contents: write
+
+jobs:
+  triagem:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests beautifulsoup4
+      - name: Triagem
+        env:
+          TRIAGEM_SO: ${{ github.event.inputs.so }}
+          TRIAGEM_TAMBEM_ATUAIS: ${{ github.event.inputs.atuais }}
+        run: python -u coletor/triagem_leiloeiros.py
+      - name: Publicar no ramo triagem
+        if: always()
+        run: |
+          git config user.name "soliduns-recon"; git config user.email "recon@soliduns.com.br"
+          git checkout --orphan triagem-tmp
+          git rm -rq --cached . ; git add -f triagem/
+          git commit -qm "triagem $(date -u +%F' '%H:%M)" && git push -f origin triagem-tmp:triagem
