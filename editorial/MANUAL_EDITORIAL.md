@@ -286,6 +286,11 @@ O que continua valendo, sem exceção: **não recomenda compra, venda ou alocaç
 >
 > **5.** A conclusão, sem recomendação ao leitor
 
+# **8.8 Publicidade** (decisão do editor, 16/10/2026 — padrão dos grandes portais)
+
+- **Espaços:** retângulo lateral 300 × 250 na coluna "O que move o dia" (ligado); dentro do artigo, depois do 2º parágrafo, 728 × 90 no computador e 300 × 250 no celular (ligado); faixa do topo (billboard) 970 × 250, celular 320 × 100, acima da manchete (pronta, desligada até haver patrocinador). Rodapé: não usado.
+- **Regras:** só imagem + link https + período; etiqueta "Publicidade" sempre visível (CDC art. 36 e CONAR); link com rel="sponsored"; espaço reservado no tamanho certo (o texto não pula); nenhum código de terceiros (scripts de redes de anúncio). Anúncio nunca se confunde com conteúdo editorial.
+
 # **9. Correções**
 
 Erro corrigido não se apaga. Altera-se o texto e acrescenta-se, ao final: "Correção: esta matéria foi alterada às \[hora\] para corrigir \[o quê\]. A versão anterior informava \[o errado\]."
