@@ -13,7 +13,25 @@ ok(itens[0].titulo === "Ibovespa sobe com Copom" && itens[0].linha === "Primeira
 ok(itens[1].link === "https://soliduns.com.br/noticias/?scanner=2026-10-16", "link do Scanner");
 ok(itens[2].link.endsWith("?artigo=3") && itens[2].linha === "Abre o texto.", "artigo: link e 1º parágrafo");
 const msg = m.mensagem(itens[1]);
-ok(msg.includes("Scanner &amp; mercado") && msg.includes("<b>VALOR E MERCADO</b>"), "mensagem HTML escapada");
+ok(msg.includes("Scanner &amp; mercado") && msg.includes("SCANNER DO DIA"), "mensagem HTML escapada");
+// layouts diferentes (v1.1)
+const comFoto = m.itensDe([{ data: "2026-10-16", conteudo: { manchete: { cartola: "JUROS", titulo: "T", linha_fina: "L",
+  foto: { src: "https://images.pexels.com/a.jpg", src_grande: "https://images.pexels.com/a2.jpg", fotografo: "Ana", fonte: "Pexels" } } } }], [], [])[0];
+const e1 = m.envio(comFoto, "-1");
+ok(e1.metodo === "sendPhoto" && e1.dados.photo === "https://images.pexels.com/a2.jpg", "manchete vai com foto grande");
+ok(String(e1.dados.caption).startsWith("📰 <b>MANCHETE DO DIA</b> · sexta, 16/10") && String(e1.dados.caption).includes("Foto: Ana / Pexels"), "manchete: faixa, data e crédito");
+ok((e1.dados.reply_markup as any).inline_keyboard[0][0].text === "📰 Ler a manchete", "botão da manchete");
+const sc = m.itensDe([], [{ id: 1, data_ref: "2026-10-16", texto_aprovado: { titulo: "Tit" } }], [],
+  { "2026-10-16": m.agendaCurta([{ hora: "09h30", evento: "CPI dos EUA", regiao: "us" }, { hora: "Dia todo", evento: "x", regiao: "br" },
+    { hora: "08h25", evento: "Boletim Focus", regiao: "br" }, { hora: "09h30", evento: "CPI dos EUA", regiao: "us" }]) })[0];
+const e2 = m.envio(sc, "-1");
+ok(e2.metodo === "sendMessage" && (e2.dados.link_preview_options as any).is_disabled === true, "scanner sem prévia de link");
+ok(String(e2.dados.text).includes("🇧🇷 <b>08h25</b> — Boletim Focus\n🇺🇸 <b>09h30</b> — CPI dos EUA") && !String(e2.dados.text).includes("Dia todo"), "scanner: agenda em ordem, sem repetição");
+ok((e2.dados.reply_markup as any).inline_keyboard[0][0].text === "📊 Abrir o Scanner", "botão do Scanner");
+const ar = m.itensDe([], [], [{ id: 5, chapeu: null, titulo: "Art", linha_fina: "LF", corpo: [], editoria: "Mercados", autor: "Dr. Thiago Viegas", publicado_em: "2026-10-16T13:00:00Z" }])[0];
+const e3 = m.envio(ar, "-1");
+ok(String(e3.dados.text).startsWith("✍️ <b>ARTIGO</b> · Mercados") && String(e3.dados.text).includes("Por Dr. Thiago Viegas"), "artigo: faixa e assinatura");
+ok(new Set([e1, e2, e3].map((e) => String(e.dados.text ?? e.dados.caption).slice(0, 4))).size === 3, "3 cabeçalhos diferentes");
 ok(!/\bIA\b|intelig[eê]ncia artificial|gerad/i.test(msg + m.mensagem(itens[0])), "sem menção a IA");
 ok(m.corta("a ".repeat(300), 100).length <= 101, "corte com reticências");
 

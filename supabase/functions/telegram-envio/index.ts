@@ -1,4 +1,4 @@
-// telegram-envio v1.0 — Valor e Mercado: envia o link de cada matéria publicada aos grupos e ao canal do Telegram.
+// telegram-envio v1.1 — Valor e Mercado: envia o link de cada matéria publicada aos grupos e ao canal do Telegram.
 // Decisão do Thiago (16/10/2026 09h04): "quero inserir o robô nos grupos e publicar". Opção B: Manchete, Scanner e artigos do CMS.
 //
 // Dois tipos de chamada:
@@ -10,12 +10,15 @@
 // Variáveis: TELEGRAM_TOKEN, TELEGRAM_DONO_ID, COLETOR_TOKEN (manuais); SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas).
 // Nenhuma chave neste arquivo. A mensagem nunca menciona IA.
 
-export const VERSAO = "1.0";
+export const VERSAO = "1.1";
 const SITE = "https://soliduns.com.br/noticias/";
 const JANELA_H = 12;
 
 type Tg = (metodo: string, dados: Record<string, unknown>) => Promise<{ ok: boolean; result?: unknown; error_code?: number; description?: string; parameters?: { migrate_to_chat_id?: number; retry_after?: number } }>;
-export type Item = { chave: string; tipo: "manchete" | "scanner" | "artigo"; chapeu: string; titulo: string; linha: string; link: string };
+export type Foto = { src: string; fotografo: string; fonte: string };
+export type Evento = { hora: string; evento: string; regiao: string };
+export type Item = { chave: string; tipo: "manchete" | "scanner" | "artigo"; data: string; chapeu: string; titulo: string; linha: string;
+                     link: string; foto?: Foto | null; agenda?: Evento[]; editoria?: string; autor?: string };
 type Destino = { chat_id: string; nome: string | null };
 
 // ------------------------------------------------------------------ texto
@@ -34,12 +37,50 @@ function primeiraFrase(paras: unknown): string {
   }
   return "";
 }
-const ROTULO = { manchete: "Manchete do dia", scanner: "Scanner do Dia", artigo: "Artigo" } as const;
-export function mensagem(it: Item): string {
-  const topo = `<b>VALOR E MERCADO</b> · ${esc(it.chapeu || ROTULO[it.tipo])}`;
-  const linha = it.linha ? `\n${esc(corta(it.linha, 280))}` : "";
-  return `${topo}\n\n<b>${esc(corta(it.titulo, 160))}</b>${linha}\n\n<a href="${esc(it.link)}">Leia no jornal</a>`;
+const DIAS = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
+export function dataCurta(iso: string): string {             // "sexta, 16/10"
+  const d = new Date(`${iso.slice(0, 10)}T12:00:00Z`);
+  if (isNaN(d.getTime())) return "";
+  return `${DIAS[d.getUTCDay()]}, ${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
 }
+const BANDEIRA: Record<string, string> = { br: "🇧🇷", us: "🇺🇸", global: "🌐" };
+const botao = (texto: string, url: string) => ({ inline_keyboard: [[{ text: texto, url }]] });
+
+// v1.1 (Thiago, 16/10 10h05): cada tipo com um formato próprio, para o leitor ver que são posts diferentes.
+//   LAYOUT 1 — Manchete: FOTO de capa grande, faixa "📰 MANCHETE DO DIA", cartola, título, linha fina, crédito da foto, botão "Ler a manchete".
+//   LAYOUT 2 — Scanner: só texto, sem prévia de link, faixa "📊 SCANNER DO DIA", título e "Na agenda de hoje" com até 4 horários,
+//              botão "Abrir o Scanner".
+//   LAYOUT 3 — Artigo do CMS: faixa "✍️ ARTIGO · editoria", título, linha fina, assinatura, foto se houver, botão "Ler o artigo".
+export function envio(it: Item, chat_id: string): { metodo: string; dados: Record<string, unknown> } {
+  const quando = dataCurta(it.data);
+  if (it.tipo === "manchete") {
+    const credito = it.foto ? `\n\n<i>📷 Foto: ${esc(it.foto.fotografo)} / ${esc(it.foto.fonte)}</i>` : "";
+    const texto = `📰 <b>MANCHETE DO DIA</b>${quando ? ` · ${quando}` : ""}\n` +
+      (it.chapeu ? `<i>${esc(it.chapeu.toUpperCase())}</i>\n` : "") +
+      `\n<b>${esc(corta(it.titulo, 160))}</b>` + (it.linha ? `\n\n${esc(corta(it.linha, 400))}` : "") + credito;
+    const markup = botao("📰 Ler a manchete", it.link);
+    if (it.foto) return { metodo: "sendPhoto", dados: { chat_id, photo: it.foto.src, caption: texto, parse_mode: "HTML", reply_markup: markup } };
+    return { metodo: "sendMessage", dados: { chat_id, text: texto, parse_mode: "HTML", reply_markup: markup,
+      link_preview_options: { url: it.link, prefer_large_media: true, show_above_text: true } } };
+  }
+  if (it.tipo === "scanner") {
+    const ag = (it.agenda ?? []).slice(0, 4).map((e) => `${BANDEIRA[e.regiao] ?? "•"} <b>${esc(e.hora)}</b> — ${esc(corta(e.evento, 90))}`);
+    const texto = `📊 <b>SCANNER DO DIA</b>${quando ? ` · ${quando}` : ""}\n` +
+      `━━━━━━━━━━━━━━━\n\n<b>${esc(corta(it.titulo, 160))}</b>` +
+      (ag.length ? `\n\n🗓 <b>Na agenda de hoje</b>\n${ag.join("\n")}` : (it.linha ? `\n\n${esc(corta(it.linha, 300))}` : "")) +
+      `\n\n<i>Agenda completa, indicadores e maiores altas e baixas no Scanner.</i>`;
+    return { metodo: "sendMessage", dados: { chat_id, text: texto, parse_mode: "HTML",
+      link_preview_options: { is_disabled: true }, reply_markup: botao("📊 Abrir o Scanner", it.link) } };
+  }
+  const texto = `✍️ <b>ARTIGO</b>${it.editoria ? ` · ${esc(it.editoria)}` : ""}\n` +
+    (it.chapeu && it.chapeu !== "Artigo" ? `<i>${esc(it.chapeu.toUpperCase())}</i>\n` : "") +
+    `\n<b>${esc(corta(it.titulo, 160))}</b>` + (it.linha ? `\n\n${esc(corta(it.linha, 400))}` : "") +
+    (it.autor ? `\n\n<i>Por ${esc(it.autor)}</i>` : "");
+  const markup = botao("✍️ Ler o artigo", it.link);
+  if (it.foto) return { metodo: "sendPhoto", dados: { chat_id, photo: it.foto.src, caption: texto, parse_mode: "HTML", reply_markup: markup } };
+  return { metodo: "sendMessage", dados: { chat_id, text: texto, parse_mode: "HTML", reply_markup: markup, link_preview_options: { is_disabled: true } } };
+}
+export const mensagem = (it: Item) => String(envio(it, "x").dados.text ?? envio(it, "x").dados.caption);
 
 // ------------------------------------------------------------------ Supabase (PostgREST)
 function cab(extra: Record<string, string> = {}): Record<string, string> {
@@ -60,45 +101,71 @@ async function pgEscreve(metodo: string, caminho: string, corpo: unknown, prefer
 }
 
 // ------------------------------------------------------------------ o que foi publicado
-export function itensDe(edicoes: { data: string; conteudo: Record<string, unknown> }[],
-                        scanners: { id: number; data_ref: string; texto_aprovado: Record<string, unknown> }[],
-                        artigos: { id: number; chapeu: string | null; titulo: string; linha_fina: string | null; corpo: unknown }[]): Item[] {
+function fotoDe(f: unknown, fontePadrao: string): Foto | null {
+  const o = (f ?? {}) as Record<string, unknown>;
+  const src = String(o.src_grande ?? o.src ?? "");
+  if (!/^https:\/\//.test(src)) return null;
+  return { src, fotografo: limpo(o.fotografo) || fontePadrao, fonte: limpo(o.fonte ?? o.origem) || fontePadrao };
+}
+type Ed = { data: string; conteudo: Record<string, unknown> };
+type Sc = { id: number; data_ref: string; texto_aprovado: Record<string, unknown> };
+type Ar = { id: number; chapeu: string | null; titulo: string; linha_fina: string | null; corpo: unknown; foto?: unknown;
+            editoria?: string | null; autor?: string | null; publicado_em?: string | null };
+export function itensDe(edicoes: Ed[], scanners: Sc[], artigos: Ar[], agendas: Record<string, Evento[]> = {}): Item[] {
   const out: Item[] = [];
   for (const e of edicoes) {
     const m = (e.conteudo?.manchete ?? {}) as Record<string, unknown>;
     const titulo = limpo(m.titulo);
     if (!titulo) continue;
-    out.push({ chave: `manchete:${e.data}`, tipo: "manchete", chapeu: limpo(m.chapeu) || ROTULO.manchete, titulo,
-      linha: limpo(m.linha_fina) || primeiraFrase(m.corpo ?? m.paragrafos), link: SITE });
+    out.push({ chave: `manchete:${e.data}`, tipo: "manchete", data: e.data, chapeu: limpo(m.cartola ?? m.chapeu), titulo,
+      linha: limpo(m.linha_fina) || primeiraFrase(m.corpo ?? m.paragrafos), link: SITE, foto: fotoDe(m.foto, "Pexels") });
   }
   for (const s of scanners) {
     const t = s.texto_aprovado ?? {};
     const titulo = limpo(t.titulo);
     if (!titulo) continue;
-    out.push({ chave: `scanner:${s.id}`, tipo: "scanner", chapeu: ROTULO.scanner, titulo,
-      linha: limpo(t.linha_fina) || primeiraFrase(t.paragrafos), link: `${SITE}?scanner=${s.data_ref}` });
+    out.push({ chave: `scanner:${s.id}`, tipo: "scanner", data: s.data_ref, chapeu: "Scanner do Dia", titulo,
+      linha: limpo(t.linha_fina) || primeiraFrase(t.paragrafos), link: `${SITE}?scanner=${s.data_ref}`, agenda: agendas[s.data_ref] ?? [] });
   }
   for (const a of artigos) {
     const titulo = limpo(a.titulo);
     if (!titulo) continue;
     const paras = (Array.isArray(a.corpo) ? a.corpo : []).filter((b) => (b as { tipo?: string })?.tipo === "paragrafo");
-    out.push({ chave: `artigo:${a.id}`, tipo: "artigo", chapeu: limpo(a.chapeu) || ROTULO.artigo, titulo,
-      linha: limpo(a.linha_fina) || primeiraFrase(paras), link: `${SITE}?artigo=${a.id}` });
+    out.push({ chave: `artigo:${a.id}`, tipo: "artigo", data: String(a.publicado_em ?? "").slice(0, 10), chapeu: limpo(a.chapeu), titulo,
+      linha: limpo(a.linha_fina) || primeiraFrase(paras), link: `${SITE}?artigo=${a.id}`, foto: fotoDe(a.foto, "Foto própria"),
+      editoria: limpo(a.editoria), autor: limpo(a.autor) });
   }
   return out;
+}
+// agenda do dia para o Scanner: só horários marcados, sem repetir o mesmo evento, em ordem de horário
+export function agendaCurta(linhas: { hora: string | null; evento: string; regiao: string }[]): Evento[] {
+  const vistos = new Set<string>(), out: Evento[] = [];
+  for (const l of linhas) {
+    const hora = limpo(l.hora);
+    if (!/^\d{2}h\d{2}$/.test(hora)) continue;
+    const ev = limpo(l.evento), k = ev.toLowerCase().normalize("NFD").replace(/[^a-z0-9]/g, "").slice(0, 40);
+    if (!ev || vistos.has(k)) continue;
+    vistos.add(k);
+    out.push({ hora, evento: ev, regiao: l.regiao });
+  }
+  return out.sort((a, b) => a.hora.localeCompare(b.hora)).slice(0, 4);
 }
 async function publicados(): Promise<Item[]> {
   const desde = new Date(Date.now() - JANELA_H * 3600e3).toISOString();
   const hojeBr = new Date(Date.now() - 3 * 3600e3).toISOString().slice(0, 10);
   const [ed, sc, ar] = await Promise.all([
-    pgGet<{ data: string; conteudo: Record<string, unknown> }[]>(
-      `vm_edicoes?select=data,conteudo&publicado=is.true&data=eq.${hojeBr}&gerado_em=gte.${encodeURIComponent(desde)}`),
-    pgGet<{ id: number; data_ref: string; texto_aprovado: Record<string, unknown> }[]>(
-      `vm_materias?select=id,data_ref,texto_aprovado&tipo=eq.scanner&situacao=eq.publicada&aprovado_em=gte.${encodeURIComponent(desde)}&order=aprovado_em.asc`),
-    pgGet<{ id: number; chapeu: string | null; titulo: string; linha_fina: string | null; corpo: unknown }[]>(
-      `vm_artigos?select=id,chapeu,titulo,linha_fina,corpo&situacao=eq.publicado&publicado_em=gte.${encodeURIComponent(desde)}&order=publicado_em.asc`),
+    pgGet<Ed[]>(`vm_edicoes?select=data,conteudo&publicado=is.true&data=eq.${hojeBr}&gerado_em=gte.${encodeURIComponent(desde)}`),
+    pgGet<Sc[]>(`vm_materias?select=id,data_ref,texto_aprovado&tipo=eq.scanner&situacao=eq.publicada&aprovado_em=gte.${encodeURIComponent(desde)}&order=aprovado_em.asc`),
+    pgGet<Ar[]>(`vm_artigos?select=id,chapeu,titulo,linha_fina,corpo,foto,editoria,autor,publicado_em&situacao=eq.publicado&publicado_em=gte.${encodeURIComponent(desde)}&order=publicado_em.asc`),
   ]);
-  return itensDe(ed, sc, ar);
+  const agendas: Record<string, Evento[]> = {};
+  for (const d of new Set(sc.map((s) => s.data_ref))) {
+    try {
+      agendas[d] = agendaCurta(await pgGet<{ hora: string | null; evento: string; regiao: string }[]>(
+        `vm_agenda?select=hora,evento,regiao&data_ref=eq.${d}&order=hora&limit=60`));
+    } catch (_) { agendas[d] = []; }
+  }
+  return itensDe(ed, sc, ar, agendas);
 }
 
 // ------------------------------------------------------------------ Telegram
@@ -125,14 +192,17 @@ export async function enviar(tg: Tg, itens: Item[], destinos: Destino[], jaFeito
   for (const it of itens) {
     for (const d of destinos) {
       if (jaFeitos.has(`${it.chave}|${d.chat_id}`)) continue;
-      const corpo = { chat_id: d.chat_id, text: mensagem(it), parse_mode: "HTML",
-        link_preview_options: { url: it.link, prefer_large_media: true } };
-      let r = await tg("sendMessage", corpo);
+      const { metodo, dados: corpo } = envio(it, d.chat_id);
+      let r = await tg(metodo, corpo);
+      if (!r.ok && metodo === "sendPhoto" && r.error_code === 400 && !r.parameters?.migrate_to_chat_id) {
+        const t = envio({ ...it, foto: null }, d.chat_id);       // foto recusada pelo Telegram: vai o mesmo layout sem a foto
+        r = await tg(t.metodo, t.dados);
+      }
       if (!r.ok && r.parameters?.migrate_to_chat_id) {               // grupo virou supergrupo: novo número
         const novo = String(r.parameters.migrate_to_chat_id);
         await desliga(d.chat_id, novo);
         d.chat_id = novo;
-        r = await tg("sendMessage", { ...corpo, chat_id: novo });
+        r = await tg(metodo, { ...corpo, chat_id: novo });
       }
       if (!r.ok && r.error_code === 429) { notas.push(`limite do Telegram; tenta de novo em ${r.parameters?.retry_after ?? "?"} s`); return { enviados, falhas, notas }; }
       if (r.ok) enviados++; else falhas++;
@@ -219,7 +289,7 @@ export async function tratar(req: Request): Promise<Response> {
         `vm_telegram_envios?select=item,chat_id&or=(ok.is.true,tentativas.gte.3)&enviado_em=gte.${encodeURIComponent(new Date(Date.now() - 48 * 3600e3).toISOString())}`),
     ]);
     Object.assign(resumo, { publicados: itens.map((i) => i.chave), destinos: destinos.map((d) => d.nome ?? d.chat_id) });
-    if (corpo.acao === "teste") return Response.json({ ...resumo, exemplo: itens[0] ? mensagem(itens[0]) : null });
+    if (corpo.acao === "teste") return Response.json({ ...resumo, exemplos: itens.map((i) => envio(i, "teste")) });
     const grava = (l: Record<string, unknown>) => pgEscreve("POST", "rpc/vm_telegram_registrar", { p: l });
     const desliga = async (chat: string, novo?: string) => {
       if (novo) await pgEscreve("PATCH", `vm_telegram_destinos?chat_id=eq.${encodeURIComponent(chat)}`, { chat_id: novo });
