@@ -1,12 +1,13 @@
 # SOLIDUNS — Jornal "Valor e Mercado": edição diária (Manchete de capa + Scanner do dia) escrita por IA
 # com busca na web e PUBLICADA AUTOMATICAMENTE em public.vm_edicoes (SQL 133) -> página pública #/noticias.
-# Todo dia às 06h30 de Brasília (UTC-3). O GitHub pode atrasar alguns minutos.
+# v1.5 (16/10/2026): a edição é escrita pelo Supabase (Edge Function manchete-do-dia, SQL 154) e sai às 06h30.
+# Este robô virou RESERVA: às 07h15 de Brasília confere se há edição publicada hoje; se não houver, escreve como antes.
 # Também à mão em: Actions -> "Valor e Mercado - edição do dia" -> Run workflow.
 name: Valor e Mercado - edição do dia
 
 on:
   schedule:
-    - cron: "30 9 * * *"   # 06h30 BRT
+    - cron: "15 10 * * *"   # 07h15 BRT — reserva (só age se a do Supabase não saiu)
   workflow_dispatch:
     inputs:
       so_teste:
@@ -39,6 +40,7 @@ jobs:
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}   # foto de capa (unsplash.com/developers: Access Key); sem ela, sai sem foto
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}             # reserva, se um dia houver chave do Pexels
           VM_SO_TESTE: ${{ github.event.inputs.so_teste || '0' }}
+          VM_SO_SE_FALTAR: ${{ github.event_name == 'schedule' && '1' || '0' }}   # agendado = reserva; à mão = roda sempre
           # Ajustes sem mexer no código: Settings -> Secrets and variables -> Actions -> aba Variables
           # VM_MODELO (vazio = claude-sonnet-5-5; ex.: claude-haiku-4-5) · VM_BUSCAS (vazio = 12; de 1 a 20)
           VM_MODELO: ${{ vars.VM_MODELO }}
