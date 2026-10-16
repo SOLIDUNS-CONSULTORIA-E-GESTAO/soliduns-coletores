@@ -66,4 +66,10 @@ ok((await m.segredoWebhook("abc")).length === 48 && /^[0-9a-f]+$/.test(await m.s
 Deno.env.set("TELEGRAM_TOKEN", "t"); Deno.env.set("TELEGRAM_DONO_ID", "111"); Deno.env.set("COLETOR_TOKEN", "c");
 ok((await m.tratar(new Request("http://x", { method: "POST", headers: { "X-Telegram-Bot-Api-Secret-Token": "errado" }, body: "{}" }))).status === 401, "aviso falso recusado");
 ok((await m.tratar(new Request("http://x", { method: "POST", body: "{}" }))).status === 401, "agendador sem token recusado");
+// v1.3: link do Scanner muda sozinho quando a página nova do site estiver no ar
+const scNovo = m.itensDe([], [{ id: 2, data_ref: "2026-11-05", texto_aprovado: { titulo: "T" } }], [], {}, true)[0];
+ok(scNovo.link === "https://soliduns.com.br/noticias/scanner/?d=2026-11-05", "link novo do Scanner quando a v131 estiver no ar");
+ok(await m.paginaScannerNoAr((async () => new Response("<meta content=\"https://soliduns.com.br/og-scanner-do-dia.jpg\">", { status: 200 })) as typeof fetch) === true, "detecta a página nova");
+ok(await m.paginaScannerNoAr((async () => new Response("index do site", { status: 200 })) as typeof fetch) === false, "SPA sem a página: mantém link antigo");
+ok(await m.paginaScannerNoAr((async () => { throw new Error("rede"); }) as typeof fetch) === false, "falha de rede: mantém link antigo");
 console.log(falhas ? `${falhas} FALHAS` : "TODOS OK"); Deno.exit(falhas ? 1 : 0);

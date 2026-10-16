@@ -1,4 +1,4 @@
-// telegram-envio v1.2 — Valor e Mercado: envia o link de cada matéria publicada aos grupos e ao canal do Telegram.
+// telegram-envio v1.3 — Valor e Mercado: envia o link de cada matéria publicada aos grupos e ao canal do Telegram.
 // Decisão do Thiago (16/10/2026 09h04): "quero inserir o robô nos grupos e publicar". Opção B: Manchete, Scanner e artigos do CMS.
 //
 // Dois tipos de chamada:
@@ -10,7 +10,7 @@
 // Variáveis: TELEGRAM_TOKEN, TELEGRAM_DONO_ID, COLETOR_TOKEN (manuais); SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas).
 // Nenhuma chave neste arquivo. A mensagem nunca menciona IA.
 
-export const VERSAO = "1.2";
+export const VERSAO = "1.3";
 const SITE = "https://soliduns.com.br/noticias/";
 const JANELA_H = 12;
 // v1.2 (Thiago, 16/10 10h16): o Scanner vai com a logomarca "Scanner do Dia" (Opção 2 — Radar). Imagem pública no Storage do
@@ -117,7 +117,7 @@ type Ed = { data: string; conteudo: Record<string, unknown> };
 type Sc = { id: number; data_ref: string; texto_aprovado: Record<string, unknown> };
 type Ar = { id: number; chapeu: string | null; titulo: string; linha_fina: string | null; corpo: unknown; foto?: unknown;
             editoria?: string | null; autor?: string | null; publicado_em?: string | null };
-export function itensDe(edicoes: Ed[], scanners: Sc[], artigos: Ar[], agendas: Record<string, Evento[]> = {}): Item[] {
+export function itensDe(edicoes: Ed[], scanners: Sc[], artigos: Ar[], agendas: Record<string, Evento[]> = {}, scannerNovo = false): Item[] {
   const out: Item[] = [];
   for (const e of edicoes) {
     const m = (e.conteudo?.manchete ?? {}) as Record<string, unknown>;
@@ -131,7 +131,7 @@ export function itensDe(edicoes: Ed[], scanners: Sc[], artigos: Ar[], agendas: R
     const titulo = limpo(t.titulo);
     if (!titulo) continue;
     out.push({ chave: `scanner:${s.id}`, tipo: "scanner", data: s.data_ref, chapeu: "Scanner do Dia", titulo,
-      linha: limpo(t.linha_fina) || primeiraFrase(t.paragrafos), link: `${SITE}?scanner=${s.data_ref}`, agenda: agendas[s.data_ref] ?? [],
+      linha: limpo(t.linha_fina) || primeiraFrase(t.paragrafos), link: scannerNovo ? `${SITE}scanner/?d=${s.data_ref}` : `${SITE}?scanner=${s.data_ref}`, agenda: agendas[s.data_ref] ?? [],
       foto: { src: IMAGEM_SCANNER, fotografo: "", fonte: "" } });
   }
   for (const a of artigos) {
@@ -157,6 +157,14 @@ export function agendaCurta(linhas: { hora: string | null; evento: string; regia
   }
   return out.sort((a, b) => a.hora.localeCompare(b.hora)).slice(0, 4);
 }
+// v1.3: quando a v130/v131 do site estiver no ar (página /noticias/scanner/ com a prévia da logomarca), o link do Scanner passa
+// sozinho para soliduns.com.br/noticias/scanner/?d=AAAA-MM-DD. Enquanto não estiver, segue o link antigo (?scanner=), que funciona.
+export async function paginaScannerNoAr(buscar: typeof fetch = fetch): Promise<boolean> {
+  try {
+    const r = await buscar(`${SITE}scanner/`, { headers: { "User-Agent": "SOLIDUNS telegram-envio" }, redirect: "manual" });
+    return r.status === 200 && (await r.text()).includes("og-scanner-do-dia");
+  } catch (_) { return false; }
+}
 async function publicados(): Promise<Item[]> {
   const desde = new Date(Date.now() - JANELA_H * 3600e3).toISOString();
   const hojeBr = new Date(Date.now() - 3 * 3600e3).toISOString().slice(0, 10);
@@ -172,7 +180,7 @@ async function publicados(): Promise<Item[]> {
         `vm_agenda?select=hora,evento,regiao&data_ref=eq.${d}&order=hora&limit=60`));
     } catch (_) { agendas[d] = []; }
   }
-  return itensDe(ed, sc, ar, agendas);
+  return itensDe(ed, sc, ar, agendas, sc.length ? await paginaScannerNoAr() : false);
 }
 
 // ------------------------------------------------------------------ Telegram
