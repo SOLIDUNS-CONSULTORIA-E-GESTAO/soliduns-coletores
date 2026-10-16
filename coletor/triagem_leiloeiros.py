@@ -158,7 +158,7 @@ def main():
         for k, v in atuais.items():
             if isinstance(v, list):
                 cand += [{"nome": x["nome"], "url": x["url"], "grupo": "Já na plataforma", "bens": x.get("tipos")} for x in v if x.get("ativo", True)]
-    so = [s.strip().lower() for s in (os.environ.get("TRIAGEM_SO") or "").split(",") if s.strip()]
+    so = [s.strip().lower() for s in (os.environ.get("TRIAGEM_SO") or "").split(",") if s.strip() and not s.strip().isdigit()]
     if so:
         cand = [c for c in cand if any(x in c["nome"].lower() for x in so)]
     print(f"Triagem de {len(cand)} fontes", flush=True)
