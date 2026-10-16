@@ -35,6 +35,6 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           DATAJUD_API_KEY: ${{ secrets.DATAJUD_API_KEY }}
           DJEN_TOKEN: ${{ secrets.DJEN_TOKEN }}
-          DJEN_RELAY_URL: https://evcsniicnrlrtzpdmeza.supabase.co/functions/v1/swift-api
+          DJEN_RELAY_URL: ${{ secrets.DJEN_RELAY_URL }}   # 16/10/2026: Secret no lugar do endereço fixo (ver leiloes-veiculos.yml)
           DATAJUD_TEMPO_MAX: "3000"
         run: python coletor/acompanhar_processos_leiloes.py

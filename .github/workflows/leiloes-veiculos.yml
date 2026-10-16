@@ -47,8 +47,9 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           DJEN_TOKEN: ${{ secrets.DJEN_TOKEN }}
           VEICULOS_DIAS: ${{ github.event.inputs.dias || '3' }}
-          # endereço da função em São Paulo (o Supabase deu o nome "swift-api") — o mesmo da rotina "Leilões"
-          DJEN_RELAY_URL: https://evcsniicnrlrtzpdmeza.supabase.co/functions/v1/swift-api
+          # 16/10/2026: endereço do relay agora vem do Secret DJEN_RELAY_URL (o fixo "swift-api" parou em 12/10;
+          # a rotina "Leilões - veículos DJEN", que usa o Secret, segue funcionando). Secret vazio -> o script volta ao fixo.
+          DJEN_RELAY_URL: ${{ secrets.DJEN_RELAY_URL }}
         run: python coletor/coletar_leiloes_veiculos.py
 
       - name: 3. Tabela FIPE (preços dos lotes)
