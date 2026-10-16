@@ -95,7 +95,7 @@ Ao final, sempre: o documento de origem, com link. Quando o fato tiver sido reve
 
 ## **4.8 Formatação na página** (decisão do editor, 16/10/2026)
 
-Regras de apresentação de todos os textos do jornal (manchete, Scanner na coluna e na página de leitura, itens do Scanner):
+Regras de apresentação de todos os textos do jornal (manchete, Scanner na coluna e na página de leitura, itens do Scanner) e das prévias da Redação (fila de aprovação e publicados), que mostram o texto exatamente como ele vai para a página:
 
 - **Corpo do texto e linha fina:** justificados, com hifenização automática em português, para não abrir buracos entre as palavras.
 - **Títulos:** alinhados à esquerda, com quebra de linha equilibrada; nunca justificados nem hifenizados.
