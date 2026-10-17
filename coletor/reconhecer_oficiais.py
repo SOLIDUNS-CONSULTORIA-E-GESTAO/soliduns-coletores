@@ -27,12 +27,12 @@ os.makedirs(SAIDA, exist_ok=True)
 FONTES = {
     "prf": ["https://www.gov.br/prf/pt-br/assuntos/leiloes-prf", "https://www.gov.br/prf/pt-br/assuntos/leiloes-prf-ate-2023"],
     "pf": ["https://www.gov.br/pf/pt-br/assuntos/leiloes"],
-    "detran-pr": ["https://www.detran.pr.gov.br/Pagina/Leiloes-publicos", "https://www.detran.pr.gov.br/leilaodeveiculos"],
+    # detran-pr fora (16/10): os leilões publicados são de SUCATA, só para pessoa jurídica de desmonte (edital, item 5.1)
     "detran-go": ["https://goias.gov.br/detran/leiloes/"],
 }
 RE_DOC = re.compile(r"\.(pdf|xlsx?|csv|ods)(\?|$|/@@download)|/@@download/file", re.I)
 RE_LEILAO = re.compile(r"leil|edital|lote|anexo|hasta|aliena", re.I)
-MAX_DOCS, MAX_MB = 3, 15
+MAX_DOCS, MAX_MB = 4, 15
 
 
 def baixar(url):
@@ -93,7 +93,7 @@ def main():
             info = {"paginas": [], "documentos": []}
             links = []
             fila, vistas = list(paginas), set()
-            while fila and len(vistas) < 7:
+            while fila and len(vistas) < 9:
                 url = fila.pop(0)
                 if url in vistas:
                     continue
@@ -109,8 +109,12 @@ def main():
                                         "links_leilao": [l for l in lks if RE_LEILAO.search(l[0] + " " + l[1])][:150]})
                 links += [l for l in lks if RE_DOC.search(l[0]) or (RE_LEILAO.search(l[1]) and urlparse(l[0]).netloc)]
                 if url in paginas:          # PF/PRF: os editais ficam em subpáginas por ano/leilão (2025-2026)
-                    fila += [l[0] for l in lks if re.search(r"/leil[^#?]*20(25|26)", l[0]) and not RE_DOC.search(l[0])][:4]
+                    fila += [l[0] for l in lks if re.search(r"/leil[^#?]*(20(25|26)|edital)", l[0]) and not RE_DOC.search(l[0])][:6]
             docs = [l for l in dict.fromkeys(tuple(l) for l in links) if RE_DOC.search(l[0])]
+            # v1.1: primeiro planilhas e documentos de leilão (edital, anexo, lotes), depois o resto
+            docs.sort(key=lambda l: (0 if re.search(r"\.(xlsx?|csv|ods)", l[0], re.I) else 1,
+                                     0 if RE_LEILAO.search(l[0] + " " + l[1]) else 1,
+                                     0 if re.search(r"anexo|lote|rela[cç][aã]o", l[0] + " " + l[1], re.I) else 1))
             info["links_documentos"] = docs[:80]
             for href, rotulo in docs[:MAX_DOCS]:
                 dados, tipo = baixar(href)

@@ -1,55 +1,3720 @@
 {
-  "_campos": "conferir=true: domínio ou rota não validados hoje; listagem=null: o scraper descobre a página de lotes a partir da URL base; ativo=false: o scraper pula",
-  "leiloeiros_judiciais": [
-    {"nome": "Sold Leilões", "url": "https://www.sold.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
-    {"nome": "Lance Judicial", "url": "https://www.lancejudicial.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
-    {"nome": "Biasi Leilões", "url": "https://www.biasileiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
-    {"nome": "Fidalgo Leilões", "url": "https://www.fidalgoleiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
-    {"nome": "Frazão Leilões", "url": "https://www.frazaoleiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
-    {"nome": "Lance no Leilão", "url": "https://www.lancenoleilao.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
-    {"nome": "Kronberg Leilões", "url": "https://www.kronbergleiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
-    {"nome": "Vianna Leilões", "url": "https://www.viannaleiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
-    {"nome": "Canal Judicial", "url": "https://www.canaljudicial.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
-    {"nome": "Mazzollini Leilões", "url": "https://www.mazzollinileiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
-    {"nome": "LEJE Leilões Judiciais Eletrônicos", "url": "https://www.leje.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
-    {"nome": "Damiani Leilões", "url": "https://www.damianileiloes.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
-    {"nome": "Alfa Leilões", "url": "https://www.alfaleiloes.com", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
-    {"nome": "Daniel Garcia Leilões", "url": "https://www.danielgarcialeiloes.com.br", "listagem": null, "tipos": ["imoveis"], "conferir": true}
-  ],
-  "leiloeiros_extrajudiciais": [
-    {"nome": "Copart Brasil", "url": "https://www.copart.com.br", "listagem": null, "tipos": ["veiculos"], "render": true},
-    {"nome": "Freitas Leiloeiro", "url": "https://www.freitasleiloeiro.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
-    {"nome": "Sodré Santoro", "url": "https://www.sodresantoro.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
-    {"nome": "Palácio dos Leilões", "url": "https://www.palaciodosleiloes.com.br", "listagem": null, "tipos": ["veiculos", "imoveis"]},
-    {"nome": "Parque dos Leilões", "url": "https://www.parquedosleiloes.com.br", "listagem": null, "tipos": ["veiculos"]},
-    {"nome": "Leilo", "url": "https://leilo.com.br", "listagem": null, "tipos": ["veiculos"], "render": true},
-    {"nome": "Pestana Leilões", "url": "https://www.pestanaleiloes.com.br", "listagem": null, "tipos": ["veiculos", "imoveis"]},
-    {"nome": "Milan Leilões", "url": "https://www.milanleiloes.com.br", "listagem": null, "tipos": ["veiculos", "imoveis"]},
-    {"nome": "Sato Leilões", "url": "https://www.satoleiloes.com.br", "listagem": null, "tipos": ["veiculos", "imoveis"]},
-    {"nome": "Rogério Menezes Leilões", "url": "https://www.rogeriomenezes.com.br", "listagem": null, "tipos": ["veiculos"], "conferir": true}
-  ],
-  "agregadores": [
-    {"nome": "Resale", "url": "https://www.resale.com.br", "listagem": null, "tipos": ["imoveis"]},
-    {"nome": "Leilão Imóvel", "url": "https://www.leilaoimovel.com.br", "listagem": null, "tipos": ["imoveis"]},
-    {"nome": "Bomvalor", "url": "https://www.bomvalor.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"]},
-    {"nome": "Leilões Judiciais", "url": "https://www.leiloesjudiciais.com.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true}
-  ],
-  "instituicoes_financeiras": [
-    {"nome": "Caixa – Venda de Imóveis", "url": "https://venda-imoveis.caixa.gov.br", "listagem": "https://venda-imoveis.caixa.gov.br/sistema/busca-imovel.asp", "tipos": ["imoveis"], "render": true, "sobreposicao": "rotina_bancos"},
-    {"nome": "Banco do Brasil – Seu Imóvel BB", "url": "https://www.seuimovelbb.com.br", "listagem": null, "tipos": ["imoveis"], "sobreposicao": "rotina_bancos", "conferir": true},
-    {"nome": "Emgea", "url": "https://www.emgea.gov.br", "listagem": null, "tipos": ["imoveis"], "conferir": true}
-  ],
-  "orgaos_publicos": [
-    {"nome": "Terracap", "url": "https://www.terracap.df.gov.br", "listagem": null, "tipos": ["imoveis"]},
-    {"nome": "Senad – leilões de bens apreendidos", "url": "https://www.gov.br/mj/pt-br/assuntos/sua-protecao/politicas-sobre-drogas", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true},
-    {"nome": "SPU – Imóveis da União", "url": "https://www.gov.br/gestao/pt-br/assuntos/patrimonio-da-uniao", "listagem": null, "tipos": ["imoveis"], "conferir": true},
-    {"nome": "TRF3 – Central de Hastas Públicas", "url": "https://www.trf3.jus.br", "listagem": null, "tipos": ["imoveis", "veiculos"], "conferir": true}
-  ],
-  "diretorios_juntas_comerciais": [
-    {"nome": "JUCESP", "url": "https://www.jucesp.sp.gov.br", "uso": "descobrir_leiloeiros_matriculados", "ativo": false},
-    {"nome": "JUCERJA", "url": "https://www.jucerja.rj.gov.br", "uso": "descobrir_leiloeiros_matriculados", "ativo": false},
-    {"nome": "JUCEMG", "url": "https://www.jucemg.mg.gov.br", "uso": "descobrir_leiloeiros_matriculados", "ativo": false},
-    {"nome": "Junta Comercial do Paraná", "url": "https://www.juntacomercial.pr.gov.br", "uso": "descobrir_leiloeiros_matriculados", "ativo": false},
-    {"nome": "JUCISRS", "url": "https://jucisrs.rs.gov.br", "uso": "descobrir_leiloeiros_matriculados", "ativo": false}
-  ]
+ "_campos": "conferir=true: domínio ou rota não validados hoje; listagem=null: o scraper descobre a página de lotes a partir da URL base; ativo=false: o scraper pula · rede_ampliada_2026_10: liberados na triagem de 16-17/10 (robots + anti-robô + termos); fotos=false: card com imagem padrão; lidos em rodízio (GERAIS_RODIZIO_DIAS)",
+ "leiloeiros_judiciais": [
+  {
+   "nome": "Sold Leilões",
+   "url": "https://www.sold.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Lance Judicial",
+   "url": "https://www.lancejudicial.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Biasi Leilões",
+   "url": "https://www.biasileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Fidalgo Leilões",
+   "url": "https://www.fidalgoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Frazão Leilões",
+   "url": "https://www.frazaoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Lance no Leilão",
+   "url": "https://www.lancenoleilao.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Kronberg Leilões",
+   "url": "https://www.kronbergleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Vianna Leilões",
+   "url": "https://www.viannaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "conferir": true
+  },
+  {
+   "nome": "Canal Judicial",
+   "url": "https://www.canaljudicial.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "conferir": true
+  },
+  {
+   "nome": "Mazzollini Leilões",
+   "url": "https://www.mazzollinileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "conferir": true
+  },
+  {
+   "nome": "LEJE Leilões Judiciais Eletrônicos",
+   "url": "https://www.leje.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "conferir": true
+  },
+  {
+   "nome": "Damiani Leilões",
+   "url": "https://www.damianileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "conferir": true
+  },
+  {
+   "nome": "Alfa Leilões",
+   "url": "https://www.alfaleiloes.com",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "conferir": true
+  },
+  {
+   "nome": "Daniel Garcia Leilões",
+   "url": "https://www.danielgarcialeiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "conferir": true,
+   "obs": "leiloeira dos leilões da PF e de parte da PRF (16/10)"
+  }
+ ],
+ "leiloeiros_extrajudiciais": [
+  {
+   "nome": "Copart Brasil",
+   "url": "https://www.copart.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "render": true
+  },
+  {
+   "nome": "Freitas Leiloeiro",
+   "url": "https://www.freitasleiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Sodré Santoro",
+   "url": "https://www.sodresantoro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Palácio dos Leilões",
+   "url": "https://www.palaciodosleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos",
+    "imoveis"
+   ]
+  },
+  {
+   "nome": "Parque dos Leilões",
+   "url": "https://www.parquedosleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Leilo",
+   "url": "https://leilo.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "render": true
+  },
+  {
+   "nome": "Pestana Leilões",
+   "url": "https://www.pestanaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos",
+    "imoveis"
+   ]
+  },
+  {
+   "nome": "Milan Leilões",
+   "url": "https://www.milanleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos",
+    "imoveis"
+   ]
+  },
+  {
+   "nome": "Sato Leilões",
+   "url": "https://www.satoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos",
+    "imoveis"
+   ]
+  },
+  {
+   "nome": "Rogério Menezes Leilões",
+   "url": "https://www.rogeriomenezes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "conferir": true
+  }
+ ],
+ "agregadores": [
+  {
+   "nome": "Resale",
+   "url": "https://www.resale.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ]
+  },
+  {
+   "nome": "Leilão Imóvel",
+   "url": "https://www.leilaoimovel.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ]
+  },
+  {
+   "nome": "Bomvalor",
+   "url": "https://www.bomvalor.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ]
+  },
+  {
+   "nome": "Leilões Judiciais",
+   "url": "https://www.leiloesjudiciais.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "conferir": true
+  }
+ ],
+ "instituicoes_financeiras": [
+  {
+   "nome": "Caixa – Venda de Imóveis",
+   "url": "https://venda-imoveis.caixa.gov.br",
+   "listagem": "https://venda-imoveis.caixa.gov.br/sistema/busca-imovel.asp",
+   "tipos": [
+    "imoveis"
+   ],
+   "render": true,
+   "sobreposicao": "rotina_bancos"
+  },
+  {
+   "nome": "Banco do Brasil – Seu Imóvel BB",
+   "url": "https://www.seuimovelbb.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "sobreposicao": "rotina_bancos",
+   "conferir": true
+  },
+  {
+   "nome": "Emgea",
+   "url": "https://www.emgea.gov.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "conferir": true
+  }
+ ],
+ "orgaos_publicos": [
+  {
+   "nome": "Terracap",
+   "url": "https://www.terracap.df.gov.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ]
+  },
+  {
+   "nome": "Senad – leilões de bens apreendidos",
+   "url": "https://www.gov.br/mj/pt-br/assuntos/sua-protecao/politicas-sobre-drogas",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "conferir": true
+  },
+  {
+   "nome": "SPU – Imóveis da União",
+   "url": "https://www.gov.br/gestao/pt-br/assuntos/patrimonio-da-uniao",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "conferir": true
+  },
+  {
+   "nome": "TRF3 – Central de Hastas Públicas",
+   "url": "https://www.trf3.jus.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "conferir": true
+  }
+ ],
+ "diretorios_juntas_comerciais": [
+  {
+   "nome": "JUCESP",
+   "url": "https://www.jucesp.sp.gov.br",
+   "uso": "descobrir_leiloeiros_matriculados",
+   "ativo": false
+  },
+  {
+   "nome": "JUCERJA",
+   "url": "https://www.jucerja.rj.gov.br",
+   "uso": "descobrir_leiloeiros_matriculados",
+   "ativo": false
+  },
+  {
+   "nome": "JUCEMG",
+   "url": "https://www.jucemg.mg.gov.br",
+   "uso": "descobrir_leiloeiros_matriculados",
+   "ativo": false
+  },
+  {
+   "nome": "Junta Comercial do Paraná",
+   "url": "https://www.juntacomercial.pr.gov.br",
+   "uso": "descobrir_leiloeiros_matriculados",
+   "ativo": false
+  },
+  {
+   "nome": "JUCISRS",
+   "url": "https://jucisrs.rs.gov.br",
+   "uso": "descobrir_leiloeiros_matriculados",
+   "ativo": false
+  }
+ ],
+ "rede_ampliada_2026_10": [
+  {
+   "nome": "Abiel Ismael Duarte dos Santos",
+   "url": "https://manaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Adilson Bento de Araújo",
+   "url": "https://abaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "SE",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Adyel Marques De Paula",
+   "url": "https://marquesleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Agência de Leilões Freire",
+   "url": "https://www.leiloesfreire.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PE",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Akimoto Leilões",
+   "url": "https://akimotoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "n/c",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Alan Carlos dos Santos",
+   "url": "https://matogrossoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Alan Machado Ribeiro Leiloeiro",
+   "url": "https://alanleiloeiro.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "RJ",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Alberto Lopes",
+   "url": "https://albertolopesleiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "RJ",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Alessandra Leilões",
+   "url": "https://alessandraleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "n/c",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Alessandro Fahrion Pinto",
+   "url": "https://www.regionalleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Alessandro Teixeira Leilões",
+   "url": "https://alessandroteixeiraleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "n/c",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Alex Vieira Passos",
+   "url": "https://portalax.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Alexandre Augusto Dos Santos Sabbag",
+   "url": "https://www.sabbagleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "AlienaJud (Mauro da Cruz)",
+   "url": "https://www.alienajud.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Ana Claudia Blasczyk",
+   "url": "https://planaltoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Ananda Portes Souza",
+   "url": "https://anandaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Anderson Binotti Dos Passos",
+   "url": "https://ww19.abpleiloes.com",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Anderson Douglas Gali Falleiros",
+   "url": "https://www.falleirosleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Anderson Lopes De Paula",
+   "url": "https://www.e-leiloeiro.leilao.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Andre Luiz Oliveira Yankous",
+   "url": "https://yankous.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Andressa Sedrez Terres Tonial Ferreira",
+   "url": "https://www.tonialleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "André Soares Menegat",
+   "url": "https://leiloeiro.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Angela Saraiva Portes",
+   "url": "https://saraivaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Antonio Alexandre Raota",
+   "url": "https://www.raotaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Antonio Carlos Celso Santos Frazão",
+   "url": "https://vincoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Antonio Carlos Peres Bernardini",
+   "url": "https://ww17.bernardinileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Antonio Ferreira Leiloeiro",
+   "url": "https://antonioferreira.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RJ",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Antonio Jose da Silva Filho",
+   "url": "https://www.ajleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Antonio Magno Jacob Da Rocha",
+   "url": "https://rochaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Aparecida Maria Fixer",
+   "url": "https://cidafixerleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Araújo Leilões (MT)",
+   "url": "https://araujoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Aretha Mirian Antunes de Paulo Greco",
+   "url": "https://www.cliqueleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Arnaldo Emílio Colombarolli",
+   "url": "https://arnaldoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Arthur Ferreira Nunes",
+   "url": "https://nordesteleiloes.com.br:443",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Arthur Ferreira Nunes",
+   "url": "https://nordesteleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Arthur Ferreira Nunes",
+   "url": "https://arthurnunes.leilao.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Avani Luiz De Morais Júnior / Mouzar Baston Filho",
+   "url": "https://bastonleiloes.leilao.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Bahia Leilões",
+   "url": "https://bahialeiloes.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Baldissera Leiloeiros",
+   "url": "https://baldisseraleiloeiros.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Breno Henrique Soares Lopes",
+   "url": "https://brenohenriqueleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Bruno Barreto Sanches",
+   "url": "https://www.barretoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Bruno Leilões",
+   "url": "https://brunoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "n/c",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "BSB Leilões",
+   "url": "https://www.bsbleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "DF",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Caio De Carvalho Borges",
+   "url": "https://cb-leiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "ES",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Caio Marcos Campos Caldeira",
+   "url": "https://www.tratoforteleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Capital Valor Leilões",
+   "url": "https://capitalvalorleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "n/c",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Cardoso Leilões",
+   "url": "https://cardosoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Carlo Ferrari Leiloeiro",
+   "url": "https://carloferrarileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "n/c",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Carlos Henrique Barbosa",
+   "url": "https://www.chbarbosaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Carstens Leiloeiro",
+   "url": "https://leiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Catarinense Leilões",
+   "url": "https://www.djleilao.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Catia Fernanda Alievi Toporoski",
+   "url": "https://topoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Celso Alves Cunha",
+   "url": "https://celsocunhaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Central Sul de Leilões",
+   "url": "https://www.centralsuldeleiloes.com.br:443",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "RS/SC",
+   "triagem": "2026-10-16",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Clademir Dos Santos Flores",
+   "url": "https://www.clademirleiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Coliseum Leilões",
+   "url": "https://www.coliseumleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "PE",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Confiança Leilões (leilao.br)",
+   "url": "https://www.confiancaleiloes.leilao.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Conrado Augusto Carvalho De Magalhães",
+   "url": "https://magalhaesleiloes.leilao.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Cristiane Borguetti Moraes Lopes",
+   "url": "https://lopesleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Cristiano Branchieri Escola",
+   "url": "https://www.cristianoescolaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Cristiano da Rosa Schontag",
+   "url": "https://trileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Daniel Hamoui",
+   "url": "https://dhleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Daniel Lazownik Duarte",
+   "url": "https://dldleiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Daniel Oliveira Junior",
+   "url": "https://doleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Daniel Schneider Chaieb",
+   "url": "https://danielchaiebleiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Daux Leilões",
+   "url": "https://daux.com",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-16",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Dediana Farias",
+   "url": "https://www.fariasleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Delta Leilões",
+   "url": "https://www.delttaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Deonizia Kiratch",
+   "url": "https://deonizialeiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "AM",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Diogo Reis Dutra",
+   "url": "https://www.reisleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Edgar de Carvalho",
+   "url": "https://edgarcarvalholeiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "RJ",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Eduardo Gomes",
+   "url": "https://www.leiloeiroeduardo.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Eduardo Vivian",
+   "url": "https://www.eduardovivian.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Elenice Lira Sales De Sousa",
+   "url": "https://www.liraleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Erico Sobral Soares",
+   "url": "https://www.ericosobral.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Everton Dias Medeiros",
+   "url": "https://diasleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Expresso Leilões",
+   "url": "https://expressoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Fabio Samir Machado",
+   "url": "https://www.machadoleiloesrs.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Fabrika de Leilões",
+   "url": "https://www.fabriccaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Felipe Rotta",
+   "url": "https://www.feliperottaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Fernando Domingos Tonon",
+   "url": "https://tononleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Flavia Klockner Rodrigues",
+   "url": "https://fkleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Flex Leilões",
+   "url": "https://www.flexleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "DF",
+   "triagem": "2026-10-16",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Flávia Figueira Messias",
+   "url": "https://messiasleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Flávio Bittencourt Garcia",
+   "url": "https://flaviogarcia.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Franciele Aparecida da Silva",
+   "url": "https://dasilvaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Francisco Jonnathan Santos Freitas",
+   "url": "https://franciscofreitasleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Fábio Gonçalves Barbosa",
+   "url": "https://fabiobarbosaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Fábio Guimarães de Carvalho",
+   "url": "https://www.fabioguimaraesleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Fábio Maciel Amarante",
+   "url": "https://nortedeminasleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Fábio Manoel Guimarães",
+   "url": "https://fabioleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Fórmula Leilões",
+   "url": "https://formulaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Gabriel Baron Junior",
+   "url": "https://ww17.baronleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Gabriel Silva Da Rosa",
+   "url": "https://www.gabrielleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Gelson Bourschiet",
+   "url": "https://shopleiloes.leilao.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Geoliano De Souza Lima",
+   "url": "https://www.teleselimaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Gestor Leilões",
+   "url": "https://www.gestorleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Gilberto Sales Leilões",
+   "url": "https://gilbertosales.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Gilmar Santos Dos Santos",
+   "url": "https://santoseborinleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Gilson Aparecido Mariano",
+   "url": "https://marianoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Gilson Keniti Inumaru",
+   "url": "https://gilsonleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Giordano Leilões",
+   "url": "https://giordanoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Giuliano Ferronato",
+   "url": "https://www.ferronato.leilao.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Glener Brasil Cassiano",
+   "url": "https://leiloesbrasilcassiano.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Golden Leilões",
+   "url": "https://portaldoleiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Grandes Leilões",
+   "url": "https://www.grandesleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Grupo Carvalho Leilões",
+   "url": "https://www.grupocarvalholeiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Grupo Lira Leilões (Arthur Lira)",
+   "url": "https://www.grupoliraleiloes.com",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Gustavo Bolzan",
+   "url": "https://www.gbleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "ES",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Gustavo Costa Aguiar Oliveira",
+   "url": "https://gpleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Gustavo Henrique Zanoni Pereira",
+   "url": "https://leiloeszanoni.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Gustavo Turani",
+   "url": "https://turanileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Hasta Pública Leilões",
+   "url": "https://hastapublica.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Helton Rogerio Verri Ventrilho",
+   "url": "https://verrileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Hercules Valazuela Coutinho",
+   "url": "https://hcleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Hidirlene Duszeiko",
+   "url": "https://hdleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "ES",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Igor Alexandre De Souza Silva",
+   "url": "https://desouzaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Isabella Katarina Schacker Peracchi",
+   "url": "https://peracchileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Ivan Leoci Bartmann",
+   "url": "https://bartmannleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Ivan Silveira Amorim",
+   "url": "https://www.ourodoleilao.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Ivana Abranches Jordão Costa",
+   "url": "https://www.ubaldoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Jair Vicente Martins",
+   "url": "https://vmleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Jean Miguel Corrêa",
+   "url": "https://casaforteleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Jefferson Horta Barbosa Ribeiro Mendes",
+   "url": "https://mendesleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Jeférson Benedetto",
+   "url": "https://benedettoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Joney Marcelo Lopes Ferreira",
+   "url": "https://www.jmleiloes.leilao.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Jorge Sidirlei De Godoy Brasil",
+   "url": "https://jorgebrasil.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Jose Lazaro Ribeiro Menezes Junior",
+   "url": "https://mercadoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Joseane De Avila Scotto",
+   "url": "https://www.scottoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "José Almiro Chagas De Alencastro",
+   "url": "https://www.alencastroleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "José Antônio Rodovalho Júnior",
+   "url": "https://joserodovalholeiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "José Arquimedes Câmara",
+   "url": "https://www.arquimedesleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "José Clóvis Vaz De Souza",
+   "url": "https://www.clovisleiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "José David Gonçalves de Melo",
+   "url": "https://jdleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "José Lázaro Ribeiro Menezes",
+   "url": "https://www.santamarialeiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "José Roberto Neves Amorim",
+   "url": "https://d1lance.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Joyce Ribeiro Leilões",
+   "url": "https://jrleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "João Honor Coirollo De Souza",
+   "url": "https://www.jhcleiloeirooficial.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "João Simões de Almeida Júnior",
+   "url": "https://www.simoesleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Junior Cesar Da Silva",
+   "url": "https://jsilvaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Jéfferson Tácio Furlanetto Miotti",
+   "url": "https://miottileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Kananda Sofia Silva Macedo",
+   "url": "https://www.kanandaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Lance Certo Leilões",
+   "url": "https://www.lancecertoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "RN/PE",
+   "triagem": "2026-10-16",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Lance VIP",
+   "url": "https://lancevip.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "RO",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Leia Leilões (Marileia May)",
+   "url": "https://leialeiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Leiloeira do Lena",
+   "url": "https://leiloeiradolena.com",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Leiloeiro Público (arquivos de editais)",
+   "url": "https://leiloeiropublico.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "nacional",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Leilão Brasil",
+   "url": "https://leilaobrasil.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "n/c",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Leilão VIP",
+   "url": "https://www.leilaovip.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "SP / nacional",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Leilões Araújo",
+   "url": "https://leiloesaraujo.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "Nordeste (n/c)",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Leilões Brasil",
+   "url": "https://www.leiloesbrasil.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Leilões Itamar",
+   "url": "https://leiloesitamar.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Leilões JA (Juliana Samico)",
+   "url": "https://leiloesja.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "DF",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Lelia Maria De Paula Lenz Cesar",
+   "url": "https://www.lelialenz.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Leonir Adelino Lunelli",
+   "url": "https://leiloeirolunelli.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Luana Vidal Ineu",
+   "url": "https://ineuleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Lucas Andreatta de Oliveira",
+   "url": "https://leiloariasmart.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Lucas de Oliveira Mangualde",
+   "url": "https://du-ze.com",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Lucas Eduardo Dalcanale",
+   "url": "https://dalcanaleleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Lucas Ferreira",
+   "url": "https://www.leiloeirodian.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Luciana Londina da Silva",
+   "url": "https://ww17.londinaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Luis Guilherme Tenorio De Araujo Silva",
+   "url": "https://tenorioleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Luis Otavio Marcolino Shinkawa",
+   "url": "https://www.luisleiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Luiz De Chirico Júnior",
+   "url": "https://leiloesdonorte.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "AM",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Luiz Egidio Cruz Medeiros",
+   "url": "https://medeirosleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Luiz Felipe Perpétuo Lobato",
+   "url": "https://luizlobatoleiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Luiz Tenório De Paula",
+   "url": "https://depaulaonline.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RJ",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Luiz Ubiratã De Carvalho",
+   "url": "https://www.luizleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Luiza Lima e Silva Mesquita Cardoso",
+   "url": "https://luizacardosoleiloeira.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MG",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Marcelo Da Silva Lima",
+   "url": "https://marcelolimaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Marcelo Trevisan",
+   "url": "https://trevisanleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Marciano Mauro Pagliarini",
+   "url": "https://www.eckertleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Marcio Pinho",
+   "url": "https://marciopinho.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RJ",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Marco Antônio Leiloeiro",
+   "url": "https://marcoantonioleiloeiro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "MG/MA (n/c)",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Marco Leilões",
+   "url": "https://marcoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Marco Túlio Montenegro Cavalcanti Dias",
+   "url": "https://marcotulioleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "SE",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Marcos Rodrigo Custodio Soares",
+   "url": "https://custodioleiloes.leilao.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Marcos Vinicius Menezes Quadros",
+   "url": "https://www.arremate.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Marcus Allain de Oliveira Barbosa",
+   "url": "https://maleiloesro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RO",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Maria Amélia Dyna De Souza",
+   "url": "https://www.leilofacil.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "ES",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Maria Aparecida De Freitas Fuzo",
+   "url": "https://leiloescentrooeste.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Maria Auxiliadora Rodrigues Teixeira",
+   "url": "https://www.triadeleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Maria Filomena Planas Serrano",
+   "url": "https://leiloesmariafilomena.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Maria Fixer Leilões",
+   "url": "https://mariafixerleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Maridulce Sanfelice Simei",
+   "url": "https://msleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Master Leilões (Simone Wenning)",
+   "url": "https://www.maxterleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Mauricio Sambugari Appolinario",
+   "url": "https://www.andraleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Mauricio Sambugari Appolinario",
+   "url": "https://www.selectleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Mauro Veloso Junior",
+   "url": "https://modenax.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "MC Leilão",
+   "url": "https://www.mcleilao.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Mega Leilões MS",
+   "url": "https://megaleiloesms.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS / nacional",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "MF Leilões",
+   "url": "https://www.mfleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Milena Rosa Di Giacomo Adri Faverão",
+   "url": "https://canaldeleiloes.net",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "MJ Leilões",
+   "url": "https://mjleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "n/c",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "MN Leilão",
+   "url": "https://mnleilao.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RN/PB/AL (n/c)",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Montenegro Leilões",
+   "url": "https://montenegroleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "CE",
+   "triagem": "2026-10-16",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Morales Leilões",
+   "url": "https://www.moralesleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Murilo Cardozo Chaves",
+   "url": "https://murilochaves.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RJ",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Mário Lessa Freitas Filho",
+   "url": "https://www.lessaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Nicolas Tadashi Matsune",
+   "url": "https://www.tadashileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Norte Leilões",
+   "url": "https://www.norteleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PA/Norte",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Odarli Canezin",
+   "url": "https://www.odarlicanezinleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Odiclésio Jaison Storchio",
+   "url": "https://oesteleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Odilson Fumagalli Avila",
+   "url": "https://www.fumagallileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Oscar de Menezes Palmeira",
+   "url": "https://www.oscar.leilao.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Pacto Leilões",
+   "url": "https://www.pactoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "AM/GO/PA",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Paulo Cézar Rocha Teixeira",
+   "url": "https://leiloesjudiciaisbahia.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Paulo Renato Humor",
+   "url": "https://prhleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Paulo Roberto Leal Vardana",
+   "url": "https://vardanaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Pedro Lerner Kronberg",
+   "url": "https://www.kronberg.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Pegoraro Leilões",
+   "url": "https://www.pegoraroleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Plinio Barroso De Castro Filho",
+   "url": "https://pbcastro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Rafael Ceretta Alegranzzi",
+   "url": "https://www.alegranzzileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Rafael Cicolin",
+   "url": "https://absolutaleiloes.com",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Rafael Cicolin",
+   "url": "https://www.absolutaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Rafael Coutinho Leiloeiro",
+   "url": "https://www.rafaelcoutinho.lel.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "RJ",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Rafael Galvani Ferreira",
+   "url": "https://galvanileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Raimundo Magalhaes De Moraes",
+   "url": "https://rmmleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Raphael Perini de Souza",
+   "url": "https://perinileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Raul Henrique Galassi Padovan",
+   "url": "https://www.leilance.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Regina Aude Leite De Araujo Silva",
+   "url": "https://www.reginaaudeleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Rei dos Leilões (Roger Wenning)",
+   "url": "https://www.leiloesrei.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Renato Guedes Rocha",
+   "url": "https://rioleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Renato Schlobach Moyses",
+   "url": "https://www.rmoyses.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "BA",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Reni José Bonfandini",
+   "url": "https://leiloesbonfadini.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Ricardo Ferreira Gomes",
+   "url": "https://ricardogomesleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Rigolon Leilões",
+   "url": "https://rigolonleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "RMC Leilões",
+   "url": "https://www.rmcleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Rossana Paiva Borges De Oliveira",
+   "url": "https://www.caiapoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Rubens Henrique De Castro",
+   "url": "https://rubenshcastro.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Sabrina Leilões",
+   "url": "https://sabrinaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Sancar Leilões",
+   "url": "https://www.sancarleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "TO",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Sandra Regina Wontroba",
+   "url": "https://www.swleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Schulmann Leilões",
+   "url": "https://schulmannleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "RJ",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Sergio Santiago Da Silva",
+   "url": "https://plataformaleiloar.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RO",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Sidney Belarmino Ferreira Junior",
+   "url": "https://sfleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Silvani Das Graças Lopes Dias",
+   "url": "https://www.leiloeirasilvani.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RJ",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Silvia Barros Leilões",
+   "url": "https://silviabarros.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "DF",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Silvio Lucian",
+   "url": "https://lucianleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Sublime Leilões",
+   "url": "https://www.sublimeleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Sérgio Lipinski Brandão Junior",
+   "url": "https://www.lipinskileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Só Leilões (Giovano Avila Alves)",
+   "url": "https://www.soleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Tarcilio Leite / Gabriel Aude Leite De Araujo Silva",
+   "url": "https://www.casadeleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MS",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Thaís Costa Bastos Teixeira",
+   "url": "https://thaisteixeiraleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Thiago Barros Cardoso",
+   "url": "https://tbaracajuleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "SE",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Tiago Tessler Blecher",
+   "url": "https://webleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Uni Leilões (Fabiana Cusato)",
+   "url": "https://unileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Valdinei Generoso Silveira",
+   "url": "https://www.vsleiloes.com",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Valland Leilões (Marcelo Valland)",
+   "url": "https://valland.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "DF",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Vanessa Goelzer De Araújo Vargas E Pinto",
+   "url": "https://vargasepintoleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Vasconcelos Leilões",
+   "url": "https://vasconcelosleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis"
+   ],
+   "uf": "SC",
+   "triagem": "2026-10-16",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Verônica Telles Araújo Silva Soares",
+   "url": "https://www.veronicaleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RS",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "VG Leilões Públicos",
+   "url": "https://www.vgleiloespublicos.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "AM",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Victor De Almeida Domingues Cunha",
+   "url": "https://almeidacunha.com",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "ES",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Victor Renno Polatto Vizeu",
+   "url": "https://vzleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  },
+  {
+   "nome": "Vinicius Santos Ciriaco",
+   "url": "https://vincileiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "MT",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Wallason Silva Beltrame",
+   "url": "https://www.beltrameleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "RO",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Werno Klöckner Júnior",
+   "url": "https://kleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "PR",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "WR Leilões",
+   "url": "https://wrleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "AM/RR/AC",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Zukerman Leilões",
+   "url": "https://www.portalzuk.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "SP",
+   "triagem": "2026-10-17",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Álvaro Leilões",
+   "url": "https://alvaroleiloes.com.br",
+   "listagem": null,
+   "tipos": [
+    "imoveis",
+    "veiculos"
+   ],
+   "uf": "GO",
+   "triagem": "2026-10-16",
+   "termos": "lidos_sem_proibicao",
+   "fotos": false
+  },
+  {
+   "nome": "Área Leilões (grupo Vizeu)",
+   "url": "https://arealeiloes.net",
+   "listagem": null,
+   "tipos": [
+    "veiculos"
+   ],
+   "uf": "nacional",
+   "triagem": "2026-10-17",
+   "termos": "nao_encontrados",
+   "fotos": false
+  }
+ ]
 }

@@ -24,6 +24,8 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           GERAIS_SO: ${{ github.event.inputs.so }}
+          GERAIS_PARALELO: "8"          # sites diferentes ao mesmo tempo (cada um com 1 pedido a cada 20 s)
+          GERAIS_RODIZIO_DIAS: "3"      # rede ampliada nova: cada leiloeiro a cada 3 dias
         run: python -u coletor/coletar_veiculos_gerais.py
       - name: Preço FIPE dos lotes novos
         if: always()

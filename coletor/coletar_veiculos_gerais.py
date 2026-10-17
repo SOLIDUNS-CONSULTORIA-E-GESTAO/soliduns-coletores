@@ -26,6 +26,7 @@ Secrets: SUPABASE_URL, SUPABASE_SERVICE_KEY. Opcional: GERAIS_SO="Copart Brasil,
 """
 import datetime as dt
 import hashlib
+import zlib
 import os
 import re
 import sys
@@ -40,7 +41,7 @@ import scraper as G                     # noqa: E402
 import educado as E                     # noqa: E402  (robô educado: 20 s por site, robots.txt, Crawl-delay)
 from veiculos_regras import Catalogo, Cidades  # noqa: E402
 
-VERSAO = "1.6"
+VERSAO = "1.7"
 JA_LIDOS = ("portalzuk.", "megaleiloes.", "superbid.", "vipleiloes.", "leilo.com.br")
 DIAS_SEM_VER = 3
 RE_BANCO = re.compile(r"\b(banco|santander|bradesco|ita[uú]|caixa econ|bv financeira|banco bv|safra|daycoval|omni|"
@@ -527,6 +528,12 @@ def main():
     so = {s.strip() for s in os.environ.get("GERAIS_SO", "").split(",") if s.strip()}
     fontes = [f for f in G.carregar_fontes() if "veiculos" in f.get("tipos", [])
               and not any(j in f["url"] for j in JA_LIDOS) and (not so or f["nome"] in so)]
+    # v1.7 (16/10): a rede ampliada nova (262 leiloeiros liberados na triagem) é lida em RODÍZIO — cada site a cada N dias
+    n = max(1, int(os.environ.get("GERAIS_RODIZIO_DIAS") or 3))
+    if not so and n > 1:
+        dia = hoje.toordinal() % n
+        fontes = [f for f in fontes if f.get("grupo") != "rede_ampliada_2026_10" or zlib.crc32(f["url"].encode()) % n == dia]
+    CL.log(f"{len(fontes)} leiloeiro(s) nesta rodada (rodízio de {n} dia(s) na rede ampliada nova)")
     def rodar(f):
         proprio = next((fn for k, fn in LEITORES.items() if k in f["url"]), None)
         if proprio:
