@@ -37,9 +37,10 @@ sys.path.insert(0, os.path.join(AQUI, "..", "leiloeiros"))
 
 import coletar_leiloeiros as CL          # noqa: E402  (sb_get, sb_upsert, sb_patch, linha_veiculo, NOMES, UFS)
 import scraper as G                     # noqa: E402
+import educado as E                     # noqa: E402  (robô educado: 20 s por site, robots.txt, Crawl-delay)
 from veiculos_regras import Catalogo, Cidades  # noqa: E402
 
-VERSAO = "1.5"
+VERSAO = "1.6"
 JA_LIDOS = ("portalzuk.", "megaleiloes.", "superbid.", "vipleiloes.", "leilo.com.br")
 DIAS_SEM_VER = 3
 RE_BANCO = re.compile(r"\b(banco|santander|bradesco|ita[uú]|caixa econ|bv financeira|banco bv|safra|daycoval|omni|"
@@ -123,7 +124,7 @@ def ler_sodre(f, catalogo, cidades, agora, hoje):
     with sync_playwright() as p:
         b = p.chromium.launch(headless=True)
         ctx = b.new_context(user_agent=G.UA, locale="pt-BR")
-        pg = ctx.new_page()
+        pg = E.preparar(ctx.new_page())
         capturadas = []
         def resp(r):
             if "/api/search-lots" in r.url and r.status == 200:
@@ -133,9 +134,12 @@ def ler_sodre(f, catalogo, cidades, agora, hoje):
                     pass
         pg.on("response", resp)
         try:
-            pg.goto(SODRE_URL + "/veiculos/lotes", timeout=60000, wait_until="networkidle")
+            E.ir(pg, SODRE_URL + "/veiculos/lotes", timeout=60000, wait_until="networkidle")
             pg.wait_for_timeout(3000)
             for i in range(SODRE_MAX):
+                if not E.PORTEIRO.esperar(SODRE_URL + "/api/search-lots"):
+                    erro = "robots.txt ou pausa pedida pelo site"
+                    break
                 r = pg.evaluate("""async (corpo) => {
                     const r = await fetch('/api/search-lots', {method: 'POST', credentials: 'include',
                         headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(corpo)});
@@ -154,7 +158,7 @@ def ler_sodre(f, catalogo, cidades, agora, hoje):
                     usar(c)
                 for n in range(2, SODRE_MAX + 1):
                     antes = len(vistos)
-                    pg.goto(f"{SODRE_URL}/veiculos/lotes?page={n}", timeout=60000, wait_until="networkidle")
+                    E.ir(pg, f"{SODRE_URL}/veiculos/lotes?page={n}", timeout=60000, wait_until="networkidle")
                     pg.wait_for_timeout(2500)
                     for c in capturadas:
                         usar(c)
@@ -240,18 +244,19 @@ def ler_pestana(f, catalogo, cidades, agora, hoje):
     linhas, descartados, erro, vistos = {}, 0, None, set()
     with sync_playwright() as p:
         b = p.chromium.launch(headless=True)
-        pg = b.new_context(user_agent=G.UA, locale="pt-BR").new_page()
+        pg = E.preparar(b.new_context(user_agent=G.UA, locale="pt-BR").new_page())
         try:
-            pg.goto(PESTANA_URL, timeout=60000, wait_until="domcontentloaded")
+            E.ir(pg, PESTANA_URL, timeout=60000, wait_until="domcontentloaded")
             pg.wait_for_timeout(2500)
             leiloes = {}
+            E.PORTEIRO.esperar(PESTANA_URL + "/api/v2/leilao")
             r = pg.evaluate("async () => { const r = await fetch('/api/v2/leilao'); return r.ok ? await r.json() : []; }")
             for l in r or []:
                 ex = (l.get("exposicao") or [{}])[0] or {}
                 ed = next((d.get("link") for d in (l.get("documentos") or []) if "edital" in (d.get("nome") or "").lower()), None)
                 leiloes[str(l.get("id"))] = {"nome": l.get("nome"), "cidade": ex.get("cidade"), "uf": ex.get("estado"), "edital": ed}
             for n in range(1, PESTANA_MAX + 1):
-                pg.goto(f"{PESTANA_URL}/procurar-bens?tipoBem=421&lotePage={n}&loteQty={PESTANA_QTD}",
+                E.ir(pg, f"{PESTANA_URL}/procurar-bens?tipoBem=421&lotePage={n}&loteQty={PESTANA_QTD}",
                         timeout=60000, wait_until="networkidle")
                 pg.wait_for_timeout(2000)
                 cards = [c for c in pg.evaluate(JS_PESTANA_CARDS) if c["lote"] not in vistos]
@@ -337,10 +342,10 @@ def ler_leiloes_judiciais(f, catalogo, cidades, agora, hoje):
     linhas, descartados, erro, vistos, cartoes = {}, 0, None, set(), []
     with sync_playwright() as p:
         b = p.chromium.launch(headless=True)
-        pg = b.new_context(user_agent=G.UA, locale="pt-BR").new_page()
+        pg = E.preparar(b.new_context(user_agent=G.UA, locale="pt-BR").new_page())
         try:
             for n in range(1, LJ_MAX + 1):
-                pg.goto(f"{LJ_URL}/veiculos?pagina={n}", timeout=60000, wait_until="networkidle")
+                E.ir(pg, f"{LJ_URL}/veiculos?pagina={n}", timeout=60000, wait_until="networkidle")
                 pg.wait_for_timeout(1500)
                 novos = [c for c in pg.evaluate(JS_LJ_CARDS) if c["lote"] not in vistos]
                 if not novos:
@@ -351,7 +356,7 @@ def ler_leiloes_judiciais(f, catalogo, cidades, agora, hoje):
             leiloes = {}
             for lid in list(dict.fromkeys(c["leilao"] for c in cartoes))[:LJ_LEILOES_MAX]:
                 try:
-                    pg.goto(f"{LJ_URL}/leilao/{lid}", timeout=45000, wait_until="domcontentloaded")
+                    E.ir(pg, f"{LJ_URL}/leilao/{lid}", timeout=45000, wait_until="domcontentloaded")
                     pg.wait_for_timeout(1200)
                     t = re.sub(r"\s+", " ", pg.inner_text("body"))
                     i = t.find("Comitente")
@@ -444,9 +449,9 @@ def ler_freitas(f, catalogo, cidades, agora, hoje):
     linhas, descartados, erro = {}, 0, None
     with sync_playwright() as p:
         b = p.chromium.launch(headless=True)
-        pg = b.new_context(user_agent=G.UA, locale="pt-BR").new_page()
+        pg = E.preparar(b.new_context(user_agent=G.UA, locale="pt-BR").new_page())
         try:
-            pg.goto(f"{FREITAS_URL}/Leiloes/Pesquisar?query=&categoria=1", timeout=60000, wait_until="networkidle")
+            E.ir(pg, f"{FREITAS_URL}/Leiloes/Pesquisar?query=&categoria=1", timeout=60000, wait_until="networkidle")
             pg.wait_for_timeout(2000)
             antes, parados = -1, 0
             for _ in range(FREITAS_CLIQUES):          # v1.5.1: clique pelo próprio botão (#btnListarLotes) via JS
@@ -455,6 +460,7 @@ def ler_freitas(f, catalogo, cidades, agora, hoje):
                 if parados >= 2:
                     break
                 antes = n
+                E.PORTEIRO.esperar(FREITAS_URL + "/Leiloes/ListarLotes")      # cada clique pede mais lotes ao site
                 ok = pg.evaluate("""() => { const b = document.getElementById('btnListarLotes');
                     if (!b || b.disabled || b.offsetParent === null) return false; b.click(); return true; }""")
                 if not ok:
@@ -521,8 +527,7 @@ def main():
     so = {s.strip() for s in os.environ.get("GERAIS_SO", "").split(",") if s.strip()}
     fontes = [f for f in G.carregar_fontes() if "veiculos" in f.get("tipos", [])
               and not any(j in f["url"] for j in JA_LIDOS) and (not so or f["nome"] in so)]
-    total, resumo = 0, []
-    for f in fontes:
+    def rodar(f):
         proprio = next((fn for k, fn in LEITORES.items() if k in f["url"]), None)
         if proprio:
             nome, lotes = f["nome"], []
@@ -549,8 +554,20 @@ def main():
                                                  "atualizado_em": f"lt.{limite}"}, {"situacao": "encerrado", "atualizado_em": agora})
             msg += f"; {n} encerrado(s) por não aparecer há {DIAS_SEM_VER} dias"
         CL.log("  " + msg)
-        resumo.append(msg)
-        total += len(linhas)
+        return msg, len(linhas)
+
+    # v2 (16/10): sites diferentes em paralelo; cada site recebe no máximo 1 pedido a cada 20 s (educado.py)
+    from concurrent.futures import ThreadPoolExecutor
+    total, resumo = 0, []
+    with ThreadPoolExecutor(max_workers=int(os.environ.get("GERAIS_PARALELO") or 5)) as ex:
+        for fut in [ex.submit(rodar, f) for f in fontes]:
+            try:
+                msg, n = fut.result()
+            except Exception as e:                       # noqa: BLE001 — um site com erro não para os outros
+                msg, n = f"ERRO inesperado: {type(e).__name__}: {e}"[:300], 0
+                CL.log("  " + msg)
+            resumo.append(msg)
+            total += n
     CL.sb_upsert("veiculos_fontes", [{"fonte": "leiloeiros_gerais", "nome": "Leiloeiros (rede ampliada)",
                                       "situacao": "ativa", "ultima_execucao": agora,
                                       "mensagem": " | ".join(resumo)[:1900]}], "fonte")

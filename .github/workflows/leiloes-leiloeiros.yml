@@ -1,6 +1,8 @@
 # SOLIDUNS — LEILÕES DE BANCOS E LEILOEIROS (v1.0, 09/10/2026)
 # Todo dia às 6h50 (Brasília), antes do e-mail de alertas das 7h40. Custo zero (sem IA paga).
-# Lê as páginas públicas do Portal Zuk, Mega Leilões e Superbid (respeita o robots.txt, 2 s entre páginas):
+# Lê as páginas públicas do Portal Zuk, Mega Leilões e Superbid. v1.4 (16/10, pedido do Thiago): robô educado —
+# respeita robots.txt e Crawl-delay, 1 pedido a cada 20 s por site; cada site num trabalho paralelo (matriz).
+# (antes: 2 s entre páginas)
 #   - imóveis de bancos (Bradesco, Itaú, Santander, Sicoob, Inter...) -> Radar de leilões (leiloes_radar)
 #   - veículos -> Leilão de automóveis (veiculos_leiloes)
 # Repositório PÚBLICO: só ${{ secrets.* }}, nenhuma chave aqui.
@@ -23,7 +25,11 @@ concurrency:
 jobs:
   leiloeiros:
     runs-on: ubuntu-24.04
-    timeout-minutes: 55
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        fonte: [zuk, mega, superbid]
     steps:
       - uses: actions/checkout@v4
 
@@ -34,15 +40,28 @@ jobs:
       - name: Instalar dependências
         run: pip install requests
 
-      - name: Imóveis de bancos e veículos (Zuk, Mega, Superbid)
+      - name: Imóveis de bancos e veículos (${{ matrix.fonte }})
+        if: contains(format(',{0},', github.event.inputs.fontes || 'zuk,mega,superbid'), format(',{0},', matrix.fonte))
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          LEILOEIROS_FONTES: ${{ github.event.inputs.fontes || 'zuk,mega,superbid' }}
+          LEILOEIROS_FONTES: ${{ matrix.fonte }}
+          LEILOEIROS_TEMPO_MAX: "13800"   # 230 min: com 20 s por página, o site grande precisa de mais tempo
+          ROBO_INTERVALO: "20"
         run: python coletor/coletar_leiloeiros.py
 
+  fipe:
+    needs: leiloeiros
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
       - name: Tabela FIPE (preços dos veículos novos)
-        if: always()
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}

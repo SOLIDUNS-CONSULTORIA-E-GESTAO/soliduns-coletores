@@ -10,11 +10,14 @@ from urllib import robotparser
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
 from bs4 import BeautifulSoup
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "coletor"))
+import educado as E   # v2: robô educado (robots.txt, Crawl-delay, 1 pedido a cada 20 s por site, Retry-After)
 
 BASE = Path(__file__).resolve().parent
 FONTES, SAIDA, LOG = BASE / "fontes.json", BASE / "lotes.json", BASE / "scraper.log"
 TIMEOUT, TENTATIVAS, MAX_PAGINAS, MAX_LISTAGENS, WORKERS = 25, 3, 5, 6, 6
-UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36"
+UA = E.UA
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s",
                     handlers=[logging.FileHandler(LOG, encoding="utf-8"), logging.StreamHandler()])
@@ -46,25 +49,16 @@ def nova_sessao():
                       "Accept": "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8"})
     return s
 
-_robots = {}
 def permitido(url):
-    dom = "{0.scheme}://{0.netloc}".format(urlparse(url))
-    if dom not in _robots:
-        rp = robotparser.RobotFileParser()
-        try:
-            r = requests.get(dom + "/robots.txt", headers={"User-Agent": UA}, timeout=10)
-            rp.parse(r.text.splitlines() if r.status_code == 200 else [])
-        except requests.RequestException:
-            rp.parse([])
-        _robots[dom] = rp
-    return _robots[dom].can_fetch(UA, url)
+    return E.PORTEIRO.permitido(url)
 
 def baixar(s, url):
-    if not permitido(url):
-        raise Bloqueado("robots.txt")
     for i in range(1, TENTATIVAS + 1):
+        if not E.PORTEIRO.esperar(url):          # robots.txt proíbe, ou o site pediu para parar (429 repetido)
+            raise Bloqueado("robots.txt" if not E.PORTEIRO.fora(url) else "site pediu pausa (429/503)")
         try:
             r = s.get(url, timeout=TIMEOUT)
+            E.PORTEIRO.resposta(url, r.status_code, r.headers)
             corpo = r.text[:40000]
             if r.status_code in (403, 429, 503) and RE_CAPTCHA.search(corpo):
                 raise Bloqueado(f"captcha/{r.status_code}")
@@ -91,8 +85,10 @@ def renderizar(url):
         return None
     with sync_playwright() as p:
         b = p.chromium.launch(headless=True)
-        pg = b.new_page(user_agent=UA, locale="pt-BR")
-        pg.goto(url, timeout=TIMEOUT * 1000, wait_until="networkidle")
+        pg = E.preparar(b.new_page(user_agent=UA, locale="pt-BR"))
+        if E.ir(pg, url, timeout=TIMEOUT * 1000, wait_until="networkidle") is None:
+            b.close()
+            raise Bloqueado("robots.txt")
         html = pg.content()
         b.close()
     if RE_CAPTCHA.search(html[:40000]) and len(html) < 40000:

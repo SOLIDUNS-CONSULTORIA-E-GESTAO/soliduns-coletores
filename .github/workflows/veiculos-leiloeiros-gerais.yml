@@ -12,7 +12,7 @@ on:
 jobs:
   coletar:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 240   # v1.6: robô educado (20 s por site), sites em paralelo
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6

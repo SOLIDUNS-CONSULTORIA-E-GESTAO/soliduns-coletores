@@ -49,11 +49,12 @@ import requests
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import leiloeiros_regras as R  # noqa: E402
+import educado as E  # noqa: E402  (v1.4: robô educado — robots.txt, Crawl-delay, 20 s por site)
 from veiculos_regras import Catalogo, Cidades, ler_lote, limpar_privado, texto_busca, tipo_pelo_texto  # noqa: E402
 from veiculos_regras import VERSAO_REGRAS as VERSAO_VEI  # noqa: E402
 
-VERSAO = "1.3"
-UA = "SOLIDUNS-coletor/1.0 (+contato@soliduns.com.br)"
+VERSAO = "1.4"
+UA = E.UA
 TESTE = bool(os.environ.get("LEILOES_TESTE"))
 PAUSA = float(os.environ.get("LEILOEIROS_PAUSA") or (0 if TESTE else 2))
 TEMPO_MAX = int(os.environ.get("LEILOEIROS_TEMPO_MAX") or 2400)          # segundos (a rotina tem 55 min)
@@ -108,32 +109,20 @@ class Leitor:
         self.ultima = 0.0
 
     def permitido(self, url):
-        p = up.urlparse(url)
-        host = f"{p.scheme}://{p.netloc}"
-        if host not in self.regras:
-            regra = rp.RobotFileParser()
-            try:
-                r = self.s.get(host + "/robots.txt", timeout=30)
-                regra.parse(r.text.splitlines() if r.status_code < 400 else [])   # 4xx: tudo permitido (RFC 9309)
-            except requests.RequestException:
-                regra.parse([])
-            self.regras[host] = regra
-        return self.regras[host].can_fetch(UA, url)
+        return E.PORTEIRO.permitido(url)
 
     def pagina(self, url, dados=None, cabecalhos=None):
         """(status, texto); status 'robots' quando o robots.txt proíbe. Com 'dados': envia o formulário (POST),
            como o navegador faz na página (mesma sessão/cookie)."""
-        if not self.permitido(url):
-            return "robots", ""
-        espera = PAUSA - (time.time() - self.ultima)
-        if espera > 0:
-            time.sleep(espera)
         for tentativa in range(2):
+            if not E.PORTEIRO.esperar(url):            # v1.4: vez do site (20 s ou Crawl-delay); robots.txt proíbe -> não abre
+                return ("robots" if not E.PORTEIRO.fora(url) else 429), ""
             try:
                 r = (self.s.post(url, data=dados, headers=cabecalhos or {}, timeout=60) if dados is not None
                      else self.s.get(url, timeout=60))
                 self.ultima = time.time()
                 self.paginas += 1
+                E.PORTEIRO.resposta(url, r.status_code, r.headers)
                 if r.status_code == 429:
                     return 429, ""
                 enc = r.encoding if r.encoding and r.encoding.lower() != "iso-8859-1" else r.apparent_encoding
