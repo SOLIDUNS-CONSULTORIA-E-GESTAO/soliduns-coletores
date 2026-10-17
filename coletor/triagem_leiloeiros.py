@@ -1,5 +1,7 @@
 """
-SOLIDUNS — TRIAGEM DE LEILOEIROS — v1.2 (16/10/2026)
+SOLIDUNS — TRIAGEM DE LEILOEIROS — v1.3 (16/10/2026)
+
+v1.3: 'coleta de dados' só conta perto de 'não autorizada/proibida/vedada' (política de privacidade não é proibição).
 
 v1.2: também veta 'coleta de dados', cópia/reprodução sem autorização e 'soluções concorrentes'; guarda sempre o texto dos termos.
 
@@ -51,7 +53,7 @@ ASSUNTO = r"(rob[oô]s?|bots?\b|crawler|spider|scrap|raspag|rastreador|extra[cç
 PROIBE = r"(proib|vedad|n[aã]o (é|e|ser[aá]) permitid|n[aã]o poder[aá]|n[aã]o pode|n[aã]o [eé] autorizad|sem (a )?(pr[eé]via )?autoriza|abster|n[aã]o utiliz)"
 RE_PROIBE = re.compile(rf"{ASSUNTO}[^.]{{0,160}}{PROIBE}|{PROIBE}[^.]{{0,160}}{ASSUNTO}", re.I)
 # v1.2 (16/10, conferência à mão da Em Leilão e da Líder): termos que vetam coleta de dados ou cópia/reprodução sem autorização
-RE_PROIBE2 = re.compile(r"(coleta de dados|(c[oó]pi(a|as|ar)|reprodu[cz]|download|copiar|distribuir|comercializar)[^.]{0,120}"
+RE_PROIBE2 = re.compile(r"((n[aã]o autorizad|proib|vedad)[^.]{0,60}coleta de dados|coleta de dados[^.]{0,40}(n[aã]o autorizad|proib|vedad)|(c[oó]pi(a|as|ar)|reprodu[cz]|download|copiar|distribuir|comercializar)[^.]{0,120}"
                         r"(sem (o |a )?(consentimento|autoriza|permiss)|n[aã]o autorizad)|solu[cç][oõ]es concorrentes)", re.I)
 
 
@@ -162,7 +164,8 @@ def triar(f):
 
 
 def main():
-    cand = json.loads((RAIZ / "leiloeiros" / "candidatos_2026-10-16.json").read_text(encoding="utf-8"))
+    lote = os.environ.get("TRIAGEM_LOTE") or "2026-10-17"          # v1.3: lote 2 = Juntas Comerciais + credenciados
+    cand = json.loads((RAIZ / "leiloeiros" / f"candidatos_{lote}.json").read_text(encoding="utf-8"))
     if os.environ.get("TRIAGEM_TAMBEM_ATUAIS") == "1":
         atuais = json.loads((RAIZ / "leiloeiros" / "fontes.json").read_text(encoding="utf-8"))
         for k, v in atuais.items():

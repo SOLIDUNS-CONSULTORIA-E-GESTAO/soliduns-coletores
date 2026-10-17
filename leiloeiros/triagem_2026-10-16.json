@@ -16,7 +16,7 @@
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Banco do Nordeste – Bens à Venda",
@@ -36,7 +36,7 @@
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Bandes – Leilão de Imóveis",
@@ -46,13 +46,16 @@
    "imóveis"
   ],
   "uf": "ES",
-  "status": null,
-  "url_final": null,
-  "robots": null,
-  "termos": [],
+  "status": 200,
+  "url_final": "https://bandes.com.br/Site/Dinamico/Show/315/Leilao-de-Imoveis",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://www.bandes.com.br/Site/Dinamico/Show/1013/termos-e-condicoes-de-uso",
+   "http://www.bandes.com.br/Site/Dinamico/Show/1012/politica-de-privacidade"
+  ],
   "proibicao": null,
-  "classe": "FORA_DO_AR",
-  "nota": "erro: ConnectionError"
+  "classe": "LIBERADO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Banestes – Alienação de Imóveis",
@@ -392,13 +395,13 @@
    "veículos"
   ],
   "uf": "PB",
-  "status": null,
-  "url_final": null,
-  "robots": null,
+  "status": 200,
+  "url_final": "https://detran.pb.gov.br/",
+  "robots": "permite",
   "termos": [],
   "proibicao": null,
-  "classe": "FORA_DO_AR",
-  "nota": "erro: ConnectTimeout"
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
  },
  {
   "nome": "Detran-PE",
@@ -490,13 +493,13 @@
    "veículos"
   ],
   "uf": "RS",
-  "status": null,
-  "url_final": null,
+  "status": 404,
+  "url_final": "https://www.detran.rs.gov.br/calendario-leiloes",
   "robots": null,
   "termos": [],
   "proibicao": null,
   "classe": "FORA_DO_AR",
-  "nota": "erro: ConnectTimeout"
+  "nota": "HTTP 404"
  },
  {
   "nome": "Agostinho Leilões",
@@ -546,13 +549,11 @@
   "url_final": "https://akimotoleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://akimotoleiloes.com.br/index/termos-uso",
-   "https://akimotoleiloes.com.br/index/politica-privacidade"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Alberto Lopes",
@@ -585,13 +586,11 @@
   "url_final": "https://alessandraleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://alessandraleiloes.com.br/index/termos-uso",
-   "https://alessandraleiloes.com.br/index/politica-privacidade"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Alessandro Teixeira Leilões",
@@ -605,13 +604,11 @@
   "url_final": "https://alessandroteixeiraleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://alessandroteixeiraleiloes.com.br/index/termos-uso",
-   "https://alessandroteixeiraleiloes.com.br/index/politica-privacidade"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Alexandro Lacerda",
@@ -625,12 +622,14 @@
   "url_final": "https://alexandroleiloeiro.com.br/",
   "robots": "sem robots.txt (HTTP 404)",
   "termos": [
-   "https://alexandroleiloeiro.com.br/termos-uso",
-   "https://alexandroleiloeiro.com.br/politica-de-privacidade"
+   "https://alexandroleiloeiro.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Andrade Leilões",
@@ -713,13 +712,11 @@
   "url_final": "https://brunoleiloes.com.br/",
   "robots": "sem robots.txt (HTTP 404)",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://brunoleiloes.com.br/index/termos-uso",
-   "https://brunoleiloes.com.br/index/politica-privacidade"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "BSB Leilões",
@@ -753,12 +750,14 @@
   "url_final": "https://buaizleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://buaizleiloes.com.br/termos-uso",
-   "https://buaizleiloes.com.br/politica-de-privacidade"
+   "https://buaizleiloes.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Calil Leilões",
@@ -788,13 +787,11 @@
   "url_final": "https://capitalvalorleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://capitalvalorleiloes.com.br/index/termos-uso",
-   "https://capitalvalorleiloes.com.br/index/politica-privacidade"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Cargnelutti Leilões",
@@ -825,13 +822,11 @@
   "url_final": "https://carloferrarileiloes.com.br/",
   "robots": "sem robots.txt (HTTP 404)",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://carloferrarileiloes.com.br/index/termos-uso",
-   "https://carloferrarileiloes.com.br/index/politica-privacidade"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Cassiano Leilões",
@@ -1027,12 +1022,14 @@
   "url_final": "https://emleilao.com.br/",
   "robots": "permite",
   "termos": [
-   "https://emleilao.com.br/termos-uso",
-   "https://emleilao.com.br/politica-de-privacidade"
+   "https://emleilao.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "ES Leilões",
@@ -1047,12 +1044,14 @@
   "url_final": "https://esleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://esleiloes.com.br/termos-uso",
-   "https://esleiloes.com.br/politica-de-privacidade"
+   "https://esleiloes.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "FA Leilões",
@@ -1184,13 +1183,11 @@
   "url_final": "https://giordanoleiloes.com.br/",
   "robots": "sem robots.txt (HTTP 404)",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://giordanoleiloes.com.br/index/termos-uso",
-   "https://giordanoleiloes.com.br/index/politica-privacidade"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Globo Leilões",
@@ -1275,12 +1272,14 @@
   "url_final": "https://gustavoleiloeiro.com.br/",
   "robots": "permite",
   "termos": [
-   "https://gustavoleiloeiro.com.br/termos-uso",
-   "https://gustavoleiloeiro.com.br/politica-de-privacidade"
+   "https://gustavoleiloeiro.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Hammer Casa de Leilões",
@@ -1327,12 +1326,11 @@
   "url_final": "https://hastapublica.com.br/",
   "robots": "sem robots.txt (HTTP 404)",
   "termos": [
-   "https://www.hastapublica.com.br/leilao/18633/Secretaria-Nacional-de-Políticas-Sobre-Drogas-Policia-Federal",
    "https://hastapublica.com.br/privacidade/"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Innova Leilões",
@@ -1380,13 +1378,11 @@
   "url_final": "https://jrleiloes.com.br/",
   "robots": "sem robots.txt (HTTP 404)",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://jrleiloes.com.br/index/politica-privacidade",
-   "https://906de634c48fb7d34136160b4c353ae4.s3.sa-east-1.amazonaws.com/public/jrleiloes/layout/regras_joyce.pdf"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "João Emílio Leiloeiros",
@@ -1728,9 +1724,12 @@
   "termos": [
    "https://www.leiloesonlinems.com.br/texto.aspx?cod=75&t=condicoes-de-utilizacao-do-portal-leiloes-online-ms"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "© Gustavo Correa Pereira da Silva - Leiloeiro Público Oficial - Matrícula nº 26 JUCEMS - Todos os direitos reservados A cópia ou reprodução não autorizada do conteúdo deste site poderá acarretar em penas previstas em lei. Plataforma Precisa de ajuda? Clique aqui."
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Leilões PB",
@@ -1744,12 +1743,14 @@
   "url_final": "https://leiloespb.com.br/",
   "robots": "permite",
   "termos": [
-   "https://leiloespb.com.br/termos-uso",
-   "https://leiloespb.com.br/politica-de-privacidade"
+   "https://leiloespb.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Leilões Rio Negro",
@@ -1780,12 +1781,14 @@
   "url_final": "https://liderleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://liderleiloes.com.br/termos-uso",
-   "https://liderleiloes.com.br/politica-de-privacidade"
+   "https://liderleiloes.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "explorado de qualquer forma, para utilização, publicação ou distribuição com fins comerciais, incluindo a realização de download, cópias e/ou reprodução, sem o consentimento expresso e por escrito da Líder Leilões. É expressamente proibido o uso ou divulgação de conteúdo para finalidade ilega"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Machado Leiloeiro",
@@ -1832,12 +1835,14 @@
   "url_final": "https://marcaleiloes.com.br/",
   "robots": "sem robots.txt (HTTP 404)",
   "termos": [
-   "https://marcaleiloes.com.br/termos-uso",
-   "https://marcaleiloes.com.br/politica-de-privacidade"
+   "https://marcaleiloes.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Marcio Pinho",
@@ -1891,13 +1896,11 @@
   "url_final": "https://mariafixerleiloes.com.br/",
   "robots": "sem robots.txt (HTTP 404)",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://mariafixerleiloes.com.br/index/termos-uso",
-   "https://mariafixerleiloes.com.br/index/politica-privacidade"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "MC Leilão",
@@ -1985,12 +1988,11 @@
   "url_final": "https://mnleilao.com.br/",
   "robots": "permite",
   "termos": [
-   "https://mnleilao.com.br/p/regulamento",
-   "https://mnleilao.com.br/"
+   "https://mnleilao.com.br/p/regulamento"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Montenegro Leilões",
@@ -2222,12 +2224,14 @@
   "url_final": "https://ricartleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://ricartleiloes.com.br/termos-uso",
-   "https://ricartleiloes.com.br/politica-de-privacidade"
+   "https://ricartleiloes.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Rigolon Leilões",
@@ -2241,13 +2245,11 @@
   "url_final": "https://rigolonleiloes.com.br/",
   "robots": "sem robots.txt (HTTP 404)",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://rigolonleiloes.com.br/index/termos-uso",
-   "https://rigolonleiloes.com.br/index/politica-privacidade"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "RJ Leilões",
@@ -2368,12 +2370,14 @@
   "url_final": "https://www.simonleiloes.com.br:443/",
   "robots": "permite",
   "termos": [
-   "https://www.simonleiloes.com.br:443/termos-de-uso",
-   "https://www.simonleiloes.com.br:443/politica-de-privacidade"
+   "https://www.simonleiloes.com.br:443/termos-de-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": "redireciona para www.simonleiloes.com.br:443; "
+  "proibicao": {
+   "pagina": "",
+   "trecho": "tido, sem autorização ou fundamento legal: utilizar os conteúdos do site para finalidade comercial indevida; alterar ou reproduzir conteúdo protegido de forma não autorizada; remover avisos de propriedade intelectual; copiar ou reproduzir a estrutura ou funcionamento da plataforma; tentar de"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "redireciona para www.simonleiloes.com.br:443; termos proíbem robôs/raspagem"
  },
  {
   "nome": "Sublime Leilões",
@@ -2471,12 +2475,14 @@
   "url_final": "https://vecchileiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://vecchileiloes.com.br/termos-uso",
-   "https://vecchileiloes.com.br/politica-de-privacidade"
+   "https://vecchileiloes.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Victor Dorta Leilões",
@@ -2524,12 +2530,14 @@
   "url_final": "https://vixleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://vixleiloes.com.br/termos-de-uso",
-   "https://vixleiloes.com.br/politica-de-privacidade"
+   "https://vixleiloes.com.br/termos-de-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "riedade e responsabilidade As marcas, textos e imagens do site pertencem aos seus respectivos titulares e não podem ser reproduzidos sem autorização. Empenhamo-nos em manter as informações corretas e atualizadas, mas eventuais divergências devem ser confirmadas jun"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Vizeu Leiloeiros",
@@ -2560,12 +2568,14 @@
   "url_final": "https://vlleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://vlleiloes.com.br/termos-uso",
-   "https://vlleiloes.com.br/politica-de-privacidade"
+   "https://vlleiloes.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "WMS Leilões",
@@ -2616,13 +2626,11 @@
   "url_final": "https://alvaroleiloes.com.br/",
   "robots": "sem robots.txt (HTTP 404)",
   "termos": [
-   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
-   "https://alvaroleiloes.com.br/index/termos-uso",
-   "https://alvaroleiloes.com.br/index/politica-privacidade"
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Ápice Leilões",
@@ -2723,12 +2731,14 @@
   "url_final": "https://gestaodeleiloes.com.br/",
   "robots": "permite",
   "termos": [
-   "https://gestaodeleiloes.com.br/termos-uso",
-   "https://gestaodeleiloes.com.br/politica-de-privacidade"
+   "https://gestaodeleiloes.com.br/termos-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Leilão Curitiba",
@@ -2859,13 +2869,15 @@
    "imóveis"
   ],
   "uf": "RS",
-  "status": null,
-  "url_final": null,
-  "robots": null,
-  "termos": [],
+  "status": 200,
+  "url_final": "https://planejamento.rs.gov.br/venda-imoveis",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://planejamento.rs.gov.br/termos-de-uso"
+  ],
   "proibicao": null,
-  "classe": "FORA_DO_AR",
-  "nota": "erro: ConnectionError"
+  "classe": "LIBERADO",
+  "nota": ""
  },
  {
   "nome": "Governo SP – Leilões (SGGD)",
@@ -2879,13 +2891,14 @@
   "url_final": "https://www.sggd.sp.gov.br/sggd/transparencia/licitacoes_contratos/leiloes",
   "robots": "sem robots.txt (HTTP 200)",
   "termos": [
-   "https://www.cms.sp.gov.br/cms/termo-uso",
-   "https://www.controladoriageral.sp.gov.br/cge/canaisComunicacao/privacidade_e_protecao_de_dados_lgpd",
-   "https://www.cms.sp.gov.br/cms/politica-privacidade"
+   "https://www.cms.sp.gov.br/cms/termo-uso"
   ],
-  "proibicao": null,
-  "classe": "LIBERADO",
-  "nota": ""
+  "proibicao": {
+   "pagina": "",
+   "trecho": "te site e todo o seu conteúdo, incluindo textos, imagens e design, são protegidos por direitos autorais e não podem ser reproduzidos, distribuídos ou modificados sem permissão expressa. Para mais informações ou para solicitações de uso, acesse nosso site cms.sp.gov.br - sistema de gerenciamen"
+  },
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Licitações-e (BB)",
@@ -2915,12 +2928,11 @@
   "url_final": "https://petrobras.com.br/w/negocios/leilao-n-pea0369181",
   "robots": "permite",
   "termos": [
-   "https://petrobras.com.br/privacidade-protecao-de-dados",
-   "https://petrobras.com.br/privacidade-protecao-de-dados#:~:text=A%20Petrobras%20faz%20uso%20de,de%20p%C3%A1ginas%20ao%20seu%20perfil."
+   "https://petrobras.com.br/privacidade-protecao-de-dados"
   ],
   "proibicao": null,
   "classe": "LIBERADO",
-  "nota": ""
+  "nota": "termos proíbem robôs/raspagem"
  },
  {
   "nome": "Polícia Federal – Leilões",
