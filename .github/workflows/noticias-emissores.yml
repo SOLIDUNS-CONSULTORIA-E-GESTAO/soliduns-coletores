@@ -1,0 +1,42 @@
+# SOLIDUNS — Notícias por empresa (B3 e EUA) para os Relatórios de Análise — v1.0 (17/10/2026)
+# Empresa: CVM (Dados Abertos, IPE) e SEC EDGAR. Imprensa: títulos do radar já liberado. Grava em public.emissor_noticias (SQL 156).
+name: Notícias por empresa
+
+on:
+  schedule:
+    - cron: "40 9 * * 1-5"     # 06h40 BRT, dias úteis (antes do robô dos relatórios)
+  push:                        # gatilho pelo Claude: mudar o arquivo abaixo
+    branches: [main]
+    paths: ["coletor/dados/rodar_noticias_emissores.txt"]
+  workflow_dispatch:
+    inputs:
+      dias:
+        description: "Janela em dias (padrão 180)"
+        required: false
+        default: "180"
+      gravar:
+        description: "0 = só teste (não grava)"
+        required: false
+        default: "1"
+
+permissions:
+  contents: read
+
+jobs:
+  noticias:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Notícias por empresa
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          SEC_USER_AGENT: "SOLIDUNS Consultoria recon@soliduns.com.br"
+          EMISSORES_DIAS: ${{ github.event.inputs.dias || '180' }}
+          EMISSORES_GRAVAR: ${{ github.event.inputs.gravar || '1' }}
+        run: python -u coletor/noticias_emissores.py
