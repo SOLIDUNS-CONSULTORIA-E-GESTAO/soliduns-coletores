@@ -32,7 +32,7 @@ import leiloeiros_regras as R            # noqa: E402
 import scraper as G                      # noqa: E402
 from veiculos_regras import Cidades      # noqa: E402
 
-VERSAO = "1.2"
+VERSAO = "1.3"
 SAIDA = Path(__file__).resolve().parent.parent / "recon-imoveis"
 JA_LIDOS = ("portalzuk.", "megaleiloes.", "superbid.", "vipleiloes.", "leilo.com.br", "sodresantoro.", "pestanaleiloes.",
             "freitasleiloeiro.", "leiloesjudiciais.")
@@ -165,6 +165,20 @@ def main():
             total += len(linhas)
             if gravar and linhas:
                 CL.sb_upsert("leiloes_radar", linhas)
+                if not erro:   # v1.3: leitura completa -> lote não visto há 7 dias saiu (rodízio de 3 dias)
+                    limite = (agora_dt - dt.timedelta(days=7)).isoformat().replace("+00:00", "Z")
+                    n = CL.sb_patch("leiloes_radar", {"id": f"like.{sigla(f['url'])}-*", "situacao": "eq.ativo",
+                                                      "visto_em": f"lt.{limite}"}, {"situacao": "saiu", "saiu_em": agora})
+                    if n:
+                        CL.log(f"    {n} lote(s) não vistos há 7 dias saíram")
+    if gravar:   # v1.3: leilão já realizado sai da lista; pré-nota do Radar para os novos
+        ontem = (hoje - dt.timedelta(days=1)).isoformat()
+        n = CL.sb_patch("leiloes_radar", {"fonte": "eq.leiloeiro", "situacao": "eq.ativo",
+                                          "or": f"(and(praca2.not.is.null,praca2.lt.{ontem}),and(praca2.is.null,praca1.lt.{ontem}))"},
+                        {"situacao": "saiu", "saiu_em": agora})
+        CL.log(f"DATA PASSOU: {n} imóvel(is) com o leilão já realizado saíram")
+        if total:
+            CL.log(f"PRÉ-NOTA: {CL.sb_rpc('leiloes_radar_pontuar')}")
     (SAIDA / "resumo.json").write_text(json.dumps(resumo, ensure_ascii=False, indent=1), encoding="utf-8")
     (SAIDA / "amostra.json").write_text(json.dumps(amostra, ensure_ascii=False, indent=1), encoding="utf-8")
     CL.log(f"FIM: {total} imóvel(is) de {len(fontes)} leiloeiro(s) — {'gravados' if gravar else 'NÃO gravados (revisão)'}")

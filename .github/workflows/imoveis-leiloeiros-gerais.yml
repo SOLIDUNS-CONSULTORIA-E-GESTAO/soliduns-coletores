@@ -1,12 +1,14 @@
 # SOLIDUNS — Imóveis dos leiloeiros (rede ampliada) -> Radar — v1.0 (17/10/2026)
 # Robô educado (20 s por site). MODO REVISÃO por padrão: não grava, só publica amostra no ramo "recon-imoveis".
-# Só à mão por enquanto; depois da conferência do Thiago, ligar o horário e o "gravar".
+# GRAVANDO desde 17/10 (horário diário e gatilho por arquivo); pela mão, só grava com gravar=1.
 name: Imóveis - leiloeiros gerais
 
 on:
   push:                     # gatilho pelo Claude: basta mudar este arquivo (sem precisar do botão)
     branches: [main]
     paths: ["leiloeiros/rodar_imoveis.txt"]
+  schedule:
+    - cron: "20 11 * * *"     # 08h20 BRT, todo dia (rodízio: cada leiloeiro a cada 3 dias) — GRAVANDO (OK do Thiago 17/10 12h25)
   workflow_dispatch:
     inputs:
       gravar:
@@ -35,7 +37,7 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          IMOVEIS_GRAVAR: ${{ github.event.inputs.gravar }}
+          IMOVEIS_GRAVAR: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.gravar || '1' }}
           IMOVEIS_MAX_FONTES: ${{ github.event.inputs.max_fontes }}
           IMOVEIS_PARALELO: "8"
           IMOVEIS_RODIZIO_DIAS: "3"
