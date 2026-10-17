@@ -1,5 +1,7 @@
 """
-SOLIDUNS — TRIAGEM DE LEILOEIROS — v1.1 (16/10/2026)
+SOLIDUNS — TRIAGEM DE LEILOEIROS — v1.2 (16/10/2026)
+
+v1.2: também veta 'coleta de dados', cópia/reprodução sem autorização e 'soluções concorrentes'; guarda sempre o texto dos termos.
 
 v1.1: com o campo "so" preenchido, guarda o texto dos termos de uso em triagem/termos/<site>.txt.
 
@@ -36,7 +38,7 @@ import requests
 from bs4 import BeautifulSoup
 
 RAIZ = Path(__file__).resolve().parent.parent
-GUARDAR_TEXTO = bool((os.environ.get("TRIAGEM_SO") or "").strip())
+GUARDAR_TEXTO = True          # v1.2: sempre guarda o texto dos termos (leitura humana de cada fonte)
 UA = "SOLIDUNS-triagem/1.0 (+https://soliduns.com.br; verificacao de robots.txt e termos de uso)"
 UA_NAV = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36"
 PAUSA, TIMEOUT = 2.0, 25
@@ -48,6 +50,9 @@ RE_LINK_TERMOS = re.compile(r"(termo|condi[cç][oõ]es|regulamento|pol[ií]tica|
 ASSUNTO = r"(rob[oô]s?|bots?\b|crawler|spider|scrap|raspag|rastreador|extra[cç][aã]o (autom|de dados)|minera[cç][aã]o de dados|data mining|meios? automatizad|ferramentas? automatizad|programas? automatizad|coleta automatizad|captura autom)"
 PROIBE = r"(proib|vedad|n[aã]o (é|e|ser[aá]) permitid|n[aã]o poder[aá]|n[aã]o pode|n[aã]o [eé] autorizad|sem (a )?(pr[eé]via )?autoriza|abster|n[aã]o utiliz)"
 RE_PROIBE = re.compile(rf"{ASSUNTO}[^.]{{0,160}}{PROIBE}|{PROIBE}[^.]{{0,160}}{ASSUNTO}", re.I)
+# v1.2 (16/10, conferência à mão da Em Leilão e da Líder): termos que vetam coleta de dados ou cópia/reprodução sem autorização
+RE_PROIBE2 = re.compile(r"(coleta de dados|(c[oó]pi(a|as|ar)|reprodu[cz]|download|copiar|distribuir|comercializar)[^.]{0,120}"
+                        r"(sem (o |a )?(consentimento|autoriza|permiss)|n[aã]o autorizad)|solu[cç][oõ]es concorrentes)", re.I)
 
 
 def sem_acento(s):
@@ -139,7 +144,7 @@ def triar(f):
         out["termos"].append(href)
         if GUARDAR_TEXTO and texto:                   # v1.1: com filtro "so", guarda o texto dos termos para leitura humana
             out.setdefault("textos", []).append({"pagina": href, "texto": texto[:40000]})
-        m = RE_PROIBE.search(texto)
+        m = RE_PROIBE.search(texto) or RE_PROIBE2.search(texto)
         if m:
             ini = max(0, m.start() - 120)
             out["proibicao"] = {"pagina": href, "trecho": texto[ini:m.end() + 120]}
