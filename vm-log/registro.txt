@@ -1,0 +1,6 @@
+13:43:41 Valor e Mercado — edição de sábado, 17 de outubro de 2026 — modelo claude-sonnet-5-5, até 8 buscas
+13:45:16 Conferência (rodada 1): scanner.agenda: nenhum item com horário de Brasília (formato 09h00)
+13:45:19   aviso: entrega incompleta (stop_reason=tool_use, campos=NoneType, texto=0 caracteres)
+13:45:19 Conferência (rodada 2): edição ilegível (resposta sem JSON); entregue pela ferramenta entregar_edicao
+13:45:19 Custo estimado: US$ 0.7017 (138884 tokens de entrada, 13668 de saída, 8 buscas)
+Edição NÃO publicada: a conferência falhou duas vezes. A capa segue com a edição anterior.
