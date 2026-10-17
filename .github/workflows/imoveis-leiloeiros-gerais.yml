@@ -55,7 +55,14 @@ jobs:
           git commit -qm "imoveis gerais $(date -u +%F' '%H:%M)"
           if ! git push -f origin recon-imoveis-tmp:recon-imoveis 2> push_erro.txt; then
             cat push_erro.txt
-            mkdir -p /tmp/so; cp push_erro.txt recon-imoveis/rodada.txt /tmp/so/
-            git rm -rq --cached . ; rm -rf recon-imoveis; mkdir recon-imoveis; cp /tmp/so/* recon-imoveis/
-            git add -f recon-imoveis/; git commit -qm "imoveis gerais: erro no envio"; git push -f origin HEAD:recon-imoveis
+            mkdir -p /tmp/so; cp push_erro.txt recon-imoveis/rodada.txt recon-imoveis/resumo.json /tmp/so/ 2>/dev/null || true
+            # v1.3: ramo NOVO (sem o commit recusado no histórico); 1º com resumo, depois só o motivo
+            for arqs in "push_erro.txt rodada.txt resumo.json" "push_erro.txt rodada.txt"; do
+              git checkout -q --orphan so-$RANDOM; git rm -rqf --cached . >/dev/null 2>&1 || true
+              rm -rf recon-imoveis; mkdir recon-imoveis
+              for a in $arqs; do cp /tmp/so/$a recon-imoveis/ 2>/dev/null || true; done
+              git add -f recon-imoveis/; git commit -qm "imoveis gerais: erro no envio"
+              if git push -f origin HEAD:recon-imoveis; then exit 1; fi
+            done
+            exit 1
           fi
