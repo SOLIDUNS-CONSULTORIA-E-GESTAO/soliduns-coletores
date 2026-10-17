@@ -26,7 +26,7 @@ ACHADOS = [{"titulo": "Petrobras reduz preço do diesel", "link": "https://ab/1"
            {"titulo": "Quando vale a pena trocar de banco", "link": "https://ab/3", "publicado_em": "2026-10-03T10:00:00Z", "coletado_em": "2026-10-03T10:00:00Z", "fonte_nome": "Agência Brasil"}]
 
 class R:
-    def __init__(s, code, content=b"", j=None): s.status_code, s.content, s._j = code, content, j
+    def __init__(s, code, content=b"", j=None): s.status_code, s.content, s._j, s.headers = code, content, j, {}
     def json(s): return s._j
 def falso_get(url, headers=None, timeout=None):
     if "ipe_cia_aberta_2026" in url: return R(200, zb.getvalue())
@@ -53,6 +53,7 @@ class D(dt.date):
     @classmethod
     def today(cls): return dt.date(2026, 10, 17)
 N.dt.date = D
+os.environ["EMISSORES_INFOMONEY"] = "0"
 N.main()
 emi = [g for g in gravadas if g["origem"] == "emissor"]
 imp = [g for g in gravadas if g["origem"] == "imprensa"]
@@ -68,3 +69,21 @@ confere(any(g["ticker"] == "PETR4" and "diesel" in g["titulo"] for g in imp), "i
 confere(any(g["ticker"] == "AAPL" and "iPhone" in g["titulo"] for g in imp), "imprensa: Apple citada")
 confere(not any(g["ticker"] == "VALE3" for g in imp), "'vale a pena' não vira Vale")
 print(f"OK — {ok} conferências")
+
+# --- v1.1: InfoMoney (páginas até passar da janela)
+import types
+fake = types.SimpleNamespace(UA="x", PORTEIRO=types.SimpleNamespace(esperar=lambda u: True, resposta=lambda *a: None))
+sys.modules["educado"] = fake
+def rss(itens): return ("<rss><channel>" + "".join(f"<item><title>{t}</title><link>{l}</link><pubDate>{d}</pubDate></item>" for t, l, d in itens) + "</channel></rss>").encode()
+PAGS = {1: rss([("Petrobras anuncia dividendos", "https://im/1", "Sat, 17 Oct 2026 18:00:00 +0000"), ("Ibovespa sobe", "https://im/2", "Sat, 17 Oct 2026 17:00:00 +0000")]),
+        2: rss([("Vale corta produção", "https://im/3", "Fri, 16 Oct 2026 12:00:00 +0000"), ("Velha", "https://im/4", "Mon, 12 Oct 2026 12:00:00 +0000")]),
+        3: rss([("Nunca lida", "https://im/5", "Sun, 11 Oct 2026 12:00:00 +0000")])}
+pedidos = []
+def get_im(url, headers=None, timeout=None):
+    n = int(url.split("paged=")[1]); pedidos.append(n); return R(200, PAGS[n])
+N.requests.get = get_im
+it = N.ler_infomoney("2026-10-15T00:00:00+00:00", 10)
+confere([x["link"] for x in it] == ["https://im/1", "https://im/2", "https://im/3"], "InfoMoney: só dentro da janela")
+confere(pedidos == [1, 2], "InfoMoney: para na página que passa da janela")
+confere(all(x["fonte_nome"] == "InfoMoney" for x in it), "InfoMoney: crédito")
+print(f"OK — {ok} conferências (com InfoMoney)")

@@ -1,5 +1,5 @@
 # SOLIDUNS — Notícias por empresa (B3 e EUA) para os Relatórios de Análise — v1.0 (17/10/2026)
-# Empresa: CVM (Dados Abertos, IPE) e SEC EDGAR. Imprensa: títulos do radar já liberado. Grava em public.emissor_noticias (SQL 156).
+# Empresa: CVM (Dados Abertos, IPE) e SEC EDGAR. Imprensa: títulos do radar já liberado + InfoMoney (v1.1). Grava em public.emissor_noticias (SQL 156).
 name: Notícias por empresa
 
 on:
@@ -25,7 +25,7 @@ permissions:
 jobs:
   noticias:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -39,4 +39,6 @@ jobs:
           SEC_USER_AGENT: "SOLIDUNS Consultoria recon@soliduns.com.br"
           EMISSORES_DIAS: ${{ github.event.inputs.dias || '180' }}
           EMISSORES_GRAVAR: ${{ github.event.inputs.gravar || '1' }}
+          EMISSORES_INFOMONEY_DIAS: "3"      # v1.1: InfoMoney (feed público, robô educado 20 s/página)
+          EMISSORES_INFOMONEY_PAGINAS: "45"
         run: python -u coletor/noticias_emissores.py

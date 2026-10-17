@@ -28,7 +28,7 @@ import zipfile
 
 import requests
 
-VERSAO = "1.0"
+VERSAO = "1.1"
 IPE_URL = "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/IPE/DADOS/ipe_cia_aberta_{ano}.zip"
 SEC_TICKERS = "https://www.sec.gov/files/company_tickers_exchange.json"
 SEC_SUBMISSIONS = "https://data.sec.gov/submissions/CIK{cik}.json"
@@ -317,6 +317,54 @@ def emissor_us(empresas, inicio):
     return linhas, info
 
 
+# ------------------------------------------------------------------ v1.1: InfoMoney (decisão do Thiago 17/10 18h47, "1 E 2")
+# Feed público (https://www.infomoney.com.br/feed/), robots.txt sem bloqueio (conferido 17/10), sem página de termos de uso.
+# 10 notícias por página, ~13 páginas por dia: lê as páginas (?paged=N) até passar da janela, 1 pedido a cada 20 s (robô educado).
+# Guarda SÓ título, link, data e o crédito "InfoMoney". Pedido de autorização por e-mail enviado em paralelo.
+INFOMONEY_FEED = "https://www.infomoney.com.br/feed/?paged={n}"
+
+
+def ler_infomoney(desde_iso, max_paginas=None):
+    import email.utils
+    import xml.etree.ElementTree as ET
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import educado as E
+    max_paginas = max_paginas or int(os.environ.get("EMISSORES_INFOMONEY_PAGINAS") or 40)
+    itens = []
+    for n in range(1, max_paginas + 1):
+        url = INFOMONEY_FEED.format(n=n)
+        if not E.PORTEIRO.esperar(url):
+            log("  InfoMoney: robots.txt não permite — parei"); break
+        try:
+            r = requests.get(url, headers={"User-Agent": E.UA}, timeout=60)
+        except requests.RequestException as e:
+            log("  InfoMoney: falha de rede", type(e).__name__); break
+        E.PORTEIRO.resposta(url, r.status_code, r.headers)
+        if r.status_code != 200:
+            log(f"  InfoMoney página {n}: HTTP {r.status_code} — parei"); break
+        try:
+            raiz = ET.fromstring(r.content)
+        except ET.ParseError:
+            log(f"  InfoMoney página {n}: XML inválido — parei"); break
+        pagina, velho = [], False
+        for it in raiz.iter("item"):
+            tit, lk, pd = (it.findtext("title") or "").strip(), (it.findtext("link") or "").strip(), it.findtext("pubDate")
+            try:
+                quando = email.utils.parsedate_to_datetime(pd).astimezone(dt.timezone.utc)
+            except Exception:  # noqa: BLE001
+                continue
+            if quando.isoformat() < desde_iso:
+                velho = True; continue
+            if tit and lk.startswith("http"):
+                pagina.append({"titulo": tit, "link": lk, "publicado_em": quando.isoformat(), "coletado_em": quando.isoformat(),
+                               "fonte_nome": "InfoMoney"})
+        itens += pagina
+        if velho or not pagina:
+            break
+    log(f"  InfoMoney: {len(itens)} notícia(s) lidas")
+    return itens
+
+
 # ------------------------------------------------------------------ imprensa (radar já liberado)
 def imprensa(empresas, nomes, inicio):
     try:
@@ -324,7 +372,14 @@ def imprensa(empresas, nomes, inicio):
                            "&fonte_nome=not.ilike.*CVM*")
     except Exception as e:  # noqa: BLE001
         log("  aviso: não li o radar (vm_achados):", e)
-        return []
+        achados = []
+    if os.environ.get("EMISSORES_INFOMONEY", "1") != "0":
+        dias_im = int(os.environ.get("EMISSORES_INFOMONEY_DIAS") or 2)
+        desde_im = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=dias_im)).isoformat()
+        try:
+            achados += ler_infomoney(desde_im)
+        except Exception as e:  # noqa: BLE001
+            log("  aviso: InfoMoney falhou:", type(e).__name__, e)
     conf = apelidos_conferidos()
     aps = {(m, tk): apelidos(nomes.get((m, tk)), tk, conf.get(tk, [])) for m, tk in empresas}
     linhas = []
