@@ -44,7 +44,15 @@ jobs:
         if: always()
         run: |
           git config user.name "soliduns-recon"; git config user.email "recon@soliduns.com.br"
-          git checkout --orphan recon-imoveis-tmp
           mkdir -p recon-imoveis; date -u > recon-imoveis/rodada.txt
+          # v1.2: apaga trechos com cara de chave/token (o GitHub recusa o envio se achar um)
+          sed -i -E 's/(eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9._-]+|AIza[0-9A-Za-z_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9_-]{20,}|xox[abp]-[A-Za-z0-9-]+|AKIA[0-9A-Z]{16})/[removido]/g' recon-imoveis/*.json recon-imoveis/*.txt || true
+          git checkout --orphan recon-imoveis-tmp
           git rm -rq --cached . ; git add -f recon-imoveis/
-          git commit -qm "imoveis gerais $(date -u +%F' '%H:%M)" && git push -f origin recon-imoveis-tmp:recon-imoveis
+          git commit -qm "imoveis gerais $(date -u +%F' '%H:%M)"
+          if ! git push -f origin recon-imoveis-tmp:recon-imoveis 2> push_erro.txt; then
+            cat push_erro.txt
+            mkdir -p /tmp/so; cp push_erro.txt recon-imoveis/rodada.txt /tmp/so/
+            git rm -rq --cached . ; rm -rf recon-imoveis; mkdir recon-imoveis; cp /tmp/so/* recon-imoveis/
+            git add -f recon-imoveis/; git commit -qm "imoveis gerais: erro no envio"; git push -f origin HEAD:recon-imoveis
+          fi
