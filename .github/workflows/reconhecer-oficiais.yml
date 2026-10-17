@@ -1,0 +1,29 @@
+# SOLIDUNS — Reconhecimento das fontes oficiais de veículos (PRF, PF, Detran-PR, Detran-GO) — 16/10/2026
+# Guarda amostras (páginas, editais, planilhas) para escrever o leitor. Robô educado: 20 s por site. Só à mão.
+name: Reconhecimento - fontes oficiais de veículos
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reconhecer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests pdfplumber openpyxl playwright && python -m playwright install --with-deps chromium
+      - name: Reconhecer
+        run: python -u coletor/reconhecer_oficiais.py
+      - name: Publicar no ramo recon-oficiais
+        if: always()
+        run: |
+          git config user.name "soliduns-recon"; git config user.email "recon@soliduns.com.br"
+          git checkout --orphan recon-oficiais-tmp
+          git rm -rq --cached . ; git add -f recon-oficiais/
+          git commit -qm "recon oficiais $(date -u +%F' '%H:%M)" && git push -f origin recon-oficiais-tmp:recon-oficiais
