@@ -1,0 +1,716 @@
+# Triagem de leiloeiros — 17/10/2026 01:43 UTC
+
+| Classe | Fontes |
+|---|---|
+| BLOQUEADO | 258 |
+| LIBERADO | 155 |
+| FORA_DO_AR | 150 |
+| LIBERADO_SEM_TERMOS | 95 |
+| SO_COM_AUTORIZACAO | 34 |
+
+## LIBERADO (155)
+
+- Alan Carlos dos Santos — https://matogrossoleiloes.com.br — robots: permite — 
+- Alan Machado Ribeiro Leiloeiro — https://alanleiloeiro.lel.br — robots: permite — 
+- Alessandro Fahrion Pinto — https://regionalleiloes.com.br — robots: permite — 
+- Alexandre Augusto Dos Santos Sabbag — https://sabbagleiloes.com.br — robots: permite — 
+- AlienaJud (Mauro da Cruz) — https://alienajud.com.br — robots: permite — 
+- Ana Claudia Blasczyk — https://planaltoleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Anderson Douglas Gali Falleiros — https://falleirosleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Anderson Lopes De Paula — https://e-leiloeiro.com.br — robots: permite — redireciona para www.e-leiloeiro.leilao.br; 
+- Andre Luiz Oliveira Yankous — https://yankous.com.br — robots: permite — 
+- Andressa Sedrez Terres Tonial Ferreira — https://tonialleiloes.com.br — robots: permite — 
+- Antonio Alexandre Raota — https://raotaleiloes.com.br — robots: permite — 
+- Antonio Carlos Celso Santos Frazão — https://vincoleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Antonio Ferreira Leiloeiro — https://antonioferreira.lel.br — robots: sem robots.txt (HTTP 403) — 
+- Antonio Magno Jacob Da Rocha — https://rochaleiloes.com.br — robots: permite — 
+- Aparecida Maria Fixer — https://cidafixerleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Araújo Leilões (MT) — https://araujoleiloes.com.br — robots: permite — 
+- Aretha Mirian Antunes de Paulo Greco — https://cliqueleiloes.com.br — robots: permite — 
+- Arnaldo Emílio Colombarolli — https://arnaldoleiloes.com.br — robots: permite — 
+- Arthur Ferreira Nunes — https://nordesteleiloes.com — robots: sem robots.txt (HTTP 404) — redireciona para nordesteleiloes.com.br:443; 
+- Arthur Ferreira Nunes — https://nordesteleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Arthur Ferreira Nunes — https://arthurnunesleiloes.com.br — robots: sem robots.txt (HTTP 404) — redireciona para nordesteleiloes.com.br:443; 
+- Avani Luiz De Morais Júnior / Mouzar Baston Filho — https://bastonleiloes.com.br — robots: sem robots.txt (HTTP 200) — redireciona para bastonleiloes.leilao.br; 
+- Bruno Barreto Sanches — https://barretoleiloes.com.br — robots: permite — 
+- Caio De Carvalho Borges — https://cb-leiloeiro.com.br — robots: permite — 
+- Caio Marcos Campos Caldeira — https://tratoforteleiloes.com.br — robots: permite — 
+- Cardoso Leilões — https://cardosoleiloes.com.br — robots: permite — 
+- Carlos Henrique Barbosa — https://chbarbosaleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Catarinense Leilões — https://catarinenseleiloes.com.br — robots: permite — redireciona para www.djleilao.com.br; 
+- Celso Alves Cunha — https://celsocunhaleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Clademir Dos Santos Flores — https://clademirleiloeiro.com.br — robots: permite — 
+- Confiança Leilões (leilao.br) — https://confiancaleiloes.leilao.br — robots: permite — 
+- Confiança Leilões (Marilaine B. de Paula) — https://confiancaleiloes.com.br — robots: permite — redireciona para www.confiancaleiloes.leilao.br; 
+- Cristiane Borguetti Moraes Lopes — https://lopesleiloes.com.br — robots: permite — 
+- Cristiano Branchieri Escola — https://cristianoescolaleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Cristiano da Rosa Schontag — https://trileiloes.com.br — robots: permite — 
+- Daniel Hamoui — https://dhleiloes.com.br — robots: permite — 
+- Daniel Lazownik Duarte — https://dldleiloeiro.com.br — robots: permite — 
+- Daniel Oliveira Junior — https://doleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Daniel Schneider Chaieb — https://danielchaiebleiloeiro.com.br — robots: permite — 
+- Dediana Farias — https://fariasleiloes.com.br — robots: permite — 
+- Deonizia Kiratch — https://deonizialeiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Diogo Reis Dutra — https://reisleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- e-Leiloeiro (leilao.br) — https://e-leiloeiro.leilao.br — robots: permite — 
+- Eduardo Gomes — https://leiloeiroeduardo.com.br — robots: sem robots.txt (HTTP 403) — 
+- Eduardo Vivian — https://eduardovivian.com.br — robots: permite — 
+- Elenice Lira Sales De Sousa — https://liraleiloes.com.br — robots: sem robots.txt (HTTP 403) — 
+- Erico Sobral Soares — https://ericosobral.com.br — robots: permite — 
+- Everton Dias Medeiros — https://diasleiloes.com.br — robots: permite — 
+- Fabio Samir Machado — https://machadoleiloesrs.com.br — robots: permite — 
+- Felipe Rotta — https://feliperottaleiloes.com.br — robots: permite — 
+- Fernando Domingos Tonon — https://tononleiloes.com.br — robots: permite — 
+- Flavia Klockner Rodrigues — https://fkleiloes.com.br — robots: permite — 
+- Franciele Aparecida da Silva — https://dasilvaleiloes.com.br — robots: permite — 
+- Francisco Jonnathan Santos Freitas — https://franciscofreitasleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Fábio Gonçalves Barbosa — https://fabiobarbosaleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Fábio Guimarães de Carvalho — https://fabioguimaraesleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Fábio Manoel Guimarães — https://fabioleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Gabriel Silva Da Rosa — https://gabrielleiloes.com.br — robots: permite — 
+- Geoliano De Souza Lima — https://teleselimaleiloes.com.br — robots: sem robots.txt (HTTP 403) — 
+- Gilberto Sales Leilões — https://gilbertosales.com.br — robots: permite — 
+- Gilmar Santos Dos Santos — https://santoseborinleiloes.com.br — robots: permite — 
+- Gilson Keniti Inumaru — https://gilsonleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Giuliano Ferronato — https://clicleilao.com.br — robots: permite — redireciona para www.ferronato.leilao.br; 
+- Glener Brasil Cassiano — https://leiloesbrasilcassiano.com.br — robots: sem robots.txt (HTTP 200) — 
+- Gustavo Bolzan — https://gbleiloes.com.br — robots: permite — 
+- Gustavo Henrique Zanoni Pereira — https://leiloeszanoni.com.br — robots: sem robots.txt (HTTP 404) — 
+- Gustavo Turani — https://turanileiloes.com.br — robots: permite — 
+- Hasta VIP — https://hastavip.com.br — robots: permite — redireciona para www.leilaovip.com.br; 
+- Helton Rogerio Verri Ventrilho — https://verrileiloes.com.br — robots: permite — 
+- Hidirlene Duszeiko — https://hdleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Igor Alexandre De Souza Silva — https://desouzaleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Ivan Leoci Bartmann — https://bartmannleiloes.com.br — robots: permite — 
+- Ivana Abranches Jordão Costa — https://ubaldoleiloes.com.br — robots: sem robots.txt (HTTP 403) — 
+- Jefferson Horta Barbosa Ribeiro Mendes — https://mendesleiloes.com.br — robots: permite — 
+- Jose Lazaro Ribeiro Menezes Junior — https://mercadoleiloes.com.br — robots: permite — 
+- Joseane De Avila Scotto — https://leiloes.rs — robots: permite — redireciona para www.scottoleiloes.com.br; 
+- José Almiro Chagas De Alencastro — https://alencastroleiloes.com.br — robots: permite — 
+- José Antônio Rodovalho Júnior — https://joserodovalholeiloes.com.br — robots: permite — 
+- José Clóvis Vaz De Souza — https://clovisleiloeiro.com.br — robots: permite — 
+- José David Gonçalves de Melo — https://jdleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- José Lázaro Ribeiro Menezes — https://santamarialeiloes.com.br — robots: permite — 
+- José Roberto Neves Amorim — https://d1lance.com — robots: permite — redireciona para d1lance.com.br; 
+- Joyce Ribeiro — https://leiloesjudiciaisrs.com.br — robots: sem robots.txt (HTTP 404) — redireciona para jrleiloes.com.br; 
+- João Honor Coirollo De Souza — https://jhcleiloeirooficial.lel.br — robots: permite — 
+- João Simões de Almeida Júnior — https://simoesleiloes.com.br — robots: permite — 
+- Junior Cesar Da Silva — https://jsilvaleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Leiloeira do Lena — https://leiloeiradolena.com — robots: permite — 
+- Leiloeiro Público (arquivos de editais) — https://leiloeiropublico.com.br — robots: permite — 
+- Leilões Brasil Uberlândia — https://leiloesbrasiluberlandia.com.br — robots: sem robots.txt (HTTP 200) — redireciona para leiloesbrasilcassiano.com.br; 
+- Leilões JA (Juliana Samico) — https://leiloesja.com.br — robots: permite — 
+- Leilões Judiciais MG Norte (José Rodovalho) — https://leiloesjudiciaismgnorte.com.br — robots: permite — redireciona para www.joserodovalholeiloes.com.br; 
+- Lelia Maria De Paula Lenz Cesar — https://lelialenz.com.br — robots: sem robots.txt (HTTP 404) — 
+- Luana Vidal Ineu — https://ineuleiloes.com.br — robots: permite — 
+- Lucas de Oliveira Mangualde — https://du-ze.com — robots: permite — 
+- Lucas Ferreira — https://leiloeirodian.com — robots: sem robots.txt (HTTP 404) — redireciona para www.leiloeirodian.com.br; 
+- Luis Otavio Marcolino Shinkawa — https://luisleiloeiro.com.br — robots: permite — 
+- Luiz De Chirico Júnior — https://leiloesdonorte.com.br — robots: sem robots.txt (HTTP 404) — 
+- Luiz Egidio Cruz Medeiros — https://medeirosleiloes.com.br — robots: permite — 
+- Luiz Tenório De Paula — https://depaulaonline.com.br — robots: permite — 
+- Marcelo Da Silva Lima — https://marcelolimaleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Marcelo Trevisan — https://trevisanleiloes.com.br — robots: permite — 
+- Marco Leilões — https://marcoleiloes.com.br — robots: permite — 
+- Marco Túlio Montenegro Cavalcanti Dias — https://marcotulioleiloes.com.br — robots: permite — 
+- Marcos Rodrigo Custodio Soares — https://custodioleiloes.com.br — robots: sem robots.txt (HTTP 200) — redireciona para custodioleiloes.leilao.br; 
+- Maria Aparecida De Freitas Fuzo — https://leiloescentrooeste.com.br — robots: sem robots.txt (HTTP 404) — 
+- Maria Auxiliadora Rodrigues Teixeira — https://triadeleiloes.com.br — robots: sem robots.txt (HTTP 403) — 
+- Maria Filomena Planas Serrano — https://leiloesmariafilomena.com.br — robots: sem robots.txt (HTTP 404) — 
+- Marilaine Borges De Paula — https://e-confianca.com.br — robots: permite — redireciona para www.confiancaleiloes.leilao.br; 
+- Mauricio Sambugari Appolinario — https://andraleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Mauricio Sambugari Appolinario — https://selectleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- MF Leilões — https://mfleiloes.com.br — robots: permite — 
+- Milena Rosa Di Giacomo Adri Faverão — https://canaldeleiloes.net — robots: sem robots.txt (HTTP 404) — 
+- Mário Lessa Freitas Filho — https://lessaleiloes.com.br — robots: permite — 
+- Norte Nordeste Leilões (Francisco J. S. Freitas) — https://nortenordesteleiloes.com.br — robots: sem robots.txt (HTTP 404) — redireciona para franciscofreitasleiloes.com.br; 
+- Odilson Fumagalli Avila — https://fumagallileiloes.com.br — robots: permite — 
+- Oscar de Menezes Palmeira — https://oscarleiloes.com.br — robots: permite — redireciona para www.oscar.leilao.br; 
+- Paulo Cézar Rocha Teixeira — https://leiloesjudiciaisbahia.com.br — robots: sem robots.txt (HTTP 404) — 
+- Paulo Renato Humor — https://prhleiloes.com.br — robots: permite — 
+- Rafael Ceretta Alegranzzi — https://alegranzzileiloes.com.br — robots: permite — 
+- Rafael Cicolin — https://absolutaleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Rafael Coutinho Leiloeiro — https://rafaelcoutinho.lel.br — robots: permite — 
+- Rafael Galvani Ferreira — https://galvanileiloes.com.br — robots: permite — 
+- Raphael Perini de Souza — https://perinileiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Raul Henrique Galassi Padovan — https://leilance.com.br — robots: sem robots.txt (HTTP 403) — 
+- Renato Guedes Rocha — https://rioleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Ricardo Ferreira Gomes — https://ricardogomesleiloes.com.br — robots: permite — 
+- Rossana Paiva Borges De Oliveira — https://caiapoleiloes.com.br — robots: sem robots.txt (HTTP 403) — 
+- Sandra Regina Wontroba — https://swleiloes.com.br — robots: permite — 
+- Silvia Barros Leilões — https://silviabarros.com.br — robots: sem robots.txt (HTTP 404) — 
+- Silvio Lucian — https://lucianleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Sérgio Lipinski Brandão Junior — https://lipinskileiloes.com.br — robots: permite — 
+- Só Leilões (Giovano Avila Alves) — https://soleiloes.com.br — robots: permite — 
+- Thaís Costa Bastos Teixeira — https://thaisteixeiraleiloes.com.br — robots: permite — 
+- Thiago Barros Cardoso — https://tbaracajuleiloes.com.br — robots: permite — 
+- Tiago Tessler Blecher — https://webleiloes.com.br — robots: permite — 
+- Uni Leilões (Fabiana Cusato) — https://unileiloes.com.br — robots: permite — 
+- Valdinei Generoso Silveira — https://vsleiloes.com — robots: permite — 
+- Valland Leilões (Marcelo Valland) — https://valland.com.br — robots: sem robots.txt (HTTP 404) — 
+- Verônica Telles Araújo Silva Soares — https://veronicaleiloes.com.br — robots: permite — 
+- VG Leilões Públicos — https://vgleiloespublicos.com.br — robots: permite — 
+- Victor De Almeida Domingues Cunha — https://almeidacunha.com — robots: permite — 
+- Vinicius Santos Ciriaco — https://vincileiloes.com.br — robots: permite — 
+- Wallason Silva Beltrame — https://beltrameleiloes.com.br — robots: permite — 
+- Werno Klöckner Júnior — https://kleiloes.com.br — robots: sem robots.txt (HTTP 404) — 
+- Zukerman Leilões — https://zukerman.com.br — robots: permite — redireciona para www.portalzuk.com.br; 
+- Álvaro Sérgio Fuzo — https://leiloesjudiciaisgo.com.br — robots: sem robots.txt (HTTP 404) — redireciona para alvaroleiloes.com.br; 
+- BLL – Bolsa de Licitações e Leilões — https://bll.org.br — robots: permite — 
+- Leilão de Fazenda (agregador) — https://leilaodefazenda.com.br — robots: permite — 
+- Leilão Online — https://leilaoonline.net — robots: permite — 
+- LeilôAI (agregador) — https://leiloai.com — robots: permite — 
+- Leilões BR (portal) — https://leiloesbr.com.br — robots: permite — 
+- Leilões Judiciais MG — https://leiloesjudiciaismg.com.br — robots: permite — 
+- Suporte Leilões (plataforma) — https://suporteleiloes.com.br — robots: permite — 
+- Usadão Máquinas — https://usadaomaquinas.com.br — robots: permite — 
+- TRT18 – Leilões — https://trt18.jus.br — robots: sem robots.txt (HTTP 404) — 
+
+## LIBERADO_SEM_TERMOS (95)
+
+- Abiel Ismael Duarte dos Santos — https://manaleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Adilson Bento de Araújo — https://abaleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Adyel Marques De Paula — https://marquesleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Alex Vieira Passos — https://portalax.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Ananda Portes Souza — https://anandaleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Anderson Binotti Dos Passos — https://abpleiloes.com — robots: permite — redireciona para ww19.abpleiloes.com; termos de uso não encontrados na página inicial — conferir à mão
+- André Soares Menegat — https://leiloeiro.lel.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Angela Saraiva Portes — https://saraivaleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Antonio Carlos Peres Bernardini — https://bernardinileiloes.com.br — robots: permite — redireciona para ww17.bernardinileiloes.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Antonio Jose da Silva Filho — https://ajleiloes.com.br — robots: sem robots.txt (HTTP 200) — termos de uso não encontrados na página inicial — conferir à mão
+- Arthur Ferreira Nunes — https://arthurnunes.leilao.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Baldissera Leiloeiros — https://baldisseraleiloeiros.com.br — robots: sem robots.txt (HTTP 200) — termos de uso não encontrados na página inicial — conferir à mão
+- Breno Henrique Soares Lopes — https://brenohenriqueleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Carstens Leiloeiro — https://leiloeiro.com.br — robots: sem robots.txt (HTTP 404) — termos de uso não encontrados na página inicial — conferir à mão
+- Catia Fernanda Alievi Toporoski — https://topoleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Catia Fernanda Alievi Toporoski — https://aleiloeira.leilao.br — robots: permite — redireciona para topoleiloes.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Central de Leilões — https://centraldeleiloes.com.br — robots: permite — redireciona para www.copart.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Conrado Augusto Carvalho De Magalhães — https://magalhaesleiloes.com.br — robots: permite — redireciona para magalhaesleiloes.leilao.br; termos de uso não encontrados na página inicial — conferir à mão
+- Conrado Augusto Carvalho De Magalhães — https://magalhaesleiloes.leilao.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Delta Leilões — https://deltaleiloes.com.br — robots: sem robots.txt (HTTP 200) — redireciona para www.delttaleiloes.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Expresso Leilões — https://expressoleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Fabrika de Leilões — https://fabrikadeleiloes.com.br — robots: sem robots.txt (HTTP 200) — redireciona para www.fabriccaleiloes.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Flávia Figueira Messias — https://messiasleiloes.com.br — robots: sem robots.txt (HTTP 404) — termos de uso não encontrados na página inicial — conferir à mão
+- Flávio Bittencourt Garcia — https://flaviogarcia.lel.br — robots: sem robots.txt (HTTP 200) — termos de uso não encontrados na página inicial — conferir à mão
+- Fábio Maciel Amarante — https://nortedeminasleiloes.com.br — robots: sem robots.txt (HTTP 200) — termos de uso não encontrados na página inicial — conferir à mão
+- Fórmula Leilões — https://formulaleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Gabriel Baron Junior — https://baronleiloes.com.br — robots: permite — redireciona para ww17.baronleiloes.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Gelson Bourschiet — https://shopleiloes.leilao.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Gilson Aparecido Mariano — https://marianoleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Golden Leilões — https://goldenleiloes.com.br — robots: permite — redireciona para portaldoleiloeiro.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Grupo Lira Leilões (Arthur Lira) — https://grupoliraleiloes.com — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Gustavo Costa Aguiar Oliveira — https://gpleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Hercules Valazuela Coutinho — https://hcleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Isabella Katarina Schacker Peracchi — https://peracchileiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Ivan Silveira Amorim — https://ourodoleilao.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Jair Vicente Martins — https://vmleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Jean Miguel Corrêa — https://casaforteleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Jeférson Benedetto — https://benedettoleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Joney Marcelo Lopes Ferreira — https://jmleiloes.com.br — robots: permite — redireciona para www.jmleiloes.leilao.br; termos de uso não encontrados na página inicial — conferir à mão
+- Jorge Sidirlei De Godoy Brasil — https://jorgebrasil.lel.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- José Arquimedes Câmara — https://arquimedesleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Julio Ramos Leiloeiro — https://julioramos.com.br — robots: permite — redireciona para www.portaldoleiloeiro.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Jéfferson Tácio Furlanetto Miotti — https://miottileiloes.com.br — robots: sem robots.txt (HTTP 404) — termos de uso não encontrados na página inicial — conferir à mão
+- Kananda Sofia Silva Macedo — https://kanandaleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Leia Leilões (Marileia May) — https://leialeiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Leilões Itamar — https://leiloesitamar.com.br — robots: sem robots.txt (HTTP 200) — termos de uso não encontrados na página inicial — conferir à mão
+- Leonir Adelino Lunelli — https://leiloeirolunelli.com.br — robots: sem robots.txt (HTTP 404) — termos de uso não encontrados na página inicial — conferir à mão
+- Lucas Andreatta de Oliveira — https://leiloariasmart.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Lucas Eduardo Dalcanale — https://dalcanaleleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Luciana Londina da Silva — https://londinaleiloes.com.br — robots: permite — redireciona para ww17.londinaleiloes.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Luis Guilherme Tenorio De Araujo Silva — https://tenorioleiloes.com.br — robots: sem robots.txt (HTTP 404) — termos de uso não encontrados na página inicial — conferir à mão
+- Luiz Felipe Perpétuo Lobato — https://luizlobatoleiloeiro.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Luiz Ubiratã De Carvalho — https://luizleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Luiza Lima e Silva Mesquita Cardoso — https://luizacardosoleiloeira.com.br — robots: sem robots.txt (HTTP 404) — termos de uso não encontrados na página inicial — conferir à mão
+- Marciano Mauro Pagliarini — https://eckertleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Marcos Vinicius Menezes Quadros — https://arremate.lel.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Marcus Allain de Oliveira Barbosa — https://maleiloesro.com.br — robots: sem robots.txt (HTTP 403) — termos de uso não encontrados na página inicial — conferir à mão
+- Maria Amélia Dyna De Souza — https://leilofacil.lel.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Maridulce Sanfelice Simei — https://msleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Master Leilões (Simone Wenning) — https://masterleiloes.com.br — robots: sem robots.txt (HTTP 200) — redireciona para www.maxterleiloes.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Mauro Veloso Junior — https://modenax.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Morales Leilões — https://moralesleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Murilo Cardozo Chaves — https://murilochaves.com.br — robots: sem robots.txt (HTTP 404) — termos de uso não encontrados na página inicial — conferir à mão
+- Nicolas Tadashi Matsune — https://tadashileiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Odarli Canezin — https://odarlicanezinleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Odiclésio Jaison Storchio — https://oesteleiloes.com.br — robots: sem robots.txt (HTTP 200) — termos de uso não encontrados na página inicial — conferir à mão
+- Pacto Leilões — https://pactoleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Paulo Roberto Leal Vardana — https://vardanaleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Pedro Lerner Kronberg — https://kronberg.lel.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Pegoraro Leilões — https://pegoraroleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Plinio Barroso De Castro Filho — https://pbcastro.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Rafael Cicolin — https://absolutaleiloes.com — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Raimundo Magalhaes De Moraes — https://rmmleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Regina Aude Leite De Araujo Silva — https://reginaaudeleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Rei dos Leilões (Roger Wenning) — https://reidosleiloes.com.br — robots: sem robots.txt (HTTP 200) — redireciona para www.leiloesrei.com.br; termos de uso não encontrados na página inicial — conferir à mão
+- Renato Schlobach Moyses — https://rmoyses.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Reni José Bonfandini — https://leiloesbonfadini.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- RMC Leilões — https://rmcleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Rubens Henrique De Castro — https://rubenshcastro.com.br — robots: sem robots.txt (HTTP 404) — termos de uso não encontrados na página inicial — conferir à mão
+- Sabrina Leilões — https://sabrinaleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Sergio Santiago Da Silva — https://plataformaleiloar.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Sidney Belarmino Ferreira Junior — https://sfleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Silvani Das Graças Lopes Dias — https://leiloeirasilvani.com.br — robots: sem robots.txt (HTTP 404) — termos de uso não encontrados na página inicial — conferir à mão
+- Tarcilio Leite / Gabriel Aude Leite De Araujo Silva — https://casadeleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Vanessa Goelzer De Araújo Vargas E Pinto — https://vargasepintoleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Victor Renno Polatto Vizeu — https://vzleiloes.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Área Leilões (grupo Vizeu) — https://arealeiloes.net — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Alerta Leilão (agregador) — https://alertaleilao.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Leilocampo Leilões Rurais — https://leilocampo.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Leilotech (plataforma) — https://leilotech.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- Sindicato dos Leiloeiros do RJ (editais) — https://sindicatodosleiloeirosrj.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- SINDILEI-RS (leilões) — https://sindileirs.com.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+- SOLEON (plataforma) — https://soleon.com.br — robots: sem robots.txt (HTTP 200) — termos de uso não encontrados na página inicial — conferir à mão
+- LEILOJUS TJDFT — https://leilojus.tjdft.jus.br — robots: sem robots.txt (HTTP 200) — termos de uso não encontrados na página inicial — conferir à mão
+- Prefeitura de Vitória – Leilões — https://leilao.vitoria.es.gov.br — robots: permite — termos de uso não encontrados na página inicial — conferir à mão
+
+## SO_COM_AUTORIZACAO (34)
+
+- Alglécio Bueno Da Silva — https://buenoleiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Alglécio Bueno da Silva — https://leiloesgoias.com.br — robots: permite — redireciona para www.buenoleiloes.com.br; termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Ana Maria Dal'Aqua Paz — https://dalaqualeiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Brenno de Figueiredo Porto — https://portoleiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Camila De Moura Gaia Pellissari — https://camilagaialeiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "s dados, protegemos dentro de meios comercialmente aceitáveis para evitar perdas e roubos, bem como acesso, divulgação, cópia, uso ou modificação não autorizados. Não compartilhamos informações de identificação pessoal publicamente ou com terceiros, exceto quando exigido por lei"
+- Cristiano Gomes Ferreira — https://goldenlance.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Djanir Da Rós — https://djanirleiloes.com.br — robots: permite — redireciona para www.darosleiloes.com.br; termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- e-Leilões — https://e-leiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "ropriedade intelectual Os conteúdos, marcas, interfaces, textos, imagens e demais elementos da plataforma não podem ser reproduzidos, copiados, distribuídos ou explorados sem autorização. 6. Limitação de responsabilidade A E-LEILÕES não responde por danos decorrentes de uso inadequado do site, indis"
+- Frederico Alberto Severino Frazão — https://maisleilao.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Giancarlo Peterlongo Lorenzini Menegotto — https://peterlongoleiloes.com.br — robots: sem robots.txt (HTTP 404) — redireciona para www.peterlongo.leilao.br; termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Giancarlo Peterlongo Lorenzini Menegotto — https://peterlongo.leilao.br — robots: sem robots.txt (HTTP 404) — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Gilberto Ruiz Guilhen — https://ggleiloes.com.br — robots: sem robots.txt (HTTP 404) — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Gustavo Reis Leilões — https://gustavoreisleiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Horany Wermelinger Costa do Nascimento — https://wermelingerleiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- José Valero Santos Junior — https://valeroleiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Kleiber Leite Pereira — https://kleiberleiloes.com.br — robots: sem robots.txt (HTTP 404) — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Kleiber Leite Pereira Junior — https://kleiberjrleiloes.com.br — robots: sem robots.txt (HTTP 404) — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Lilian Dutra Portugal / Humberto Amaro Batista Filho — https://lilianportugal.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Luiz Fernando Frange Abrahão — https://ibecleiloes.com.br — robots: sem robots.txt (HTTP 404) — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Luthero Leilões — https://lutheroleiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Luzinete Mussa de Moraes Pereira — https://lumussaleiloes.com.br — robots: sem robots.txt (HTTP 404) — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Magnun Luiz Serpa — https://serpaleiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Paulo Roberto Nakakogue — https://nakakogueleiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "s dados, protegemos dentro de meios comercialmente aceitáveis para evitar perdas e roubos, bem como acesso, divulgação, cópia, uso ou modificação não autorizados. Não compartilhamos informações de identificação pessoal publicamente ou com terceiros, exceto quando exigido por lei"
+- Pâmela Leiloeira — https://pamelaleiloeira.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Reinaldo Rodrigues Perdomo — https://rpleiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "LÕES © Reinaldo Rodrigues Perdomo - Leiloeiro Público Oficial - Matrícula nº 83 JUCEMS - Todos os direitos reservados A cópia ou reprodução não autorizada do conteúdo deste site poderá acarretar em penas previstas em lei. Plataforma Precisa de ajuda? Clique aqui."
+- Renan Neris Da Silva — https://renannerisleiloeiro.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Rofrem Leilões — https://rofremleiloes.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Serpa Leilão — https://serpaleilao.com.br — robots: permite — redireciona para serpaleiloes.com.br; termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Sued Peter Bastos Dyna — https://suedpeterleiloes.com.br — robots: sem robots.txt (HTTP 404) — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Ulisses Donizete Ramos — https://donizetteleiloes.com.br — robots: permite — redireciona para donizetteleiloes.leilao.br; termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Ulisses Donizete Ramos — https://donizetteleiloes.leilao.br — robots: permite — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Álvaro Antonio Mussa Pereira — https://alvaroantonioleiloes.com.br — robots: sem robots.txt (HTTP 404) — termos proíbem robôs/raspagem — trecho: "de segurança ou restrições de acesso implementadas no Site, como capturar informações protegidas ou realizar atividades não autorizadas de coleta de dados; Modificar, copiar, distribuir ou comercializar qualquer conteúdo disponibilizado no Site sem autorização prévia; Utili"
+- Carro e Leilão (lista de empresas) — https://carroeleilao.com.br — robots: permite — termos proíbem robôs/raspagem — trecho: "s de automóveis, outros bens e etc. Todo e qualquer conteúdo produzido é de própria autoria, não sendo tolerado plágio, cópia ou qualquer tipo de divulgação não autorizada visando a benefício próprio ou financeiro de terceiros. Reiteramos que plágio ou cópia constituem crime tipificado no "
+- Leilões Online BR (agregador/blog) — https://leiloesonlinebr.com — robots: permite — termos proíbem robôs/raspagem — trecho: "dados, protegemos dentro de meios comercialmente aceitáveis ​​para evitar perdas e roubos, bem como acesso, divulgação, cópia, uso ou modificação não autorizados. Não compartilhamos informações de identificação pessoal publicamente ou com terceiros, exceto quando exigido por lei"
+
+## BLOQUEADO (258)
+
+- ACN Agropecuária (loja Superbid) — https://superbid.net/loja-oficial/acn-agropecuaria-16221 — robots: None — desafio anti-robô (HTTP 403)
+- Adelane Pedrozo Leilões (loja Superbid) — https://superbid.net/loja-oficial/adelane-pedrozo-leiloes-16118 — robots: None — desafio anti-robô (HTTP 403)
+- Adilson Guimarães Araújo — https://aguialeiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Adriana Pires Amancio — https://apaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Adriano Apolinário Leão de Oliveira — https://adrianoleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Adriano Leiloeiro (loja Superbid) — https://superbid.net/loja-oficial/adriano-leiloeiro-16149 — robots: None — desafio anti-robô (HTTP 403)
+- Adriano Melniski — https://amleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Adriano Piovezan Fonte — https://grupolance.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Adring Leilões (Adriano C. O. Silva) — https://adringleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Agro Flecha (loja Superbid) — https://superbid.net/loja-oficial/agro-flecha-16383 — robots: None — desafio anti-robô (HTTP 403)
+- Alberto José Marchi Macedo — https://albertomacedoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Alcance Leilões — https://alcanceleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Alex Sandro Vieira Felix — https://alleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Alexandridis Leilões (loja Superbid) — https://superbid.net/loja-oficial/alexandridis-leiloes-16488 — robots: None — desafio anti-robô (HTTP 403)
+- Alexandro Leiloeiro (loja Superbid) — https://superbid.net/loja-oficial/alexandro-leiloeiro-16307 — robots: None — desafio anti-robô (HTTP 403)
+- Alexsander Pretti Domingos — https://universodosleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Aline Juliette Bittencourt — https://ajbleiloes.com.br — robots: None — desafio anti-robô (HTTP 200)
+- Alisson Silva Cruz — https://leiloescruz.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Almoeda Leilões (Ioneide Sampaio) — https://almoedaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Amaggi (loja Superbid) — https://superbid.net/loja-oficial/amaggi-16414 — robots: None — desafio anti-robô (HTTP 403)
+- Amaral Leilões — https://amaralleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Andre Luiz Wuitschik — https://andreluizleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- André Fonseca Dias — https://agilleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Angela Bechara Leilões (loja Superbid) — https://superbid.net/loja-oficial/angela-bechara-leiloes-16132 — robots: None — desafio anti-robô (HTTP 403)
+- Anna Karoline Santos do Amaral — https://focoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Antonio Luiz Guariglia — https://guariglialeiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Antônio Carlos Fauth — https://fauthleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Antônio Pedro Pacheco Lopes — https://superleiloes.net — robots: None — desafio anti-robô (HTTP 403)
+- Antônio Romero Ferreira da Silva — https://leiloescostaesilva.com.br — robots: None — desafio anti-robô (HTTP 401)
+- Argemiro Luiz Finatto — https://finattoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Arnold Strass — https://savoyleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Arremaq (loja Superbid) — https://superbid.net/loja-oficial/arremaq-16209 — robots: None — desafio anti-robô (HTTP 403)
+- Arremax (Lígia Seixas) — https://arremax.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Arthur Ferreira Nunes — https://hastalegal.com.br — robots: None — HTTP 403
+- Asami Leilões (loja Superbid) — https://superbid.net/loja-oficial/asami-leiloes-16082 — robots: None — desafio anti-robô (HTTP 403)
+- Avelar Leilões (Patrícia Fidalgo) — https://avelarleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- AZ Leilões (loja Superbid) — https://superbid.net/loja-oficial/az-leiloes-16222 — robots: None — desafio anti-robô (HTTP 403)
+- Balbo Leilões (loja Superbid) — https://superbid.net/loja-oficial/balbo-leiloes-804 — robots: None — desafio anti-robô (HTTP 403)
+- Barreto Leilões (loja Superbid) — https://superbid.net/loja-oficial/barreto-leiloes-16198 — robots: None — desafio anti-robô (HTTP 403)
+- Benozzati Leilões — https://benozzati.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Bertoncello Leilões (loja Superbid) — https://superbid.net/loja-oficial/bertoncello-leiloes-16215 — robots: None — desafio anti-robô (HTTP 403)
+- Bezerra Leilões (loja Superbid) — https://superbid.net/loja-oficial/bezerra-leiloes-16095 — robots: None — desafio anti-robô (HTTP 403)
+- Big Leilão (Marcelo Yarid) — https://bigleilao.com.br — robots: None — desafio anti-robô (HTTP 200)
+- BIS Leilões (loja Superbid) — https://superbid.net/loja-oficial/bis-leiloes-16354 — robots: None — desafio anti-robô (HTTP 403)
+- BN Leilões (loja Superbid) — https://superbid.net/loja-oficial/bn-leiloes-16171 — robots: None — desafio anti-robô (HTTP 403)
+- Brasil Sul Leilões — https://brasilsulleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Brasília Leilões (André G. B. Ignacio) — https://brasilialeiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Breno César Oliveira Farias — https://brfleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Brian Galvão Frota — https://gfleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Brian Galvão Frota — https://amazonasleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Caio De Carvalho Borges — https://grleiloes.com — robots: None — desafio anti-robô (HTTP 403)
+- Carla Karine Santos Agostinho — https://purcenaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Carlos Augusto Ribeiro Lima — https://infinityleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Carlos Chui — https://arremataronline.com.br — robots: None — HTTP 403
+- Carlos Gustavo Santos Fiel — https://c3leiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Carlos Pinna Da Conceição — https://cpkleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Carmen Gomes Pietoso — https://pietosoleiloes.lel.br — robots: None — desafio anti-robô (HTTP 403)
+- Carstens Leiloeiros — https://leiloeiro.online — robots: None — desafio anti-robô (HTTP 403)
+- Catiele Borges Leffa — https://leffaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Cecilia Delzeir Sobrinho — https://ceciliadelzeirleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Cencin Leilões — https://cencin.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Cintia Regina Martins Roma — https://corleiloes.com.br — robots: None — HTTP 403
+- Clauberto Fernandes Nascimento Júnior — https://hatoryleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Cleber Cardoso Pereira — https://clebercardosoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Cleci Amabile Levy Zago — https://zagoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Clécio Oliveira de Carvalho — https://leilaooficialonline.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Costa Neto Leiloeiro — https://costanetoleiloeiro.com.br — robots: None — HTTP 403
+- Cristiane de Almeida Rabelo Góis — https://argleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Cunha Leiloeiro (Hugo Cunha) — https://cunhaleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 200)
+- Daiane Fucks Pelentir — https://agilileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Daniel Schneider Chaieb — https://agenciadeleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Denilson Kiel — https://kielleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Deyse Scheerer Pietnozka Kultz — https://dsleiloes.com.br — robots: None — desafio anti-robô (HTTP 200)
+- DF Leilões (Fernando C. Tobias) — https://dfleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Diego Wolf De Oliveira — https://diegoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Dionir Bianchi — https://bianchileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Débora Regina Barz — https://deborabarzleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Dênis de Oliveira Fernandes — https://leiloeirodenis.com.br — robots: None — HTTP 403
+- Eco Leilões (loja Superbid) — https://superbid.net/loja-oficial/eco-leiloes-16185 — robots: None — desafio anti-robô (HTTP 403)
+- Eduardo Abreu Alves Barbosa — https://bestleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Eduardo Jesus Bordignon — https://leilopar.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Emílio Matos Rocha — https://emiliomatosleiloes.com.br — robots: None — HTTP 403
+- Erick Soares Teles — https://tezaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Erick Soares Teles — https://positivoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Erick Soares Teles — https://teza.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Erni Carlos Oro — https://oroleiloes.lel.br — robots: None — desafio anti-robô (HTTP 403)
+- Eustácio Medeiros Neves — https://eustacio.com.br — robots: None — HTTP 429
+- Eva Delminda Stangherlin — https://evaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Evandro Viegas Martins — https://martinsleiloes.com.br — robots: None — HTTP 403
+- Fabio Gomes Pietoso — https://pietosoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Felipe Frazão Leilões — https://felipefrazao.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Fernanda de Mello Franco — https://francoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Fernanda Ribeiro — https://ferleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Fernanda Von Zuccalmaglio — https://zuccalmaglioleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Fernando Caetano Moreira Filho — https://fernandoleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Fernando De Oliveira Kuss — https://ksleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Flavio Duarte Ceruli — https://leiloesceruli.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Flávio Alexandre Alves Da Costa e Silva — https://hastaleilao.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Francisco David Batista de Souza — https://franciscodavidleiloeiro.com.br — robots: None — HTTP 403
+- Francisco Hillesheim — https://alemaoleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Francisco Portela Aguiar — https://portelaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Franklin Leilões — https://franklinleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Frederico Albert Krausegg Neves — https://fredericoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Frederico Horácio De Luiz Lopes — https://arremateleiloesjudiciais.com.br — robots: None — desafio anti-robô (HTTP 403)
+- FV Leilões (Flávia Cardoso Soares) — https://fvleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Galvão Adenyr Lopes Junior — https://lancejusto.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Gilmar Thume — https://gtleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Giovana Norma Bólico — https://casamartillo.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Grupo Arremate Leilões — https://grupoarremateleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Guilherme Caixeta Borges — https://milhaoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Guilherme Da Costa — https://ckleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Gutemberg da Silva Araújo — https://gutembergaraujoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Hastas Leilões (Fabiana Rosa de Jesus) — https://hastasleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Helder Pereira De Figueiredo Junior — https://ipcleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Heloíse Santi Locatelli — https://locatelli.lel.br — robots: None — HTTP 403
+- Henrique Arnoldo Junior — https://arnoldoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Hélcio Kronberg — https://kronleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Icaro Alexandre Felfili Jardim — https://felfilileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Ilto Antonio Martins — https://vialeiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Imóveis e Bens — https://imoveisebens.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Ivana Montenegro Castelo Branco Rocha — https://patiorochaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jean Carlo Rosa — https://prosperarleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jefferson Adriano Da Costa — https://jacleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jimmy Asami — https://asamileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Joabe Balbino Da Silva — https://balbinoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Joel Augusto Picelli Filho — https://picellileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jonas Gabriel Antunes Moreira — https://jonasleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jorge Erli Ritta — https://jritta.lel.br — robots: None — desafio anti-robô (HTTP 403)
+- Jorge José João Filho — https://tradicaoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jorge Marco Aurelio Biavati — https://jorgemarcoleiloes.com.br — robots: None — desafio anti-robô (HTTP 200)
+- Jorge Vinicius De Moura Corrêa — https://renovarleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jorge Vinícius De Moura Corrêa — https://winleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jorge Vitorio Espolador — https://jeleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jose Ivan de Souza Rabelo / Sostenes de Almeida Rabelo — https://realizaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Josecelli Kildare Fraga Gomes — https://kildareleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- José Fernando De Quina — https://qleilao.lel.br — robots: None — desafio anti-robô (HTTP 403)
+- José Ivanildo de Sousa Damasceno — https://idleiloes.com.br — robots: None — HTTP 403
+- José Luis Pardo Santayana Cardoso — https://santayanaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- João Guilherme Cargnelutti — https://jgcargneluttileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- João Luiz de França Neto — https://jocaleiloesagro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- João Paulo Mineiro Bezerra — https://bezerraleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- João Vitor Martins Ferreira — https://jmfleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jucenara De Melo Vieira Bordignon — https://juleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- JudHastas (Regina Brotto) — https://judhastas.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Jussiara Santos Ermano Sukiennik — https://jussiaraleiloes.com — robots: None — desafio anti-robô (HTTP 403)
+- Kaio Albuquerque Rosa Botelho — https://duxleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Kátia Cerqueira da Silva Casaes — https://kcleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Laiza Machado De Oliveira Adri — https://adrileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Leandro Ferronato — https://ferronatoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Leila Nanci Karasiaki — https://lkleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Leilões RN — https://leiloesrn.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Leilões Tocantins — https://leiloestocantins.com — robots: None — desafio anti-robô (HTTP 403)
+- Leonardo Coelho Avelar — https://arrematabem.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Leonardo Veiga de Jesus Chaves — https://leonardoveigaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Leonardo Vieira Amaral — https://leilaonet.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Levy Dos Santos Moraes Filho — https://santosmoraesleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Levy Dos Santos Moraes Filho — https://leiloessantosmoraes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Levy Leilões — https://levyleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Lincoln de Azevedo Fernandes — https://lincolnleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Lorrana Ramos Mendes Gotardo — https://lorranaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Lotti Leilões — https://lottileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Lucas Ignacio Leilões — https://lucasignacioleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Lucas Rafael Antunes Moreira — https://lucasleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Luciano Scheid — https://scheidleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Luiz Barbosa De Lima Junior — https://lbleiloes.com.br — robots: None — desafio anti-robô (HTTP 200)
+- Luiz Carlos Dale Nogari Dos Santos — https://leilaosantos.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Luiz Odair Favareto — https://favaretoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Lídia Ribeiro De Andrade — https://mrl4leiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Maicon Rodrigues Itaboray — https://maiconleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Manoel Luiz Neves Velho — https://leilaobutia.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Mara Urzedo Leilão — https://maraurzedoleilao.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Marcello Pereira De Oliveira — https://mpleilao.com — robots: None — desafio anti-robô (HTTP 403)
+- Marcelo Emidio Ferreira Pierobom Silveira — https://silveiraleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Marcelo Souza Schonardie — https://marceloleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Marciano Barbieri — https://leiloeirobarbieri.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Marcos Antônio Tulio — https://tulioleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Marcos Leonardo de Mello Costa — https://marcoscostaleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Marcos Roberto Torres — https://3torresleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Marcus Vinicius Yoshimi Uebara — https://destakleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Maria Clarice De Oliveira — https://mariaclariceleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Maria Isabel Brito Mendes Palma Soeiro — https://isabelleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Marques Barreto Leilões — https://marquesbarretoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Marta Simone Shiokawa — https://shiokawaleiloes.com.br — robots: None — desafio anti-robô (HTTP 200)
+- Martha Helena Leiloeira — https://marthahelenaleiloeira.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Mauro Colodete — https://colodeteleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Mauro Marcello Leiloeiro — https://mauromarcello.lel.br — robots: None — desafio anti-robô (HTTP 403)
+- Maurício Gehm — https://mgleiloes-rs.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Maurício Rodrigo Back — https://backleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Michelli Felini Gal Lopes — https://michellileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Miguel Donha Junior — https://donhaleiloes.com — robots: None — desafio anti-robô (HTTP 403)
+- Miguel Paulo Rodrigues da Silva — https://ccjleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Moacira Leiloeira — https://moacira.lel.br — robots: None — desafio anti-robô (HTTP 403)
+- Mult Leilões (Fernando G. Costa) — https://multleiloes.com — robots: None — HTTP 403
+- Murilo Gonçalves Ramos — https://mgrleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Naio De Freitas Raupp — https://rauppleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Natália Leilões — https://natalialeiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Neila Rosane Ribeiro Dos Santos — https://nsleiloes.lel.br — robots: None — desafio anti-robô (HTTP 403)
+- Newton Jorge Gonçalves De Oliveira — https://newtonleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Next Leilões (loja Superbid) — https://superbid.net/loja-oficial/next-leiloes-16089 — robots: None — desafio anti-robô (HTTP 403)
+- Norma Maria Machado — https://machadoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Osvaldo Leilões (Osvaldo Seoanes) — https://osvaldoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Patricia Pimentel Grocoski Costa — https://pimentelleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Paulo Alexandre Heisler — https://bidgo.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Paulo Marcelo Silva Almeida — https://upleilao.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Paulo Marcelo Silva Almeida — https://upleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Pavani Leilões — https://pavanileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Poliana Mikejevs Calça — https://polileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- PSJ Leilões (Priscila Jordão) — https://psjleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Péricles Luciano Santos de Jesus — https://centraldosleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Rafael Cicolin — https://imperioleiloes.com — robots: None — desafio anti-robô (HTTP 403)
+- Rafael Danielewicz — https://rdleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Rafaela Santos Ribeiro do Vale — https://rafaelaribeiroleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Rangel Machado — https://rangelleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Renan Souza Silva — https://souzasilvaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Renan Souza Silva — https://silvaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Renato Schlobach Moyses — https://majudicial.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Ribeiro Leilões — https://ribeiroleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Rico Leilões (Sabrina Verrone) — https://ricoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Roberta Possani Zago — https://rzleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Rodrigo Leilões (Rodrigo O. B. Ignácio) — https://rodrigoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Rodrigo Zago Szortyka — https://szortykaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Rogério Bronzatto — https://bronzattoleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Rubem Rodrigues Garcia — https://rubemgarcia.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Rui Cesar Fernandes Pinto — https://ruipintoleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Sami Raicher — https://raicherleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Sanches Leilões — https://sanchesleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Scholante Leiloeiro — https://scholante.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Silvio Luiz Silva de Moura Leite — https://mlleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Spencer D'Avila Fogagnoli — https://spencerleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Sérgio Augusto Dos Santos — https://saleiloes.lel.br — robots: None — desafio anti-robô (HTTP 403)
+- Sérgio Roberto Pimentel Scholante — https://scholanteleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Thais Silva Moreira De Souza — https://tmleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- TKL Leilões (Turn Key) — https://tkl.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Total Leilões (loja Superbid) — https://superbid.net/loja-oficial/total-leiloes-16091 — robots: None — desafio anti-robô (HTTP 403)
+- Tribuna Leilões — https://tribunaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Tripoloni Leilões — https://tripolonileiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Tudo Vende Leilões (loja Superbid) — https://superbid.net/loja-oficial/tudo-vende-leiloes-16449 — robots: None — desafio anti-robô (HTTP 403)
+- Valdeir Aparecido Pereira — https://valdeirpereiraleiloeiro.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Vegas Leilões — https://vegasleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Vera Lúcia Aguiar de Sousa — https://leiloesaguiar.com.br — robots: None — desafio anti-robô (HTTP 403)
+- VIP Leilões – armazenamento de editais PRF — https://armazviplprd.blob.core.windows.net — robots: None — HTTP 400
+- Volnei Zaccarias — https://zaccariasleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Wendel Garcia Leiloeiro — https://wendelgarcia.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Wesley Oliveira Ascanio — https://tabaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- WSP Leilões — https://wspleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Zaccarino Leilões — https://zaccarino.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Álvaro Marques Teixeira — https://amtleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Ângela Assis Oliveira Bechara — https://angelabecharaleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Érica Cristina Alves — https://alvesleiloes.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Ítalo Leilões — https://italoleiloes.com — robots: None — desafio anti-robô (HTTP 403)
+- BBM Net Leilões (loja Superbid) — https://superbid.net/loja-oficial/bbm-net-leiloes-16131 — robots: None — desafio anti-robô (HTTP 403)
+- Bid Total — https://bidtotal.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Central Judicial — https://centraljudicial.com.br — robots: None — desafio anti-robô (HTTP 403)
+- Leiloei — https://leiloei.com — robots: None — HTTP 403
+- Leiloeiros.lel.br (portal) — https://leiloeiros.lel.br — robots: None — desafio anti-robô (HTTP 403)
+- Superbid web services (editais) — https://s.sbwebservices.net — robots: None — desafio anti-robô (HTTP 403)
+- V.Lance (plataforma) — https://vlance.com.br — robots: None — HTTP 403
+- TRT5 – Leilões — https://trt5.jus.br — robots: None — HTTP 403
+
+## FORA_DO_AR (150)
+
+- Adalberto Scherer Filho — https://schererleiloes.com.br — robots: None — erro: ConnectionError
+- Ademir Miguel Corrêa — https://correaleiloes.com.br — robots: None — erro: ConnectionError
+- AJ Leilões — https://ajleiloes.vlance.com.br — robots: None — erro: ConnectTimeout
+- Albino Leilões — https://albinoleiloes.com.br — robots: None — erro: ConnectionError
+- Alex Willian Hoppe — https://hoppeleiloes.com.br — robots: None — erro: ConnectionError
+- Alexandra Benedita de Sousa Casado — https://ecoleiloes.com.br — robots: None — erro: ConnectionError
+- Alexandre Paiva Frade — https://paivafrade.com.br — robots: None — HTTP 404
+- Alexsandro Pereira — https://alexsandroleiloes.com.br — robots: None — erro: ConnectTimeout
+- Almeida Leilões — https://almeidaleiloes.com.br — robots: None — erro: ConnectionError
+- Ana Paula Pincegher Brasil — https://paulobrasil.com.br — robots: None — erro: SSLError
+- André Bazacas Velho — https://leilaobutia.com — robots: None — erro: ConnectionError
+- Angélica Vilas Boas Nunes — https://vbleiloes.com.br — robots: None — erro: ConnectionError
+- Antonio Costa — https://acleiloes.com.br — robots: None — erro: ConnectionError
+- Antônio Ricardo Silva De Lara — https://leiloeslaraforster.com.br — robots: None — erro: ConnectTimeout
+- Aparecida Maria Fixer — https://fixerleiloes.com.br — robots: None — erro: ConnectionError
+- Arthur Da Silva Flores — https://floresleiloes.com.br — robots: None — erro: ConnectionError
+- Awto (leilão corporativo) — https://awto.vlance.com.br — robots: None — erro: ConnectionError
+- BCA Brasil Leilões — https://bca-brasil.com — robots: None — erro: ConnectionError
+- Best1 Leilões — https://best1leiloes.com.br — robots: None — erro: ConnectionError
+- Breno Augusto Magalhães da Anunciação — https://bmleiloes.com.br — robots: None — erro: ConnectionError
+- Camila Padilha Presotto — https://presottoleiloes.com.br — robots: None — erro: ConnectionError
+- Camila Pires de Oliveira Faria — https://farialeiloes.com.br — robots: None — erro: ConnectionError
+- Capital Leilões (Adriano S. Cardoso) — https://capitalleiloes.com.br — robots: None — erro: ConnectionError
+- Car Bizz Leilões — https://carbizz.com.br — robots: None — erro: ConnectionError
+- Carlos Alberto Andrade Dos Santos — https://carlosleiloes.com.br — robots: None — erro: ConnectionError
+- Carolina Trein Silveira — https://ctsleiloes.com.br — robots: None — erro: SSLError
+- Caroline Ferreira Barboza — https://bzleiloes.com.br — robots: None — erro: ConnectionError
+- Celso Cunha Leilões — https://celsocunhaleiloes.vlance.com.br — robots: None — erro: ConnectTimeout
+- Cesar Augusto Bagatini — https://federalleiloes.com — robots: None — erro: ConnectionError
+- Cesar Junior De Brito — https://britoleiloes.com.br — robots: None — erro: ConnectionError
+- Cira Marília Ferlin Dos Santos — https://aleiloeira.com.br — robots: None — erro: ConnectionError
+- Claudio Cesar Kuss — https://claudiokussleiloes.com.br — robots: None — erro: ConnectTimeout
+- Clever Elmes Milani — https://milanileiloes.com.br — robots: None — erro: ConnectionError
+- Cláudio Hensel Leilões — https://claudiohensel.com.br — robots: None — erro: ConnectTimeout
+- Cristine Krieger — https://kriegerleiloes.com.br — robots: None — erro: ConnectTimeout
+- Daniel Elias Garcia — https://dgleiloes.com.br — robots: None — erro: SSLError
+- Daniel Ribas Rosa Frahm — https://drrleiloes.com.br — robots: None — erro: ConnectionError
+- Danyele Lima Cavalcanti Lira — https://danyliraleiloes.com.br — robots: None — erro: ConnectionError
+- Davison Mauro Moreira — https://davisonmoreira.com.br — robots: None — erro: ConnectionError
+- Dílson Marcos Moreira — https://dilsonleiloeiro.com — robots: None — erro: ConnectionError
+- Eduardo Schmitz — https://clicleiloes.com — robots: None — erro: ConnectionError
+- Eduardo Sorgi Leiloeiro — https://eduardosorgileiloeiro.com.br — robots: None — erro: SSLError
+- Elaine Pinheiro Leilões — https://elainepinheiroleiloes.com.br — robots: None — erro: ConnectionError
+- Emidio José Correia de Medeiros — https://emidiomedeirosleiloes.com.br — robots: None — erro: ConnectionError
+- Erico Lages Soares — https://ericoleiloes.com.br — robots: None — erro: ConnectionError
+- Espaço Leilões (grupo Vizeu) — https://espacoleiloes.com.br — robots: None — erro: SSLError
+- Eu Amo Leilão (Nelson Bernardo Jr.) — https://euamoleilao.com.br — robots: None — erro: ConnectionError
+- Evandro Schaeffer Muck — https://muckleiloes.com.br — robots: None — erro: ConnectionError
+- Evanir Rocha Muniz — https://emleiloes.com.br — robots: None — erro: ConnectionError
+- Fabio Prando Fagundes Goes — https://apiceleiloes.com — robots: None — erro: ConnectionError
+- Fernando Rodrigues Benvenho — https://planoleiloes.com.br — robots: None — erro: ConnectionError
+- Freitas Leilões Online — https://freitasleiloesonline.com.br — robots: None — erro: ConnectionError
+- Garcia Leilões — https://garcialeiloes.lel.br — robots: None — erro: ConnectionError
+- Gerson Anor Borin Da Silva Neto — https://gersonborinleiloeiro.com.br — robots: None — erro: ConnectionError
+- Giovana Norma Bolico — https://cmartillo.com.br — robots: None — erro: ConnectionError
+- Giselle Fernanda Stefanelli Campos Souza — https://leiloestefanelli.com.br — robots: None — erro: ConnectionError
+- Guariglia Leilões — https://guariglia.com.br — robots: None — erro: SSLError
+- Guilherme De Araújo Domingos — https://gdleiloes.com.br — robots: None — erro: ConnectionError
+- Guilherme Lopes de Souza — https://leilominas.com.br — robots: None — erro: ConnectionError
+- Guilherme Luis De Souza Felicio — https://elance.com.br — robots: None — erro: ConnectionError
+- Guilherme Luiz Peles — https://pelesleiloeiro.com.br — robots: None — erro: ConnectionError
+- Gustavo Moretto Guimarães De Oliveira — https://gustavomorettoleiloeiro.com.br — robots: None — erro: SSLError
+- Helen Pestile Pereira de Souza — https://pestileleiloes.com.br — robots: None — erro: ConnectionError
+- Hermes Benedito Alexius — https://alexiusleiloes.com.br — robots: None — erro: ConnectionError
+- Hiperlance Leilões — https://hiperlance.com.br — robots: None — erro: ConnectionError
+- Hugo Moreira Pimenta — https://moreirapimenta.com — robots: None — erro: SSLError
+- Hugo Moreira Pimenta — https://leilaomanaus.lel.br — robots: None — erro: ConnectionError
+- Iwer Bruno Cividini — https://cividinileiloes.com.br — robots: None — erro: ConnectionError
+- Jailson Rodrigues Silva — https://jotaerreleiloes.com.br — robots: None — erro: ConnectionError
+- Janete Marques Roland — https://versallesleiloes.com.br — robots: None — erro: ConnectionError
+- Jaqueline Sperança — https://sperancaleiloes.com.br — robots: None — erro: ConnectionError
+- Jeremy Wu Santiago Da Costa E Silva — https://jeremyleiloes.com.br — robots: None — erro: ConnectionError
+- Joacir Monzon Pouey — https://monzonleiloes.com.br — robots: None — erro: ConnectionError
+- Joel Da Silva Reis — https://gramadoleiloes.com.br — robots: None — erro: ConnectionError
+- Joel Da Silva Reis — https://joelreisleiloes.com.br — robots: None — erro: ConnectTimeout
+- Jorge Ferlin Dale Nogari Dos Santos — https://nogari.com.br — robots: None — erro: ConnectionError
+- Jose Luiz Marchiotto Junior — https://zemarchiottoleiloes.com.br — robots: None — erro: ConnectionError
+- José Paulo Pereira Carvalho Bonatto — https://leiloeirobonato.com — robots: None — erro: ConnectionError
+- JP Leilões — https://jpleiloes.lel.br — robots: None — erro: ConnectionError
+- Juliano Zenzeluk — https://jzleiloes.com.br — robots: None — erro: ConnectionError
+- Leal Leilões (Dalton Leal) — https://lealleiloes.com.br — robots: None — erro: ConnectionError
+- Leandro Alvanês Vicente — https://leandroleiloes.lel.br — robots: None — erro: ConnectionError
+- Leilões Albino — https://leiloesalbino.com.br — robots: None — HTTP 404
+- Leonardo Lopes Tirloni — https://tirlonileiloes.com.br — robots: None — erro: ConnectionError
+- Liliamar Fátima Parmeggiani Pestana Marques Gomes — https://leiloes.com.br — robots: None — erro: SSLError
+- Luci Vera Primaz Dos Reis — https://luciveraleiloes.com.br — robots: None — erro: ConnectionError
+- Luciano Bilibio Nassralah — https://lbnleiloes.com.br — robots: None — erro: ConnectionError
+- Luiz Carlos Dall'Agnol — https://dallagnolleiloes.com.br — robots: None — erro: ConnectionError
+- Luiz Rafael Lemuchi De Lima — https://leiloeslr.com.br — robots: None — erro: ConnectionError
+- Luiz Roberto Brenneken — https://lubreleiloes.com.br — robots: None — erro: ConnectionError
+- Luiz Washington Campolina Santos — https://luizcampolina.com.br — robots: None — HTTP 503
+- Mais Ativo Judicial — https://maisativojudicial.com.br — robots: None — erro: ConnectionError
+- Marcelo Henrique Perraro — https://leiloeirojudicial.lel.br — robots: None — erro: ConnectionError
+- Marcelo Miranda Santos — https://m7leiloes.com.br — robots: None — erro: SSLError
+- Marcelo Soares Rodrigues — https://marcelosoaresleiloes.com.br — robots: None — erro: ConnectionError
+- Marciano Aguiar Carneiro — https://vecchileiloes.com — robots: None — erro: ConnectionError
+- Marciano Mauro Pagliarini — https://pagliarinileiloes.com.br — robots: None — erro: ConnectionError
+- Marcos Augusto Da Silva Menezes — https://mmleiloes.com — robots: None — erro: ConnectionError
+- Marcos Paulo Branco de Morais — https://saladeleiloes.com.br — robots: None — HTTP 526
+- Mariana Gouvêa Lessa — https://vipleiloes.net.br — robots: None — erro: ConnectionError
+- Marilene Colussi Biolchi — https://marileiloeira.com.br — robots: None — erro: ConnectionError
+- Maritana Copatti Lauermann — https://leiloeiramcl.com.br — robots: None — erro: ConnectionError
+- Mateus Da Silva — https://mateusleiloes.com.br — robots: None — erro: ConnectionError
+- Maurice da Silva Oliveira — https://msoleiloes.com.br — robots: None — erro: ConnectionError
+- Mauro Leilões — https://mauroleiloes.com.br — robots: None — erro: ConnectionError
+- Maurício André Lunelli — https://lunellileiloes.com.br — robots: None — erro: ConnectTimeout
+- Max Leilões (Paulo Worm) — https://maxleiloes.com.br — robots: None — erro: SSLError
+- Melhor Oferta — https://melhor-oferta.vlance.com.br — robots: None — erro: ConnectionError
+- Mike Dutra Fleitas — https://mikedutraleiloeiro.com.br — robots: None — erro: ConnectionError
+- Mult Leilões — https://multleiloes.vlance.com.br — robots: None — erro: ConnectionError
+- Márcia Cristina dos Santos Silva — https://lamurleiloes.com.br — robots: None — erro: ConnectionError
+- Márcio André Koetz Flesch — https://leiloesdosul.com.br — robots: None — erro: ConnectTimeout
+- Norton Jochims Fernandes — https://nortonleiloes.com.br — robots: None — erro: ConnectTimeout
+- OMC Leilões (Otávio Colucci) — https://omcleiloes.com.br — robots: None — erro: ConnectionError
+- Orlando Lopes Fernandes — https://leilobras.lel.br — robots: None — HTTP 500
+- Pacto BR — https://ww2.pactobr.com — robots: None — erro: ConnectionError
+- Pacto Leilões Fortaleza — https://auctionfortaleza.com.br — robots: None — erro: ConnectionError
+- Patricia Graziela De Melo Barcellos — https://barcellos.lel.br — robots: None — erro: ConnectionError
+- Patrique Ademar Santos Brambilla — https://brambillaleiloes.com.br — robots: None — erro: ConnectionError
+- Pedro Do Prado Utzig — https://utzigleiloes.com.br — robots: None — erro: ConnectionError
+- Pedro Mesquita Da Cruz — https://evolveleiloes.com — robots: None — erro: SSLError
+- Proju Leilões (Carlos Campanha) — https://projuleiloes.com.br — robots: None — erro: ConnectionError
+- Ricardo Giacomello Cobalchini — https://cobalchinileiloes.com.br — robots: None — erro: ConnectionError
+- Rodrigo Schmitz — https://hleiloes.com — robots: None — erro: ConnectionError
+- Rogério Ito Gomes — https://gomesleiloes.com.br — robots: None — erro: ConnectionError
+- Ruam Carlos Chaves Gotardo — https://serranaleiloes.com.br — robots: None — erro: SSLError
+- Sergio Fleury Batista — https://portalleilomaster.com.br — robots: None — erro: ConnectTimeout
+- Sergio Santiago Da Silva — https://auerusleiloes.com.br — robots: None — erro: ConnectionError
+- Seven Leilões — https://sevenleiloes.com.br — robots: None — erro: ConnectionError
+- Soma Leilões — https://somaleiloes.com.br — robots: None — erro: SSLError
+- SSOL (Sodré Santoro Online) — https://ssol.com.br — robots: None — erro: SSLError
+- Suzana Carvalho Leilões — https://suzanacarvalholeiloes.com — robots: None — erro: ConnectionError
+- Tarciso Tosi Peixoto — https://leiloesmt.com.br — robots: None — erro: ConnectionError
+- Thiago Xisto Gris — https://xistoleiloes.com.br — robots: None — erro: ConnectionError
+- Uesley Da Silva Oliveira Dos Santos — https://carrollruralleiloes.com.br — robots: None — erro: ConnectionError
+- Varones Pasqual Drabach Filho — https://vdleiloes.com.br — robots: None — erro: ConnectionError
+- Vera Leilões — https://veraleiloes.com.br — robots: None — erro: ConnectionError
+- Vicente De Paula Xavier Filho — https://vicenteleiloes.com.br — robots: None — erro: ConnectionError
+- Vilmar Bertoncello — https://bertoncello.lel.br — robots: None — erro: ConnectionError
+- Vizeu Online — https://vizeuonline.com.br — robots: None — erro: ConnectionError
+- Walison Neves Da Silva — https://nevesleiloes.com.br — robots: None — erro: ConnectionError
+- Willian Leilões — https://willianleiloes.vlance.com.br — robots: None — erro: ConnectTimeout
+- Ômega Leilões — https://omegaleiloes.com.br — robots: None — erro: SSLError
+- Bom Valor Judicial — https://bomvalorjudicial.vlance.com.br — robots: None — erro: ConnectionError
+- Cesvi Brasil Leilões — https://leiloes.cesvibrasil.com.br — robots: None — erro: ConnectTimeout
+- Jornal dos Leilões — https://jornaldosleiloes.com.br — robots: None — erro: ConnectionError
+- Premium Leilões — https://premiumleiloes.com.br — robots: None — erro: ConnectionError
+- Resale (leilão público comercial) — https://resale.vlance.com.br — robots: None — erro: ConnectionError
+- Recife – Prefeitura leilões — https://recife.pe.gov.br — robots: None — erro: ConnectionError
+- TJAM – Leilões — https://tjam.jus.br — robots: None — erro: ConnectionError
