@@ -1,5 +1,7 @@
 """
-SOLIDUNS — TRIAGEM DE LEILOEIROS — v1.0 (16/10/2026)
+SOLIDUNS — TRIAGEM DE LEILOEIROS — v1.1 (16/10/2026)
+
+v1.1: com o campo "so" preenchido, guarda o texto dos termos de uso em triagem/termos/<site>.txt.
 
 Pedido do Thiago (16/10 19h44, "PODE SEGUIR"): antes de ligar qualquer fonte nova, conferir se o site
 segue no ar e se a coleta é permitida (regra permanente do projeto). NÃO coleta lotes: só lê a página
@@ -34,6 +36,7 @@ import requests
 from bs4 import BeautifulSoup
 
 RAIZ = Path(__file__).resolve().parent.parent
+GUARDAR_TEXTO = bool((os.environ.get("TRIAGEM_SO") or "").strip())
 UA = "SOLIDUNS-triagem/1.0 (+https://soliduns.com.br; verificacao de robots.txt e termos de uso)"
 UA_NAV = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36"
 PAUSA, TIMEOUT = 2.0, 25
@@ -134,6 +137,8 @@ def triar(f):
             continue
         texto = " ".join(BeautifulSoup(t.text, "html.parser").get_text(" ").split()) if "html" in (t.headers.get("content-type") or "") else ""
         out["termos"].append(href)
+        if GUARDAR_TEXTO and texto:                   # v1.1: com filtro "so", guarda o texto dos termos para leitura humana
+            out.setdefault("textos", []).append({"pagina": href, "texto": texto[:40000]})
         m = RE_PROIBE.search(texto)
         if m:
             ini = max(0, m.start() - 120)
@@ -168,6 +173,14 @@ def main():
             res.append(o)
             print(f"[{i}/{len(cand)}] {o['classe']:20s} {o['nome']} — {o['nota']}", flush=True)
     SAIDA.mkdir(exist_ok=True)
+    if GUARDAR_TEXTO:
+        (SAIDA / "termos").mkdir(exist_ok=True)
+        for o in res:
+            if o.get("textos"):
+                nome = re.sub(r"[^a-z0-9]+", "-", sem_acento(o["nome"]).lower()).strip("-")
+                (SAIDA / "termos" / f"{nome}.txt").write_text(
+                    "\n\n".join(f"=== {t['pagina']}\n{t['texto']}" for t in o["textos"]), encoding="utf-8")
+            o.pop("textos", None)
     (SAIDA / "resultado.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
     from collections import Counter
     c = Counter(o["classe"] for o in res)
