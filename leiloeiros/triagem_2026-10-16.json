@@ -1,0 +1,3059 @@
+[
+ {
+  "nome": "Banco da Amazônia – Leilões de Imóveis",
+  "url": "https://bancoamazonia.com.br/licitacao/leiloes-de-imoveis",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "Norte",
+  "status": 200,
+  "url_final": "https://www.bancoamazonia.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://www.bancoamazonia.com.br/rural/credito-e-financiamento-agro/capital-de-giro-produtor-rural",
+   "https://www.bancoamazonia.com.br/o-banco/privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Banco do Nordeste – Bens à Venda",
+  "url": "https://bnb.gov.br/acesso-a-informacao/licitacoes-e-contratos/bens-a-venda",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "Nordeste",
+  "status": 200,
+  "url_final": "https://bnb.gov.br/acesso-a-informacao/licitacoes-e-contratos/bens-a-venda",
+  "robots": "permite",
+  "termos": [
+   "https://bnb.gov.br/web/guest/termos-e-condicoes-de-uso",
+   "https://bnb.gov.br/web/guest/privacidade-e-protecao-de-dados",
+   "https://bnb.gov.br/web/guest/aviso-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Bandes – Leilão de Imóveis",
+  "url": "https://bandes.com.br/Site/Dinamico/Show/315/Leilao-de-Imoveis",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "ES",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectionError"
+ },
+ {
+  "nome": "Banestes – Alienação de Imóveis",
+  "url": "https://banestes.com.br/publicacoes_legais/leilao-bem-imovel.html",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "ES",
+  "status": 200,
+  "url_final": "https://banestes.com.br/publicacoes_legais/leilao-bem-imovel.html",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Banrisul – Bens à venda",
+  "url": "https://banrisul.com.br/bob/site/link/bens-a-venda.html",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RS",
+  "status": 200,
+  "url_final": "https://banrisul.com.br/bob/site/link/bens-a-venda.html",
+  "robots": "permite",
+  "termos": [
+   "https://banrisul.com.br/bob/site/link/politica-de-relacionamento.html",
+   "https://banrisul.com.br/bob/site/link/seguranca.html",
+   "https://banrisul.com.br/bob/site/link/politica-de-privacidade.html"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "BNDES – Leilões",
+  "url": "https://bndes.gov.br/wps/portal/site/home/transparencia/licitacoes-contratos/licitacoes/leiloes",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "nacional",
+  "status": 200,
+  "url_final": "https://bndes.gov.br/wps/portal/site/home/transparencia/licitacoes-contratos/licitacoes/leiloes",
+  "robots": "permite",
+  "termos": [
+   "https://bndes.gov.br/wps/portal/site/home/acesso-a-informacao/termos-de-uso-e-politica-de-privacidade-do-site-do-bndes"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Bradesco – Imóveis e Veículos em Leilão",
+  "url": "https://banco.bradesco/html/classic/produtos-servicos/leiloes/index.shtm",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "nacional",
+  "status": 200,
+  "url_final": "https://banco.bradesco/html/classic/produtos-servicos/leiloes/index.shtm",
+  "robots": "permite",
+  "termos": [
+   "https://vitrinebradesco.com.br/",
+   "https://www.bradescoseguranca.com.br/html/seguranca_corporativa/pf/seguranca-informacao/privacidade.shtm",
+   "https://banco.bradesco/seguranca/seguranca-da-informacao/privacidade.shtm"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Feirão BRB",
+  "url": "https://feiraobrb.com.br",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "DF",
+  "status": 200,
+  "url_final": "https://feiraobrb.com.br/",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Imóveis Itaú",
+  "url": "https://itau.com.br/imoveis-itau",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "nacional",
+  "status": 403,
+  "url_final": "https://itau.com.br/imoveis-itau",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Porto Seguro Leilões",
+  "url": "https://portoseguro.com.br/leiloes",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "Nacional",
+  "status": 404,
+  "url_final": "https://www.portoseguro.com.br/leiloes",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "HTTP 404"
+ },
+ {
+  "nome": "Santander Imóveis",
+  "url": "https://santanderimoveis.com.br",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "nacional",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectionError"
+ },
+ {
+  "nome": "Sicoob – Leilão",
+  "url": "https://sicoob.com.br/web/sicoob/leilao",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "nacional",
+  "status": 200,
+  "url_final": "https://www.sicoob.com.br/web/sicoob/leilao",
+  "robots": "permite",
+  "termos": [
+   "https://www.sicoob.com.br/web/sicoob/relatorios",
+   "https://www.sicoob.com.br/web/sicoob/lgpd-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Sicredi (por cooperativa)",
+  "url": "https://sicredi.com.br/coop/rotadasterras/leiloes/",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "Sul/Centro-Oeste",
+  "status": 404,
+  "url_final": "https://www.sicredi.com.br/coop/rotadasterras/leiloes/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "HTTP 404"
+ },
+ {
+  "nome": "Vitrine de Leilões Bradesco",
+  "url": "https://vitrinebradesco.com.br",
+  "grupo": "Banco / seguradora",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "Nacional",
+  "status": 200,
+  "url_final": "https://vitrinebradesco.com.br/",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Detran-AL",
+  "url": "https://detran.al.gov.br (editais em static.detran.al.gov.br)",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "AL",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: InvalidURL"
+ },
+ {
+  "nome": "Detran-BA",
+  "url": "https://ba.gov.br/detran",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "BA",
+  "status": 200,
+  "url_final": "https://www.ba.gov.br:443/detran/",
+  "robots": "permite",
+  "termos": [
+   "https://www.ba.gov.br/termos-condicoes",
+   "https://www.ba.gov.br:443/detran/contratos?field_categorias_editais_target_id=8&field_categoria_contrato_target_id=All&field_situacao_contrato_target_id=All&field_data_inicio_value%5Bdate%5D=&field_data_final_value%5Bdate%5D=&field_valor_inicial_value=&field_valor_atual_value=&field_cnpj_cpf_value=&combine=",
+   "https://www.ba.gov.br/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": "redireciona para www.ba.gov.br:443; "
+ },
+ {
+  "nome": "Detran-CE",
+  "url": "https://ce.gov.br/detran",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "CE",
+  "status": 200,
+  "url_final": "https://www.ce.gov.br/detran/",
+  "robots": "sem robots.txt (HTTP 403)",
+  "termos": [
+   "https://www.ce.gov.br/termos-de-uso-e-aviso-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Detran-DF",
+  "url": "https://detran.df.gov.br/leiloes-realizados/",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "DF",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ReadTimeout"
+ },
+ {
+  "nome": "Detran-GO",
+  "url": "https://goias.gov.br/detran/leiloes/",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "GO",
+  "status": 200,
+  "url_final": "https://goias.gov.br/detran/leiloes/",
+  "robots": "permite",
+  "termos": [
+   "https://legisla.casacivil.go.gov.br/pesquisa_legislacao?termo=departamento%20estadual%20de%20tr%C3%A2nsito&pagina=1&qtd_por_pagina=10",
+   "https://legisla.casacivil.go.gov.br/pesquisa_ato_infralegal?orgao_emissor=17&ano&busca_avancada=1"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Detran-MA",
+  "url": "https://detran.ma.gov.br",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "MA",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectionError"
+ },
+ {
+  "nome": "Detran-MG",
+  "url": "https://detran.mg.gov.br/veiculos/leiloes/calendario-de-leiloes-2026",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "MG",
+  "status": 200,
+  "url_final": "https://detran.mg.gov.br/veiculos/leiloes/calendario-de-leiloes-2026",
+  "robots": "veta tudo",
+  "termos": [],
+  "proibicao": null,
+  "classe": "SO_COM_AUTORIZACAO",
+  "nota": "robots.txt veta"
+ },
+ {
+  "nome": "Detran-MS",
+  "url": "https://detran.ms.gov.br",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "MS",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectionError"
+ },
+ {
+  "nome": "Detran-PB",
+  "url": "https://detran.pb.gov.br",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "PB",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectTimeout"
+ },
+ {
+  "nome": "Detran-PE",
+  "url": "https://detran.pe.gov.br",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "PE",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectionError"
+ },
+ {
+  "nome": "Detran-PR",
+  "url": "https://detran.pr.gov.br/leilaodeveiculos",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "PR",
+  "status": 200,
+  "url_final": "https://www.detran.pr.gov.br/Pagina/Leiloes-publicos",
+  "robots": "permite",
+  "termos": [
+   "https://www.detran.pr.gov.br/Pagina/Leiloes-publicos#edit-termo"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Detran-RJ",
+  "url": "https://www5.detran.rj.gov.br",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RJ",
+  "status": 200,
+  "url_final": "https://www5.detran.rj.gov.br/",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Detran-RO",
+  "url": "https://leilaoonline.detran.ro.gov.br",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RO",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: SSLError"
+ },
+ {
+  "nome": "Detran-SP",
+  "url": "https://detran.sp.gov.br (Informações > Editais de Leilão)",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: InvalidURL"
+ },
+ {
+  "nome": "DetranRS",
+  "url": "https://detran.rs.gov.br/calendario-leiloes",
+  "grupo": "DETRAN",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RS",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectTimeout"
+ },
+ {
+  "nome": "Agostinho Leilões",
+  "url": "https://agostinholeiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "MG",
+  "status": 403,
+  "url_final": "https://agostinholeiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Agência de Leilões Freire",
+  "url": "https://leiloesfreire.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "PE",
+  "status": 200,
+  "url_final": "https://www.leiloesfreire.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://www.leiloesfreire.com.br/aviso-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Akimoto Leilões",
+  "url": "https://akimotoleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 200,
+  "url_final": "https://akimotoleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://akimotoleiloes.com.br/index/termos-uso",
+   "https://akimotoleiloes.com.br/index/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Alberto Lopes",
+  "url": "https://albertolopesleiloeiro.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RJ",
+  "status": 200,
+  "url_final": "https://albertolopesleiloeiro.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://albertolopesleiloeiro.com.br/termosuso.asp",
+   "https://albertolopesleiloeiro.com.br/politica.asp"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Alessandra Leilões",
+  "url": "https://alessandraleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 200,
+  "url_final": "https://alessandraleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://alessandraleiloes.com.br/index/termos-uso",
+   "https://alessandraleiloes.com.br/index/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Alessandro Teixeira Leilões",
+  "url": "https://alessandroteixeiraleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 200,
+  "url_final": "https://alessandroteixeiraleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://alessandroteixeiraleiloes.com.br/index/termos-uso",
+   "https://alessandroteixeiraleiloes.com.br/index/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Alexandro Lacerda",
+  "url": "https://alexandroleiloeiro.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RJ",
+  "status": 200,
+  "url_final": "https://alexandroleiloeiro.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://alexandroleiloeiro.com.br/termos-uso",
+   "https://alexandroleiloeiro.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Andrade Leilões",
+  "url": "https://andradeleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 403,
+  "url_final": "https://andradeleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Aragão Leilões",
+  "url": "https://aragaoleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "PE",
+  "status": 403,
+  "url_final": "https://aragaoleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Arremate Leilão",
+  "url": "https://arremateleilao.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectionError"
+ },
+ {
+  "nome": "Bahia Leilões",
+  "url": "https://bahialeiloes.lel.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "BA",
+  "status": 200,
+  "url_final": "https://bahialeiloes.lel.br/",
+  "robots": "permite",
+  "termos": [
+   "https://bahialeiloes.lel.br/termosuso.asp",
+   "https://bahialeiloes.lel.br/politica.asp"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Bruno Leilões",
+  "url": "https://brunoleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 200,
+  "url_final": "https://brunoleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://brunoleiloes.com.br/index/termos-uso",
+   "https://brunoleiloes.com.br/index/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "BSB Leilões",
+  "url": "https://bsbleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "DF",
+  "status": 200,
+  "url_final": "https://www.bsbleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://www.bsbleiloes.com.br/termos-e-condicoes",
+   "https://www.bsbleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Buaiz Leilões",
+  "url": "https://buaizleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "ES",
+  "status": 200,
+  "url_final": "https://buaizleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://buaizleiloes.com.br/termos-uso",
+   "https://buaizleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Calil Leilões",
+  "url": "https://calilleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 403,
+  "url_final": "https://calilleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Capital Valor Leilões",
+  "url": "https://capitalvalorleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 200,
+  "url_final": "https://capitalvalorleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://capitalvalorleiloes.com.br/index/termos-uso",
+   "https://capitalvalorleiloes.com.br/index/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Cargnelutti Leilões",
+  "url": "https://cargneluttileiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "RS",
+  "status": 403,
+  "url_final": "https://cargneluttileiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Carlo Ferrari Leiloeiro",
+  "url": "https://carloferrarileiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 200,
+  "url_final": "https://carloferrarileiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://carloferrarileiloes.com.br/index/termos-uso",
+   "https://carloferrarileiloes.com.br/index/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Cassiano Leilões",
+  "url": "https://cassianoleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "PE/NE",
+  "status": 403,
+  "url_final": "https://cassianoleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Central Sul de Leilões",
+  "url": "https://centralsuldeleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RS/SC",
+  "status": 200,
+  "url_final": "https://www.centralsuldeleiloes.com.br:443/",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "redireciona para www.centralsuldeleiloes.com.br:443; termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Chui Leilões",
+  "url": "https://chuileiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectionError"
+ },
+ {
+  "nome": "Claudio Kuss Leilões",
+  "url": "https://claudiokuss.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "Curitiba/PR",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectionError"
+ },
+ {
+  "nome": "Coliseum Leilões",
+  "url": "https://coliseumleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "PE",
+  "status": 200,
+  "url_final": "https://www.coliseumleiloes.com.br/site/index.php",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://www.coliseumleiloes.com.br/site/regulamento.php"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Compra Certa Leilões",
+  "url": "https://compracertaleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 403,
+  "url_final": "https://compracertaleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Construbem Leilões",
+  "url": "https://construbemleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 403,
+  "url_final": "https://construbemleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Cravo Leilões",
+  "url": "https://cravoleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "BA",
+  "status": 403,
+  "url_final": "https://cravoleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Daux Leilões",
+  "url": "https://daux.com",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "SC",
+  "status": 200,
+  "url_final": "https://daux.com/",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "EBL Online",
+  "url": "https://eblonline.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "AP",
+  "status": 403,
+  "url_final": "https://eblonline.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Edgar de Carvalho",
+  "url": "https://edgarcarvalholeiloeiro.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RJ",
+  "status": 200,
+  "url_final": "https://edgarcarvalholeiloeiro.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://edgarcarvalholeiloeiro.com.br/pagina"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Em Leilão",
+  "url": "https://emleilao.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 200,
+  "url_final": "https://emleilao.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://emleilao.com.br/termos-uso",
+   "https://emleilao.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "ES Leilões",
+  "url": "https://esleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "ES",
+  "status": 200,
+  "url_final": "https://esleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://esleiloes.com.br/termos-uso",
+   "https://esleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "FA Leilões",
+  "url": "https://faleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "MT",
+  "status": 403,
+  "url_final": "https://faleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Federal Leilões",
+  "url": "https://leiloesfederal.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "DF",
+  "status": 403,
+  "url_final": "https://leiloesfederal.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Fernanda Leilões",
+  "url": "https://fernandaleiloes.lel.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "RS",
+  "status": 403,
+  "url_final": "https://fernandaleiloes.lel.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Ferreira Leilões",
+  "url": "https://ferreiraleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "MG",
+  "status": 403,
+  "url_final": "https://ferreiraleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Flex Leilões",
+  "url": "https://flexleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "DF",
+  "status": 200,
+  "url_final": "https://www.flexleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Flávio Costa Leilões",
+  "url": "https://flaviocostaleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "PE",
+  "status": 403,
+  "url_final": "https://flaviocostaleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Gestor Leilões",
+  "url": "https://gestorleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "RS",
+  "status": 200,
+  "url_final": "https://www.gestorleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://www.gestorleiloes.com.br/termos-e-condicoes",
+   "https://www.gestorleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Giordano Leilões",
+  "url": "https://giordanoleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 200,
+  "url_final": "https://giordanoleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://giordanoleiloes.com.br/index/termos-uso",
+   "https://giordanoleiloes.com.br/index/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Globo Leilões",
+  "url": "https://globoleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c / nacional",
+  "status": 403,
+  "url_final": "https://globoleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Granado Leilões",
+  "url": "https://granadoleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 403,
+  "url_final": "https://granadoleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Grandes Leilões",
+  "url": "https://grandesleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "RS",
+  "status": 200,
+  "url_final": "https://www.grandesleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://www.grandesleiloes.com.br/termos-e-condicoes",
+   "https://www.grandesleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Grupo Carvalho Leilões",
+  "url": "https://grupocarvalholeiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 200,
+  "url_final": "https://www.grupocarvalholeiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://www.grupocarvalholeiloes.com.br/termos-de-uso",
+   "https://www.grupocarvalholeiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Gustavo Lourenço Leiloeiro",
+  "url": "https://gustavoleiloeiro.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RJ",
+  "status": 200,
+  "url_final": "https://gustavoleiloeiro.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://gustavoleiloeiro.com.br/termos-uso",
+   "https://gustavoleiloeiro.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Hammer Casa de Leilões",
+  "url": "https://hammer.lel.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 403,
+  "url_final": "https://hammer.lel.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Hasta Leilões",
+  "url": "https://hastaleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "BA (n/c)",
+  "status": 403,
+  "url_final": "https://hastaleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Hasta Pública Leilões",
+  "url": "https://hastapublica.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 200,
+  "url_final": "https://hastapublica.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://www.hastapublica.com.br/leilao/18633/Secretaria-Nacional-de-Políticas-Sobre-Drogas-Policia-Federal",
+   "https://hastapublica.com.br/privacidade/"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Innova Leilões",
+  "url": "https://innovaleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "GO",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: SSLError"
+ },
+ {
+  "nome": "Isaias Jr. Leiloeiro (JUCEMG 831)",
+  "url": "https://isaiasleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "MG",
+  "status": 403,
+  "url_final": "https://isaiasleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Joyce Ribeiro Leilões",
+  "url": "https://jrleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RS",
+  "status": 200,
+  "url_final": "https://jrleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://jrleiloes.com.br/index/politica-privacidade",
+   "https://906de634c48fb7d34136160b4c353ae4.s3.sa-east-1.amazonaws.com/public/jrleiloes/layout/regras_joyce.pdf"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "João Emílio Leiloeiros",
+  "url": "https://joaoemilio.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "RJ",
+  "status": 403,
+  "url_final": "https://joaoemilio.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "João Luiz Leilões",
+  "url": "https://joaoluizleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "PR",
+  "status": 403,
+  "url_final": "https://joaoluizleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Juliana Vettorazzo Leiloeira",
+  "url": "https://jvleiloes.lel.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RJ",
+  "status": 403,
+  "url_final": "https://jvleiloes.lel.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Lance Certo Leilões",
+  "url": "https://lancecertoleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RN/PE",
+  "status": 200,
+  "url_final": "https://www.lancecertoleiloes.com.br/home",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Lance Já",
+  "url": "https://lanceja.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 403,
+  "url_final": "https://lanceja.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Lance Leilões",
+  "url": "https://lanceleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 403,
+  "url_final": "https://lanceleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Lance SE",
+  "url": "https://lancese.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SE",
+  "status": 403,
+  "url_final": "https://lancese.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Lance Total",
+  "url": "https://lancetotal.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 403,
+  "url_final": "https://lancetotal.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Lance VIP",
+  "url": "https://lancevip.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RO",
+  "status": 200,
+  "url_final": "https://lancevip.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://lancevip.com.br/termos-de-uso",
+   "https://lancevip.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Lecape Leilões",
+  "url": "https://lecapeleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "SP",
+  "status": 403,
+  "url_final": "https://lecapeleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Legis Leilões",
+  "url": "https://legisleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "SP",
+  "status": 403,
+  "url_final": "https://legisleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "LeiloMaster",
+  "url": "https://leilomaster.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "Goiânia/GO",
+  "status": 200,
+  "url_final": "https://leilo.com.br/",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "redireciona para leilo.com.br; termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Leilão Brasil",
+  "url": "https://leilaobrasil.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 200,
+  "url_final": "https://leilaobrasil.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://leilaobrasil.com.br/termos-uso",
+   "https://leilaobrasil.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Leilão Pernambuco",
+  "url": "https://leilaopernambuco.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "PE",
+  "status": 403,
+  "url_final": "https://leilaopernambuco.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Leilão VIP",
+  "url": "https://leilaovip.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "SP / nacional",
+  "status": 200,
+  "url_final": "https://www.leilaovip.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://www.leilaovip.com.br/politicaprivacidade/index"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Leilões Araújo",
+  "url": "https://leiloesaraujo.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "Nordeste (n/c)",
+  "status": 200,
+  "url_final": "https://leiloesaraujo.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://leiloesaraujo.com.br/termos-de-uso",
+   "https://leiloesaraujo.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Leilões Brasil",
+  "url": "https://leiloesbrasil.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "GO",
+  "status": 200,
+  "url_final": "https://www.leiloesbrasil.com.br/",
+  "robots": "sem robots.txt (HTTP 403)",
+  "termos": [
+   "https://www.leiloesbrasil.com.br/leilao-online/regulamento",
+   "https://www.leiloesbrasil.com.br/leilao-eletronico/regulamento",
+   "https://www.leiloesbrasil.com.br/leilao-presencial/regulamento"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Leilões Gold",
+  "url": "https://leiloesgold.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 403,
+  "url_final": "https://leiloesgold.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Leilões Nova Serrana",
+  "url": "https://leiloesnovaserrana.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "ES/MG",
+  "status": 403,
+  "url_final": "https://leiloesnovaserrana.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Leilões Online MS",
+  "url": "https://leiloesonlinems.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "MS",
+  "status": 200,
+  "url_final": "https://www.leiloesonlinems.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://www.leiloesonlinems.com.br/texto.aspx?cod=75&t=condicoes-de-utilizacao-do-portal-leiloes-online-ms"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Leilões PB",
+  "url": "https://leiloespb.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "PB",
+  "status": 200,
+  "url_final": "https://leiloespb.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://leiloespb.com.br/termos-uso",
+   "https://leiloespb.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Leilões Rio Negro",
+  "url": "https://leiloesrionegro.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "AM/RR",
+  "status": 403,
+  "url_final": "https://leiloesrionegro.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "HTTP 403"
+ },
+ {
+  "nome": "Líder Leilões",
+  "url": "https://liderleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 200,
+  "url_final": "https://liderleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://liderleiloes.com.br/termos-uso",
+   "https://liderleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Machado Leiloeiro",
+  "url": "https://machadoleiloeiro.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "SP/SC",
+  "status": 403,
+  "url_final": "https://machadoleiloeiro.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Marangoni Leilões",
+  "url": "https://marangonileiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "AP",
+  "status": 403,
+  "url_final": "https://marangonileiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Marca Leilões",
+  "url": "https://marcaleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "MS",
+  "status": 200,
+  "url_final": "https://marcaleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://marcaleiloes.com.br/termos-uso",
+   "https://marcaleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Marcio Pinho",
+  "url": "https://marciopinho.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "RJ",
+  "status": 200,
+  "url_final": "https://marciopinho.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://marciopinho.com.br/termosuso.asp",
+   "https://marciopinho.com.br/politica.asp"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Marco Antônio Leiloeiro",
+  "url": "https://marcoantonioleiloeiro.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "MG/MA (n/c)",
+  "status": 200,
+  "url_final": "https://marcoantonioleiloeiro.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://marcoantonioleiloeiro.com.br/termos-uso",
+   "https://marcoantonioleiloeiro.com.br/blog/termos-comuns-em-leiloes",
+   "https://marcoantonioleiloeiro.com.br/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Maria Fixer Leilões",
+  "url": "https://mariafixerleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "MS",
+  "status": 200,
+  "url_final": "https://mariafixerleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://mariafixerleiloes.com.br/index/termos-uso",
+   "https://mariafixerleiloes.com.br/index/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "MC Leilão",
+  "url": "https://mcleilao.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "GO",
+  "status": 200,
+  "url_final": "https://www.mcleilao.com.br/",
+  "robots": "sem robots.txt (HTTP 200)",
+  "termos": [
+   "https://www.mcleilao.com.br/#/termo-cookie"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Mega Leilões MS",
+  "url": "https://megaleiloesms.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "MS / nacional",
+  "status": 200,
+  "url_final": "https://megaleiloesms.com.br/vendedores/mega-ms",
+  "robots": "permite",
+  "termos": [
+   "https://megaleiloesms.com.br/ajuda/regulamentos",
+   "https://cdn1.megaleiloes.com.br/Politica_de_Privacidade_Mega_Leiloes_Rev_Janeiro_2023.pdf"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "MGL – Minas Gerais Leilões",
+  "url": "https://mgl.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "MG / nacional",
+  "status": 403,
+  "url_final": "https://mgl.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "MJ Leilões",
+  "url": "https://mjleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 200,
+  "url_final": "https://mjleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://mjleiloes.com.br/politicas"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "MN Leilão",
+  "url": "https://mnleilao.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "RN/PB/AL (n/c)",
+  "status": 200,
+  "url_final": "https://mnleilao.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://mnleilao.com.br/p/regulamento",
+   "https://mnleilao.com.br/"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Montenegro Leilões",
+  "url": "https://montenegroleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "CE",
+  "status": 200,
+  "url_final": "https://montenegroleiloes.com.br/",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Moraes Leilões",
+  "url": "https://moraesleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RS",
+  "status": 403,
+  "url_final": "https://moraesleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "MV Leilões (Maicon & Valéria Kahn)",
+  "url": "https://mvleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RJ",
+  "status": 403,
+  "url_final": "https://mvleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Müller Leilões",
+  "url": "https://mullerleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "RS",
+  "status": 403,
+  "url_final": "https://mullerleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Nasar Leilões",
+  "url": "https://nasarleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "CE",
+  "status": 403,
+  "url_final": "https://nasarleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Nogari Leilões",
+  "url": "https://nogarileiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "PR",
+  "status": 403,
+  "url_final": "https://nogarileiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Norte Leilões",
+  "url": "https://norteleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "PA/Norte",
+  "status": 200,
+  "url_final": "https://www.norteleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 403)",
+  "termos": [
+   "https://www.norteleiloes.com.br/privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Nosso Leilão",
+  "url": "https://nossoleilao.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 403,
+  "url_final": "https://nossoleilao.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "OA Leilões",
+  "url": "https://oaleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "DF",
+  "status": 403,
+  "url_final": "https://oaleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "OLeilões",
+  "url": "https://oleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "PR",
+  "status": 403,
+  "url_final": "https://oleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Paulo Botelho Leiloeiro",
+  "url": "https://paulobotelholeiloeiro.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RJ",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: SSLError"
+ },
+ {
+  "nome": "Pereira Leilões",
+  "url": "https://pereiraleiloesce.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "CE",
+  "status": 403,
+  "url_final": "https://pereiraleiloesce.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Rech Leilões",
+  "url": "https://rechleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "RS",
+  "status": 403,
+  "url_final": "https://rechleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Ricart Leilões",
+  "url": "https://ricartleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RJ",
+  "status": 200,
+  "url_final": "https://ricartleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://ricartleiloes.com.br/termos-uso",
+   "https://ricartleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Rigolon Leilões",
+  "url": "https://rigolonleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 200,
+  "url_final": "https://rigolonleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://rigolonleiloes.com.br/index/termos-uso",
+   "https://rigolonleiloes.com.br/index/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "RJ Leilões",
+  "url": "https://rjleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "Nordeste (BA) / nacional",
+  "status": 403,
+  "url_final": "https://rjleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Sancar Leilões",
+  "url": "https://sancarleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "TO",
+  "status": 200,
+  "url_final": "https://www.sancarleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 403)",
+  "termos": [
+   "https://www.sancarleiloes.com.br/privacidade",
+   "https://www.sancarleiloes.com.br/leilao-online/regulamento",
+   "https://www.sancarleiloes.com.br/leilao-eletronico/regulamento"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Santa Catarina Leilões",
+  "url": "https://santacatarinaleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "SC",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: SSLError"
+ },
+ {
+  "nome": "Schmitz Leiloeiros (Clic Leilões)",
+  "url": "https://clicleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "SC / nacional",
+  "status": 403,
+  "url_final": "https://clicleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Schulmann Leilões",
+  "url": "https://schulmannleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RJ",
+  "status": 200,
+  "url_final": "https://schulmannleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://schulmannleiloes.com.br/termo-de-uso.php",
+   "https://schulmannleiloes.com.br/politica-de-privacidade.php"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "SFrazão",
+  "url": "https://sfrazao.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 403,
+  "url_final": "https://sfrazao.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Simon Leilões",
+  "url": "https://simonleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "PR",
+  "status": 200,
+  "url_final": "https://www.simonleiloes.com.br:443/",
+  "robots": "permite",
+  "termos": [
+   "https://www.simonleiloes.com.br:443/termos-de-uso",
+   "https://www.simonleiloes.com.br:443/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": "redireciona para www.simonleiloes.com.br:443; "
+ },
+ {
+  "nome": "Sublime Leilões",
+  "url": "https://sublimeleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "SP",
+  "status": 200,
+  "url_final": "https://www.sublimeleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://www.sublimeleiloes.com.br/termo-de-uso/",
+   "https://www.sublimeleiloes.com.br/privacidade/"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Sumaré Leilões",
+  "url": "https://sumareleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "SP/GO",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: SSLError"
+ },
+ {
+  "nome": "Ten Leilão",
+  "url": "https://tenleilao.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "SP",
+  "status": 403,
+  "url_final": "https://tenleilao.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Trustbid",
+  "url": "https://trustbid.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c / nacional",
+  "status": 403,
+  "url_final": "https://trustbid.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Vasconcelos Leilões",
+  "url": "https://vasconcelosleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "SC",
+  "status": 200,
+  "url_final": "https://vasconcelosleiloes.com.br/",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Vecchi Leilões",
+  "url": "https://vecchileiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "GO (n/c)",
+  "status": 200,
+  "url_final": "https://vecchileiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://vecchileiloes.com.br/termos-uso",
+   "https://vecchileiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Victor Dorta Leilões",
+  "url": "https://victordortaleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "MA/PI/TO (n/c)",
+  "status": 403,
+  "url_final": "https://victordortaleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Viva Leilões",
+  "url": "https://vivaleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "n/c",
+  "status": 403,
+  "url_final": "https://vivaleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "VIX Leilões",
+  "url": "https://vixleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "ES",
+  "status": 200,
+  "url_final": "https://vixleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://vixleiloes.com.br/termos-de-uso",
+   "https://vixleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Vizeu Leiloeiros",
+  "url": "https://vizeu.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "n/c",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: SSLError"
+ },
+ {
+  "nome": "VL Leilões",
+  "url": "https://vlleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "PB",
+  "status": 200,
+  "url_final": "https://vlleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://vlleiloes.com.br/termos-uso",
+   "https://vlleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "WMS Leilões",
+  "url": "https://wmsleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RJ",
+  "status": 403,
+  "url_final": "https://wmsleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "WR Leilões",
+  "url": "https://wrleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "AM/RR/AC",
+  "status": 200,
+  "url_final": "https://wrleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://wrleiloes.com.br/termos-de-uso",
+   "https://www.wrleiloes.com.br/leilao/801/leilao-secretaria-nacional-de-politicas-sobre-drogas-senad-estado-de-roraima-pc",
+   "https://www.wrleiloes.com.br/leilao/800/leilao-secretaria-nacional-de-politicas-sobre-drogas-senad-estado-de-roraima-pf"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Álvaro Leilões",
+  "url": "https://alvaroleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "GO",
+  "status": 200,
+  "url_final": "https://alvaroleiloes.com.br/",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [
+   "https://atendimento.leiloesjudiciais.com.br/hc/pt-br/articles/17183521162651-Termos-de-uso-do-site",
+   "https://alvaroleiloes.com.br/index/termos-uso",
+   "https://alvaroleiloes.com.br/index/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Ápice Leilões",
+  "url": "https://apiceleiloes.com.br",
+  "grupo": "Leiloeiro",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "n/c",
+  "status": 403,
+  "url_final": "https://apiceleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "BR Bid",
+  "url": "https://brbid.com",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "RJ",
+  "status": 403,
+  "url_final": "https://brbid.com/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "Capta Leilões",
+  "url": "https://captaleiloes.com.br",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "nacional",
+  "status": 200,
+  "url_final": "https://www.captaleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://www.captaleiloes.com.br/termos-de-uso-politica-de-privacidade/",
+   "https://www.captaleiloes.com.br/politica-de-cookies"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Deu Lance",
+  "url": "https://deulance.com.br",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "MG / nacional",
+  "status": 200,
+  "url_final": "https://deulance.com.br/",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Encontre Leilões",
+  "url": "https://encontreleiloes.com.br",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "nacional",
+  "status": 200,
+  "url_final": "https://encontreleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://encontreleiloes.com.br/termos-de-uso",
+   "https://encontreleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Gestão de Leilões",
+  "url": "https://gestaodeleiloes.com.br",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "ES",
+  "status": 200,
+  "url_final": "https://gestaodeleiloes.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://gestaodeleiloes.com.br/termos-uso",
+   "https://gestaodeleiloes.com.br/politica-de-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Leilão Curitiba",
+  "url": "https://leilaocuritiba.com.br",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "PR",
+  "status": 200,
+  "url_final": "https://leilaocuritiba.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://leilaocuritiba.com.br/legal-notices"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Monitor Leilão",
+  "url": "https://monitorleilao.com.br",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "nacional",
+  "status": 429,
+  "url_final": "https://monitorleilao.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "HTTP 429"
+ },
+ {
+  "nome": "PublicJud",
+  "url": "https://publicjud.com.br",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "nacional",
+  "status": 200,
+  "url_final": "https://www.publicjud.com.br/",
+  "robots": "permite",
+  "termos": [
+   "https://www.publicjud.com.br/termos-de-uso"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Rebocar Leilões",
+  "url": "https://rebocarleiloes.com.br",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RJ",
+  "status": 521,
+  "url_final": "https://rebocarleiloes.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "HTTP 521"
+ },
+ {
+  "nome": "Spy Leilões",
+  "url": "https://spyleiloes.com.br",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "nacional",
+  "status": 200,
+  "url_final": "https://spyleiloes.com.br/",
+  "robots": "permite",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Venda Direta Imóvel",
+  "url": "https://vendadiretaimovel.com.br",
+  "grupo": "Plataforma / agregador",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "nacional",
+  "status": 403,
+  "url_final": "https://vendadiretaimovel.com.br/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "BLOQUEADO",
+  "nota": "desafio anti-robô (HTTP 403)"
+ },
+ {
+  "nome": "AFEAM – Imóveis à venda",
+  "url": "https://afeam.am.gov.br/imoveis-a-venda/",
+  "grupo": "Órgão público",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "AM",
+  "status": 200,
+  "url_final": "https://www.afeam.am.gov.br/imoveis-a-venda/",
+  "robots": "permite",
+  "termos": [
+   "https://www.afeam.am.gov.br/politica-de-privacidade/",
+   "https://www.afeam.am.gov.br/politica-de-seguranca-da-informacao/",
+   "https://www.afeam.am.gov.br/portal-da-privacidade/"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Governo RS – Venda de imóveis",
+  "url": "https://planejamento.rs.gov.br/venda-imoveis",
+  "grupo": "Órgão público",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "RS",
+  "status": null,
+  "url_final": null,
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "erro: ConnectionError"
+ },
+ {
+  "nome": "Governo SP – Leilões (SGGD)",
+  "url": "https://sggd.sp.gov.br/sggd/transparencia/licitacoes_contratos/leiloes",
+  "grupo": "Órgão público",
+  "bens": [
+   "imóveis"
+  ],
+  "uf": "SP",
+  "status": 200,
+  "url_final": "https://www.sggd.sp.gov.br/sggd/transparencia/licitacoes_contratos/leiloes",
+  "robots": "sem robots.txt (HTTP 200)",
+  "termos": [
+   "https://www.cms.sp.gov.br/cms/termo-uso",
+   "https://www.controladoriageral.sp.gov.br/cge/canaisComunicacao/privacidade_e_protecao_de_dados_lgpd",
+   "https://www.cms.sp.gov.br/cms/politica-privacidade"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Licitações-e (BB)",
+  "url": "https://licitacoes-e.com.br",
+  "grupo": "Órgão público",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "Nacional",
+  "status": 200,
+  "url_final": "https://www.licitacoes-e.com.br",
+  "robots": "sem robots.txt (HTTP 404)",
+  "termos": [],
+  "proibicao": null,
+  "classe": "LIBERADO_SEM_TERMOS",
+  "nota": "termos de uso não encontrados na página inicial — conferir à mão"
+ },
+ {
+  "nome": "Petrobras – Negócios/Leilões",
+  "url": "https://petrobras.com.br/w/negocios/leilao-n-pea0369181",
+  "grupo": "Órgão público",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "Nacional",
+  "status": 200,
+  "url_final": "https://petrobras.com.br/w/negocios/leilao-n-pea0369181",
+  "robots": "permite",
+  "termos": [
+   "https://petrobras.com.br/privacidade-protecao-de-dados",
+   "https://petrobras.com.br/privacidade-protecao-de-dados#:~:text=A%20Petrobras%20faz%20uso%20de,de%20p%C3%A1ginas%20ao%20seu%20perfil."
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Polícia Federal – Leilões",
+  "url": "https://gov.br/pf/pt-br/assuntos/leiloes",
+  "grupo": "Órgão público",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "Nacional",
+  "status": 200,
+  "url_final": "https://www.gov.br/pf/pt-br/assuntos/leiloes",
+  "robots": "permite",
+  "termos": [
+   "https://www.gov.br/pf//search?origem=termos&SearchableText=Desenrola Brasil",
+   "https://www.gov.br/pf//search?origem=termos&SearchableText=assinatura",
+   "https://www.gov.br/pf//search?origem=termos&SearchableText=mei"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "PRF – Leilões",
+  "url": "https://gov.br/prf/pt-br/assuntos/leiloes-prf",
+  "grupo": "Órgão público",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "27 UFs",
+  "status": 200,
+  "url_final": "https://www.gov.br/prf/pt-br/assuntos/leiloes-prf",
+  "robots": "permite",
+  "termos": [
+   "https://www.gov.br/prf/pt-br/acesso-a-informacao/termos-de-uso",
+   "https://www.gov.br/prf/pt-br/assuntos/termo-de-uso-e-politica-de-privacidade-do-sei"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Receita Federal – SLE",
+  "url": "https://www25.receita.fazenda.gov.br/leilaoEletronicoInterPub/",
+  "grupo": "Órgão público",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "Nacional",
+  "status": 404,
+  "url_final": "https://www25.receita.fazenda.gov.br/leilaoEletronicoInterPub/",
+  "robots": null,
+  "termos": [],
+  "proibicao": null,
+  "classe": "FORA_DO_AR",
+  "nota": "HTTP 404"
+ },
+ {
+  "nome": "Senad/MJSP",
+  "url": "https://gov.br/mj/pt-br",
+  "grupo": "Órgão público",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "Nacional",
+  "status": 200,
+  "url_final": "https://www.gov.br/mj/pt-br",
+  "robots": "permite",
+  "termos": [
+   "https://www.gov.br/mj/pt-br/search?origem=termos&SearchableText=Desenrola Brasil",
+   "https://www.gov.br/mj/pt-br/search?origem=termos&SearchableText=assinatura",
+   "https://www.gov.br/mj/pt-br/search?origem=termos&SearchableText=mei"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "Seop-Rio (Prefeitura do Rio)",
+  "url": "https://ordempublica.prefeitura.rio",
+  "grupo": "Órgão público",
+  "bens": [
+   "veículos"
+  ],
+  "uf": "RJ",
+  "status": 200,
+  "url_final": "https://ordempublica.prefeitura.rio/",
+  "robots": "permite",
+  "termos": [
+   "https://carioca.rio/servicos/autorizacao-legalizacao-de-comercio-ambulante/"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "TJCE – Leilões",
+  "url": "https://tjce.jus.br/leiloes/",
+  "grupo": "Órgão público",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "CE",
+  "status": 200,
+  "url_final": "https://www.tjce.jus.br/leiloes/",
+  "robots": "permite",
+  "termos": [
+   "https://www.tjce.jus.br/lgpd/politica-de-navegacao-no-portal-do-tjce/",
+   "https://www.tjce.jus.br/lgpd/politica-de-cookies/"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ },
+ {
+  "nome": "TJSP – Leilões",
+  "url": "https://tjsp.jus.br/Leiloes",
+  "grupo": "Órgão público",
+  "bens": [
+   "imóveis",
+   "veículos"
+  ],
+  "uf": "SP",
+  "status": 200,
+  "url_final": "https://www.tjsp.jus.br/Leiloes",
+  "robots": "permite",
+  "termos": [
+   "https://www.tjsp.jus.br/LGPD/LGPD/ProtecaoDadosPessoais",
+   "https://www.tjsp.jus.br/Download/Portal/Biblioteca/Biblioteca/Legislacao/RegulamentoInternoServidoresTJSP.pdf"
+  ],
+  "proibicao": null,
+  "classe": "LIBERADO",
+  "nota": ""
+ }
+]
