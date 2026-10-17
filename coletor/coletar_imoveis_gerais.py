@@ -32,14 +32,30 @@ import leiloeiros_regras as R            # noqa: E402
 import scraper as G                      # noqa: E402
 from veiculos_regras import Cidades      # noqa: E402
 
-VERSAO = "1.1"
+VERSAO = "1.2"
 SAIDA = Path(__file__).resolve().parent.parent / "recon-imoveis"
 JA_LIDOS = ("portalzuk.", "megaleiloes.", "superbid.", "vipleiloes.", "leilo.com.br", "sodresantoro.", "pestanaleiloes.",
             "freitasleiloeiro.", "leiloesjudiciais.")
 RE_CID_UF = re.compile(r"([A-ZÀ-Úa-zà-ú][A-Za-zÀ-ú' .\-]{2,40})\s*[/\-–]\s*(" + "|".join(sorted(CL.UFS)) + r")\b")
 RE_JUDICIAL = re.compile(r"\b(processo|vara\b|judicial|tribunal|execu[cç][aã]o|penhor)", re.I)
-RE_BANCO = re.compile(r"\b(banco [a-z]+|santander|bradesco|ita[uú]|caixa econ[oô]mica|btg|banco inter|banrisul|brb|sicoob|sicredi|"
+RE_BANCO = re.compile(r"\b(banco do brasil|banco do nordeste|banco da amaz[oô]nia|banco inter|banco (?!d[oae]s?\b)[a-z]{3,}|santander|bradesco|ita[uú]|caixa econ[oô]mica|btg|banco inter|banrisul|brb|sicoob|sicredi|"
                       r"safra|daycoval|banestes|banco do brasil|bnb|banco do nordeste|banco da amaz[oô]nia|emgea|poupex)", re.I)
+
+
+# v1.2 (conferência da 1ª amostra, 17/10): links de navegação, títulos genéricos, veículos e preço repetido da página
+RE_NAV = re.compile(r"(/leiloes/?$|/lotes/?$|[?&](categoria|page|encerrados)=|/encerrados/?$|/venda-direta/?$|/divulgacao/?$)", re.I)
+RE_TITULO_RUIM = re.compile(r"^(r\$|\d+ ?%|lote \d+|in[ií]cio|carregando|acessar|receba|lotes em destaque|ver |saiba|clique|\W*$)", re.I)
+RE_VEICULO = re.compile(r"\b(ford|chevrolet|fiat|volkswagen|vw|toyota|honda|hyundai|renault|nissan|moto|motocicleta|caminh[aã]o|ve[ií]culo|carro|placa)\b", re.I)
+RE_IMOVEL = re.compile(r"\b(im[oó]vel|casa|apartamento|apto|terreno|lote urbano|sala|galp[aã]o|fazenda|ch[aá]cara|s[ií]tio|pr[eé]dio|matr[ií]cula|m²|hectares?)\b", re.I)
+
+
+def titulo_bom(lote):
+    t = re.sub(r"\s+", " ", lote.get("titulo") or "").strip()
+    if len(t) >= 12 and not RE_TITULO_RUIM.search(t):
+        return t
+    d = re.sub(r"\s+", " ", lote.get("texto") or "").strip()
+    m = RE_IMOVEL.search(d)
+    return (d[m.start():][:80] if m else d[:80]).strip(" -–:") or t
 
 
 def sigla(url):
@@ -50,6 +66,10 @@ def sigla(url):
 
 def para_radar(f, lote, cidades, agora, hoje):
     texto = f"{lote['titulo']} {lote.get('texto') or ''}"
+    if RE_NAV.search(lote.get("link") or ""):
+        return None, "link de navegação"
+    if RE_VEICULO.search(texto) and not RE_IMOVEL.search(texto):
+        return None, "veículo"
     preco = lote.get("valor")
     if not preco or not (1_000 <= preco <= 200_000_000):
         return None, "sem preço"
@@ -74,7 +94,7 @@ def para_radar(f, lote, cidades, agora, hoje):
     codigo = hashlib.sha1(lote["link"].encode()).hexdigest()[:14]
     data = (lote.get("data") or "")[:10] or None
     x = CL.linha_radar(sg, codigo, uf, comitente, agora, hoje,
-                       cidade=cidade, tipo=R.tipo_imovel(texto), tipo_original=lote["titulo"][:60], preco=preco,
+                       cidade=cidade, tipo=R.tipo_imovel(texto), tipo_original=titulo_bom(lote)[:60], preco=preco,
                        financiamento=R.financiamento(texto), area_total=tot, area_privativa=priv, area_terreno=ter,
                        descricao=texto[:1500], modalidade_venda="Leilão", link=lote["link"], praca1=data, lance1=preco)
     x["fonte"] = "leiloeiro"
@@ -112,6 +132,21 @@ def main():
                 linhas[x["id"]] = x
             else:
                 motivos[motivo] = motivos.get(motivo, 0) + 1
+        # preço da PÁGINA repetido em 3+ lotes diferentes = valor errado (pegou o destaque, não o do lote)
+        cont = {}
+        for x in linhas.values():
+            cont[x["preco"]] = cont.get(x["preco"], 0) + 1
+        for k in [k for k, x in linhas.items() if cont[x["preco"]] >= 3 and len(linhas) > 3 and len(cont) <= len(linhas) / 2]:
+            del linhas[k]
+            motivos["preço repetido"] = motivos.get("preço repetido", 0) + 1
+        # mesmo imóvel por dois caminhos do site
+        vistos = {}
+        for k, x in list(linhas.items()):
+            ch = (x["cidade"], x["tipo"], x["preco"], x["tipo_original"])
+            if ch in vistos:
+                del linhas[k]
+                motivos["duplicado"] = motivos.get("duplicado", 0) + 1
+            vistos[ch] = 1
         return f, nome, list(linhas.values()), motivos, erro
 
     resumo, amostra, total = [], [], 0
