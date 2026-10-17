@@ -8,7 +8,7 @@ on:
     branches: [main]
     paths: ["leiloeiros/rodar_imoveis.txt"]
   schedule:
-    - cron: "20 11 * * *"     # 08h20 BRT, todo dia (rodízio: cada leiloeiro a cada 3 dias) — GRAVANDO (OK do Thiago 17/10 12h25)
+    - cron: "30 7 * * *"      # 04h30 BRT (antes do robô das 06h50, que calcula a pré-nota), todo dia (rodízio: cada leiloeiro a cada 3 dias) — GRAVANDO (OK do Thiago 17/10 12h25)
   workflow_dispatch:
     inputs:
       gravar:

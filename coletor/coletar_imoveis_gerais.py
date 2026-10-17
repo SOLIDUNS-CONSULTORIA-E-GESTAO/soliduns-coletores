@@ -177,8 +177,8 @@ def main():
                                           "or": f"(and(praca2.not.is.null,praca2.lt.{ontem}),and(praca2.is.null,praca1.lt.{ontem}))"},
                         {"situacao": "saiu", "saiu_em": agora})
         CL.log(f"DATA PASSOU: {n} imóvel(is) com o leilão já realizado saíram")
-        if total:
-            CL.log(f"PRÉ-NOTA: {CL.sb_rpc('leiloes_radar_pontuar')}")
+        # pré-nota: NÃO chama aqui (o cálculo de todo o Radar passa do tempo da API -> erro 500);
+        # quem calcula é o robô "Leilões - bancos e leiloeiros" das 06h50, que roda depois deste.
     (SAIDA / "resumo.json").write_text(json.dumps(resumo, ensure_ascii=False, indent=1), encoding="utf-8")
     (SAIDA / "amostra.json").write_text(json.dumps(amostra, ensure_ascii=False, indent=1), encoding="utf-8")
     CL.log(f"FIM: {total} imóvel(is) de {len(fontes)} leiloeiro(s) — {'gravados' if gravar else 'NÃO gravados (revisão)'}")
