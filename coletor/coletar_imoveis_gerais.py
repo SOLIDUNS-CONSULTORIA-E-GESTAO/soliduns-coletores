@@ -68,7 +68,8 @@ def para_radar(f, lote, cidades, agora, hoje):
     texto = f"{lote['titulo']} {lote.get('texto') or ''}"
     if RE_NAV.search(lote.get("link") or ""):
         return None, "link de navegação"
-    if RE_VEICULO.search(texto) and not RE_IMOVEL.search(texto):
+    tit = lote.get("titulo") or ""
+    if (RE_VEICULO.search(texto) and not RE_IMOVEL.search(texto)) or (RE_VEICULO.search(tit) and not RE_IMOVEL.search(tit)):
         return None, "veículo"
     preco = lote.get("valor")
     if not preco or not (1_000 <= preco <= 200_000_000):
