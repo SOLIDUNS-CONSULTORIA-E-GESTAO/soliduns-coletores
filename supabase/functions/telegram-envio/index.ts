@@ -16,7 +16,7 @@ const JANELA_H = 12;
 // v1.2 (Thiago, 16/10 10h16): o Scanner vai com a logomarca "Scanner do Dia" (Opção 2 — Radar). Imagem pública no Storage do
 // Supabase (balde vm-imagens, pasta marca). Se a imagem não estiver lá, o Scanner vai no mesmo layout, só em texto.
 const IMAGEM_SCANNER = Deno.env.get("VM_TG_IMAGEM_SCANNER") ??
-  "https://evcsniicnrlrtzpdmeza.supabase.co/storage/v1/object/public/vm-imagens/marca/og-scanner-do-dia.jpg";
+  "https://evcsniicnrlrtzpdmeza.supabase.co/storage/v1/object/public/vm-imagens/og-scanner-do-dia.jpg";
 
 type Tg = (metodo: string, dados: Record<string, unknown>) => Promise<{ ok: boolean; result?: unknown; error_code?: number; description?: string; parameters?: { migrate_to_chat_id?: number; retry_after?: number } }>;
 export type Foto = { src: string; fotografo: string; fonte: string };
