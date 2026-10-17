@@ -1,0 +1,719 @@
+[
+ {
+  "leiloeiro": "Sold Leilões",
+  "url": "https://www.sold.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Lance Judicial",
+  "url": "https://www.lancejudicial.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "bloqueado: captcha/403"
+ },
+ {
+  "leiloeiro": "Biasi Leilões",
+  "url": "https://www.biasileiloes.com.br",
+  "imoveis": 0,
+  "descartes": {
+   "sem preço": 3
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Fidalgo Leilões",
+  "url": "https://www.fidalgoleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "bloqueado: captcha/403"
+ },
+ {
+  "leiloeiro": "Frazão Leilões",
+  "url": "https://www.frazaoleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {
+   "sem UF/cidade": 11
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Lance no Leilão",
+  "url": "https://www.lancenoleilao.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "bloqueado: captcha/403"
+ },
+ {
+  "leiloeiro": "Kronberg Leilões",
+  "url": "https://www.kronbergleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Vianna Leilões",
+  "url": "https://www.viannaleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "bloqueado: captcha/403"
+ },
+ {
+  "leiloeiro": "Canal Judicial",
+  "url": "https://www.canaljudicial.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Mazzollini Leilões",
+  "url": "https://www.mazzollinileiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "falhou após 3 tentativas: https://www.mazzollinileiloes.com.br"
+ },
+ {
+  "leiloeiro": "LEJE Leilões Judiciais Eletrônicos",
+  "url": "https://www.leje.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "bloqueado: captcha/403"
+ },
+ {
+  "leiloeiro": "Damiani Leilões",
+  "url": "https://www.damianileiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Alfa Leilões",
+  "url": "https://www.alfaleiloes.com",
+  "imoveis": 0,
+  "descartes": {
+   "sem preço": 3
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Daniel Garcia Leilões",
+  "url": "https://www.danielgarcialeiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "bloqueado: captcha/403"
+ },
+ {
+  "leiloeiro": "Palácio dos Leilões",
+  "url": "https://www.palaciodosleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Milan Leilões",
+  "url": "https://www.milanleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "bloqueado: captcha/403"
+ },
+ {
+  "leiloeiro": "Sato Leilões",
+  "url": "https://www.satoleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Adilson Bento de Araújo",
+  "url": "https://abaleiloes.com.br",
+  "imoveis": 1,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Agência de Leilões Freire",
+  "url": "https://www.leiloesfreire.com.br",
+  "imoveis": 0,
+  "descartes": {
+   "sem preço": 2
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Akimoto Leilões",
+  "url": "https://akimotoleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Ananda Portes Souza",
+  "url": "https://anandaleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {
+   "link de navegação": 1
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Andre Luiz Oliveira Yankous",
+  "url": "https://yankous.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "André Soares Menegat",
+  "url": "https://leiloeiro.lel.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Antonio Alexandre Raota",
+  "url": "https://www.raotaleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Aparecida Maria Fixer",
+  "url": "https://cidafixerleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Araújo Leilões (MT)",
+  "url": "https://araujoleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Arnaldo Emílio Colombarolli",
+  "url": "https://arnaldoleiloes.com.br",
+  "imoveis": 1,
+  "descartes": {
+   "sem UF/cidade": 6
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Arthur Ferreira Nunes",
+  "url": "https://arthurnunes.leilao.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Breno Henrique Soares Lopes",
+  "url": "https://brenohenriqueleiloes.com.br",
+  "imoveis": 1,
+  "descartes": {
+   "link de navegação": 4
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Caio Marcos Campos Caldeira",
+  "url": "https://www.tratoforteleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {
+   "sem preço": 4
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Cardoso Leilões",
+  "url": "https://cardosoleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {
+   "link de navegação": 7,
+   "sem UF/cidade": 2
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Carlo Ferrari Leiloeiro",
+  "url": "https://carloferrarileiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Carlos Henrique Barbosa",
+  "url": "https://www.chbarbosaleiloes.com.br",
+  "imoveis": 1,
+  "descartes": {
+   "sem preço": 14
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Central Sul de Leilões",
+  "url": "https://www.centralsuldeleiloes.com.br:443",
+  "imoveis": 47,
+  "descartes": {
+   "sem UF/cidade": 3
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Confiança Leilões (leilao.br)",
+  "url": "https://www.confiancaleiloes.leilao.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Daniel Lazownik Duarte",
+  "url": "https://dldleiloeiro.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://dldleiloeiro.com.br/leilao/proximos\", waiting until \"networkidle\"\n"
+ },
+ {
+  "leiloeiro": "Daniel Oliveira Junior",
+  "url": "https://doleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Deonizia Kiratch",
+  "url": "https://deonizialeiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Elenice Lira Sales De Sousa",
+  "url": "https://www.liraleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "falhou após 3 tentativas: https://www.liraleiloes.com.br"
+ },
+ {
+  "leiloeiro": "Fabio Samir Machado",
+  "url": "https://www.machadoleiloesrs.com.br",
+  "imoveis": 0,
+  "descartes": {
+   "sem preço": 11
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Felipe Rotta",
+  "url": "https://www.feliperottaleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://www.feliperottaleiloes.com.br/leilao/proximos\", waiting until \"networkidle\"\n"
+ },
+ {
+  "leiloeiro": "Flavia Klockner Rodrigues",
+  "url": "https://fkleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Flávio Bittencourt Garcia",
+  "url": "https://flaviogarcia.lel.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "Page.goto: Download is starting\nCall log:\n  - navigating to \"https://flaviogarcia.lel.br/gerenciador/arquivos/agenda/e0b3aeaaf7b23969d179ec6209ef737d.pdf\", waiting until \"networkidle\"\n"
+ },
+ {
+  "leiloeiro": "Fábio Maciel Amarante",
+  "url": "https://nortedeminasleiloes.com.br",
+  "imoveis": 6,
+  "descartes": {
+   "sem UF/cidade": 14
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Gabriel Baron Junior",
+  "url": "https://ww17.baronleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Giuliano Ferronato",
+  "url": "https://www.ferronato.leilao.br",
+  "imoveis": 1,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Gustavo Henrique Zanoni Pereira",
+  "url": "https://leiloeszanoni.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Hasta Pública Leilões",
+  "url": "https://hastapublica.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Jair Vicente Martins",
+  "url": "https://vmleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "bloqueado: captcha"
+ },
+ {
+  "leiloeiro": "José Almiro Chagas De Alencastro",
+  "url": "https://www.alencastroleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "José Arquimedes Câmara",
+  "url": "https://www.arquimedesleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "José Clóvis Vaz De Souza",
+  "url": "https://www.clovisleiloeiro.com.br",
+  "imoveis": 1,
+  "descartes": {
+   "sem UF/cidade": 1
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "João Simões de Almeida Júnior",
+  "url": "https://www.simoesleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Kananda Sofia Silva Macedo",
+  "url": "https://www.kanandaleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Leiloeiro Público (arquivos de editais)",
+  "url": "https://leiloeiropublico.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Leilão Brasil",
+  "url": "https://leilaobrasil.com.br",
+  "imoveis": 38,
+  "descartes": {
+   "sem UF/cidade": 212,
+   "sem preço": 3
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Lelia Maria De Paula Lenz Cesar",
+  "url": "https://www.lelialenz.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Leonir Adelino Lunelli",
+  "url": "https://leiloeirolunelli.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Lucas de Oliveira Mangualde",
+  "url": "https://du-ze.com",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Luciana Londina da Silva",
+  "url": "https://ww17.londinaleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Luiz Ubiratã De Carvalho",
+  "url": "https://www.luizleiloes.com.br",
+  "imoveis": 4,
+  "descartes": {
+   "sem UF/cidade": 2
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Luiza Lima e Silva Mesquita Cardoso",
+  "url": "https://luizacardosoleiloeira.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Marcelo Da Silva Lima",
+  "url": "https://marcelolimaleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Marcio Pinho",
+  "url": "https://marciopinho.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Marco Leilões",
+  "url": "https://marcoleiloes.com.br",
+  "imoveis": 2,
+  "descartes": {
+   "veículo": 1,
+   "sem preço": 1,
+   "link de navegação": 1,
+   "duplicado": 1
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Marco Túlio Montenegro Cavalcanti Dias",
+  "url": "https://marcotulioleiloes.com.br",
+  "imoveis": 3,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Marcos Vinicius Menezes Quadros",
+  "url": "https://www.arremate.lel.br",
+  "imoveis": 4,
+  "descartes": {
+   "sem UF/cidade": 3
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Maria Auxiliadora Rodrigues Teixeira",
+  "url": "https://www.triadeleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "falhou após 3 tentativas: https://www.triadeleiloes.com.br"
+ },
+ {
+  "leiloeiro": "Maria Filomena Planas Serrano",
+  "url": "https://leiloesmariafilomena.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Maridulce Sanfelice Simei",
+  "url": "https://msleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Mauro Veloso Junior",
+  "url": "https://modenax.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Mega Leilões MS",
+  "url": "https://megaleiloesms.com.br",
+  "imoveis": 498,
+  "descartes": {
+   "sem UF/cidade": 11
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "MJ Leilões",
+  "url": "https://mjleiloes.com.br",
+  "imoveis": 1,
+  "descartes": {
+   "preço repetido": 3
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Mário Lessa Freitas Filho",
+  "url": "https://www.lessaleiloes.com.br",
+  "imoveis": 1,
+  "descartes": {
+   "sem preço": 10,
+   "sem UF/cidade": 6
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Paulo Renato Humor",
+  "url": "https://prhleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Pedro Lerner Kronberg",
+  "url": "https://www.kronberg.lel.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Rafael Ceretta Alegranzzi",
+  "url": "https://www.alegranzzileiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://www.alegranzzileiloes.com.br/leilao/proximos\", waiting until \"networkidle\"\n"
+ },
+ {
+  "leiloeiro": "Rafael Cicolin",
+  "url": "https://absolutaleiloes.com",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Rafael Cicolin",
+  "url": "https://www.absolutaleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {
+   "sem preço": 9
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Rafael Galvani Ferreira",
+  "url": "https://galvanileiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Raphael Perini de Souza",
+  "url": "https://perinileiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Renato Schlobach Moyses",
+  "url": "https://www.rmoyses.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Rossana Paiva Borges De Oliveira",
+  "url": "https://www.caiapoleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "falhou após 3 tentativas: https://www.caiapoleiloes.com.br"
+ },
+ {
+  "leiloeiro": "Sergio Santiago Da Silva",
+  "url": "https://plataformaleiloar.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Silvio Lucian",
+  "url": "https://lucianleiloes.com.br",
+  "imoveis": 23,
+  "descartes": {
+   "sem UF/cidade": 8
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Sublime Leilões",
+  "url": "https://www.sublimeleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Sérgio Lipinski Brandão Junior",
+  "url": "https://www.lipinskileiloes.com.br",
+  "imoveis": 0,
+  "descartes": {
+   "sem preço": 6,
+   "sem UF/cidade": 3
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Tarcilio Leite / Gabriel Aude Leite De Araujo Silva",
+  "url": "https://www.casadeleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://www.casadeleiloes.com.br/leilao/leilao-de-bens-moveis-de-extrajudicial-ms/14695\", waiting until \"networkidle\"\n"
+ },
+ {
+  "leiloeiro": "Thiago Barros Cardoso",
+  "url": "https://tbaracajuleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ },
+ {
+  "leiloeiro": "Vasconcelos Leilões",
+  "url": "https://vasconcelosleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "bloqueado: captcha"
+ },
+ {
+  "leiloeiro": "Verônica Telles Araújo Silva Soares",
+  "url": "https://www.veronicaleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://www.veronicaleiloes.com.br/leilao/proximos\", waiting until \"networkidle\"\n"
+ },
+ {
+  "leiloeiro": "Victor Renno Polatto Vizeu",
+  "url": "https://vzleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {
+   "sem UF/cidade": 8,
+   "sem preço": 4,
+   "preço repetido": 11
+  },
+  "erro": null
+ },
+ {
+  "leiloeiro": "Wallason Silva Beltrame",
+  "url": "https://www.beltrameleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": "Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://www.beltrameleiloes.com.br/leilao/proximos\", waiting until \"networkidle\"\n"
+ },
+ {
+  "leiloeiro": "Álvaro Leilões",
+  "url": "https://alvaroleiloes.com.br",
+  "imoveis": 0,
+  "descartes": {},
+  "erro": null
+ }
+]
