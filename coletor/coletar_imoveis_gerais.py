@@ -32,7 +32,7 @@ import leiloeiros_regras as R            # noqa: E402
 import scraper as G                      # noqa: E402
 from veiculos_regras import Cidades      # noqa: E402
 
-VERSAO = "1.0"
+VERSAO = "1.1"
 SAIDA = Path(__file__).resolve().parent.parent / "recon-imoveis"
 JA_LIDOS = ("portalzuk.", "megaleiloes.", "superbid.", "vipleiloes.", "leilo.com.br", "sodresantoro.", "pestanaleiloes.",
             "freitasleiloeiro.", "leiloesjudiciais.")
@@ -135,4 +135,11 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # v1.1: qualquer falha fica registrada em recon-imoveis/erro.txt (o log do GitHub não é lido daqui)
+    try:
+        main()
+    except Exception:                                  # noqa: BLE001
+        import traceback
+        SAIDA.mkdir(exist_ok=True)
+        (SAIDA / "erro.txt").write_text(traceback.format_exc(), encoding="utf-8")
+        raise
