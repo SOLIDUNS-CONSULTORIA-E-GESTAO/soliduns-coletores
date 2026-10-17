@@ -4,6 +4,9 @@
 name: Imóveis - leiloeiros gerais
 
 on:
+  push:                     # gatilho pelo Claude: basta mudar este arquivo (sem precisar do botão)
+    branches: [main]
+    paths: ["leiloeiros/rodar_imoveis.txt"]
   workflow_dispatch:
     inputs:
       gravar:
