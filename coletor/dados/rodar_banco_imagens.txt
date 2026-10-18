@@ -1,3 +1,3 @@
 max=300
 # 1ª linha: max=N (quantas imagens). 2ª linha opcional: temas=petroleo,juros. Mudar este arquivo e enviar ao GitHub dispara o robô 'Banco de imagens'.
-# 18/10 17h10: teste de 3 APROVADO pelo Thiago (realismo, sem defeitos, enquadramento) — gerando as 297 restantes
+# 18/10 17h15: nova tentativa do lote completo (v1.1, com espera em 429/5xx, 2 por vez)

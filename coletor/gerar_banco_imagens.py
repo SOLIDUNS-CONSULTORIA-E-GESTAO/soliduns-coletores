@@ -21,7 +21,7 @@ import io, json, os, sys, time, concurrent.futures as cf
 import requests
 from PIL import Image
 
-VERSAO = "1.0"
+VERSAO = "1.1"   # v1.1 (18/10 17h15): nova tentativa com espera em 429/5xx e erro da BFL detalhado no registro
 AQUI = os.path.dirname(os.path.abspath(__file__))
 CENAS = os.path.join(AQUI, "dados", "banco_imagens_cenas.json")
 BFL = os.environ.get("BFL_URL", "https://api.bfl.ai/v1")
@@ -57,8 +57,14 @@ def ja_catalogadas(url, chave):
 def gerar(chave_bfl, prompt, sessao=requests):
     """Pede a imagem à BFL e espera ficar pronta. Devolve os bytes da imagem."""
     cab = {"accept": "application/json", "x-key": chave_bfl, "Content-Type": "application/json"}
-    r = sessao.post(f"{BFL}/{MODELO}", headers=cab, json={"prompt": prompt, "width": W, "height": H, "output_format": "jpeg",
-                                                          "safety_tolerance": 2}, timeout=60)
+    for tentativa in range(5):
+        r = sessao.post(f"{BFL}/{MODELO}", headers=cab, json={"prompt": prompt, "width": W, "height": H, "output_format": "jpeg",
+                                                              "safety_tolerance": 2}, timeout=60)
+        if r.status_code in (429, 500, 502, 503, 504):
+            time.sleep(10 * (tentativa + 1)); continue
+        break
+    if r.status_code >= 400 and r.status_code not in (401, 402, 403):
+        raise RuntimeError(f"BFL recusou o pedido ({r.status_code}): {r.text[:300]}")
     if r.status_code == 402:
         raise RuntimeError("SEM_CREDITO: a conta da BFL está sem crédito")
     if r.status_code in (401, 403):
@@ -71,6 +77,8 @@ def gerar(chave_bfl, prompt, sessao=requests):
     for _ in range(240):                         # até ~2 min
         time.sleep(0.5 if _ < 20 else 1.0)
         p = sessao.get(poll, headers={"accept": "application/json", "x-key": chave_bfl}, timeout=30)
+        if p.status_code in (429, 500, 502, 503, 504):
+            time.sleep(3); continue
         p.raise_for_status()
         d = p.json()
         st = d.get("status")
@@ -82,7 +90,7 @@ def gerar(chave_bfl, prompt, sessao=requests):
             img.raise_for_status()
             return img.content
         if st in ("Error", "Failed", "Content Moderated", "Request Moderated"):
-            raise RuntimeError(f"geração recusada/falhou: {st}")
+            raise RuntimeError(f"geração recusada/falhou: {st} {str(d.get('details') or d.get('result') or '')[:200]}")
     raise RuntimeError("tempo esgotado esperando a imagem")
 
 
