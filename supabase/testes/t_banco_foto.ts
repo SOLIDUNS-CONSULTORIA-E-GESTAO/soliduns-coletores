@@ -1,0 +1,20 @@
+// testes do banco de imagens nas funções manchete-do-dia v1.1 e artigo-semanal v1.3 (rodar: deno run -A t_banco_foto.ts)
+(Deno as unknown as { serve: unknown }).serve = () => {};
+Deno.env.set("SUPABASE_URL", "https://sb.test"); Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", "sb_secret_teste");
+Deno.env.set("ANTHROPIC_API_KEY", "k"); Deno.env.set("COLETOR_TOKEN", "tok");
+const man = await import("../functions/manchete-do-dia/index.ts");
+const art = await import("../functions/artigo-semanal/index.ts");
+let falhas = 0; const ok = (c: boolean, n: string) => { console.log((c ? "OK  " : "FALHOU ") + n); if (!c) falhas++; };
+let corpo: any = null, resp: any = { id: "petroleo-03", tema: "petroleo", src: "https://sb.test/x-1200.jpg", src_grande: "https://sb.test/x-1880.jpg", alt: "Refinaria" }, status = 200;
+const f = (async (u: string, o: any) => { if (String(u).includes("/rpc/vm_banco_imagem_escolher")) { corpo = JSON.parse(o.body); return new Response(JSON.stringify(resp), { status }); } return new Response("{}", { status: 404 }); }) as typeof fetch;
+man.usarFetch(f); art.usarFetch(f);
+const log: string[] = [];
+let fm = await man.fotoDoBanco(["oil refinery", "", "PETRÓLEO", "Brent sobe"], log);
+ok(JSON.stringify(corpo.p_termos) === JSON.stringify(["oil refinery", "PETRÓLEO", "Brent sobe"]), "manda os termos sem vazios");
+ok(fm?.src === resp.src && fm?.src_grande === resp.src_grande && fm?.fotografo === "Imagem ilustrativa" && fm?.fonte === "Arquivo Valor e Mercado", "manchete: formato da edição com crédito 'Imagem ilustrativa'");
+ok(!JSON.stringify(fm).match(/\bIA\b|intelig|FLUX|gerad/i), "crédito não menciona como a imagem foi feita");
+const fa = await art.fotoDoBanco(["oil platform"], log);
+ok(fa?.origem === "Foto própria" && fa?.fotografo === "Imagem ilustrativa" && fa?.src === resp.src_grande && Object.keys(fa!).every((k) => ["src", "alt", "fotografo", "origem"].includes(k)), "artigo: formato aceito pela Redação (vm_foto_valida)");
+resp = null; ok(await man.fotoDoBanco(["soybean"], log) === null, "nada no banco: null (vai o Unsplash)");
+status = 404; ok(await man.fotoDoBanco(["oil"], log) === null && await art.fotoDoBanco(["oil"], log) === null, "SQL 161 não rodada: null (vai o Unsplash)");
+console.log(falhas ? `FALHAS: ${falhas}` : "TUDO OK"); if (falhas) Deno.exit(1);

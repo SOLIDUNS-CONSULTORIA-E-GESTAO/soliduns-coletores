@@ -1,0 +1,60 @@
+# SOLIDUNS — Valor e Mercado: BANCO DE IMAGENS PRÓPRIO — v1.0 (18/10/2026)
+# Gera as cenas de coletor/dados/banco_imagens_cenas.json (FLUX.2 Pro, Black Forest Labs), grava no Storage (vm-imagens/banco/)
+# e cataloga em public.vm_banco_imagens (SQL 161). Roda só quando pedido (não tem agenda). Cena já feita é pulada.
+name: Banco de imagens
+
+on:
+  push:                        # gatilho: mudar o arquivo abaixo (a 1ª linha diz quantas imagens: ex. "max=3")
+    branches: [main]
+    paths: ["coletor/dados/rodar_banco_imagens.txt"]
+  workflow_dispatch:
+    inputs:
+      max:
+        description: "Quantas imagens gerar agora (teste: 3; completo: 300)"
+        required: false
+        default: "3"
+      temas:
+        description: "Só estes temas, separados por vírgula (vazio = todos)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  banco:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests pillow
+      - name: Quantas imagens
+        id: q
+        run: |
+          MAX="${{ github.event.inputs.max }}"
+          TEMAS="${{ github.event.inputs.temas }}"
+          if [ -z "$MAX" ] && [ -f coletor/dados/rodar_banco_imagens.txt ]; then
+            MAX=$(grep -oE '^max=[0-9]+' coletor/dados/rodar_banco_imagens.txt | head -1 | cut -d= -f2)
+            TEMAS=$(grep -oE '^temas=[a-z0-9,-]*' coletor/dados/rodar_banco_imagens.txt | head -1 | cut -d= -f2)
+          fi
+          echo "max=${MAX:-3}" >> "$GITHUB_OUTPUT"
+          echo "temas=${TEMAS}" >> "$GITHUB_OUTPUT"
+      - name: Gerar banco de imagens
+        env:
+          BFL_API_KEY: ${{ secrets.BFL_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          BANCO_MAX: ${{ steps.q.outputs.max }}
+          BANCO_TEMAS: ${{ steps.q.outputs.temas }}
+          BANCO_PARALELO: "3"
+        run: python -u coletor/gerar_banco_imagens.py
+      - name: Amostras para conferir
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: banco-imagens-amostras
+          path: banco_imagens_saida/
+          if-no-files-found: ignore

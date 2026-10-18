@@ -21,7 +21,7 @@
 // Variáveis: ANTHROPIC_API_KEY, COLETOR_TOKEN, UNSPLASH_ACCESS_KEY (sem ela, sai sem foto); opcionais VM_MODELO, VM_BUSCAS.
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. A página nunca menciona IA.
 
-export const VERSAO = "1.0";
+export const VERSAO = "1.1";   // v1.1 (18/10/2026): foto de capa vem primeiro do BANCO DE IMAGENS PRÓPRIO (SQL 161); Unsplash é a reserva
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = Deno.env.get("VM_MODELO_RESERVA") || "claude-sonnet-4-5";
 const BUSCAS = (() => { const n = parseInt(Deno.env.get("VM_BUSCAS") ?? "", 10); return isNaN(n) ? 12 : Math.max(1, Math.min(20, n)); })();
@@ -256,6 +256,22 @@ async function lerLote(id: string): Promise<Resultado> {
   return { tipo: res.type ?? "errored", erro: `${e.type ?? res.type ?? "erro"}: ${String(e.message ?? "").slice(0, 200)}` };
 }
 
+// ------------------------------------------------------------------ v1.1: foto de capa do BANCO DE IMAGENS PRÓPRIO (SQL 161)
+/** Pede ao banco a imagem que mais combina com o assunto (sem repetir em 30 dias). Null = nada combina: usa o Unsplash. */
+export async function fotoDoBanco(termos: unknown[], log: string[]): Promise<Obj | null> {
+  const t = termos.map(txt).filter(Boolean);
+  if (!t.length) return null;
+  try {
+    const r = await http(`${base()}/rpc/vm_banco_imagem_escolher`, { method: "POST", body: JSON.stringify({ p_termos: t }), headers: cab() });
+    if (!r.ok) { log.push(`Foto de capa: banco de imagens indisponível (${r.status}) — vai o Unsplash.`); return null; }
+    const b = await r.json() as Obj | null;
+    if (!b || !String(b.src ?? "").startsWith("https://")) { log.push("Foto de capa: nada do assunto no banco de imagens — vai o Unsplash."); return null; }
+    log.push(`Foto de capa: banco de imagens -> ${b.id} (${b.tema})`);
+    return { id: `banco-${b.id}`, src: b.src, src_grande: b.src_grande, alt: txt(b.alt) || "Imagem ilustrativa",
+      fotografo: "Imagem ilustrativa", fonte: "Arquivo Valor e Mercado", busca: t[0], cor_media: "" };
+  } catch (e) { log.push(`Foto de capa: banco de imagens falhou (${(e as Error).message}) — vai o Unsplash.`); return null; }
+}
+
 // ------------------------------------------------------------------ foto de capa (Unsplash)
 const UTM = "utm_source=soliduns_valor_e_mercado&utm_medium=referral";
 const comUtm = (u: string) => u ? u + (u.includes("?") ? "&" : "?") + UTM : "";
@@ -365,7 +381,9 @@ export async function processarResposta(x: Execucao, msg: Obj, fotosUsadas: () =
   anota(x, `conferência (rodada ${x.rodada + 1}): ` + (erros.length ? erros.join("; ") : "OK"));
   if (!erros.length && lim) {
     const log: string[] = [];
-    const foto = await buscarFoto(lim.ed.manchete, await fotosUsadas(), log).catch(() => null);
+    const mm = lim.ed.manchete as Obj;
+    const foto = (await fotoDoBanco([mm.foto_busca, mm.foto_alternativa, mm.cartola, mm.titulo], log))
+      ?? await buscarFoto(lim.ed.manchete, await fotosUsadas(), log).catch(() => null);
     log.forEach((l) => anota(x, l));
     if (foto) lim.ed.manchete.foto = foto;
     x.edicao = lim.ed as unknown as Obj; x.fontes = lim.fontes; x.etapa = "pronta"; x.mensagens = [];

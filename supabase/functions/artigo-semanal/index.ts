@@ -20,7 +20,7 @@
 //   opcionais VM_MODELO, VM_BUSCAS_SEMANAL, VM_DEEPSEEK_MODELO (padrão deepseek-flash).
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. O artigo nunca menciona IA.
 
-export const VERSAO = "1.2";
+export const VERSAO = "1.3";   // v1.3 (18/10/2026): foto vem primeiro do BANCO DE IMAGENS PRÓPRIO (SQL 161); Unsplash é a reserva
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = Deno.env.get("VM_MODELO_RESERVA") || "claude-sonnet-4-5";
 const BUSCAS = (() => { const n = parseInt(Deno.env.get("VM_BUSCAS_SEMANAL") ?? "", 10); return isNaN(n) ? 25 : Math.max(4, Math.min(30, n)); })();
@@ -322,6 +322,19 @@ async function lerLote(id: string): Promise<Resultado> {
   return { tipo: res.type ?? "errored", erro: `${e.type ?? res.type ?? "erro"}: ${String(e.message ?? "").slice(0, 200)}` };
 }
 
+// ------------------------------------------------------------------ v1.3: foto do BANCO DE IMAGENS PRÓPRIO (SQL 161), formato da Redação
+export async function fotoDoBanco(termos: unknown[], log: string[]): Promise<Obj | null> {
+  const t = termos.map(txt).filter(Boolean);
+  if (!t.length) return null;
+  try {
+    const b = await pgRpc<Obj | null>("vm_banco_imagem_escolher", { p_termos: t });
+    if (!b || !String(b.src ?? "").startsWith("https://")) { log.push("Foto: nada do assunto no banco de imagens — vai o Unsplash."); return null; }
+    log.push(`Foto: banco de imagens -> ${b.id} (${b.tema})`);
+    return { src: String(b.src_grande || b.src), alt: (txt(b.alt) || "Imagem ilustrativa").slice(0, 300).padEnd(3, "."),
+      fotografo: "Imagem ilustrativa", origem: "Foto própria" };
+  } catch (e) { log.push(`Foto: banco de imagens indisponível (${(e as Error).message}) — vai o Unsplash.`); return null; }
+}
+
 // ------------------------------------------------------------------ foto (Unsplash) no formato da Redação (vm_foto_valida)
 const UTM = "utm_source=soliduns_valor_e_mercado&utm_medium=referral";
 const comUtm = (u: string) => u ? u + (u.includes("?") ? "&" : "?") + UTM : "";
@@ -424,7 +437,8 @@ export async function processarResposta(x: Execucao, p: Pauta, msg: Obj) {
   anota(x, `conferência (rodada ${x.rodada + 1}): ` + (erros.length ? erros.join("; ") : "OK"));
   if (!erros.length && lim) {
     const log: string[] = [];
-    const foto = await buscarFoto([lim.a.foto_busca, lim.a.foto_alternativa, p.foto_busca], log).catch(() => null);
+    const foto = (await fotoDoBanco([lim.a.foto_busca, lim.a.foto_alternativa, p.foto_busca, lim.a.chapeu, lim.a.titulo], log))
+      ?? await buscarFoto([lim.a.foto_busca, lim.a.foto_alternativa, p.foto_busca], log).catch(() => null);
     log.forEach((l) => anota(x, l));
     if (foto) lim.a.foto = foto;
     x.artigo = lim.a as unknown as Obj; x.fontes = lim.fontes; x.etapa = "pronta"; x.mensagens = [];
@@ -479,7 +493,8 @@ export async function redigirDeepSeek(x: Execucao, p: Pauta) {
   anota(x, `conferência DeepSeek (rodada ${x.rodada + 1}, ${r.ent}+${r.sai} tokens, US$ ${dsCusto}): ` + (erros.length ? erros.join("; ") : "OK"));
   if (!erros.length && lim) {
     const log: string[] = [];
-    const foto = await buscarFoto([lim.a.foto_busca, lim.a.foto_alternativa, p.foto_busca], log).catch(() => null);
+    const foto = (await fotoDoBanco([lim.a.foto_busca, lim.a.foto_alternativa, p.foto_busca, lim.a.chapeu, lim.a.titulo], log))
+      ?? await buscarFoto([lim.a.foto_busca, lim.a.foto_alternativa, p.foto_busca], log).catch(() => null);
     log.forEach((l) => anota(x, l));
     if (foto) lim.a.foto = foto;
     x.artigo = { ...(lim.a as unknown as Obj), redator: "deepseek" }; x.fontes = lim.fontes; x.etapa = "pronta";
