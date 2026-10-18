@@ -2,7 +2,7 @@
 (Deno as unknown as { serve: unknown }).serve = () => {};
 Deno.env.set("SUPABASE_URL", "https://sb.test"); Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", "sb_secret_teste");
 Deno.env.set("ANTHROPIC_API_KEY", "chave-teste"); Deno.env.set("COLETOR_TOKEN", "tok"); Deno.env.set("UNSPLASH_ACCESS_KEY", "un-teste");
-Deno.env.set("ANTHROPIC_URL", "https://api.test/v1"); Deno.env.set("UNSPLASH_URL", "https://un.test");
+Deno.env.set("ANTHROPIC_URL", "https://api.test/v1"); Deno.env.set("DEEPSEEK_URL", "https://ds.test"); Deno.env.set("DEEPSEEK_API_KEY", "ds-teste"); Deno.env.set("UNSPLASH_URL", "https://un.test");
 const m = await import("../functions/artigo-semanal/index.ts");
 let falhas = 0; const ok = (c: boolean, n: string) => { console.log((c ? "OK  " : "FALHOU ") + n); if (!c) falhas++; };
 type O = Record<string, any>;
@@ -92,6 +92,45 @@ const r4 = await m.passo("", undefined, new Date("2026-10-19T20:15:00Z"));   // 
 ok(pedidos.length === 1, "segunda-feira: não começa outro");
 await m.passo("teste", "petrobras", new Date("2026-10-20T15:00:00Z"));       // teste a qualquer hora
 ok(pedidos.length === 2, "teste pedido à mão começa na hora");
+
+// 5. redator DeepSeek: Sonnet apura (ferramenta entregar_apuracao), DeepSeek escreve (JSON), mesma conferência
+const PD = { ...PAUTA, redator: "deepseek" };
+const bd: O = { exec: [] as O[], artigos: [] as O[] }; const lotes: O[] = []; const dsPedidos: O[] = [];
+const fatos = Array.from({ length: 30 }, (_, i) => ({ data: "15/10", fato: `Fato ${i} da semana com Brent a US$ 74,10.`, url: `https://fonte.test/${i % 6}` }));
+m.usarFetch(async (url: string | URL | Request, init?: RequestInit) => {
+  const u = String(url), metodo = init?.method ?? "GET", corpo = init?.body ? JSON.parse(String(init.body)) : null;
+  const J = (d: unknown, s = 200) => new Response(JSON.stringify(d), { status: s });
+  if (u.startsWith("https://sb.test/rest/v1/vm_pautas_semanais")) return J([PD]);
+  if (u.startsWith("https://sb.test/rest/v1/vm_artigo_semanal_execucoes")) {
+    if (metodo === "POST") { const l = corpo[0]; bd.exec = bd.exec.filter((e: O) => !(e.pauta === l.pauta && e.semana === l.semana && e.modo === l.modo)); bd.exec.push(structuredClone(l)); return J(null, 201); }
+    const modo = /modo=eq\.(\w+)/.exec(u)?.[1]; return J(structuredClone(bd.exec.filter((e: O) => !modo || e.modo === modo)));
+  }
+  if (u.startsWith("https://sb.test/rest/v1/cotacoes")) return J([]);
+  if (u.startsWith("https://sb.test/rest/v1/rpc/emissor_noticias_dossie")) return J({ emissor: [], imprensa: [] });
+  if (u.startsWith("https://sb.test/rest/v1/vm_artigos")) { bd.artigos.push(corpo[0]); return J([{ id: 88 }], 201); }
+  if (u === "https://api.test/v1/messages/batches" && metodo === "POST") { lotes.push(corpo); return J({ id: "loteA" }); }
+  if (u === "https://api.test/v1/messages/batches/loteA") return J({ processing_status: "ended", results_url: "https://api.test/resA" });
+  if (u === "https://api.test/resA") return new Response(JSON.stringify({ result: { type: "succeeded", message: { stop_reason: "tool_use", usage: { input_tokens: 40000, output_tokens: 5000 },
+    content: [{ type: "web_search_tool_result", content: Object.values(urls).map((v: any) => ({ url: v[0], title: v[1] })) },
+              { type: "tool_use", name: "entregar_apuracao", input: { data_referencia: "2026-10-18", secoes: [{ secao: "OPEP+", fatos }] } }] } } }));
+  if (u === "https://ds.test/chat/completions") { dsPedidos.push(corpo); return J({ choices: [{ message: { content: JSON.stringify({ ...entrega, data_referencia: "2026-10-20" }) } }], usage: { prompt_tokens: 20000, completion_tokens: 4000 } }); }
+  if (u.startsWith("https://un.test/search/photos")) return J({ results: [] });
+  return J({ erro: "não previsto " + u }, 404);
+});
+await m.passo("teste", "petrobras", new Date("2026-10-20T15:00:00Z"));
+ok(lotes.length === 1 && lotes[0].requests[0].params.tools.some((t: O) => t.name === "entregar_apuracao") && lotes[0].requests[0].params.system.includes("apurador"),
+   "DeepSeek: o Sonnet recebe o pedido de APURAÇÃO com busca");
+await m.passo("", undefined, new Date("2026-10-20T15:05:00Z"));
+let ed = bd.exec.find((e: O) => e.modo === "teste");
+ok(ed.etapa === "apurada" && ed.artigo.apuracao[0].fatos.length === 30, "apuração guardada (30 fatos)");
+await m.passo("", undefined, new Date("2026-10-20T15:10:00Z"));
+ed = bd.exec.find((e: O) => e.modo === "teste");
+ok(dsPedidos.length === 1 && dsPedidos[0].model === "deepseek-flash" && dsPedidos[0].response_format.type === "json_object", "DeepSeek chamado (deepseek-flash, JSON)");
+ok(dsPedidos[0].messages[0].content.includes("[APURAÇÃO DA SEMANA]") && dsPedidos[0].messages[0].content.includes("Fato 7 da semana") && !dsPedidos[0].messages[0].content.includes("Use a ferramenta de busca"),
+   "prompt do DeepSeek traz a apuração e proíbe inventar");
+ok(ed.etapa === "agendada" && bd.artigos[0]?.situacao === "rascunho" && ed.registro.some((r: string) => r.includes("redator: DeepSeek")), "texto da DeepSeek aprovado e gravado como RASCUNHO: " + ed.etapa);
+const lc = m.nova(PD, "2026-10-20", "teste", "claude");
+ok(m.redatorDe(lc, PD) === "claude", "teste comparativo com redator claude");
 
 console.log(falhas ? `\n${falhas} FALHA(S)` : "\nTODOS OS TESTES OK");
 if (falhas) Deno.exit(1);
