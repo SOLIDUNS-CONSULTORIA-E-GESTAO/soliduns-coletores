@@ -1,0 +1,2 @@
+max=3
+# 1ª linha: max=N (quantas imagens). 2ª linha opcional: temas=petroleo,juros. Mudar este arquivo e enviar ao GitHub dispara o robô 'Banco de imagens'.
