@@ -20,7 +20,8 @@
 //   opcionais VM_MODELO, VM_BUSCAS_SEMANAL, VM_DEEPSEEK_MODELO (padrão deepseek-flash).
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. O artigo nunca menciona IA.
 
-export const VERSAO = "1.4";   // v1.4 (18/10/2026): APURAÇÃO AMPLA SEMANAL — uma apuração (Sonnet) para várias pautas do mesmo grupo; a DeepSeek escreve um artigo por pauta. Perfil, regras e fontes por pauta.
+export const VERSAO = "1.5";   // v1.5 (18/10/2026): pautas DIÁRIAS (dias_semana + periodo "dia"): apuração ampla às 07h00 de segunda a sexta e 5 artigos no mesmo dia; DeepSeek V4 Pro escreve fora do pico.
+// v1.4   // v1.4 (18/10/2026): APURAÇÃO AMPLA SEMANAL — uma apuração (Sonnet) para várias pautas do mesmo grupo; a DeepSeek escreve um artigo por pauta. Perfil, regras e fontes por pauta.
 // v1.3   // v1.3 (18/10/2026): foto vem primeiro do BANCO DE IMAGENS PRÓPRIO (SQL 161); Unsplash é a reserva
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = Deno.env.get("VM_MODELO_RESERVA") || "claude-sonnet-4-5";
@@ -29,7 +30,8 @@ const API = Deno.env.get("ANTHROPIC_URL") || "https://api.anthropic.com/v1";
 const UNSPLASH = Deno.env.get("UNSPLASH_URL") || "https://api.unsplash.com";
 const PRECO_ENT = 1.5, PRECO_SAI = 7.5, PRECO_BUSCA = 0.01;
 const JANELA_HORAS = 6;                 // a produção pode começar até 6 h depois da hora marcada
-const MAX_CONTINUA = 10, MAX_REENVIO = 3, MAX_CONTINUA_GRUPO = 30, MIN_FATOS_PAUTA = 15, ESPERA_MAX_HORAS = 10;
+const minFatos = (p: Pauta) => diario(p) ? MIN_FATOS_DIA : MIN_FATOS_SEMANA;
+const MAX_CONTINUA = 10, MAX_REENVIO = 3, MAX_CONTINUA_GRUPO = 30, MIN_FATOS_SEMANA = 15, MIN_FATOS_DIA = 10, ESPERA_MAX_HORAS = 10;
 const AUTOR = "Redação Valor e Mercado";
 const DEEPSEEK_URL = Deno.env.get("DEEPSEEK_URL") || "https://api.deepseek.com";
 const DS_ENT = 0.30, DS_SAI = 1.20;   // US$ por milhão (preço de pico do deepseek-flash, conferido em 17/10/2026) — só para o registro
@@ -93,7 +95,11 @@ export type Pauta = { id: string; nome: string; chapeu: string; editoria: string
   hora_escrever: number; dias_publicar: number; hora_publicar: number; foto_busca: string; tags: string[]; ativa: boolean;
   // v1.4: perfil por pauta (sem eles, vale o perfil de energia e petróleo da 1ª pauta) e apuração ampla
   tipo?: string | null; grupo?: string | null; area?: string | null; perfil?: string | null; regras?: string | null;
-  fontes_primarias?: string | null; foto_exemplos?: string | null; numeros?: string | null; buscas?: number | null };
+  fontes_primarias?: string | null; foto_exemplos?: string | null; numeros?: string | null; buscas?: number | null;
+  dias_semana?: number[] | null; periodo?: string | null };   // v1.5: pauta diária
+export const diario = (p: Pauta) => p.periodo === "dia";
+const janelaTxt = (p: Pauta) => diario(p) ? "nas últimas 24 horas" : "nos 7 dias até hoje";
+export const escreveHoje = (p: Pauta, dia: number) => p.dias_semana?.length ? p.dias_semana.includes(dia) : dia === p.dia_escrever;
 const PADRAO = {
   area: "energia e petróleo",
   perfil: "especializado em energia e petróleo, com passagens pelas principais redações financeiras globais e domínio de geopolítica do petróleo, regulação do setor (ANP, CNPE, OPEP+), contabilidade de petroleiras (Ebitda, alavancagem, fluxo de caixa livre, dividendos) e precificação de commodities (Brent, WTI, spreads de refino, câmbio)",
@@ -109,22 +115,22 @@ export function instrucoes(p: Pauta, hoje: string, dados: string, apuracao?: str
   const pmin = p.palavras_min ?? 900, pmax = p.palavras_max ?? 1400, exigir = p.exigir?.length ? p.exigir : p.tickers;
   const estrutura = (p.estrutura || "abertura sem intertítulo | intertítulo sobre a companhia | intertítulo sobre o setor no mundo | intertítulo sobre o Brasil | intertítulo \"O que acompanhar\"")
     .split("|").map((x, i) => `  ${i + 1}. ${x.trim()}`).join("\n");
-  return `Você é um jornalista de economia sênior, ${campo(p, "perfil")}. Sua tarefa é escrever o ARTIGO SEMANAL do portal "Valor e Mercado".
+  return `Você é um jornalista de economia sênior, ${campo(p, "perfil")}. Sua tarefa é escrever o ${diario(p) ? "ARTIGO DO DIA" : "ARTIGO SEMANAL"} do portal "Valor e Mercado".
 
 [PAUTA]
 ${p.tema}
 
 [DATA DE REFERÊNCIA]
-Hoje é ${dataExtenso(hoje)} (${hoje}). O artigo cobre os 7 dias até hoje e será publicado amanhã cedo. ${apuracao
+Hoje é ${dataExtenso(hoje)} (${hoje}). ${diario(p) ? "O artigo cobre as últimas 24 horas e será publicado hoje." : "O artigo cobre os 7 dias até hoje e será publicado amanhã cedo."} ${apuracao
   ? "A APURAÇÃO da semana já foi feita e está no fim destas instruções. Escreva SOMENTE com os fatos da APURAÇÃO e os dados da casa: não acrescente nenhum fato, número, data, nome ou declaração que não esteja neles. Se um tema da estrutura não tiver fato na apuração, diga em uma frase a situação vigente que constar nela, ou siga para o próximo tema."
-  : "Use a ferramenta de busca na web para apurar TUDO o que aconteceu nesta semana; não escreva nenhum número, data ou fato que não tenha encontrado na busca ou nos dados da casa abaixo."}
+  : "Use a ferramenta de busca na web para apurar TUDO o que aconteceu " + (diario(p) ? "nas últimas 24 horas" : "nesta semana") + "; não escreva nenhum número, data ou fato que não tenha encontrado na busca ou nos dados da casa abaixo."}
 
 [DADOS DA CASA — conferidos, use quando forem relevantes]
 ${dados}
 
 [ESTRUTURA OBRIGATÓRIA]
 - chapeu: "${p.chapeu}".
-- titulo: até 90 caracteres, factual, presente do indicativo, sem ponto final, com o fato mais importante da semana para o tema da pauta.
+- titulo: até 90 caracteres, factual, presente do indicativo, sem ponto final, com o fato mais importante ${diario(p) ? "do dia" : "da semana"} para o tema da pauta.
 - linha_fina: 140 a 220 caracteres, com os dados complementares cruciais, sem repetir palavras do título.
 - corpo: parágrafos de 2 a 4 frases e intertítulos curtos (até 60 caracteres, sem ponto final), NESTA ordem:
 ${estrutura}
@@ -157,7 +163,7 @@ ${apuracao}`
 /** v1.2: instruções do APURADOR (Sonnet com busca) quando quem escreve é a DeepSeek */
 export function instrucoesApuracao(p: Pauta, hoje: string, dados: string): string {
   const estrutura = (p.estrutura || "abertura | a companhia | o setor no mundo | Brasil | O que acompanhar").split("|").map((x) => x.trim().split(":")[0]).join(" | ");
-  return `Você é o apurador sênior de ${campo(p, "area")} do portal "Valor e Mercado". Hoje é ${dataExtenso(hoje)} (${hoje}). Outro jornalista vai ESCREVER o artigo semanal SÓ com o que você apurar: ele não tem acesso à internet. Por isso a apuração precisa ser completa, precisa e verificável.
+  return `Você é o apurador sênior de ${campo(p, "area")} do portal "Valor e Mercado". Hoje é ${dataExtenso(hoje)} (${hoje}). Outro jornalista vai ESCREVER o artigo ${diario(p) ? "do dia" : "semanal"} SÓ com o que você apurar: ele não tem acesso à internet. Por isso a apuração precisa ser completa, precisa e verificável.
 
 [PAUTA]
 ${p.tema}
@@ -166,7 +172,7 @@ ${p.tema}
 ${dados}
 
 [O QUE FAZER]
-1. Use a ferramenta de busca na web para levantar TUDO o que aconteceu nos 7 dias até hoje sobre a pauta, seção por seção (${estrutura}), e a agenda da próxima semana.
+1. Use a ferramenta de busca na web para levantar TUDO o que aconteceu ${janelaTxt(p)} sobre a pauta, seção por seção (${estrutura}), e a agenda dos próximos dias.
 2. Prefira fontes primárias (${campo(p, "fontes_primarias")}, governos, bolsas) e registre os números exatos: preços (com 2 casas), variações (%), volumes (barris por dia), datas, horários e quem disse o quê.
 3. Cada fato vai em UMA frase completa e objetiva, com a data (dd/mm) e o endereço EXATO da página onde você o encontrou (devolvido pela busca). Nada de opinião, nada de recomendação.
 4. De 60 a 150 fatos no total, agrupados pela seção da estrutura. Se uma seção não teve fato novo na semana, registre a situação vigente com a data do último fato.
@@ -184,7 +190,7 @@ export function instrucoesApuracaoGrupo(g: Pauta, membros: Pauta[], hoje: string
     const est = (p.estrutura || "abertura | o tema no mundo | Brasil | O que acompanhar").split("|").map((x) => x.trim().split(":")[0]).join(" | ");
     return `### PAUTA "${p.id}" — ${p.nome}\n${p.tema}\nSeções do artigo: ${est}\nFontes primárias preferidas: ${campo(p, "fontes_primarias")}`;
   }).join("\n\n");
-  return `Você é o chefe de apuração do portal "Valor e Mercado". Hoje é ${dataExtenso(hoje)} (${hoje}). Esta é a APURAÇÃO AMPLA DA SEMANA: outros jornalistas vão ESCREVER um artigo para CADA pauta abaixo SÓ com o que você apurar. Eles não têm acesso à internet. A apuração precisa ser completa, precisa e verificável${g.tema ? `\n\n[ORIENTAÇÃO GERAL]\n${g.tema}` : ""}
+  return `Você é o chefe de apuração do portal "Valor e Mercado". Hoje é ${dataExtenso(hoje)} (${hoje}). Esta é a APURAÇÃO AMPLA ${diario(g) ? "DO DIA" : "DA SEMANA"}: outros jornalistas vão ESCREVER um artigo para CADA pauta abaixo SÓ com o que você apurar. Eles não têm acesso à internet. A apuração precisa ser completa, precisa e verificável${g.tema ? `\n\n[ORIENTAÇÃO GERAL]\n${g.tema}` : ""}
 
 [PAUTAS DA SEMANA]
 ${blocos}
@@ -193,10 +199,10 @@ ${blocos}
 ${dados}
 
 [O QUE FAZER]
-1. Use a ferramenta de busca na web para levantar TUDO o que aconteceu nos 7 dias até hoje em CADA pauta, seção por seção, e a agenda da próxima semana de cada uma. Distribua as buscas entre as pautas: nenhuma pode ficar fraca.
+1. Use a ferramenta de busca na web para levantar TUDO o que aconteceu ${janelaTxt(g)} em CADA pauta, seção por seção, e a agenda dos próximos dias de cada uma. Distribua as buscas entre as pautas: nenhuma pode ficar fraca.
 2. Prefira fontes primárias e registre os números exatos (preços com 2 casas, variações em %, volumes, datas, horários e quem disse o quê).
 3. Cada fato vai em UMA frase completa e objetiva, com a data (dd/mm) e o endereço EXATO da página onde você o encontrou (devolvido pela busca). Nada de opinião, nada de recomendação.
-4. De 30 a 60 fatos POR PAUTA, agrupados pelas seções daquela pauta. Um fato que sirva a duas pautas pode aparecer nas duas. Se uma seção não teve fato novo, registre a situação vigente com a data do último fato.
+4. De ${diario(g) ? "15 a 40" : "30 a 60"} fatos POR PAUTA, agrupados pelas seções daquela pauta. Um fato que sirva a duas pautas pode aparecer nas duas. Se uma seção não teve fato novo, registre a situação vigente com a data do último fato.
 5. Pesquise sem escrever comentários entre as buscas. No fim, entregue chamando a ferramenta "entregar_apuracao_ampla" uma única vez, com data_referencia = ${hoje} e um item por pauta (campo pauta = o identificador entre aspas, ex.: "${membros[0]?.id ?? "petrobras"}").`;
 }
 export const APURACAO_GRUPO = { name: "entregar_apuracao_ampla", description: "Entrega a apuração ampla da semana: fatos com data, número e fonte, separados por pauta e seção.",
@@ -419,15 +425,15 @@ export const redatorDe = (x: Execucao, p: Pauta) => String((x.artigo as Obj | nu
 export const ehGrupo = (p: Pauta) => p.tipo === "apuracao";
 export function nova(p: Pauta, semana: string, modo: "producao" | "teste", redator?: string): Execucao {
   if (ehGrupo(p)) return { pauta: p.id, semana, modo, etapa: "nova", rodada: 0, continuacoes: 0, reenvios: 0, modelo: MODELO, lote_id: null,
-    mensagens: [{ role: "user", content: `Faça a apuração ampla da semana até hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_apuracao_ampla.` }],
+    mensagens: [{ role: "user", content: `Faça a apuração ampla ${diario(p) ? "do dia" : "da semana"} até hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_apuracao_ampla.` }],
     buscas: Math.max(10, Math.min(90, p.buscas ?? 60)), urls: {}, artigo: { redator: "apuracao" }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };
   if (p.grupo) return { pauta: p.id, semana, modo, etapa: "esperando", rodada: 0, continuacoes: 0, reenvios: 0, modelo: MODELO, lote_id: null,
     mensagens: [], buscas: 0, urls: {}, artigo: { redator: "deepseek" }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };
   const r = (redator ?? p.redator ?? "claude") === "deepseek" ? "deepseek" : "claude";
   return { pauta: p.id, semana, modo, etapa: "nova", rodada: 0, continuacoes: 0, reenvios: 0, modelo: MODELO, lote_id: null,
     mensagens: [{ role: "user", content: r === "deepseek"
-      ? `Apure a semana até hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_apuracao.`
-      : `Apure e escreva o artigo semanal de hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_artigo.` }],
+      ? `Apure ${diario(p) ? "as últimas 24 horas" : "a semana"} até hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_apuracao.`
+      : `Apure e escreva o artigo ${diario(p) ? "do dia" : "semanal"} de hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_artigo.` }],
     buscas: BUSCAS, urls: {}, artigo: { redator: r }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };
 }
 let _membros: Pauta[] = [];                 // pautas do grupo (preenchido em passo)
@@ -479,19 +485,19 @@ export async function processarResposta(x: Execucao, p: Pauta, msg: Obj) {
       if (id) porPauta[id] = [...(porPauta[id] ?? []), ...secoes];
     }
     const conta = (id: string) => (porPauta[id] ?? []).reduce((n, s) => n + s.fatos.length, 0);
-    const fracas = membros.filter((m) => conta(m.id) < MIN_FATOS_PAUTA);
-    if (!fracas.length || (x.reenvios >= 1 && membros.some((m) => conta(m.id) >= MIN_FATOS_PAUTA))) {
+    const fracas = membros.filter((m) => conta(m.id) < minFatos(p));
+    if (!fracas.length || (x.reenvios >= 1 && membros.some((m) => conta(m.id) >= minFatos(p)))) {
       x.artigo = { redator: "apuracao", por_pauta: porPauta }; x.etapa = "concluida"; x.mensagens = [];
       anota(x, `apuração ampla pronta: ${membros.map((m) => `${m.id} ${conta(m.id)}`).join(", ")} fatos; ${Object.keys(x.urls).length} páginas — US$ ${custo(x)}`
-        + (fracas.length ? ` (pautas com menos de ${MIN_FATOS_PAUTA} fatos não serão escritas: ${fracas.map((m) => m.id).join(", ")})` : ""));
+        + (fracas.length ? ` (pautas com menos de ${minFatos(p)} fatos não serão escritas: ${fracas.map((m) => m.id).join(", ")})` : ""));
       return;
     }
     if (++x.reenvios <= 1) {
       x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content:
-        `Estas pautas vieram fracas (mínimo ${MIN_FATOS_PAUTA} fatos cada): ${fracas.map((m) => `${m.id} (${conta(m.id)})`).join(", ")}. Complete a apuração delas (pode buscar mais) e entregue de novo a apuração COMPLETA de todas as pautas pela ferramenta entregar_apuracao_ampla.` }];
+        `Estas pautas vieram fracas (mínimo ${minFatos(p)} fatos cada): ${fracas.map((m) => `${m.id} (${conta(m.id)})`).join(", ")}. Complete a apuração delas (pode buscar mais) e entregue de novo a apuração COMPLETA de todas as pautas pela ferramenta entregar_apuracao_ampla.` }];
       anota(x, `apuração ampla incompleta (${fracas.map((m) => m.id).join(", ")}) — pedindo complemento`); await enviarPedido(x, p); return;
     }
-    x.etapa = "falhou"; anota(x, `NÃO apurado: nenhuma pauta com ${MIN_FATOS_PAUTA} fatos. US$ ${custo(x)}`); return;
+    x.etapa = "falhou"; anota(x, `NÃO apurado: nenhuma pauta com ${minFatos(p)} fatos. US$ ${custo(x)}`); return;
   }
   if (redatorDe(x, p) === "deepseek") {
     const ap = desembrulhar(conteudo.find((b) => b.type === "tool_use" && b.name === "entregar_apuracao")?.input);
@@ -560,7 +566,7 @@ export async function redigirDeepSeek(x: Execucao, p: Pauta) {
   const a0 = (x.artigo ?? {}) as Obj, secoes = (a0.apuracao ?? []) as { secao: string; fatos: { data: string; fato: string; url: string }[] }[];
   const modelo = p.modelo_redator || Deno.env.get("VM_DEEPSEEK_MODELO") || "deepseek-flash";
   const sistema = instrucoes(p, x.semana, await dadosDaCasa(p, x.semana), apuracaoTexto(secoes));
-  const usuario = x.rodada === 0 ? `Escreva o artigo semanal de hoje (${dataExtenso(x.semana)}) e responda só com o JSON.`
+  const usuario = x.rodada === 0 ? `Escreva o artigo ${diario(p) ? "do dia" : "semanal"} de hoje (${dataExtenso(x.semana)}) e responda só com o JSON.`
     : "Este é o artigo que você escreveu:\n" + JSON.stringify(a0.rascunho ?? {}).slice(0, 60000) +
       "\n\nEle não passou na conferência automática. Corrija SÓ estes pontos, mantenha o resto e responda com o JSON completo:\n- " + ((a0.erros ?? []) as string[]).join("\n- ");
   anota(x, `DeepSeek (${modelo}) escrevendo${x.rodada ? " a correção" : ""}…`);
@@ -611,7 +617,7 @@ async function esperarApuracao(x: Execucao, p: Pauta, agora: Date) {
   if (g?.etapa === "concluida") {
     const secoes = (((g.artigo ?? {}) as Obj).por_pauta as Record<string, unknown[]> | undefined)?.[p.id] as { secao: string; fatos: unknown[] }[] | undefined;
     const nf = (secoes ?? []).reduce((n, s) => n + arr(s.fatos).length, 0);
-    if (nf < MIN_FATOS_PAUTA) { x.etapa = "falhou"; anota(x, `NÃO escrito: a apuração ampla trouxe só ${nf} fatos desta pauta.`); return; }
+    if (nf < minFatos(p)) { x.etapa = "falhou"; anota(x, `NÃO escrito: a apuração ampla trouxe só ${nf} fatos desta pauta.`); return; }
     x.artigo = { redator: "deepseek", apuracao: secoes }; x.urls = g.urls ?? {}; x.etapa = "apurada"; x.rodada = 0;
     anota(x, `fatos recebidos da apuração ampla (${p.grupo}): ${nf} fatos — DeepSeek escreve no próximo passo`);
     return;
@@ -642,10 +648,10 @@ export async function passo(acao: string, pautaPedida: string | undefined, agora
       // produção: execução do dia da pauta; teste: a mais recente em andamento (ou nova, se pedida agora)
       let x: Execucao | null = null;
       if (modo === "producao") {
-        const l = await pgGet<Execucao[]>(`vm_artigo_semanal_execucoes?select=*&pauta=eq.${p.id}&modo=eq.producao&semana=gte.${somaDias(data, -1)}&order=semana.desc&limit=1`);
+        const l = await pgGet<Execucao[]>(`vm_artigo_semanal_execucoes?select=*&pauta=eq.${p.id}&modo=eq.producao&semana=${diario(p) ? "eq." + data : "gte." + somaDias(data, -1)}&order=semana.desc&limit=1`);
         x = l[0] ?? null;
         if (!x) {
-          const naJanela = dia === p.dia_escrever && minutos >= p.hora_escrever && minutos <= p.hora_escrever + JANELA_HORAS * 60;
+          const naJanela = escreveHoje(p, dia) && minutos >= p.hora_escrever && minutos <= p.hora_escrever + JANELA_HORAS * 60;
           if (!naJanela) continue;
           x = nova(p, data, "producao"); anota(x, `início (produção, redator ${redatorDe(x, p)}) — artigo-semanal v${VERSAO}`);
         }

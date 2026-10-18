@@ -7,7 +7,7 @@ name: Valor e Mercado - edição do dia
 
 on:
   schedule:
-    - cron: "15 10 * * *"   # 07h15 BRT — reserva (só age se a do Supabase não saiu)
+    - cron: "0 11 * * *"    # 08h00 BRT — reserva (só age se a do Supabase não saiu; v1.2 do Supabase publica às 07h15)
   workflow_dispatch:
     inputs:
       so_teste:

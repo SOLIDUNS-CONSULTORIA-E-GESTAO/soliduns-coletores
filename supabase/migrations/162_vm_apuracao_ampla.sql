@@ -1,4 +1,7 @@
--- 162_vm_apuracao_ampla.sql — Valor e Mercado: APURAÇÃO AMPLA SEMANAL (uma apuração, vários artigos)
+-- 162_vm_apuracao_ampla.sql — Valor e Mercado: APURAÇÃO AMPLA SEMANAL e DIÁRIA (uma apuração, vários artigos) — rev. 18/10 17h40
+-- Rev. 17h40 (decisões do Thiago 16h42–16h59): DeepSeek V4 Pro escreve FORA DO PICO; 5 ARTIGOS DIÁRIOS de segunda a sexta,
+-- com os mesmos 5 temas (apuração às 07h00, publicação 09h–17h); Scanner do Dia passa para as 07h00 (DeepSeek V4 Pro).
+-- Os artigos SEMANAIS passam a sair no domingo à noite (18h–20h), para não chocar com os diários de segunda.
 -- Decisão do Thiago (18/10/2026 16h32): "UMA APURAÇÃO GRANDE POR SEMANA, VÁRIOS ARTIGOS — APROVADO"; temas escolhidos:
 -- Juros/inflação/Copom, Câmbio e dólar, Agronegócio, Mineração e siderurgia (+ a Petrobras, que já existia).
 -- Como funciona (Edge Function artigo-semanal v1.4):
@@ -19,6 +22,8 @@ alter table public.vm_pautas_semanais add column if not exists fontes_primarias 
 alter table public.vm_pautas_semanais add column if not exists foto_exemplos text check (length(foto_exemplos) <= 200);
 alter table public.vm_pautas_semanais add column if not exists numeros text check (length(numeros) <= 200);
 alter table public.vm_pautas_semanais add column if not exists buscas int check (buscas between 4 and 90);
+alter table public.vm_pautas_semanais add column if not exists periodo text not null default 'semana' check (periodo in ('semana', 'dia'));
+alter table public.vm_pautas_semanais add column if not exists dias_semana int[];          -- 0 = domingo … 6 = sábado (pauta diária)
 
 -- 2. A apuração ampla (não vira artigo: só apura para as pautas do grupo) -----------------------------------------
 insert into public.vm_pautas_semanais (id, tipo, nome, chapeu, editoria, tickers, tema, estrutura, dia_escrever, hora_escrever, dias_publicar,
@@ -99,8 +104,52 @@ update public.vm_pautas_semanais set grupo = 'apuracao-semanal', redator = 'deep
        hora_escrever = 16 * 60 + 5, atualizado_em = now()
  where id = 'petrobras';
 
--- conferência: esperado 6 linhas — apuracao-semanal (apuracao, domingo 16:00) e 5 pautas do grupo com publicação na segunda
-select id, tipo, coalesce(grupo, '—') as grupo, redator,
-       to_char(make_time(hora_escrever / 60, hora_escrever % 60, 0), 'HH24:MI') as escreve_domingo,
-       case when tipo = 'apuracao' then '—' else to_char(make_time(hora_publicar / 60, hora_publicar % 60, 0), 'HH24:MI') end as publica_segunda
-  from public.vm_pautas_semanais where ativa order by tipo desc, hora_publicar;
+-- 5. Semanais: publicação no DOMINGO à noite (18h00 a 20h00) e redator DeepSeek V4 Pro ---------------------------------
+update public.vm_pautas_semanais p set dias_publicar = 0, modelo_redator = 'deepseek-v4-pro', atualizado_em = now(),
+       hora_publicar = case p.id when 'petrobras' then 18 * 60 when 'juros-inflacao' then 18 * 60 + 30 when 'cambio' then 19 * 60
+                                 when 'agronegocio' then 19 * 60 + 30 else 20 * 60 end
+ where p.grupo = 'apuracao-semanal';
+
+-- 6. DIÁRIOS (segunda a sexta): apuração ampla às 07h00 e 5 artigos no mesmo dia, 09h00 a 17h00 -----------------------
+insert into public.vm_pautas_semanais (id, tipo, periodo, dias_semana, nome, chapeu, editoria, tickers, tema, estrutura, dia_escrever, hora_escrever,
+                                       dias_publicar, hora_publicar, foto_busca, buscas, redator)
+values ('apuracao-diaria', 'apuracao', 'dia', array[1, 2, 3, 4, 5], 'Apuração ampla do dia', 'APURAÇÃO', 'Economia', '{}',
+  'Últimas 24 horas até agora (inclui o fechamento de ontem, a noite, a Ásia, a Europa e o pré-mercado de hoje). Para cada pauta, priorize o que mexe com preços, juros, câmbio e ações HOJE; registre a agenda de hoje com horário.',
+  '', 1, 7 * 60, 0, 0, 'financial market', 50, 'deepseek')
+on conflict (id) do update set tipo = excluded.tipo, periodo = excluded.periodo, dias_semana = excluded.dias_semana, tema = excluded.tema,
+  hora_escrever = excluded.hora_escrever, buscas = excluded.buscas, ativa = true, atualizado_em = now();
+
+insert into public.vm_pautas_semanais (id, grupo, periodo, dias_semana, nome, chapeu, editoria, tickers, tema, estrutura, exigir, palavras_min, palavras_max,
+  fontes_min, dia_escrever, hora_escrever, dias_publicar, hora_publicar, foto_busca, tags, redator, modelo_redator,
+  area, perfil, regras, fontes_primarias, foto_exemplos, numeros)
+select s.id || '-dia', 'apuracao-diaria', 'dia', array[1, 2, 3, 4, 5], replace(s.nome, '— semanal', '— do dia'), s.chapeu, s.editoria, s.tickers, s.tema,
+  'abertura sem intertítulo: o fato do dia e o movimento dos preços | intertítulo "Os números do dia": cotações, indicadores e variações com o horário | '
+  || 'intertítulo "O contexto": o que explica o movimento e o que disseram as fontes primárias | intertítulo "O que acompanhar": agenda de hoje e dos próximos dias com o horário',
+  case s.id when 'petrobras' then array['PETR4', 'Brent'] when 'juros-inflacao' then array['Selic', 'juros'] when 'cambio' then array['dólar', 'real']
+            when 'agronegocio' then array['soja', 'milho'] else array['minério de ferro', 'VALE3'] end,
+  600, 1000, 4, 1, 7 * 60 + 5, 0,
+  case s.id when 'petrobras' then 9 * 60 when 'juros-inflacao' then 11 * 60 when 'cambio' then 13 * 60 when 'agronegocio' then 15 * 60 else 17 * 60 end,
+  s.foto_busca, s.tags, 'deepseek', 'deepseek-v4-pro', s.area, s.perfil, s.regras, s.fontes_primarias, s.foto_exemplos, s.numeros
+  from public.vm_pautas_semanais s
+ where s.grupo = 'apuracao-semanal'
+on conflict (id) do update set grupo = excluded.grupo, periodo = excluded.periodo, dias_semana = excluded.dias_semana, nome = excluded.nome,
+  tema = excluded.tema, estrutura = excluded.estrutura, exigir = excluded.exigir, palavras_min = excluded.palavras_min, palavras_max = excluded.palavras_max,
+  fontes_min = excluded.fontes_min, hora_escrever = excluded.hora_escrever, dias_publicar = excluded.dias_publicar, hora_publicar = excluded.hora_publicar,
+  modelo_redator = excluded.modelo_redator, area = excluded.area, perfil = excluded.perfil, regras = excluded.regras,
+  fontes_primarias = excluded.fontes_primarias, foto_exemplos = excluded.foto_exemplos, numeros = excluded.numeros, ativa = true, atualizado_em = now();
+-- (o perfil de petróleo da Petrobras vem do padrão da função; nos diários vale o mesmo)
+
+-- 7. Scanner do Dia: 07h00 de Brasília em dias úteis (DeepSeek V4 Pro fora do pico; antes 06h45) ---------------------
+do $$
+begin
+  perform cron.unschedule(jobid) from cron.job where jobname = 'vm-scanner-do-dia';
+  perform cron.schedule('vm-scanner-do-dia', '0 10 * * 1-5', $job$ select public._vm_chamar_scanner('{}'::jsonb); $job$);
+end $$;
+
+-- conferência: esperado 12 linhas (2 apurações + 5 semanais + 5 diárias) e o Scanner às "0 10 * * 1-5" — apuracao-semanal (apuracao, domingo 16:00) e 5 pautas do grupo com publicação na segunda
+select id, tipo, periodo, coalesce(grupo, '—') as grupo, coalesce(modelo_redator, '—') as modelo,
+       case when periodo = 'dia' then 'seg a sex' else 'domingo' end as quando,
+       to_char(make_time(hora_escrever / 60, hora_escrever % 60, 0), 'HH24:MI') as escreve,
+       case when tipo = 'apuracao' then '—' else to_char(make_time(hora_publicar / 60, hora_publicar % 60, 0), 'HH24:MI') end as publica,
+       (select schedule from cron.job where jobname = 'vm-scanner-do-dia') as scanner
+  from public.vm_pautas_semanais where ativa order by periodo, tipo desc, hora_publicar;

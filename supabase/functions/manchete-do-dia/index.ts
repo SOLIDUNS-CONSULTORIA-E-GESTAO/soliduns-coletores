@@ -21,7 +21,8 @@
 // Variáveis: ANTHROPIC_API_KEY, COLETOR_TOKEN, UNSPLASH_ACCESS_KEY (sem ela, sai sem foto); opcionais VM_MODELO, VM_BUSCAS.
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. A página nunca menciona IA.
 
-export const VERSAO = "1.1";   // v1.1 (18/10/2026): foto de capa vem primeiro do BANCO DE IMAGENS PRÓPRIO (SQL 161); Unsplash é a reserva
+export const VERSAO = "1.2";   // v1.2 (18/10/2026): o Sonnet APURA às 05h00 (busca na web) e a DeepSeek V4 Pro ESCREVE às 07h00 (fora do pico); publica às 07h15. Sem DEEPSEEK_API_KEY, volta ao fluxo antigo.
+// v1.1   // v1.1 (18/10/2026): foto de capa vem primeiro do BANCO DE IMAGENS PRÓPRIO (SQL 161); Unsplash é a reserva
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = Deno.env.get("VM_MODELO_RESERVA") || "claude-sonnet-4-5";
 const BUSCAS = (() => { const n = parseInt(Deno.env.get("VM_BUSCAS") ?? "", 10); return isNaN(n) ? 12 : Math.max(1, Math.min(20, n)); })();
@@ -29,7 +30,11 @@ const API = Deno.env.get("ANTHROPIC_URL") || "https://api.anthropic.com/v1";
 const UNSPLASH = Deno.env.get("UNSPLASH_URL") || "https://api.unsplash.com";
 // preço do LOTE (metade do normal), por milhão de tokens — só para o registro de custo
 const PRECO_ENT = 1.5, PRECO_SAI = 7.5, PRECO_BUSCA = 0.01;
-export const JANELA = { inicio: 5 * 60, publica: 6 * 60 + 30, fim: 8 * 60 + 55 };   // minutos do dia em Brasília
+export const JANELA = { inicio: 5 * 60, redige: 7 * 60, publica: 7 * 60 + 15, fim: 9 * 60 + 30 };   // minutos do dia em Brasília (v1.2: DeepSeek às 07h00, fora do pico)
+export const usaDeepSeek = () => !!Deno.env.get("DEEPSEEK_API_KEY") && (Deno.env.get("VM_REDATOR") ?? "deepseek") === "deepseek";
+const DS_URL = Deno.env.get("DEEPSEEK_URL") || "https://api.deepseek.com";
+const DS_MODELO = Deno.env.get("VM_DEEPSEEK_MODELO") || "deepseek-v4-pro";
+const DS_ENT = 0.66, DS_SAI = 1.98;   // US$ por milhão, deepseek-v4-pro FORA do pico (conferido em 18/10/2026) — só para o registro
 const MAX_CONTINUA = 6, MAX_REENVIO = 3;
 
 let http: typeof fetch = fetch;
@@ -94,7 +99,7 @@ export function normUrl(u: unknown): string {
   return s.replace(/\/+$/, "");
 }
 
-export function instrucoes(hoje: string): string {
+export function instrucoes(hoje: string, apuracao?: string): string {
   return `Você é um jornalista de economia sênior e analista macroeconômico com passagens pelas principais redações financeiras globais (Bloomberg, Valor Econômico e Financial Times). Sua tarefa é produzir de forma autônoma o conteúdo editorial do dia para a home do portal "Valor e Mercado".
 
 [MATRIZ DE COMPETÊNCIAS TÉCNICAS REQUERIDAS]
@@ -107,7 +112,9 @@ Aplique conhecimentos avançados em:
 6. Geografia econômica: logística de commodities, gargalos em cadeias globais de suprimento, infraestrutura portuária e demografia industrial.
 
 [DATA DE REFERÊNCIA]
-Hoje é ${dataExtenso(hoje)} (${hoje}). Toda a análise considera este dia. Ignore os fatos de edições anteriores: busque informação estritamente nova, das últimas 24 horas de mercado e dos fatos previstos para hoje. Use a ferramenta de busca na web para apurar TUDO; não escreva nenhum número, horário ou fato que não tenha encontrado na busca de hoje.
+Hoje é ${dataExtenso(hoje)} (${hoje}). Toda a análise considera este dia. Ignore os fatos de edições anteriores: busque informação estritamente nova, das últimas 24 horas de mercado e dos fatos previstos para hoje. ${apuracao
+  ? "A APURAÇÃO de hoje já foi feita e está no fim destas instruções. Escreva SOMENTE com os fatos da APURAÇÃO: não acrescente nenhum número, horário, nome, declaração ou fato que não esteja nela."
+  : "Use a ferramenta de busca na web para apurar TUDO; não escreva nenhum número, horário ou fato que não tenha encontrado na busca de hoje."}
 
 [RESTRIÇÕES RÍGIDAS DE ESTILO]
 1. Proibido usar muletas e clichês: "em suma", "por fim", "vale destacar", "é importante lembrar", "portanto", "uma jornada", "mergulhar de cabeça", "um olhar atento", "em resumo", "nesse sentido".
@@ -136,11 +143,38 @@ BLOCO 2 — SCANNER DO DIA ("O que move o dia"):
 - semana: eventos, gatilhos de liquidez e julgamentos de maior peso SÓ nos próximos dias úteis desta semana, de amanhã até sexta-feira (se hoje for sexta, sábado ou domingo, a próxima semana, de segunda a sexta). Nada de datas fora dessa janela nem de eventos de hoje. De 3 a 6 itens, com o dia em "quando" (ex.: "Quinta (15/10)").
 
 [FORMATO DA RESPOSTA]
-Pesquise sem escrever comentários entre as buscas. Depois, entregue a edição chamando a ferramenta "entregar_edicao" (uma única vez, com todos os campos). Não escreva a edição no texto.
+${apuracao ? `Responda SOMENTE com um objeto JSON (sem texto antes ou depois) com as chaves: data_referencia, manchete {cartola, titulo, linha_fina, corpo (lista de parágrafos), foto_busca, foto_alternativa}, scanner {pos_fechamento (lista de {titulo, texto}), agenda (lista de {hora, evento, consenso}), semana (lista de {quando, texto})} e fontes (lista de {titulo, url} — use SOMENTE endereços que aparecem na apuração, copiados exatamente).` : `Pesquise sem escrever comentários entre as buscas. Depois, entregue a edição chamando a ferramenta "entregar_edicao" (uma única vez, com todos os campos). Não escreva a edição no texto.`}
 Antes de entregar, releia cada frase: nenhuma frase pode ficar truncada, repetida ou com reticências; cada dado precisa dizer quando aconteceu (dia e horário), sem expressões vagas como "um dos pregões da semana".
 - data_referencia: ${hoje}
 - agenda.hora: horário de Brasília no formato 09h00; evento sem horário definido: "Dia todo" ou "A definir".
-- fontes: de 3 a 12 páginas que você efetivamente usou, com o endereço EXATO devolvido pela busca.`;
+- fontes: de 3 a 12 páginas que você efetivamente usou, com o endereço EXATO devolvido pela busca.${apuracao ? `\n\n[APURAÇÃO DE HOJE]\n${apuracao}` : ""}`;
+}
+
+/** v1.2: instruções do APURADOR (Sonnet com busca) — quem escreve é a DeepSeek, sem internet. */
+export function instrucoesApuracao(hoje: string): string {
+  return `Você é o apurador sênior do portal "Valor e Mercado". Hoje é ${dataExtenso(hoje)} (${hoje}). Às 07h00 outro jornalista vai ESCREVER a edição do dia (Manchete de capa + Scanner do dia) SÓ com o que você apurar: ele não tem acesso à internet. A apuração precisa ser completa, precisa e verificável.
+
+[O QUE APURAR — informação estritamente nova, das últimas 24 horas e dos fatos previstos para hoje]
+1. Candidatas a manchete: os 4 a 6 assuntos que mais devem mexer com juros, câmbio, bolsa e crédito hoje, cada um com o dado exato, o movimento dos ativos, quem disse o quê e o precedente histórico quando houver.
+2. Pós-fechamento: o que aconteceu depois das 18h de ontem (horário de Brasília): decisões judiciais, resultados divulgados à noite, fatos relevantes, fechamento das bolsas asiáticas e primeiras horas na Europa.
+3. Agenda de hoje: indicadores, decisões de bancos centrais, discursos de diretores do Fed/BC, votações, leilões do Tesouro e eventos políticos/jurídicos, cada um com horário de Brasília (09h00) e consenso de mercado quando houver.
+4. Semana: eventos de maior peso nos próximos dias úteis desta semana (de amanhã até sexta; se hoje for sexta, sábado ou domingo, a próxima semana), com o dia.
+5. Mercados: fechamentos e variações de ontem e as primeiras cotações de hoje (Ibovespa, dólar, DI, Treasuries, petróleo, minério, bolsas de Nova York, Europa e Ásia).
+
+[COMO ENTREGAR]
+- Use a ferramenta de busca na web. Prefira fontes primárias (Banco Central, IBGE, Tesouro, CVM, B3, Fed, as empresas, os tribunais, o governo).
+- Cada fato vai em UMA frase completa e objetiva, com a data (dd/mm), o horário quando houver e o endereço EXATO da página onde você o encontrou (devolvido pela busca). Nada de opinião, nada de recomendação.
+- De 30 a 80 fatos, agrupados nas seções acima (seção = "Candidatas a manchete", "Pós-fechamento", "Agenda de hoje", "Semana", "Mercados").
+- Pesquise sem escrever comentários entre as buscas. No fim, entregue chamando a ferramenta "entregar_apuracao" uma única vez, com data_referencia = ${hoje}.`;
+}
+export const APURACAO = { name: "entregar_apuracao", description: "Entrega a apuração do dia (fatos com data, horário e fonte) para o redator da edição.",
+  input_schema: { type: "object", required: ["data_referencia", "secoes"], properties: {
+    data_referencia: { type: "string" },
+    secoes: { type: "array", items: { type: "object", required: ["secao", "fatos"], properties: { secao: { type: "string" },
+      fatos: { type: "array", items: { type: "object", required: ["fato"], properties: { data: { type: "string" }, hora: { type: "string" }, fato: { type: "string" }, url: { type: "string" } } } } } } } } } };
+export const MIN_FATOS = 25;
+export function apuracaoTexto(secoes: { secao: string; fatos: { data?: string; hora?: string; fato: string; url?: string }[] }[]): string {
+  return secoes.map((s) => `## ${s.secao}\n` + s.fatos.map((f) => `- (${[f.data, f.hora].filter(Boolean).join(" ") || "s/d"}) ${f.fato}${f.url ? ` [fonte: ${f.url}]` : ""}`).join("\n")).join("\n\n");
 }
 
 const T = { type: "string" };
@@ -229,9 +263,10 @@ export function problemas(ed: Edicao, fontes: unknown[], dataRef: string, hoje: 
 
 // ------------------------------------------------------------------ Anthropic (lote)
 const cabAnthropic = () => ({ "x-api-key": Deno.env.get("ANTHROPIC_API_KEY") ?? "", "anthropic-version": "2023-06-01", "content-type": "application/json" });
-export function pedido(mensagens: unknown[], hoje: string, buscas: number, modelo: string): Obj {
-  const tools: unknown[] = buscas ? [{ type: "web_search_20250305", name: "web_search", max_uses: buscas }, ENTREGA] : [ENTREGA];
-  return { model: modelo, max_tokens: 16000, system: instrucoes(hoje), messages: mensagens, tools };
+export function pedido(mensagens: unknown[], hoje: string, buscas: number, modelo: string, apurar = false): Obj {
+  const ferr = apurar ? APURACAO : ENTREGA;
+  const tools: unknown[] = buscas ? [{ type: "web_search_20250305", name: "web_search", max_uses: buscas }, ferr] : [ferr];
+  return { model: modelo, max_tokens: 16000, system: apurar ? instrucoesApuracao(hoje) : instrucoes(hoje), messages: mensagens, tools };
 }
 async function mandarLote(id: string, params: Obj): Promise<string> {
   const r = await http(`${API}/messages/batches`, { method: "POST", headers: cabAnthropic(), body: JSON.stringify({ requests: [{ custom_id: id, params }] }) });
@@ -337,12 +372,15 @@ const hora = () => { const b = new Date(Date.now() - 3 * 3600e3); return b.toISO
 const anota = (x: Execucao, s: string) => { x.registro = [...(x.registro ?? []), `${hora()} ${s}`].slice(-60); };
 
 export function nova(data: string, modo: "producao" | "teste"): Execucao {
+  const ds = usaDeepSeek();
   return { data, modo, etapa: "nova", rodada: 0, continuacoes: 0, reenvios: 0, modelo: MODELO, lote_id: null,
-    mensagens: [{ role: "user", content: `Apure e escreva a edição de hoje (${dataExtenso(data)}) e entregue pela ferramenta entregar_edicao.` }],
-    buscas: BUSCAS, urls: {}, edicao: null, fontes: [], ent: 0, sai: 0, nbuscas: 0, registro: [] };
+    mensagens: [{ role: "user", content: ds ? `Apure a edição de hoje (${dataExtenso(data)}) e entregue pela ferramenta entregar_apuracao.`
+      : `Apure e escreva a edição de hoje (${dataExtenso(data)}) e entregue pela ferramenta entregar_edicao.` }],
+    buscas: BUSCAS, urls: {}, edicao: ds ? { redator: "deepseek" } : null, fontes: [], ent: 0, sai: 0, nbuscas: 0, registro: [] };
 }
+export const redatorDS = (x: Execucao) => (x.edicao as Obj | null)?.redator === "deepseek";
 async function enviarPedido(x: Execucao) {
-  x.lote_id = await mandarLote(`vm-${x.data}-${x.modo}-${x.rodada}-${x.continuacoes}-${x.reenvios}`, pedido(x.mensagens, x.data, x.buscas, x.modelo));
+  x.lote_id = await mandarLote(`vm-${x.data}-${x.modo}-${x.rodada}-${x.continuacoes}-${x.reenvios}`, pedido(x.mensagens, x.data, x.buscas, x.modelo, redatorDS(x) && !x.edicao?.apuracao));
   x.etapa = "aguardando";
   anota(x, `pedido enviado (rodada ${x.rodada + 1}, ${x.modelo}, até ${x.buscas} buscas)`);
 }
@@ -365,6 +403,23 @@ export async function processarResposta(x: Execucao, msg: Obj, fotosUsadas: () =
     anota(x, "busca pausada — continuando");
     await enviarPedido(x);
     return;
+  }
+  if (redatorDS(x)) {
+    const ap = desembrulhar(conteudo.find((b) => b.type === "tool_use" && b.name === "entregar_apuracao")?.input);
+    const secoes = arr(ap?.secoes).map((s) => ({ secao: txt(s.secao), fatos: arr(s.fatos).map((f) => ({ data: txt(f.data), hora: txt(f.hora), fato: txt(f.fato), url: txt(f.url) })).filter((f) => f.fato) }))
+      .filter((s) => s.fatos.length);
+    const nf = secoes.reduce((n, s) => n + s.fatos.length, 0);
+    if (nf >= MIN_FATOS) {
+      x.edicao = { redator: "deepseek", apuracao: secoes }; x.etapa = "apurada"; x.mensagens = []; x.rodada = 0;
+      anota(x, `apuração pronta: ${nf} fatos em ${secoes.length} seções, ${Object.keys(x.urls).length} páginas — US$ ${custo(x)}; a DeepSeek escreve às 07h00`);
+      return;
+    }
+    if (++x.reenvios <= 1) {
+      x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content:
+        `A apuração veio com ${nf} fatos (mínimo ${MIN_FATOS}). Complete a apuração (pode buscar mais) e entregue pela ferramenta entregar_apuracao.` }];
+      anota(x, `apuração insuficiente (${nf} fatos) — pedindo complemento`); await enviarPedido(x); return;
+    }
+    x.etapa = "falhou"; anota(x, `NÃO apurado: ${nf} fatos. US$ ${custo(x)} (o robô de reserva do GitHub escreve às 08h00)`); return;
   }
   const texto = conteudo.filter((b) => b.type === "text").map((b) => String(b.text ?? "")).join("");
   const entrega = desembrulhar(conteudo.find((b) => b.type === "tool_use" && b.name === "entregar_edicao")?.input);
@@ -401,6 +456,53 @@ export async function processarResposta(x: Execucao, msg: Obj, fotosUsadas: () =
   await enviarPedido(x);
 }
 
+// ------------------------------------------------------------------ v1.2: redator DeepSeek V4 Pro (API compatível com OpenAI)
+export async function chamarDeepSeek(sistema: string, usuario: string): Promise<{ texto: string; ent: number; sai: number }> {
+  const chave = Deno.env.get("DEEPSEEK_API_KEY");
+  if (!chave) throw new Error("falta DEEPSEEK_API_KEY nos Secrets das Edge Functions");
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 135000);
+  try {
+    const r = await http(`${DS_URL}/chat/completions`, { method: "POST", signal: ctl.signal,
+      headers: { Authorization: `Bearer ${chave}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ model: DS_MODELO, messages: [{ role: "system", content: sistema }, { role: "user", content: usuario }],
+        response_format: { type: "json_object" }, max_tokens: 8000, temperature: 0.5 }) });
+    if (r.status === 402) throw new Error("DeepSeek sem crédito (402)");
+    if (r.status === 401) throw new Error("chave da DeepSeek recusada (401)");
+    if (!r.ok) throw new Error(`DeepSeek respondeu ${r.status}: ${(await r.text()).slice(0, 200)}`);
+    const j = await r.json();
+    return { texto: String(j.choices?.[0]?.message?.content ?? ""), ent: Number(j.usage?.prompt_tokens ?? 0), sai: Number(j.usage?.completion_tokens ?? 0) };
+  } finally { clearTimeout(t); }
+}
+/** Um passo do redator DeepSeek: escreve (ou corrige), confere, foto e deixa "pronta" — ou "falhou" depois de 2 tentativas. */
+export async function redigirDeepSeek(x: Execucao, fotosUsadas: () => Promise<Set<string>>) {
+  const e0 = (x.edicao ?? {}) as Obj;
+  const sistema = instrucoes(x.data, apuracaoTexto((e0.apuracao ?? []) as { secao: string; fatos: { fato: string }[] }[]));
+  const usuario = x.rodada === 0 ? `Escreva a edição de hoje (${dataExtenso(x.data)}) e responda só com o JSON.`
+    : "Esta é a edição que você escreveu:\n" + JSON.stringify(e0.rascunho ?? {}).slice(0, 60000) +
+      "\n\nEla não passou na conferência automática. Corrija SÓ estes pontos, mantenha o resto e responda com o JSON completo:\n- " + ((e0.erros ?? []) as string[]).join("\n- ");
+  anota(x, `DeepSeek (${DS_MODELO}) escrevendo${x.rodada ? " a correção" : ""}…`);
+  const r = await chamarDeepSeek(sistema, usuario);
+  const dsCusto = Math.round((r.ent / 1e6 * DS_ENT + r.sai / 1e6 * DS_SAI) * 1e4) / 1e4;
+  let bruto: Obj | null = null, erros: string[], lim: ReturnType<typeof limpar> | null = null;
+  try { bruto = desembrulhar(extrairJson(r.texto)); } catch { /* fica nulo */ }
+  if (!bruto) erros = ["resposta da DeepSeek sem JSON válido"];
+  else { lim = limpar(bruto, x.urls); erros = problemas(lim.ed, lim.fontes, lim.dataRef, x.data); }
+  anota(x, `conferência DeepSeek (rodada ${x.rodada + 1}, ${r.ent}+${r.sai} tokens, US$ ${dsCusto}): ` + (erros.length ? erros.join("; ") : "OK"));
+  if (!erros.length && lim) {
+    const log: string[] = [];
+    const mm = lim.ed.manchete as Obj;
+    const foto = (await fotoDoBanco([mm.foto_busca, mm.foto_alternativa, mm.cartola, mm.titulo], log))
+      ?? await buscarFoto(lim.ed.manchete, await fotosUsadas(), log).catch(() => null);
+    log.forEach((l) => anota(x, l));
+    if (foto) lim.ed.manchete.foto = foto;
+    x.edicao = lim.ed as unknown as Obj; x.fontes = lim.fontes; x.etapa = "pronta"; x.mensagens = []; x.modelo = DS_MODELO;
+    anota(x, `pronta (redator DeepSeek): [${lim.ed.manchete.cartola}] ${lim.ed.manchete.titulo} — ${lim.fontes.length} fontes`);
+    return;
+  }
+  if (x.rodada >= 1) { x.etapa = "falhou"; anota(x, "NÃO publicada: o texto da DeepSeek falhou duas vezes na conferência (o robô de reserva do GitHub escreve às 08h00)."); return; }
+  x.edicao = { ...e0, rascunho: bruto, erros }; x.rodada = 1;            // a correção sai no próximo passo (5 min)
+}
+
 async function publicadaHoje(data: string): Promise<boolean> {
   const l = await pgGet<unknown[]>(`vm_edicoes?select=data&data=eq.${data}&publicado=is.true`);
   return l.length > 0;
@@ -422,7 +524,7 @@ export async function passo(acao: string, agora = new Date()): Promise<Obj> {
   }
   const lista = await pgGet<Execucao[]>(`vm_manchete_execucoes?select=*&data=eq.${data}&modo=eq.${modo}`);
   let x: Execucao | null = lista[0] ?? null;
-  const terminal = (e: string) => ["pronta", "falhou", "publicada", "substituida"].includes(e);
+  const terminal = (e: string) => ["pronta", "falhou", "publicada", "substituida"].includes(e);   // "apurada" segue até a DeepSeek escrever
   if (acao === "continuar_teste" && (!x || terminal(x.etapa))) return { modo, etapa: x?.etapa ?? "sem teste" };
   if (acao === "teste" && x && terminal(x.etapa)) x = null;            // novo teste começa do zero
 
@@ -437,6 +539,7 @@ export async function passo(acao: string, agora = new Date()): Promise<Obj> {
 
   try {
     if (x.etapa === "nova") await enviarPedido(x);
+    else if (x.etapa === "apurada" && (modo === "teste" || minutos >= JANELA.redige)) await redigirDeepSeek(x, fotosRecentes);
     else if (x.etapa === "aguardando" && x.lote_id) {
       const r = await lerLote(x.lote_id);
       if (r.tipo === "succeeded") await processarResposta(x, r.msg, fotosRecentes);

@@ -114,23 +114,23 @@ ok(lotes.length === 2 && p2.messages.length === 2 && p2.messages[1].role === "as
 respostas.push(sucesso([{ type: "text", text: "" }, entrega(EDICAO(4))]));
 r = await m.passo("", brt("05:15"));
 ok(r.etapa === "pronta", "05h15: conferência OK, edição pronta (ainda não publicada): " + r.ultimo);
-ok(deHoje().length === 0, "nada gravado em vm_edicoes antes das 06h30");
+ok(deHoje().length === 0, "nada gravado em vm_edicoes antes das 07h15");
 const x = exec();
 ok(x.edicao.manchete.foto?.id === "boa" && x.edicao.manchete.foto.fotografo === "Ana Foto" && avisoUnsplash === 1, "foto do Unsplash: pula usada e vertical, avisa o uso");
 ok(x.edicao.manchete.foto.pagina_url.includes("utm_source=soliduns_valor_e_mercado"), "crédito da foto com utm");
 ok(x.fontes.length === 3 && !JSON.stringify(x.fontes).includes("inventado"), "só fontes que a busca devolveu (link inventado cai)");
 ok(x.edicao.scanner.agenda[0].hora === "09h00" && x.edicao.scanner.agenda[0].consenso === "", "agenda em ordem e consenso vazio normalizado");
 ok(x.mensagens.length === 0, "conversa apagada ao terminar");
-r = await m.passo("", brt("06:25"));
-ok(r.etapa === "pronta" && deHoje().length === 0, "06h25: espera o horário");
-r = await m.passo("", brt("06:30"));
+r = await m.passo("", brt("07:10"));
+ok(r.etapa === "pronta" && deHoje().length === 0, "07h10: espera o horário");
+r = await m.passo("", brt("07:15"));
 const pub = deHoje()[0];
-ok(r.etapa === "publicada" && deHoje().length === 1 && pub.publicado === true, "06h30: PUBLICADA em vm_edicoes");
+ok(r.etapa === "publicada" && deHoje().length === 1 && pub.publicado === true, "07h15: PUBLICADA em vm_edicoes");
 ok(pub.custo_usd > 0 && pub.custo_usd < 1 && pub.modelo === "claude-sonnet-5-5", "custo (metade, lote) e modelo gravados: US$ " + pub.custo_usd);
 ok(pub.conteudo.manchete.cartola === "POLÍTICA MONETÁRIA" && pub.conteudo.manchete.foto.id === "boa", "cartola em caixa alta e foto gravada");
-r = await m.passo("", brt("06:35"));
-ok(r.etapa === "publicada" && lotes.length === 2, "06h35: já publicada, nada a fazer");
-const sit = await m.passo("situacao", brt("06:40"));
+r = await m.passo("", brt("07:20"));
+ok(r.etapa === "publicada" && lotes.length === 2, "07h20: já publicada, nada a fazer");
+const sit = await m.passo("situacao", brt("07:25"));
 ok(sit.execucoes[0].registro.some((l: string) => l.includes("PUBLICADA")), "situação mostra o registro do dia");
 
 // ---------------------------------------------------------------- 4. correção e desistência
@@ -144,8 +144,8 @@ ok(r.etapa === "aguardando" && pc.messages.length === 1 && pc.messages[0].conten
 respostas.push(sucesso([entrega({ ...EDICAO(2), data_referencia: "2026-10-19" })]));
 r = await m.passo("", brt("05:10", "2026-10-19"));
 ok(r.etapa === "falhou" && lotes.length === 2, "falhou de novo: NÃO publica e não insiste");
-r = await m.passo("", brt("06:30", "2026-10-19"));
-ok(db.ed.length === 0 && r.etapa === "falhou", "capa segue com a edição anterior; reserva do GitHub às 07h15");
+r = await m.passo("", brt("07:15", "2026-10-19"));
+ok(db.ed.length === 0 && r.etapa === "falhou", "capa segue com a edição anterior; reserva do GitHub às 08h00");
 // correção que precisa de fontes libera 4 buscas
 db.exec = []; lotes.length = 0;
 await m.passo("", brt("05:00", "2026-10-20"));
@@ -170,7 +170,7 @@ await m.passo("", brt("05:15", "2026-10-21"));
 ok(lotes.length === 4 && exec().reenvios === 2, "lote expirado: manda de novo");
 // robô do GitHub publicou antes
 db.ed.push({ data: "2026-10-21", publicado: true, conteudo: {} });
-r = await m.passo("", brt("07:20", "2026-10-21"));
+r = await m.passo("", brt("07:40", "2026-10-21"));
 ok(r.etapa === "substituida" && lotes.length === 4, "edição já publicada pelo GitHub: para e não manda mais nada");
 ok(db.ed[0].conteudo && JSON.stringify(db.ed[0].conteudo) === "{}", "não sobrescreve a edição publicada");
 

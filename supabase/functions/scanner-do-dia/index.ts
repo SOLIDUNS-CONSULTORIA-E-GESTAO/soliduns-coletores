@@ -18,7 +18,8 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "2.2";
+const VERSAO = "2.3";   // v2.3 (18/10/2026): REDATOR DeepSeek V4 Pro (decisão do Thiago: escrever fora do pico, às 07h00 em dias úteis); o Claude fica de reserva.
+// O Scanner não pesquisa na web: escreve só com a base própria (agenda, cotações, radar). Por isso a DeepSeek pode escrevê-lo sozinha.
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.2";   // v2.0: revisão do plano editorial (Thiago, 15/10 20h55)
 const PROMPT_SHA256 = "0da9531d533eff373240b7a089b89f2dc25c8403d94992c29e9298b0ffbc995d";
@@ -199,7 +200,29 @@ const ENTREGA = {
       tags: { type: "array", items: TXT },
       referencias: { type: "array", items: { type: "object", required: ["numero", "identificador"], properties: { numero: TXT, identificador: TXT } } } } },
 };
-async function chamar(mensagens: unknown[]): Promise<{ texto: string; modelo: string; ent: number; sai: number; diag: string }> {
+const DS_URL = Deno.env.get("DEEPSEEK_URL") || "https://api.deepseek.com";
+const DS_MODELO = Deno.env.get("VM_SCANNER_DEEPSEEK_MODELO") || "deepseek-v4-pro";
+export const usaDeepSeek = () => !!Deno.env.get("DEEPSEEK_API_KEY") && (Deno.env.get("VM_SCANNER_REDATOR") ?? "deepseek") === "deepseek";
+export const precoDe = (modelo: string) => modelo.startsWith("deepseek") ? { ent: 0.66, sai: 1.98 } : { ent: PRECO_ENT, sai: PRECO_SAI };
+async function chamarDeepSeek(mensagens: unknown[]): Promise<{ texto: string; modelo: string; ent: number; sai: number; diag: string }> {
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 120000);
+  try {
+    const r = await fetch(`${DS_URL}/chat/completions`, { method: "POST", signal: ctl.signal,
+      headers: { Authorization: `Bearer ${Deno.env.get("DEEPSEEK_API_KEY")}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ model: DS_MODELO, messages: [{ role: "system", content: SISTEMA }, ...(mensagens as unknown[])],
+        response_format: { type: "json_object" }, max_tokens: 8000, temperature: 0.4 }) });
+    if (!r.ok) throw new Error(`DeepSeek ${r.status}: ${(await r.text()).slice(0, 200)}`);
+    const j = await r.json(), texto = String(j.choices?.[0]?.message?.content ?? "");
+    return { texto, modelo: DS_MODELO, ent: Number(j.usage?.prompt_tokens ?? 0), sai: Number(j.usage?.completion_tokens ?? 0),
+      diag: `deepseek finish=${j.choices?.[0]?.finish_reason}; início="${texto.slice(0, 120)}"` };
+  } finally { clearTimeout(t); }
+}
+export async function chamar(mensagens: unknown[]): Promise<{ texto: string; modelo: string; ent: number; sai: number; diag: string }> {
+  let avisoDs = "";
+  if (usaDeepSeek()) {
+    try { return await chamarDeepSeek(mensagens); }
+    catch (e) { avisoDs = `DeepSeek falhou (${String((e as Error).message ?? e).slice(0, 150)}) — usando o Claude de reserva`; console.warn(avisoDs); }
+  }
   const chave = Deno.env.get("ANTHROPIC_API_KEY");
   if (!chave) throw new Error("Defina ANTHROPIC_API_KEY nos segredos das Edge Functions.");
   let ultimo = "";
@@ -389,7 +412,8 @@ export async function tratar(req: Request): Promise<Response> {
       const id = String(x.identificador ?? x.id ?? x.registro ?? x.id_registro ?? "").trim(), u = urls[id];
       if (u && !vistos.has(u.url)) { vistos.add(u.url); fontes.push({ id, ...u }); }
     }
-    const custo = Math.round((ent / 1e6 * PRECO_ENT + sai / 1e6 * PRECO_SAI) * 10000) / 10000;
+    const pr = precoDe(r.modelo);
+    const custo = Math.round((ent / 1e6 * pr.ent + sai / 1e6 * pr.sai) * 10000) / 10000;
     const auto = !REVISAO_HUMANA;   // v1.1: publicação automática (decisão do Thiago); a verificação fica só como registro
     // v1.4: na publicação automática, a frase com lacuna ("[verificar ...]") não vai para a página; o original fica em "gerado"
     const pars0 = auto && !MANTER_LACUNAS ? semLacunas(gerado.paragrafos) : gerado.paragrafos;
