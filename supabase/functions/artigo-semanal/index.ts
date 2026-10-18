@@ -20,7 +20,8 @@
 //   opcionais VM_MODELO, VM_BUSCAS_SEMANAL, VM_DEEPSEEK_MODELO (padrão deepseek-flash).
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. O artigo nunca menciona IA.
 
-export const VERSAO = "1.3";   // v1.3 (18/10/2026): foto vem primeiro do BANCO DE IMAGENS PRÓPRIO (SQL 161); Unsplash é a reserva
+export const VERSAO = "1.4";   // v1.4 (18/10/2026): APURAÇÃO AMPLA SEMANAL — uma apuração (Sonnet) para várias pautas do mesmo grupo; a DeepSeek escreve um artigo por pauta. Perfil, regras e fontes por pauta.
+// v1.3   // v1.3 (18/10/2026): foto vem primeiro do BANCO DE IMAGENS PRÓPRIO (SQL 161); Unsplash é a reserva
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = Deno.env.get("VM_MODELO_RESERVA") || "claude-sonnet-4-5";
 const BUSCAS = (() => { const n = parseInt(Deno.env.get("VM_BUSCAS_SEMANAL") ?? "", 10); return isNaN(n) ? 25 : Math.max(4, Math.min(30, n)); })();
@@ -28,7 +29,7 @@ const API = Deno.env.get("ANTHROPIC_URL") || "https://api.anthropic.com/v1";
 const UNSPLASH = Deno.env.get("UNSPLASH_URL") || "https://api.unsplash.com";
 const PRECO_ENT = 1.5, PRECO_SAI = 7.5, PRECO_BUSCA = 0.01;
 const JANELA_HORAS = 6;                 // a produção pode começar até 6 h depois da hora marcada
-const MAX_CONTINUA = 10, MAX_REENVIO = 3;
+const MAX_CONTINUA = 10, MAX_REENVIO = 3, MAX_CONTINUA_GRUPO = 30, MIN_FATOS_PAUTA = 15, ESPERA_MAX_HORAS = 10;
 const AUTOR = "Redação Valor e Mercado";
 const DEEPSEEK_URL = Deno.env.get("DEEPSEEK_URL") || "https://api.deepseek.com";
 const DS_ENT = 0.30, DS_SAI = 1.20;   // US$ por milhão (preço de pico do deepseek-flash, conferido em 17/10/2026) — só para o registro
@@ -89,14 +90,26 @@ const palavras = (t: string) => (t.match(/[\p{L}\p{N}][\p{L}\p{N}'’.,%-]*/gu) 
 type Obj = Record<string, unknown>;
 export type Pauta = { id: string; nome: string; chapeu: string; editoria: string; tickers: string[]; tema: string; estrutura?: string;
   exigir?: string[]; palavras_min?: number; palavras_max?: number; fontes_min?: number; redator?: string; modelo_redator?: string; dia_escrever: number;
-  hora_escrever: number; dias_publicar: number; hora_publicar: number; foto_busca: string; tags: string[]; ativa: boolean };
+  hora_escrever: number; dias_publicar: number; hora_publicar: number; foto_busca: string; tags: string[]; ativa: boolean;
+  // v1.4: perfil por pauta (sem eles, vale o perfil de energia e petróleo da 1ª pauta) e apuração ampla
+  tipo?: string | null; grupo?: string | null; area?: string | null; perfil?: string | null; regras?: string | null;
+  fontes_primarias?: string | null; foto_exemplos?: string | null; numeros?: string | null; buscas?: number | null };
+const PADRAO = {
+  area: "energia e petróleo",
+  perfil: "especializado em energia e petróleo, com passagens pelas principais redações financeiras globais e domínio de geopolítica do petróleo, regulação do setor (ANP, CNPE, OPEP+), contabilidade de petroleiras (Ebitda, alavancagem, fluxo de caixa livre, dividendos) e precificação de commodities (Brent, WTI, spreads de refino, câmbio)",
+  regras: "- Cada motor do preço vem com o fato concreto da semana, a data e o efeito observado no Brent (em US$ e %). Se um motor não teve fato novo na semana, diga em uma frase qual é a situação vigente, com a data do último fato.\n- Publicações de referência (relatórios da OPEP, IEA, EIA etc.) são citadas pelo nome e pela data de divulgação, com os números principais.",
+  fontes_primarias: "OPEP, IEA, EIA, ANP, a própria empresa",
+  foto_exemplos: "\"oil platform offshore\", \"oil refinery night\", \"oil tanker sea\"",
+  numeros: "pontos-base, barris por dia, dólares por barril, tickers",
+};
+const campo = (p: Pauta, k: keyof typeof PADRAO) => txt(p[k] as string) || PADRAO[k];
 
 export function instrucoes(p: Pauta, hoje: string, dados: string, apuracao?: string): string {
   const tk = p.tickers.join(" e ");
   const pmin = p.palavras_min ?? 900, pmax = p.palavras_max ?? 1400, exigir = p.exigir?.length ? p.exigir : p.tickers;
   const estrutura = (p.estrutura || "abertura sem intertítulo | intertítulo sobre a companhia | intertítulo sobre o setor no mundo | intertítulo sobre o Brasil | intertítulo \"O que acompanhar\"")
     .split("|").map((x, i) => `  ${i + 1}. ${x.trim()}`).join("\n");
-  return `Você é um jornalista de economia sênior, especializado em energia e petróleo, com passagens pelas principais redações financeiras globais e domínio de geopolítica do petróleo, regulação do setor (ANP, CNPE, OPEP+), contabilidade de petroleiras (Ebitda, alavancagem, fluxo de caixa livre, dividendos) e precificação de commodities (Brent, WTI, spreads de refino, câmbio). Sua tarefa é escrever o ARTIGO SEMANAL do portal "Valor e Mercado".
+  return `Você é um jornalista de economia sênior, ${campo(p, "perfil")}. Sua tarefa é escrever o ARTIGO SEMANAL do portal "Valor e Mercado".
 
 [PAUTA]
 ${p.tema}
@@ -111,24 +124,23 @@ ${dados}
 
 [ESTRUTURA OBRIGATÓRIA]
 - chapeu: "${p.chapeu}".
-- titulo: até 90 caracteres, factual, presente do indicativo, sem ponto final, com o fato mais importante da semana para a companhia ou para o petróleo.
+- titulo: até 90 caracteres, factual, presente do indicativo, sem ponto final, com o fato mais importante da semana para o tema da pauta.
 - linha_fina: 140 a 220 caracteres, com os dados complementares cruciais, sem repetir palavras do título.
 - corpo: parágrafos de 2 a 4 frases e intertítulos curtos (até 60 caracteres, sem ponto final), NESTA ordem:
 ${estrutura}
 - Entre ${pmin.toLocaleString("pt-BR")} e ${pmax.toLocaleString("pt-BR")} palavras no corpo. O corpo precisa citar: ${exigir.join(", ")}.
-- Cada motor do preço vem com o fato concreto da semana, a data e o efeito observado no Brent (em US$ e %). Se um motor não teve fato novo na semana, diga em uma frase qual é a situação vigente, com a data do último fato.
-- Publicações de referência (relatórios da OPEP, IEA, EIA etc.) são citadas pelo nome e pela data de divulgação, com os números principais.
-- foto_busca: 2 a 4 palavras EM INGLÊS para a foto (ex.: "oil platform offshore", "oil refinery night", "oil tanker sea"); foto_alternativa: outra mais genérica. Nada de nomes de pessoas, marcas ou logotipos.
+${campo(p, "regras")}
+- foto_busca: 2 a 4 palavras EM INGLÊS para a foto (ex.: ${campo(p, "foto_exemplos")}); foto_alternativa: outra mais genérica. Nada de nomes de pessoas, marcas ou logotipos.
 - seo_titulo (até 90 caracteres) e seo_descricao (até 200 caracteres).
-- fontes: de ${p.fontes_min ?? 5} a 20 páginas que você efetivamente usou (de preferência as fontes primárias: OPEP, IEA, EIA, ANP, a própria empresa), com o endereço EXATO devolvido pela busca.
+- fontes: de ${p.fontes_min ?? 5} a 20 páginas que você efetivamente usou (de preferência as fontes primárias: ${campo(p, "fontes_primarias")}), com o endereço EXATO devolvido pela busca.
 
 [RESTRIÇÕES RÍGIDAS DE ESTILO]
 1. Proibido usar muletas e clichês: "em suma", "por fim", "vale destacar", "é importante lembrar", "portanto", "uma jornada", "em resumo", "nesse sentido", "neste cenário".
 2. Nada de parágrafo final moralista, otimista ou que "resuma o aprendizado": termine com o último dado relevante.
-3. Voz ativa e alta densidade de dados (números, percentuais, pontos-base, barris por dia, dólares por barril, tickers).
+3. Voz ativa e alta densidade de dados (números, percentuais, ${campo(p, "numeros")}).
 4. Jornalismo, não consultoria: NUNCA recomende comprar, vender ou manter ativos, nem dê preço-alvo próprio.
-5. Números no padrão brasileiro: vírgula decimal, percentuais com 2 casas, variações com sinal, câmbio com 4 casas, petróleo em US$ por barril com 2 casas.
-6. Atribua à FONTE PRIMÁRIA (a Petrobras, a ANP, a OPEP+, a EIA, o governo, o tribunal). Título e linha fina nunca citam jornais ou agências; no corpo, no máximo DUAS vezes, só quando a informação for exclusiva daquele veículo.
+5. Números no padrão brasileiro: vírgula decimal, percentuais com 2 casas, variações com sinal, câmbio com 4 casas, preços em US$ com 2 casas.
+6. Atribua à FONTE PRIMÁRIA (${campo(p, "fontes_primarias")}, o governo, o tribunal). Título e linha fina nunca citam jornais ou agências; no corpo, no máximo DUAS vezes, só quando a informação for exclusiva daquele veículo.
 7. Escreva como o repórter que apurou. Nenhuma menção a pesquisa, busca, ferramentas, instruções, inteligência artificial ou falta de informação.
 8. Texto corrido, sem marcação nenhuma (asteriscos, negrito, listas, marcadores, emojis). Cada parágrafo é um bloco de frases completas; caixa alta só em siglas e tickers.
 9. Cada dado diz quando aconteceu (dia da semana e data). Nada de frase truncada, repetida ou com reticências.
@@ -145,7 +157,7 @@ ${apuracao}`
 /** v1.2: instruções do APURADOR (Sonnet com busca) quando quem escreve é a DeepSeek */
 export function instrucoesApuracao(p: Pauta, hoje: string, dados: string): string {
   const estrutura = (p.estrutura || "abertura | a companhia | o setor no mundo | Brasil | O que acompanhar").split("|").map((x) => x.trim().split(":")[0]).join(" | ");
-  return `Você é o apurador sênior de energia e petróleo do portal "Valor e Mercado". Hoje é ${dataExtenso(hoje)} (${hoje}). Outro jornalista vai ESCREVER o artigo semanal SÓ com o que você apurar: ele não tem acesso à internet. Por isso a apuração precisa ser completa, precisa e verificável.
+  return `Você é o apurador sênior de ${campo(p, "area")} do portal "Valor e Mercado". Hoje é ${dataExtenso(hoje)} (${hoje}). Outro jornalista vai ESCREVER o artigo semanal SÓ com o que você apurar: ele não tem acesso à internet. Por isso a apuração precisa ser completa, precisa e verificável.
 
 [PAUTA]
 ${p.tema}
@@ -155,7 +167,7 @@ ${dados}
 
 [O QUE FAZER]
 1. Use a ferramenta de busca na web para levantar TUDO o que aconteceu nos 7 dias até hoje sobre a pauta, seção por seção (${estrutura}), e a agenda da próxima semana.
-2. Prefira fontes primárias (a empresa, OPEP, IEA, EIA, ANP, governos, bolsas) e registre os números exatos: preços (US$ por barril com 2 casas), variações (%), volumes (barris por dia), datas, horários e quem disse o quê.
+2. Prefira fontes primárias (${campo(p, "fontes_primarias")}, governos, bolsas) e registre os números exatos: preços (com 2 casas), variações (%), volumes (barris por dia), datas, horários e quem disse o quê.
 3. Cada fato vai em UMA frase completa e objetiva, com a data (dd/mm) e o endereço EXATO da página onde você o encontrou (devolvido pela busca). Nada de opinião, nada de recomendação.
 4. De 60 a 150 fatos no total, agrupados pela seção da estrutura. Se uma seção não teve fato novo na semana, registre a situação vigente com a data do último fato.
 5. Pesquise sem escrever comentários entre as buscas. No fim, entregue chamando a ferramenta "entregar_apuracao" uma única vez, com data_referencia = ${hoje}.`;
@@ -166,6 +178,32 @@ export const APURACAO = { name: "entregar_apuracao", description: "Entrega a apu
     data_referencia: { type: "string" },
     secoes: { type: "array", items: { type: "object", required: ["secao", "fatos"], properties: { secao: { type: "string" },
       fatos: { type: "array", items: { type: "object", required: ["fato"], properties: { data: { type: "string" }, fato: { type: "string" }, url: { type: "string" } } } } } } } } } };
+/** v1.4: instruções da APURAÇÃO AMPLA (uma só para todas as pautas do grupo) */
+export function instrucoesApuracaoGrupo(g: Pauta, membros: Pauta[], hoje: string, dados: string): string {
+  const blocos = membros.map((p) => {
+    const est = (p.estrutura || "abertura | o tema no mundo | Brasil | O que acompanhar").split("|").map((x) => x.trim().split(":")[0]).join(" | ");
+    return `### PAUTA "${p.id}" — ${p.nome}\n${p.tema}\nSeções do artigo: ${est}\nFontes primárias preferidas: ${campo(p, "fontes_primarias")}`;
+  }).join("\n\n");
+  return `Você é o chefe de apuração do portal "Valor e Mercado". Hoje é ${dataExtenso(hoje)} (${hoje}). Esta é a APURAÇÃO AMPLA DA SEMANA: outros jornalistas vão ESCREVER um artigo para CADA pauta abaixo SÓ com o que você apurar. Eles não têm acesso à internet. A apuração precisa ser completa, precisa e verificável${g.tema ? `\n\n[ORIENTAÇÃO GERAL]\n${g.tema}` : ""}
+
+[PAUTAS DA SEMANA]
+${blocos}
+
+[DADOS DA CASA — já conferidos, não precisa repetir]
+${dados}
+
+[O QUE FAZER]
+1. Use a ferramenta de busca na web para levantar TUDO o que aconteceu nos 7 dias até hoje em CADA pauta, seção por seção, e a agenda da próxima semana de cada uma. Distribua as buscas entre as pautas: nenhuma pode ficar fraca.
+2. Prefira fontes primárias e registre os números exatos (preços com 2 casas, variações em %, volumes, datas, horários e quem disse o quê).
+3. Cada fato vai em UMA frase completa e objetiva, com a data (dd/mm) e o endereço EXATO da página onde você o encontrou (devolvido pela busca). Nada de opinião, nada de recomendação.
+4. De 30 a 60 fatos POR PAUTA, agrupados pelas seções daquela pauta. Um fato que sirva a duas pautas pode aparecer nas duas. Se uma seção não teve fato novo, registre a situação vigente com a data do último fato.
+5. Pesquise sem escrever comentários entre as buscas. No fim, entregue chamando a ferramenta "entregar_apuracao_ampla" uma única vez, com data_referencia = ${hoje} e um item por pauta (campo pauta = o identificador entre aspas, ex.: "${membros[0]?.id ?? "petrobras"}").`;
+}
+export const APURACAO_GRUPO = { name: "entregar_apuracao_ampla", description: "Entrega a apuração ampla da semana: fatos com data, número e fonte, separados por pauta e seção.",
+  input_schema: { type: "object", required: ["data_referencia", "pautas"], properties: {
+    data_referencia: { type: "string" },
+    pautas: { type: "array", items: { type: "object", required: ["pauta", "secoes"], properties: { pauta: { type: "string" },
+      secoes: APURACAO.input_schema.properties.secoes } } } } } };
 export const ENTREGA = { name: "entregar_artigo", description: "Entrega o artigo semanal pronto para a Redação.",
   input_schema: { type: "object", required: ["data_referencia", "chapeu", "titulo", "linha_fina", "corpo", "fontes"], properties: {
     data_referencia: T, chapeu: T, titulo: T, linha_fina: T,
@@ -378,7 +416,13 @@ const hora = () => new Date(Date.now() - 3 * 3600e3).toISOString().slice(11, 16)
 const anota = (x: Execucao, s: string) => { x.registro = [...(x.registro ?? []), `${hora()} ${s}`].slice(-60); };
 
 export const redatorDe = (x: Execucao, p: Pauta) => String((x.artigo as Obj | null)?.redator ?? p.redator ?? "claude");
+export const ehGrupo = (p: Pauta) => p.tipo === "apuracao";
 export function nova(p: Pauta, semana: string, modo: "producao" | "teste", redator?: string): Execucao {
+  if (ehGrupo(p)) return { pauta: p.id, semana, modo, etapa: "nova", rodada: 0, continuacoes: 0, reenvios: 0, modelo: MODELO, lote_id: null,
+    mensagens: [{ role: "user", content: `Faça a apuração ampla da semana até hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_apuracao_ampla.` }],
+    buscas: Math.max(10, Math.min(90, p.buscas ?? 60)), urls: {}, artigo: { redator: "apuracao" }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };
+  if (p.grupo) return { pauta: p.id, semana, modo, etapa: "esperando", rodada: 0, continuacoes: 0, reenvios: 0, modelo: MODELO, lote_id: null,
+    mensagens: [], buscas: 0, urls: {}, artigo: { redator: "deepseek" }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };
   const r = (redator ?? p.redator ?? "claude") === "deepseek" ? "deepseek" : "claude";
   return { pauta: p.id, semana, modo, etapa: "nova", rodada: 0, continuacoes: 0, reenvios: 0, modelo: MODELO, lote_id: null,
     mensagens: [{ role: "user", content: r === "deepseek"
@@ -386,7 +430,18 @@ export function nova(p: Pauta, semana: string, modo: "producao" | "teste", redat
       : `Apure e escreva o artigo semanal de hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_artigo.` }],
     buscas: BUSCAS, urls: {}, artigo: { redator: r }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };
 }
+let _membros: Pauta[] = [];                 // pautas do grupo (preenchido em passo)
 async function enviarPedido(x: Execucao, p: Pauta) {
+  if (ehGrupo(p)) {
+    const membros = _membros.filter((m) => m.grupo === p.id);
+    const tick = [...new Set(membros.flatMap((m) => m.tickers))];
+    const dados = await dadosDaCasa({ ...p, tickers: tick }, x.semana);
+    x.lote_id = await mandarLote(`vm-amp-${x.pauta}-${x.semana}-${x.modo}-${x.continuacoes}-${x.reenvios}`,
+      pedido(x.mensagens, instrucoesApuracaoGrupo(p, membros, x.semana, dados), x.buscas, x.modelo, APURACAO_GRUPO));
+    x.etapa = "aguardando";
+    anota(x, `apuração ampla enviada (${membros.length} pautas: ${membros.map((m) => m.id).join(", ")}; ${x.modelo}, até ${x.buscas} buscas)`);
+    return;
+  }
   const ds = redatorDe(x, p) === "deepseek", dados = await dadosDaCasa(p, x.semana);
   const sistema = ds ? instrucoesApuracao(p, x.semana, dados) : instrucoes(p, x.semana, dados);
   x.lote_id = await mandarLote(`vm-sem-${x.pauta}-${x.semana}-${x.modo}-${x.rodada}-${x.continuacoes}-${x.reenvios}`,
@@ -407,11 +462,36 @@ export async function processarResposta(x: Execucao, p: Pauta, msg: Obj) {
     for (const c of arr(b.citations)) if (c.url && !x.urls[normUrl(c.url)]) x.urls[normUrl(c.url)] = [String(c.url), String(c.title ?? "")];
   }
   if (msg.stop_reason === "pause_turn") {
-    if (++x.continuacoes > MAX_CONTINUA) { x.etapa = "falhou"; anota(x, "ERRO: a redação não terminou (pause_turn repetido)."); return; }
+    if (++x.continuacoes > (ehGrupo(p) ? MAX_CONTINUA_GRUPO : MAX_CONTINUA)) { x.etapa = "falhou"; anota(x, "ERRO: a redação não terminou (pause_turn repetido)."); return; }
     x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }];
     anota(x, "busca pausada — continuando");
     await enviarPedido(x, p);
     return;
+  }
+  if (ehGrupo(p)) {
+    const membros = _membros.filter((m) => m.grupo === p.id);
+    const ap = desembrulhar(conteudo.find((b) => b.type === "tool_use" && b.name === "entregar_apuracao_ampla")?.input);
+    const porPauta: Record<string, { secao: string; fatos: { data: string; fato: string; url: string }[] }[]> = {};
+    for (const it of arr(ap?.pautas)) {
+      const id = txt(it.pauta).replace(/^"|"$/g, "").toLowerCase();
+      const secoes = arr(it.secoes).map((s) => ({ secao: txt(s.secao), fatos: arr(s.fatos).map((f) => ({ data: txt(f.data), fato: txt(f.fato), url: txt(f.url) })).filter((f) => f.fato) }))
+        .filter((s) => s.fatos.length);
+      if (id) porPauta[id] = [...(porPauta[id] ?? []), ...secoes];
+    }
+    const conta = (id: string) => (porPauta[id] ?? []).reduce((n, s) => n + s.fatos.length, 0);
+    const fracas = membros.filter((m) => conta(m.id) < MIN_FATOS_PAUTA);
+    if (!fracas.length || (x.reenvios >= 1 && membros.some((m) => conta(m.id) >= MIN_FATOS_PAUTA))) {
+      x.artigo = { redator: "apuracao", por_pauta: porPauta }; x.etapa = "concluida"; x.mensagens = [];
+      anota(x, `apuração ampla pronta: ${membros.map((m) => `${m.id} ${conta(m.id)}`).join(", ")} fatos; ${Object.keys(x.urls).length} páginas — US$ ${custo(x)}`
+        + (fracas.length ? ` (pautas com menos de ${MIN_FATOS_PAUTA} fatos não serão escritas: ${fracas.map((m) => m.id).join(", ")})` : ""));
+      return;
+    }
+    if (++x.reenvios <= 1) {
+      x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content:
+        `Estas pautas vieram fracas (mínimo ${MIN_FATOS_PAUTA} fatos cada): ${fracas.map((m) => `${m.id} (${conta(m.id)})`).join(", ")}. Complete a apuração delas (pode buscar mais) e entregue de novo a apuração COMPLETA de todas as pautas pela ferramenta entregar_apuracao_ampla.` }];
+      anota(x, `apuração ampla incompleta (${fracas.map((m) => m.id).join(", ")}) — pedindo complemento`); await enviarPedido(x, p); return;
+    }
+    x.etapa = "falhou"; anota(x, `NÃO apurado: nenhuma pauta com ${MIN_FATOS_PAUTA} fatos. US$ ${custo(x)}`); return;
   }
   if (redatorDe(x, p) === "deepseek") {
     const ap = desembrulhar(conteudo.find((b) => b.type === "tool_use" && b.name === "entregar_apuracao")?.input);
@@ -524,9 +604,31 @@ export function linhaArtigo(a: Artigo, fontes: unknown[], p: Pauta, x: Execucao)
   return linha;
 }
 
+/** v1.4: pauta de um grupo espera a apuração ampla e pega os fatos dela. */
+async function esperarApuracao(x: Execucao, p: Pauta, agora: Date) {
+  const l = await pgGet<Execucao[]>(`vm_artigo_semanal_execucoes?select=etapa,artigo,urls&pauta=eq.${p.grupo}&semana=eq.${x.semana}&modo=eq.${x.modo}&limit=1`);
+  const g = l[0];
+  if (g?.etapa === "concluida") {
+    const secoes = (((g.artigo ?? {}) as Obj).por_pauta as Record<string, unknown[]> | undefined)?.[p.id] as { secao: string; fatos: unknown[] }[] | undefined;
+    const nf = (secoes ?? []).reduce((n, s) => n + arr(s.fatos).length, 0);
+    if (nf < MIN_FATOS_PAUTA) { x.etapa = "falhou"; anota(x, `NÃO escrito: a apuração ampla trouxe só ${nf} fatos desta pauta.`); return; }
+    x.artigo = { redator: "deepseek", apuracao: secoes }; x.urls = g.urls ?? {}; x.etapa = "apurada"; x.rodada = 0;
+    anota(x, `fatos recebidos da apuração ampla (${p.grupo}): ${nf} fatos — DeepSeek escreve no próximo passo`);
+    return;
+  }
+  if (g?.etapa === "falhou") { x.etapa = "falhou"; anota(x, `NÃO escrito: a apuração ampla (${p.grupo}) falhou.`); return; }
+  const limite = new Date(`${x.semana}T00:00:00-03:00`).getTime() + (p.hora_escrever + ESPERA_MAX_HORAS * 60) * 60e3;
+  if (agora.getTime() > limite) { x.etapa = "falhou"; anota(x, `NÃO escrito: a apuração ampla não ficou pronta em ${ESPERA_MAX_HORAS} h.`); return; }
+  if (!x.registro.length || !x.registro.at(-1)!.includes("esperando")) anota(x, `esperando a apuração ampla (${p.grupo})`);
+}
+
 export async function passo(acao: string, pautaPedida: string | undefined, agora = new Date(), redatorTeste?: string): Promise<Obj> {
   const { data, minutos, dia } = agoraBrt(agora);
   const pautas = await pgGet<Pauta[]>("vm_pautas_semanais?select=*&ativa=is.true");
+  _membros = pautas.filter((p) => p.grupo);
+  pautas.sort((a, b) => Number(ehGrupo(b)) - Number(ehGrupo(a)));         // a apuração ampla anda primeiro
+  const pedidas = new Set<string>(pautaPedida ? [pautaPedida, ..._membros.filter((m) => m.grupo === pautaPedida).map((m) => m.id)] : []);
+  let dsUsada = false;                                                       // no máximo 1 texto da DeepSeek por chamada (limite de 150 s)
   if (acao === "situacao") {
     const l = await pgGet<Execucao[]>(`vm_artigo_semanal_execucoes?select=pauta,semana,modo,etapa,ent,sai,nbuscas,artigo_id,registro&semana=gte.${somaDias(data, -7)}`);
     return { data, pautas: pautas.map((p) => p.id), execucoes: l.map((e) => ({ pauta: e.pauta, semana: e.semana, modo: e.modo, etapa: e.etapa,
@@ -534,7 +636,7 @@ export async function passo(acao: string, pautaPedida: string | undefined, agora
   }
   const resumo: Obj[] = [];
   for (const p of pautas) {
-    if (pautaPedida && p.id !== pautaPedida) continue;
+    if (pautaPedida && !pedidas.has(p.id)) continue;
     for (const modo of ["producao", "teste"] as const) {
       if (acao === "teste" && modo === "producao") continue;
       // produção: execução do dia da pauta; teste: a mais recente em andamento (ou nova, se pedida agora)
@@ -550,14 +652,16 @@ export async function passo(acao: string, pautaPedida: string | undefined, agora
       } else {
         const l = await pgGet<Execucao[]>(`vm_artigo_semanal_execucoes?select=*&pauta=eq.${p.id}&modo=eq.teste&order=atualizado_em.desc&limit=1`);
         x = l[0] ?? null;
-        const terminal = (e: string) => ["agendada", "falhou"].includes(e);
+        const terminal = (e: string) => ["agendada", "falhou", "concluida"].includes(e);
         if (acao === "teste") { if (!x || terminal(x.etapa) || x.semana !== data) { x = nova(p, data, "teste", redatorTeste); anota(x, `início (TESTE, redator ${redatorDe(x, p)}) — artigo-semanal v${VERSAO}`); } }
         else if (!x || terminal(x.etapa)) continue;
       }
-      if (["agendada", "falhou"].includes(x.etapa)) { resumo.push({ pauta: p.id, modo, etapa: x.etapa }); continue; }
+      if (["agendada", "falhou", "concluida"].includes(x.etapa)) { resumo.push({ pauta: p.id, modo, etapa: x.etapa }); continue; }
+      if (x.etapa === "apurada" && dsUsada) { resumo.push({ pauta: p.id, modo, etapa: "apurada (escreve no próximo passo)" }); continue; }
       try {
-        if (x.etapa === "nova") await enviarPedido(x, p);
-        else if (x.etapa === "apurada") await redigirDeepSeek(x, p);
+        if (x.etapa === "esperando") await esperarApuracao(x, p, agora);
+        else if (x.etapa === "nova") await enviarPedido(x, p);
+        else if (x.etapa === "apurada") { dsUsada = true; await redigirDeepSeek(x, p); }
         else if (x.etapa === "aguardando" && x.lote_id) {
           const r = await lerLote(x.lote_id);
           if (r.tipo === "succeeded") await processarResposta(x, p, r.msg);
