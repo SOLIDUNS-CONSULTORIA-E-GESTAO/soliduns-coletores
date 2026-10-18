@@ -15,15 +15,15 @@
 // Variáveis: ANTHROPIC_API_KEY, COLETOR_TOKEN, UNSPLASH_ACCESS_KEY (sem ela, sai sem foto); opcionais VM_MODELO, VM_BUSCAS_SEMANAL.
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. O artigo nunca menciona IA.
 
-export const VERSAO = "1.0";
+export const VERSAO = "1.1";
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = Deno.env.get("VM_MODELO_RESERVA") || "claude-sonnet-4-5";
-const BUSCAS = (() => { const n = parseInt(Deno.env.get("VM_BUSCAS_SEMANAL") ?? "", 10); return isNaN(n) ? 18 : Math.max(4, Math.min(25, n)); })();
+const BUSCAS = (() => { const n = parseInt(Deno.env.get("VM_BUSCAS_SEMANAL") ?? "", 10); return isNaN(n) ? 25 : Math.max(4, Math.min(30, n)); })();
 const API = Deno.env.get("ANTHROPIC_URL") || "https://api.anthropic.com/v1";
 const UNSPLASH = Deno.env.get("UNSPLASH_URL") || "https://api.unsplash.com";
 const PRECO_ENT = 1.5, PRECO_SAI = 7.5, PRECO_BUSCA = 0.01;
 const JANELA_HORAS = 6;                 // a produção pode começar até 6 h depois da hora marcada
-const MAX_CONTINUA = 8, MAX_REENVIO = 3;
+const MAX_CONTINUA = 10, MAX_REENVIO = 3;
 const AUTOR = "Redação Valor e Mercado";
 
 let http: typeof fetch = fetch;
@@ -80,11 +80,15 @@ const palavras = (t: string) => (t.match(/[\p{L}\p{N}][\p{L}\p{N}'’.,%-]*/gu) 
 
 // ------------------------------------------------------------------ pauta e dados da casa
 type Obj = Record<string, unknown>;
-export type Pauta = { id: string; nome: string; chapeu: string; editoria: string; tickers: string[]; tema: string; dia_escrever: number;
+export type Pauta = { id: string; nome: string; chapeu: string; editoria: string; tickers: string[]; tema: string; estrutura?: string;
+  exigir?: string[]; palavras_min?: number; palavras_max?: number; fontes_min?: number; dia_escrever: number;
   hora_escrever: number; dias_publicar: number; hora_publicar: number; foto_busca: string; tags: string[]; ativa: boolean };
 
 export function instrucoes(p: Pauta, hoje: string, dados: string): string {
   const tk = p.tickers.join(" e ");
+  const pmin = p.palavras_min ?? 900, pmax = p.palavras_max ?? 1400, exigir = p.exigir?.length ? p.exigir : p.tickers;
+  const estrutura = (p.estrutura || "abertura sem intertítulo | intertítulo sobre a companhia | intertítulo sobre o setor no mundo | intertítulo sobre o Brasil | intertítulo \"O que acompanhar\"")
+    .split("|").map((x, i) => `  ${i + 1}. ${x.trim()}`).join("\n");
   return `Você é um jornalista de economia sênior, especializado em energia e petróleo, com passagens pelas principais redações financeiras globais e domínio de geopolítica do petróleo, regulação do setor (ANP, CNPE, OPEP+), contabilidade de petroleiras (Ebitda, alavancagem, fluxo de caixa livre, dividendos) e precificação de commodities (Brent, WTI, spreads de refino, câmbio). Sua tarefa é escrever o ARTIGO SEMANAL do portal "Valor e Mercado".
 
 [PAUTA]
@@ -100,16 +104,14 @@ ${dados}
 - chapeu: "${p.chapeu}".
 - titulo: até 90 caracteres, factual, presente do indicativo, sem ponto final, com o fato mais importante da semana para a companhia ou para o petróleo.
 - linha_fina: 140 a 220 caracteres, com os dados complementares cruciais, sem repetir palavras do título.
-- corpo: de 10 a 16 blocos, com 4 ou 5 intertítulos curtos (até 60 caracteres, sem ponto final) e parágrafos de 2 a 4 frases. Ordem:
-  1. abertura sem intertítulo (1 ou 2 parágrafos): o fato da semana e o desempenho de ${tk} na semana (use os fechamentos da casa);
-  2. intertítulo sobre a companhia: comunicados, produção, preços de combustíveis, dividendos, governança, investimentos;
-  3. intertítulo sobre o petróleo no mundo: Brent e WTI na semana, OPEP+, estoques dos EUA, demanda, geopolítica, câmbio;
-  4. intertítulo sobre o Brasil: ANP, leilões, regulação, tributação, biocombustíveis, Margem Equatorial;
-  5. intertítulo final "O que acompanhar" (ou equivalente): eventos e datas da próxima semana, com o dia.
-- Entre 900 e 1.400 palavras no corpo. Cite ${tk} pelos códigos pelo menos uma vez cada.
+- corpo: parágrafos de 2 a 4 frases e intertítulos curtos (até 60 caracteres, sem ponto final), NESTA ordem:
+${estrutura}
+- Entre ${pmin.toLocaleString("pt-BR")} e ${pmax.toLocaleString("pt-BR")} palavras no corpo. O corpo precisa citar: ${exigir.join(", ")}.
+- Cada motor do preço vem com o fato concreto da semana, a data e o efeito observado no Brent (em US$ e %). Se um motor não teve fato novo na semana, diga em uma frase qual é a situação vigente, com a data do último fato.
+- Publicações de referência (relatórios da OPEP, IEA, EIA etc.) são citadas pelo nome e pela data de divulgação, com os números principais.
 - foto_busca: 2 a 4 palavras EM INGLÊS para a foto (ex.: "oil platform offshore", "oil refinery night", "oil tanker sea"); foto_alternativa: outra mais genérica. Nada de nomes de pessoas, marcas ou logotipos.
 - seo_titulo (até 90 caracteres) e seo_descricao (até 200 caracteres).
-- fontes: de 5 a 15 páginas que você efetivamente usou, com o endereço EXATO devolvido pela busca.
+- fontes: de ${p.fontes_min ?? 5} a 20 páginas que você efetivamente usou (de preferência as fontes primárias: OPEP, IEA, EIA, ANP, a própria empresa), com o endereço EXATO devolvido pela busca.
 
 [RESTRIÇÕES RÍGIDAS DE ESTILO]
 1. Proibido usar muletas e clichês: "em suma", "por fim", "vale destacar", "é importante lembrar", "portanto", "uma jornada", "em resumo", "nesse sentido", "neste cenário".
@@ -173,14 +175,20 @@ export function problemas(a: Artigo, fontes: unknown[], dataRef: string, hoje: s
   if (a.titulo.length < 20 || a.titulo.length > 90) e.push(`título com ${a.titulo.length} caracteres (20 a 90)`);
   if (a.linha_fina.length < 120 || a.linha_fina.length > 260) e.push(`linha fina com ${a.linha_fina.length} caracteres (120 a 260)`);
   const pars = a.corpo.filter((b) => b.tipo === "paragrafo"), ints = a.corpo.filter((b) => b.tipo === "intertitulo");
-  if (a.corpo.length < 10 || a.corpo.length > 18) e.push(`corpo com ${a.corpo.length} blocos (10 a 18)`);
-  if (ints.length < 3 || ints.length > 6) e.push(`${ints.length} intertítulo(s) (4 ou 5)`);
+  const nSec = (p.estrutura || "a|b|c|d|e").split("|").length - 1;   // seções com intertítulo (a 1ª é a abertura)
+  if (a.corpo.length < nSec * 2 + 1 || a.corpo.length > nSec * 4 + 4) e.push(`corpo com ${a.corpo.length} blocos (${nSec * 2 + 1} a ${nSec * 4 + 4})`);
+  if (ints.length < nSec - 1 || ints.length > nSec + 1) e.push(`${ints.length} intertítulo(s) (esperado ${nSec})`);
   if (a.corpo[0]?.tipo === "intertitulo") e.push("o artigo abre com parágrafo, não com intertítulo");
   if (ints.some((b) => b.texto.length > 70)) e.push("intertítulo com mais de 70 caracteres");
   const n = palavras(pars.map((b) => b.texto).join(" "));
-  if (n < 800 || n > 1600) e.push(`corpo com ${n} palavras (900 a 1.400)`);
+  const pmin = p.palavras_min ?? 900, pmax = p.palavras_max ?? 1400;
+  if (n < pmin * 0.9 || n > pmax * 1.15) e.push(`corpo com ${n} palavras (${pmin} a ${pmax})`);
   const corpoTxt = pars.map((b) => b.texto).join(" ");
-  for (const t of p.tickers) if (!new RegExp(`\\b${t}\\b`).test(corpoTxt)) e.push(`o corpo não cita ${t}`);
+  const corpoSA = " " + semAcento(corpoTxt) + " ";
+  for (const t of (p.exigir?.length ? p.exigir : p.tickers)) {
+    const alvo = semAcento(t), alt = alvo === "opep" ? ["opep", "opec"] : alvo === "estados unidos" ? ["estados unidos", "eua"] : [alvo];
+    if (!alt.some((v) => new RegExp(`[^a-z0-9]${reEsc(v)}[^a-z0-9]`).test(corpoSA))) e.push(`o corpo não cita ${t}`);
+  }
   if (citacoesDeVeiculos(a.titulo + " " + a.linha_fina)) e.push("título e linha fina não citam jornais nem agências");
   const nv = citacoesDeVeiculos(corpoTxt);
   if (nv > 2) e.push(`o corpo cita jornais/agências ${nv} vezes (máximo 2; atribua à fonte primária)`);
@@ -189,7 +197,8 @@ export function problemas(a: Artigo, fontes: unknown[], dataRef: string, hoje: s
   for (const c of RECOMENDACAO) if (tudo.includes(semAcento(c))) e.push(`recomendação de investimento proibida: "${c.trim()}"`);
   for (const c of IA) if (tudo.includes(semAcento(c))) e.push(`menção proibida: "${c}"`);
   if (/\.\.\.|…/.test(corpoTxt)) e.push("reticências no corpo (frase truncada?)");
-  if (fontes.length < 5) e.push(`menos de 5 fontes com endereço exato devolvido pela busca (vieram ${fontes.length})`);
+  const fmin = p.fontes_min ?? 5;
+  if (fontes.length < fmin) e.push(`menos de ${fmin} fontes com endereço exato devolvido pela busca (vieram ${fontes.length})`);
   return e;
 }
 
@@ -251,7 +260,7 @@ export async function dadosDaCasa(p: Pauta, hoje: string): Promise<string> {
 const cabAnthropic = () => ({ "x-api-key": Deno.env.get("ANTHROPIC_API_KEY") ?? "", "anthropic-version": "2023-06-01", "content-type": "application/json" });
 export function pedido(mensagens: unknown[], sistema: string, buscas: number, modelo: string): Obj {
   const tools: unknown[] = buscas ? [{ type: "web_search_20250305", name: "web_search", max_uses: buscas }, ENTREGA] : [ENTREGA];
-  return { model: modelo, max_tokens: 20000, system: sistema, messages: mensagens, tools };
+  return { model: modelo, max_tokens: 24000, system: sistema, messages: mensagens, tools };
 }
 async function mandarLote(id: string, params: Obj): Promise<string> {
   const r = await http(`${API}/messages/batches`, { method: "POST", headers: cabAnthropic(), body: JSON.stringify({ requests: [{ custom_id: id, params }] }) });

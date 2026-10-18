@@ -34,6 +34,19 @@ ok(pr2.some((e: string) => e.includes("recomendação")), "recomendação barrad
 ok(pr2.some((e: string) => e.includes("título e linha fina")), "veículo no título barrado");
 ok(pr2.some((e: string) => e.includes("menos de 5 fontes")), "fonte inventada não conta");
 
+// 2b. pauta com estrutura e termos obrigatórios (OPEP e motores do preço)
+const P2 = { ...PAUTA, estrutura: "abertura | Petrobras | OPEP+ | Os motores do preço | Oferta, demanda e estoques | Brasil | O que acompanhar",
+  exigir: ["PETR3", "PETR4", "Brent", "OPEP", "Oriente Médio", "Rússia", "Venezuela", "Estados Unidos"], palavras_min: 1200, palavras_max: 1900, fontes_min: 8 };
+const pr3 = m.problemas(lim.a, lim.fontes, lim.dataRef, "2026-10-18", P2);
+ok(pr3.some((e: string) => e.includes("não cita Rússia")) && pr3.some((e: string) => e.includes("não cita Venezuela")) && pr3.some((e: string) => e.includes("menos de 8 fontes")),
+   "pauta Petrobras exige Rússia, Venezuela e 8 fontes");
+ok(pr3.some((e: string) => e.includes("intertítulo(s) (esperado 6)")), "pauta Petrobras exige 6 intertítulos");
+const sist = m.instrucoes(P2, "2026-10-18", "- dados");
+ok(sist.includes("3. OPEP+") && sist.includes("4. Os motores do preço") && sist.includes("Venezuela"), "prompt traz a estrutura numerada e os motores");
+const corpoOpec = structuredClone(lim.a); corpoOpec.corpo = corpoOpec.corpo.map((b: O, i: number) => i === 0 ? { ...b, texto: b.texto + " A OPEC+ reuniu-se no domingo; Oriente Médio, Rússia, Venezuela e EUA pesaram." } : b);
+const pr4 = m.problemas(corpoOpec, lim.fontes, lim.dataRef, "2026-10-18", P2);
+ok(!pr4.some((e: string) => e.includes("não cita OPEP") || e.includes("não cita Estados Unidos")), "OPEC vale como OPEP e EUA como Estados Unidos");
+
 // 3. linha da Redação
 const x = m.nova(PAUTA, "2026-10-18", "producao");
 const la = m.linhaArtigo({ ...lim.a, foto: { src: "https://img.test/a.jpg", alt: "refinaria", fotografo: "Fulano", origem: "Unsplash" } }, lim.fontes, PAUTA, x);

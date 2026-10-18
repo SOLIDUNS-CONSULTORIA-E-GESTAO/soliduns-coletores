@@ -1,4 +1,4 @@
--- 157_vm_artigo_semanal.sql — Valor e Mercado: ARTIGO SEMANAL automático (1º tema: Petrobras e o mercado de petróleo)
+-- 157_vm_artigo_semanal.sql — Valor e Mercado: ARTIGO SEMANAL automático (1º tema: Petrobras e o mercado de petróleo) — rev. 17/10 21h28 (OPEP e motores do preço)
 -- Pedido do Thiago (17/10/2026 21h21): "artigo semanal sobre a Petrobras (PETR3 e PETR4) no jornal… tudo que interessa ao
 -- mercado de petróleo no Brasil e no mundo… com o Sonnet, como os demais agendados".
 -- Edge Function "artigo-semanal" (mesmo motor da manchete-do-dia: lote da Anthropic + busca na web + conferência + foto),
@@ -15,6 +15,11 @@ create table if not exists public.vm_pautas_semanais (
   editoria       text not null default 'Empresas',
   tickers        text[] not null default '{}',
   tema           text not null,                         -- o que o artigo precisa cobrir (entra no prompt)
+  estrutura      text not null default '',              -- seções obrigatórias do corpo (entra no prompt)
+  exigir         text[] not null default '{}',          -- termos que o corpo PRECISA citar (conferência automática)
+  palavras_min   int  not null default 900,
+  palavras_max   int  not null default 1400,
+  fontes_min     int  not null default 5,
   dia_escrever   int  not null check (dia_escrever between 0 and 6),          -- 0 = domingo (horário de Brasília)
   hora_escrever  int  not null check (hora_escrever between 0 and 1439),      -- minutos do dia
   dias_publicar  int  not null default 1 check (dias_publicar between 0 and 6), -- quantos dias depois de escrever
@@ -30,16 +35,36 @@ drop policy if exists vm_pautas_semanais_editor on public.vm_pautas_semanais;
 create policy vm_pautas_semanais_editor on public.vm_pautas_semanais for select to authenticated using (public.vm_eh_editor());
 grant select on public.vm_pautas_semanais to authenticated;
 
-insert into public.vm_pautas_semanais (id, nome, chapeu, editoria, tickers, tema, dia_escrever, hora_escrever, dias_publicar, hora_publicar, foto_busca, tags)
+insert into public.vm_pautas_semanais (id, nome, chapeu, editoria, tickers, tema, estrutura, exigir, palavras_min, palavras_max, fontes_min,
+                                       dia_escrever, hora_escrever, dias_publicar, hora_publicar, foto_busca, tags)
 values ('petrobras', 'Petrobras e o mercado de petróleo — semanal', 'PETRÓLEO & PETROBRAS', 'Empresas', array['PETR3', 'PETR4'],
-  'A semana da Petrobras (PETR3 e PETR4) e tudo o que interessa ao mercado de petróleo no Brasil e no mundo: desempenho das ações '
-  || 'PETR3 e PETR4 e do Ibovespa; fatos relevantes e comunicados da companhia à CVM; produção (pré-sal, novos FPSOs, paradas), '
-  || 'política de preços de diesel, gasolina e GLP, dividendos e recompras, governança, plano de negócios e investimentos, refino, '
-  || 'Margem Equatorial e licenciamento ambiental; Brent e WTI na semana, decisões e sinais da OPEP+, estoques dos EUA (EIA), '
-  || 'demanda da China, geopolítica (Oriente Médio, Rússia, Venezuela), sanções e câmbio; no Brasil, ANP (leilões, produção, '
-  || 'regulação), tributação de combustíveis, biocombustíveis e transição energética; e o que acompanhar na próxima semana.',
-  0, 17 * 60, 1, 7 * 60, 'oil refinery', array['Petrobras', 'PETR4', 'PETR3', 'Petróleo', 'Brent'])
-on conflict (id) do nothing;
+  'Duas camadas na mesma leitura (pedido do Thiago, 17/10 21h28): (A) o CONTEXTO DA PETROBRAS — desempenho de PETR3, PETR4 e do '
+  || 'Ibovespa; fatos relevantes e comunicados à CVM; produção (pré-sal, novos FPSOs, paradas); política de preços de diesel, gasolina e GLP; '
+  || 'dividendos e recompras; governança e interferência política; plano de negócios, refino, Margem Equatorial e licenciamento; '
+  || '(B) o CONTEXTO DO PETRÓLEO — Brent e WTI na semana e os motores do preço: OPEP+ (OPEC+: reuniões, cotas, cortes voluntários, '
+  || 'cumprimento das cotas, falas de Arábia Saudita e Emirados); ORIENTE MÉDIO (conflitos na região produtora: Irã, Israel, Iraque, '
+  || 'Estreito de Ormuz, Mar Vermelho e ataques a navios e instalações); RÚSSIA (sanções, teto de preço, exportações marítimas, ataques '
+  || 'a refinarias e portos, frota paralela); VENEZUELA (produção da PDVSA, licenças e sanções dos EUA, exportações); ESTADOS UNIDOS '
+  || '(produção de xisto, sondas em operação, estoques, Reserva Estratégica, política energética e comercial da Casa Branca, dólar e Fed); '
+  || 'demanda da China e da Índia; no Brasil, ANP, leilões, tributação de combustíveis e biocombustíveis. '
+  || 'PUBLICAÇÕES DE REFERÊNCIA que devem ser consultadas quando saírem na semana (citar pelo nome e pela data): Relatório Mensal do '
+  || 'Mercado de Petróleo da OPEP (OPEC Monthly Oil Market Report), Relatório Mensal da Agência Internacional de Energia (IEA Oil Market '
+  || 'Report), relatório semanal de estoques da EIA (Weekly Petroleum Status Report) e a projeção de curto prazo da EIA (Short-Term Energy '
+  || 'Outlook), contagem de sondas da Baker Hughes, posições dos fundos na CFTC (Commitments of Traders), comunicados das reuniões da OPEP+, '
+  || 'boletins de produção da ANP e o site de Relações com Investidores da Petrobras.',
+  'abertura sem intertítulo (1 ou 2 parágrafos): o fato da semana e o desempenho de PETR3, PETR4 e do Brent na semana | '
+  || 'intertítulo "Petrobras": comunicados, produção, preços, dividendos, governança | '
+  || 'intertítulo "OPEP+": decisões, cotas, cumprimento e o que disse o relatório mensal da OPEP (OPEC MOMR) quando houver | '
+  || 'intertítulo "Os motores do preço": um parágrafo para cada motor que pesou na semana — Oriente Médio, Rússia, Venezuela, Estados Unidos '
+  || '(e China/Índia se relevante), cada um com o fato, a data e o efeito no Brent | '
+  || 'intertítulo "Oferta, demanda e estoques": IEA, EIA (estoques semanais e projeção), sondas da Baker Hughes, posições dos fundos | '
+  || 'intertítulo "Brasil": ANP, leilões, regulação, tributação, biocombustíveis, Margem Equatorial | '
+  || 'intertítulo "O que acompanhar": agenda da próxima semana com o dia (reunião da OPEP+, relatórios da OPEP/IEA/EIA, resultados, assembleias)',
+  array['PETR3', 'PETR4', 'Brent', 'OPEP', 'Oriente Médio', 'Rússia', 'Venezuela', 'Estados Unidos'], 1200, 1900, 8,
+  0, 17 * 60, 1, 7 * 60, 'oil platform offshore', array['Petrobras', 'PETR4', 'PETR3', 'Petróleo', 'Brent', 'OPEP'])
+on conflict (id) do update set tema = excluded.tema, estrutura = excluded.estrutura, exigir = excluded.exigir,
+  palavras_min = excluded.palavras_min, palavras_max = excluded.palavras_max, fontes_min = excluded.fontes_min,
+  foto_busca = excluded.foto_busca, tags = excluded.tags, atualizado_em = now();
 
 -- 2. Registro das execuções (uma por pauta, semana e modo) --------------------------------------------------------
 create table if not exists public.vm_artigo_semanal_execucoes (
