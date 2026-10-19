@@ -1,0 +1,5 @@
+# SOLIDUNS — configuração do deploy pelo robô do GitHub (workflow "Publicar site"). v150 (19/10/2026).
+# publish: pasta com o pacote do site (o mesmo conteúdo do zip). edge_functions: funções que rodam no Netlify.
+[build]
+  publish = "publicar"
+  edge_functions = "netlify/edge-functions"

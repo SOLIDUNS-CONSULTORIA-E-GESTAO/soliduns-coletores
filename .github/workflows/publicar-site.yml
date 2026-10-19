@@ -1,0 +1,42 @@
+# SOLIDUNS — PUBLICAR O SITE NO NETLIFY (v150 em diante; 19/10/2026)
+# Substitui o "arrastar o zip": publica a pasta site/publicar (o mesmo conteúdo do pacote) E as funções do Netlify
+# (prévia do link de cada artigo no WhatsApp/Telegram). O deploy por arrastar não leva funções.
+# Custo: 15 créditos do Netlify por publicação. Só roda quando o Thiago pedir: Actions › Publicar site › Run workflow,
+# digitando PUBLICAR. Segredos (GitHub › Settings › Secrets › Actions): NETLIFY_AUTH_TOKEN e NETLIFY_SITE_ID.
+name: Publicar site
+on:
+  workflow_dispatch:
+    inputs:
+      confirmar:
+        description: "Digite PUBLICAR para confirmar (gasta 15 créditos do Netlify)"
+        required: true
+      versao:
+        description: "Versão (ex.: v150)"
+        required: true
+concurrency: { group: publicar-site, cancel-in-progress: false }
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Confirmação
+        if: ${{ github.event.inputs.confirmar != 'PUBLICAR' }}
+        run: |
+          echo "Não publicado: era preciso digitar PUBLICAR."; exit 1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Conferir o pacote
+        run: |
+          test -f site/publicar/index.html || { echo "ERRO: falta site/publicar/index.html"; exit 1; }
+          test -f site/publicar/noticias/index.html || { echo "ERRO: falta site/publicar/noticias/index.html"; exit 1; }
+          echo "Arquivos no pacote: $(find site/publicar -type f | wc -l)"
+      - name: Publicar no Netlify
+        working-directory: site
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          test -n "$NETLIFY_AUTH_TOKEN" || { echo "ERRO: falta o segredo NETLIFY_AUTH_TOKEN"; exit 1; }
+          test -n "$NETLIFY_SITE_ID" || { echo "ERRO: falta o segredo NETLIFY_SITE_ID"; exit 1; }
+          npx --yes netlify-cli@17.38.1 deploy --prod --dir publicar --message "SOLIDUNS ${{ github.event.inputs.versao }}"
