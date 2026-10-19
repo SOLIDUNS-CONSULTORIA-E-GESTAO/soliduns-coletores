@@ -25,14 +25,14 @@ const sc = m.itensDe([], [{ id: 1, data_ref: "2026-10-16", texto_aprovado: { tit
   { "2026-10-16": m.agendaCurta([{ hora: "09h30", evento: "CPI dos EUA", regiao: "us" }, { hora: "Dia todo", evento: "x", regiao: "br" },
     { hora: "08h25", evento: "Boletim Focus", regiao: "br" }, { hora: "09h30", evento: "CPI dos EUA", regiao: "us" }]) })[0];
 const e2 = m.envio(sc, "-1");
-ok(e2.metodo === "sendPhoto" && String(e2.dados.photo).endsWith("/vm-imagens/marca/og-scanner-do-dia.jpg"), "scanner com a logomarca");
+ok(e2.metodo === "sendPhoto" && String(e2.dados.photo).endsWith("/vm-imagens/og-scanner-do-dia.jpg"), "scanner com a logomarca");
 const e2b = m.envio({ ...sc, foto: null }, "-1");
 ok(e2b.metodo === "sendMessage" && (e2b.dados.link_preview_options as any).is_disabled === true, "scanner sem logo: texto sem prévia");
 ok(String(e2.dados.caption).includes("🇧🇷 <b>08h25</b> — Boletim Focus\n🇺🇸 <b>09h30</b> — CPI dos EUA") && !String(e2.dados.caption).includes("Dia todo") && !String(e2.dados.caption).includes("Foto:"), "scanner: agenda em ordem, sem repetição");
 ok((e2.dados.reply_markup as any).inline_keyboard[0][0].text === "📊 Abrir o Scanner", "botão do Scanner");
 const ar = m.itensDe([], [], [{ id: 5, chapeu: null, titulo: "Art", linha_fina: "LF", corpo: [], editoria: "Mercados", autor: "Dr. Thiago Viegas", publicado_em: "2026-10-16T13:00:00Z" }])[0];
 const e3 = m.envio(ar, "-1");
-ok(String(e3.dados.text).startsWith("✍️ <b>ARTIGO</b> · Mercados") && String(e3.dados.text).includes("Por Dr. Thiago Viegas"), "artigo: faixa e assinatura");
+ok(String(e3.dados.text).startsWith("✍️ <b>ARTIGO</b> · Mercados") && !String(e3.dados.text).includes("Por "), "artigo: faixa, sem autor (v1.4)");
 ok(new Set([e1, e2, e3].map((e) => String(e.dados.text ?? e.dados.caption).slice(0, 4))).size === 3, "3 cabeçalhos diferentes");
 ok(!/\bIA\b|intelig[eê]ncia artificial|gerad/i.test(msg + m.mensagem(itens[0])), "sem menção a IA");
 ok(m.corta("a ".repeat(300), 100).length <= 101, "corte com reticências");

@@ -10,7 +10,7 @@
 // Variáveis: TELEGRAM_TOKEN, TELEGRAM_DONO_ID, COLETOR_TOKEN (manuais); SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas).
 // Nenhuma chave neste arquivo. A mensagem nunca menciona IA.
 
-export const VERSAO = "1.3";
+export const VERSAO = "1.4";   // v1.4 (19/10/2026): a mensagem do artigo não mostra mais o autor ("Por Dr. Thiago Viegas") — pedido do Thiago.
 const SITE = "https://soliduns.com.br/noticias/";
 const JANELA_H = 12;
 // v1.2 (Thiago, 16/10 10h16): o Scanner vai com a logomarca "Scanner do Dia" (Opção 2 — Radar). Imagem pública no Storage do
@@ -80,8 +80,7 @@ export function envio(it: Item, chat_id: string): { metodo: string; dados: Recor
   }
   const texto = `✍️ <b>ARTIGO</b>${it.editoria ? ` · ${esc(it.editoria)}` : ""}\n` +
     (it.chapeu && it.chapeu !== "Artigo" ? `<i>${esc(it.chapeu.toUpperCase())}</i>\n` : "") +
-    `\n<b>${esc(corta(it.titulo, 160))}</b>` + (it.linha ? `\n\n${esc(corta(it.linha, 400))}` : "") +
-    (it.autor ? `\n\n<i>Por ${esc(it.autor)}</i>` : "");
+    `\n<b>${esc(corta(it.titulo, 160))}</b>` + (it.linha ? `\n\n${esc(corta(it.linha, 400))}` : "");   // v1.4: sem "Por <autor>" (Thiago, 19/10)
   const markup = botao("✍️ Ler o artigo", it.link);
   if (it.foto) return { metodo: "sendPhoto", dados: { chat_id, photo: it.foto.src, caption: texto, parse_mode: "HTML", reply_markup: markup } };
   return { metodo: "sendMessage", dados: { chat_id, text: texto, parse_mode: "HTML", reply_markup: markup, link_preview_options: { is_disabled: true } } };
