@@ -53,4 +53,12 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run: |
-          NETLIFY_SITE_ID="$SITE_OK" npx --yes netlify-cli@17.38.1 deploy --prod --dir publicar --site "$SITE_OK" --message "SOLIDUNS ${{ github.event.inputs.versao }}"
+          # --build: empacota as Edge Functions (netlify/edge-functions); sem ele o Netlify publica só os arquivos
+          NETLIFY_SITE_ID="$SITE_OK" npx --yes netlify-cli@17.38.1 deploy --build --prod --dir publicar --site "$SITE_OK" --message "SOLIDUNS ${{ github.event.inputs.versao }}"
+      - name: Conferir a prévia do link (artigo 1)
+        run: |
+          sleep 20
+          H=$(curl -s -A "TelegramBot (like TwitterBot)" "https://soliduns.com.br/noticias/?artigo=1&conferencia=$GITHUB_RUN_ID")
+          echo "$H" | grep -o '<meta property="og:image" content="[^"]*"' || true
+          if echo "$H" | grep -q 'og:image" content="https://evcsniicnrlrtzpdmeza.supabase.co'; then echo "PRÉVIA OK: o link do artigo mostra a foto do artigo."
+          else echo "ATENÇÃO: a prévia ainda mostra a imagem padrão (função do Netlify não respondeu)."; exit 1; fi
