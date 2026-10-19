@@ -90,6 +90,10 @@ class H(BaseHTTPRequestHandler):
     def do_POST(self):
         corpo = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
         p = urllib.parse.urlparse(self.path).path
+        if p == "/chat/completions":   # v2.6: DeepSeek simulada — sempre devolve o texto "ruim" (reprovado na conferência)
+            ds.append(corpo); salvo = MODO["resposta"]; MODO["resposta"] = "ruim"
+            g = resposta_ia()["content"][0]["input"]; MODO["resposta"] = salvo
+            return self.resp(200, {"choices": [{"finish_reason": "stop", "message": {"content": json.dumps(g, ensure_ascii=False)}}], "usage": {"prompt_tokens": 9000, "completion_tokens": 900}})
         if p == "/v1/messages":
             if any(t.get("name") == "entregar_agenda" for t in corpo.get("tools", [])):
                 AG_ANTH.append(corpo); return self.resp(200, resposta_agenda())
@@ -109,6 +113,7 @@ class H(BaseHTTPRequestHandler):
             for m in corpo: materias.append(dict(m, id=len(materias) + 1))
             return self.resp(201, [{"id": len(materias)}])
         self.resp(404, {"p": p})
+ds = []
 srv = HTTPServer(("127.0.0.1", 0), H); threading.Thread(target=srv.serve_forever, daemon=True).start()
 base = f"http://127.0.0.1:{srv.server_port}"
 FONTES[0]["url_coleta"] = base + "/feed/livre.xml"; FONTES[1]["url_coleta"] = base + "/feed/pauta.xml"
@@ -118,6 +123,8 @@ env = dict(os.environ, COLETOR_TOKEN="tok", SUPABASE_URL=base, SUPABASE_SERVICE_
 fn = "/home/claude/soliduns-coletores/supabase/functions/"
 procs = [subprocess.Popen([deno, "run", "--allow-net", "--allow-env", "--allow-read", "/home/claude/v120/t_etapa3/lancar.ts", "file://" + fn + nome + "/index.ts", str(pt)], env=env,
                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) for nome, pt in (("radar-fontes", 8701), ("scanner-do-dia", 8702), ("agenda-do-dia", 8703))]
+procs.append(subprocess.Popen([deno, "run", "--allow-net", "--allow-env", "--allow-read", "/home/claude/v120/t_etapa3/lancar.ts", "file://" + fn + "scanner-do-dia/index.ts", "8704"],
+                              env=dict(env, DEEPSEEK_API_KEY="ds-teste", DEEPSEEK_URL=base), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
 F = []
 def ok(c, m):
     print(("  ok  " if c else "  FALHA ") + m, flush=True)
@@ -128,7 +135,7 @@ def chamar(pt, corpo, token="tok"):
     try: r = urllib.request.urlopen(rq, timeout=90); return r.status, json.loads(r.read())
     except urllib.error.HTTPError as e: return e.code, json.loads(e.read())
 try:
-    for pt in (8701, 8702, 8703):
+    for pt in (8701, 8702, 8703, 8704):
         for _ in range(90):
             try: urllib.request.urlopen(f"http://127.0.0.1:{pt}/", timeout=1)
             except urllib.error.HTTPError: break
@@ -181,6 +188,10 @@ try:
     ok(st == 200 and m["origem_id"] == 1 and m["instrucao_extra"] == "Destaque o dólar no título", "nova geração pedida pelo editor guarda a origem e a instrução")
     ok("INSTRUÇÃO DO EDITOR" in anth[-1]["messages"][0]["content"] and "Copom mantém Selic" in anth[-1]["messages"][0]["content"], "a instrução e a versão anterior vão ao agente")
     n = len(materias); st, j = chamar(8702, {"so_teste": True}); ok(st == 200 and len(materias) == n and j.get("rascunho"), "so_teste não grava")
+    # v2.6: DeepSeek reprovada → o Claude reescreve e vai ao ar a versão do Claude
+    MODO["resposta"] = "boa"; n_ds = len(ds); st, j = chamar(8704, {}); m = materias[-1]
+    ok(st == 200 and len(ds) > n_ds and m["modelo"].startswith("claude") and m["verificacao_ok"] and isinstance(j.get("reserva_claude"), dict)
+       and j["reserva_claude"].get("usada"), "v2.6: DeepSeek reprovada -> Claude reescreve e publica a versão aprovada")
 finally:
     for p in procs: p.kill()
 print("TUDO OK" if not F else "FALHAS: " + str(F))

@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "2.5";   // v2.5 (19/10/2026): DeepSeek com limite maior (32 mil) e, se a resposta vier cortada ou vazia, o Claude assume. v2.4:   // v2.4 (19/10/2026): agenda de INDICADORES (SQL 168): no texto só os de impacto ALTO (até 5); segunda-feira traz a semana. A planilha completa sai do banco, abaixo do texto. v2.3:   // v2.3 (18/10/2026): REDATOR DeepSeek V4 Pro (decisão do Thiago: escrever fora do pico, às 07h00 em dias úteis); o Claude fica de reserva.
+const VERSAO = "2.6";   // v2.6 (19/10/2026, "RESERVA CLAUDE NO SCANNER"): texto da DeepSeek reprovado na conferência → o Claude reescreve e vai ao ar a melhor versão. v2.5:   // v2.5 (19/10/2026): DeepSeek com limite maior (32 mil) e, se a resposta vier cortada ou vazia, o Claude assume. v2.4:   // v2.4 (19/10/2026): agenda de INDICADORES (SQL 168): no texto só os de impacto ALTO (até 5); segunda-feira traz a semana. A planilha completa sai do banco, abaixo do texto. v2.3:   // v2.3 (18/10/2026): REDATOR DeepSeek V4 Pro (decisão do Thiago: escrever fora do pico, às 07h00 em dias úteis); o Claude fica de reserva.
 // O Scanner não pesquisa na web: escreve só com a base própria (agenda, cotações, radar). Por isso a DeepSeek pode escrevê-lo sozinha.
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.2";   // v2.0: revisão do plano editorial (Thiago, 15/10 20h55)
@@ -244,9 +244,9 @@ async function chamarDeepSeek(mensagens: unknown[]): Promise<{ texto: string; mo
       diag: `deepseek finish=${j.choices?.[0]?.finish_reason}; início="${texto.slice(0, 120)}"` };
   } finally { clearTimeout(t); }
 }
-export async function chamar(mensagens: unknown[]): Promise<{ texto: string; modelo: string; ent: number; sai: number; diag: string }> {
+export async function chamar(mensagens: unknown[], soClaude = false): Promise<{ texto: string; modelo: string; ent: number; sai: number; diag: string }> {
   let avisoDs = "";
-  if (usaDeepSeek()) {
+  if (usaDeepSeek() && !soClaude) {
     try { return await chamarDeepSeek(mensagens); }
     catch (e) { avisoDs = `DeepSeek falhou (${String((e as Error).message ?? e).slice(0, 150)}) — usando o Claude de reserva`; console.warn(avisoDs); }
   }
@@ -400,7 +400,7 @@ export async function tratar(req: Request): Promise<Response> {
   if (!token || req.headers.get("Authorization") !== `Bearer ${token}`) return Response.json({ erro: "não autorizado" }, { status: 401 });
   let corpo: { so_teste?: boolean; devolvida?: number; instrucao?: string } = {};
   try { corpo = await req.json(); } catch (_) { /* vazio */ }
-  const hoje = hojeBrasilia(), resumo: Record<string, unknown> = { versao: VERSAO, prompt_versao: PROMPT_VERSAO };
+  const hoje = hojeBrasilia(), resumo: Record<string, unknown> = { versao: VERSAO, prompt_versao: PROMPT_VERSAO }, t0 = Date.now();
   try {
     const sha = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(SISTEMA))))
       .map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -412,10 +412,12 @@ export async function tratar(req: Request): Promise<Response> {
       livres: ctx.fontes_oficiais_livres.length, pauta: ctx.assuntos_em_pauta.length };
     if (!ctx.indicadores.length && !ctx.fontes_oficiais_livres.length && !ctx.agenda_do_dia.length) throw new Error("contexto vazio: sem agenda, indicadores nem achados para escrever");
     const msgs: { role: string; content: string }[] = [{ role: "user", content: pedido(hoje, ctx, anterior, corpo.instrucao) }];
-    let r = await chamar(msgs), ent = r.ent, sai = r.sai, gerado: Record<string, unknown>;
+    let r = await chamar(msgs), ent = r.ent, sai = r.sai, gerado: Record<string, unknown>, custoAcum = 0;
+    const somaCusto = (x: { modelo: string; ent: number; sai: number }) => { const p = precoDe(x.modelo); custoAcum += x.ent / 1e6 * p.ent + x.sai / 1e6 * p.sai; };
+    somaCusto(r);
     try { gerado = extrairJson(r.texto); } catch (_) {
       const d1 = r.diag;
-      r = await chamar(msgs); ent += r.ent; sai += r.sai;                 // segunda tentativa, do zero
+      r = await chamar(msgs); ent += r.ent; sai += r.sai; somaCusto(r);   // segunda tentativa, do zero
       try { gerado = extrairJson(r.texto); } catch (e2) {
         throw new Error(`resposta sem JSON (1ª: ${d1} | 2ª: ${r.diag}) ${String((e2 as Error).message ?? e2).slice(0, 80)}`);
       }
@@ -426,12 +428,22 @@ export async function tratar(req: Request): Promise<Response> {
     if (ab && ctx.agenda_do_dia.length && !comeca(gerado)) {
       const ped = pedido(hoje, ctx, gerado, `O primeiro parágrafo precisa começar exatamente com "${ab}" e tratar da agenda do dia. Reescreva a edição inteira com essa abertura, mantendo todas as demais regras.` + (corpo.instrucao ? ` ${corpo.instrucao}` : ""));
       try {
-        const r2 = await chamar([{ role: "user", content: ped }]); ent += r2.ent; sai += r2.sai;
+        const r2 = await chamar([{ role: "user", content: ped }]); ent += r2.ent; sai += r2.sai; somaCusto(r2);
         const g2 = extrairJson(r2.texto);
         if (comeca(g2)) { gerado = g2; r = r2; resumo.reescrita_abertura = "ok"; } else resumo.reescrita_abertura = "sem efeito";
       } catch (e) { resumo.reescrita_abertura = `falhou: ${String((e as Error).message ?? e).slice(0, 80)}`; }
     }
-    const verificacoes = verificar(gerado, ctx, hoje);
+    let verificacoes = verificar(gerado, ctx, hoje);
+    const falhas = (v: { ok: boolean; bloqueia: boolean }[]) => v.filter((c) => !c.ok && c.bloqueia).length;
+    // v2.6: texto da DeepSeek reprovado → o Claude reescreve (se houver tempo no limite de 150 s da função) e fica a melhor versão
+    if (falhas(verificacoes) && r.modelo.startsWith("deepseek") && Date.now() - t0 < 80000) {
+      try {
+        const rc = await chamar(msgs, true); ent += rc.ent; sai += rc.sai; somaCusto(rc);
+        const gc = extrairJson(rc.texto), vc = verificar(gc, ctx, hoje);
+        resumo.reserva_claude = { reprovacoes_deepseek: verificacoes.filter((c) => !c.ok && c.bloqueia).map((c) => c.checagem), falhas_claude: falhas(vc) };
+        if (falhas(vc) <= falhas(verificacoes)) { gerado = gc; verificacoes = vc; r = rc; (resumo.reserva_claude as Record<string, unknown>).usada = true; }
+      } catch (e) { resumo.reserva_claude = `falhou: ${String((e as Error).message ?? e).slice(0, 100)}`; }
+    } else if (falhas(verificacoes) && r.modelo.startsWith("deepseek")) resumo.reserva_claude = "sem tempo no limite da função";
     const ok = verificacoes.every((c) => c.ok || !c.bloqueia);
     const refs = Array.isArray(gerado.referencias) ? gerado.referencias as Record<string, unknown>[] : [];
     const vistos = new Set<string>(), fontes: { id: string; fonte: string; url: string }[] = [];
@@ -439,8 +451,7 @@ export async function tratar(req: Request): Promise<Response> {
       const id = String(x.identificador ?? x.id ?? x.registro ?? x.id_registro ?? "").trim(), u = urls[id];
       if (u && !vistos.has(u.url)) { vistos.add(u.url); fontes.push({ id, ...u }); }
     }
-    const pr = precoDe(r.modelo);
-    const custo = Math.round((ent / 1e6 * pr.ent + sai / 1e6 * pr.sai) * 10000) / 10000;
+    const custo = Math.round(custoAcum * 10000) / 10000;   // v2.6: soma cada chamada pelo preço do seu modelo
     const auto = !REVISAO_HUMANA;   // v1.1: publicação automática (decisão do Thiago); a verificação fica só como registro
     // v1.4: na publicação automática, a frase com lacuna ("[verificar ...]") não vai para a página; o original fica em "gerado"
     const pars0 = auto && !MANTER_LACUNAS ? semLacunas(gerado.paragrafos) : gerado.paragrafos;
