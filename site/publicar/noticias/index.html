@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Valor e Mercado | Conteúdo e notícias</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Scanner do Dia, agenda e indicadores do mercado: o jornal Valor e Mercado, da SOLIDUNS.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Valor e Mercado · SOLIDUNS">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Valor e Mercado | Conteúdo e notícias">
+<meta property="og:description" content="Scanner do Dia, agenda e indicadores do mercado: o jornal Valor e Mercado, da SOLIDUNS.">
+<meta property="og:image" content="https://soliduns.com.br/og-valor-e-mercado.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Valor e Mercado — Conteúdo e notícias">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://soliduns.com.br/og-valor-e-mercado.jpg">
+<meta name="robots" content="noindex, follow">
+<script>
+/* patch128: página de passagem do jornal. O WhatsApp/Telegram leem a prévia daqui (sem "#");
+   o leitor é levado na hora para o jornal: ?scanner=AAAA-MM-DD abre o Scanner daquela data;
+   v131: ?artigo=<nº> abre o artigo publicado pela Redação. */
+(function(){
+  var q = new URLSearchParams(location.search), d = (q.get('scanner') || '').slice(0, 10), a = q.get('artigo') || '';
+  var destino = /^\d{1,9}$/.test(a) ? '/#/noticias/artigo/' + a
+    : '/#/noticias' + (q.has('scanner') ? '/scanner' + (/^\d{4}-\d{2}-\d{2}$/.test(d) ? '/' + d : '') : '');
+  location.replace(destino);
+})();
+</script>
+<style>body{margin:0;background:#414A38;color:#F5F2E7;font:16px/1.5 system-ui,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}a{color:#E4D79B}</style>
+</head>
+<body><p>Abrindo o jornal <a href="/#/noticias">Valor e Mercado</a>…</p></body>
+</html>

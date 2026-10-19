@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Scanner do Dia | Valor e Mercado</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Agenda do dia, indicadores de fechamento e maiores altas e baixas da B3: o Scanner do Dia do jornal Valor e Mercado.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Valor e Mercado · SOLIDUNS">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Scanner do Dia | Valor e Mercado">
+<meta property="og:description" content="Agenda do dia, indicadores de fechamento e maiores altas e baixas da B3.">
+<meta property="og:image" content="https://soliduns.com.br/og-scanner-do-dia.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Scanner do Dia — Valor e Mercado">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://soliduns.com.br/og-scanner-do-dia.jpg">
+<meta name="robots" content="noindex, follow">
+<script>
+/* patch130: página de passagem do Scanner. O WhatsApp/Telegram leem a prévia daqui (sem "#");
+   o leitor é levado na hora para o Scanner: ?d=AAAA-MM-DD abre a edição daquela data. */
+(function(){
+  var d = (new URLSearchParams(location.search).get('d') || '').slice(0, 10);
+  location.replace('/#/noticias/scanner' + (/^\d{4}-\d{2}-\d{2}$/.test(d) ? '/' + d : ''));
+})();
+</script>
+<style>body{margin:0;background:#2F3529;color:#F5F2E7;font:16px/1.5 system-ui,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}a{color:#E4D79B}</style>
+</head>
+<body><p>Abrindo o <a href="/#/noticias/scanner">Scanner do Dia</a>…</p></body>
+</html>

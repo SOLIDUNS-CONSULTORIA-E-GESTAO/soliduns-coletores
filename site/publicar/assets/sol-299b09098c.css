@@ -1,0 +1,45 @@
+
+  /* ===== v114 — página do ativo (patch114lei) ===== */
+  .at-topo{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:14px 22px; align-items:start;
+    border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; margin:0 0 12px;}
+  .at-id .at-tk{font:600 12px 'IBM Plex Mono', monospace; color:var(--gold); letter-spacing:.06em;}
+  .at-id h2{margin:2px 0 2px; font-size:21px;}
+  .at-id .at-sub{font-size:12px; color:var(--ink-soft);}
+  .at-cot{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px; margin-top:8px;}
+  .at-preco{font:700 26px 'IBM Plex Mono', monospace;}
+  .at-var{font:600 14px 'IBM Plex Mono', monospace;} .at-var.pos{color:var(--teal);} .at-var.neg{color:var(--rust);}
+  .at-sessao{flex-basis:100%; font-size:12px; color:var(--ink-soft);}
+  .at-sessao i{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; background:var(--ink-soft);}
+  .at-sessao.aberto i{background:var(--teal);}
+  .at-acoes{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
+  .at-faixa{margin:0 0 12px;} .at-faixa > span{display:block; font-size:11.5px; color:var(--ink-soft); margin-bottom:4px;}
+  .at-faixa-trilho{position:relative; height:6px; border-radius:3px; background:linear-gradient(90deg, var(--rust), var(--gold), var(--teal)); opacity:.85;}
+  .at-faixa-marca{position:absolute; top:-4px; width:3px; height:14px; background:var(--ink, #f2ecd8); border:1px solid #000; transform:translateX(-1px);}
+  .at-faixa-num{display:flex; justify-content:space-between; font:11.5px 'IBM Plex Mono', monospace; margin-top:4px;}
+  .at-faixa-nd{font-size:12px; color:var(--ink-soft);}
+  .at-grade{display:grid; grid-template-columns:minmax(0,1fr) 280px; gap:16px; align-items:start;}
+  .at-abas{display:flex; gap:2px; flex-wrap:wrap; border-bottom:1px solid var(--line); margin:0 0 12px;}
+  .at-aba{background:none; border:0; border-bottom:2px solid transparent; color:var(--ink-soft); padding:8px 12px; cursor:pointer; font:inherit; font-size:13.5px;}
+  .at-aba.ativa{color:var(--gold); border-bottom-color:var(--gold);}
+  .at-painel[hidden]{display:none;}
+  .at-lateral > div{border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; margin:0 0 12px;}
+  .at-lateral h4{margin:0 0 8px; font-size:13px; color:var(--gold); letter-spacing:.03em;}
+  .at-estrelas{font-size:20px; letter-spacing:2px; color:var(--gold);} .at-estrelas .off{color:var(--line);}
+  .at-crit{list-style:none; padding:0; margin:8px 0 0; font-size:12px;} .at-crit li{margin:3px 0;}
+  .at-crit .s{color:var(--teal);} .at-crit .n{color:var(--rust);} .at-crit .x{color:var(--ink-soft);}
+  .at-mini{font-size:11px; color:var(--ink-soft); margin:6px 0 0;}
+  .at-pj{display:flex; justify-content:space-between; gap:8px; font-size:13px; margin:4px 0;} .at-pj b{font-family:'IBM Plex Mono', monospace;}
+  .at-gauge{display:block; width:100%; max-width:240px; margin:0 auto;}
+  .at-gauge-rot{text-align:center; font-weight:700; margin:2px 0 0;}
+  .at-tab{width:100%; border-collapse:collapse; font-size:12.5px; margin:0 0 14px;}
+  .at-tab th, .at-tab td{padding:6px 8px; border-bottom:1px solid var(--line); text-align:left;}
+  .at-tab td.num, .at-tab th.num{text-align:right;--v107-alin:right; font-family:'IBM Plex Mono', monospace; white-space:nowrap;}
+  .at-topo, .at-lateral{text-align:left;--v107-alin:left;}   /* colunas estreitas: sem justificado */
+  .at-sinal{font-weight:600;} .at-sinal.alta{color:var(--teal);} .at-sinal.baixa{color:var(--rust);} .at-sinal.neutro, .at-sinal.nd{color:var(--ink-soft); font-weight:400;}
+  /* v116: rótulo de tendência */
+  .trend--strong-sell{color:var(--rust); font-weight:700; letter-spacing:.02em;} .trend--sell{color:var(--rust);}
+  .trend--neutral{color:var(--ink-soft); font-weight:400;}
+  .trend--buy{color:var(--teal);} .trend--strong-buy{color:var(--teal); font-weight:700; letter-spacing:.02em;}
+  .at-resumo{display:flex; gap:10px; flex-wrap:wrap; font-size:12.5px; margin:0 0 10px;}
+  .at-resumo span{border:1px solid var(--line); border-radius:12px; padding:3px 10px;}
+  @media (max-width:860px){ .at-topo{grid-template-columns:1fr;} .at-grade{grid-template-columns:1fr;} .at-lateral{order:2;} }

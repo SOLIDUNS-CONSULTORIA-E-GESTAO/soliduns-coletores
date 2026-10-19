@@ -1,0 +1,100 @@
+/* v125: Scanner do Dia — data na lateral e página de leitura */
+#tela-noticias .vm-sc-data{font:500 11.5px "Jost",sans-serif;letter-spacing:.06em;color:var(--vm-tinta2);margin:.35rem 0 0;}
+#tela-noticias .vm-scanner-tit a{color:inherit;text-decoration:none;}
+#tela-noticias .vm-scanner-tit a:hover{text-decoration:underline;text-underline-offset:3px;}
+#tela-noticias .vm-sc-ler{display:inline-block;margin:.5rem 0 .2rem;font:500 12.5px "Jost",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--vm-tinta);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;}
+#tela-noticias .vm-sc-ler:hover{color:var(--vm-vm);}
+#tela-noticias.vm-modo-leitura .vm-grade{display:none;}
+#tela-noticias .vm-leitura{max-width:760px;margin:0 auto;padding:1.6rem 0 2.6rem;}
+#tela-noticias .vm-leit-voltar{display:inline-block;font:500 12.5px "Jost",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--vm-tinta2);text-decoration:none;margin-bottom:1.6rem;}
+#tela-noticias .vm-leit-voltar:hover{color:var(--vm-tinta);}
+#tela-noticias .vm-leit-data{font:500 13px "Jost",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--vm-tinta2);margin:.6rem 0 .2rem;}
+#tela-noticias .vm-leit-titulo{font:500 clamp(2rem, 4.4vw, 3rem)/1.08 "Newsreader",Georgia,serif;letter-spacing:-.01em;color:var(--vm-tinta);margin:.4rem 0 .8rem;}
+#tela-noticias .vm-leit-linhafina{font:400 1.3rem/1.45 "Newsreader",Georgia,serif;color:var(--vm-tinta2);margin:0 0 1rem;}
+#tela-noticias .vm-leit-assin{font:400 13px "Jost",sans-serif;color:var(--vm-tinta2);margin:0;padding-bottom:1rem;border-bottom:1px solid #CFC9B4;}
+#tela-noticias .vm-leit-texto p{font:400 1.2rem/1.75 "Newsreader",Georgia,serif;color:var(--vm-tinta);margin:0 0 1.15rem;}
+#tela-noticias .vm-leit-fontes{font:400 13px/1.6 "Jost",sans-serif;color:var(--vm-tinta2);border-top:1px solid #CFC9B4;padding-top:1rem;margin-top:1.4rem;}
+#tela-noticias .vm-leit-fontes ul{margin:.4rem 0 0;padding-left:1.1rem;}
+#tela-noticias .vm-leit-fontes a{color:inherit;}
+/* v131: Artigos (capa e página do artigo) e publicidade */
+#tela-noticias .vm-grade{grid-template-areas:"main side" "artigos side" "lista side";}
+#tela-noticias .vm-artigos{grid-area:artigos;margin-top:2.2rem;}
+#tela-noticias .vm-art-dest{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:1.2rem;align-items:start;padding-bottom:1.2rem;border-bottom:1px solid #CFC9B4;margin-bottom:1rem;}
+#tela-noticias .vm-art-dest img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;background:#E5DFCC;}
+#tela-noticias .vm-art-item{display:flex;gap:1rem;align-items:flex-start;padding:.9rem 0;border-bottom:1px solid #E1DBC8;}
+#tela-noticias .vm-art-item img{width:118px;aspect-ratio:3/2;object-fit:cover;flex:none;background:#E5DFCC;}
+#tela-noticias .vm-art-ch{font:500 11px "Jost",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--vm-dsol);}
+#tela-noticias .vm-art-tit{font:500 1.35rem/1.25 "Newsreader",Georgia,serif;color:var(--vm-tinta);margin:.25rem 0 .35rem;text-wrap:balance;}
+#tela-noticias .vm-art-item .vm-art-tit{font-size:1.12rem;}
+#tela-noticias .vm-art-tit a{color:inherit;text-decoration:none;}
+#tela-noticias .vm-art-tit a:hover{text-decoration:underline;text-underline-offset:3px;}
+#tela-noticias .vm-art-lf{font:400 1rem/1.5 "Newsreader",Georgia,serif;color:var(--vm-tinta2);margin:0 0 .35rem;}
+#tela-noticias .vm-art-meta{font:400 12.5px "Jost",sans-serif;color:var(--vm-tinta2);}
+#tela-noticias .vm-leit-foto{margin:0 0 1.2rem;}
+#tela-noticias .vm-leit-foto img{width:100%;display:block;background:#E5DFCC;}
+#tela-noticias .vm-leit-foto figcaption,#tela-noticias .vm-art-fig figcaption{font:400 11.5px "Jost",sans-serif;color:var(--vm-tinta2);text-align:right;margin-top:.3rem;}
+#tela-noticias .vm-art-fig{margin:1.4rem 0;}
+#tela-noticias .vm-art-fig img{width:100%;display:block;}
+#tela-noticias .vm-leit-texto h2.vm-art-inter{font:500 1.5rem/1.3 "Newsreader",Georgia,serif;color:var(--vm-tinta);margin:1.8rem 0 .7rem;text-align:left;}
+#tela-noticias .vm-leit-texto blockquote{font:italic 400 1.3rem/1.55 "Newsreader",Georgia,serif;color:var(--vm-tinta);border-left:4px solid var(--vm-vm);margin:1.5rem 0;padding:.1rem 0 .1rem 1rem;}
+#tela-noticias .vm-leit-texto ul,#tela-noticias .vm-leit-texto ol{font:400 1.15rem/1.65 "Newsreader",Georgia,serif;color:var(--vm-tinta);margin:0 0 1.2rem;padding-left:1.5rem;}
+#tela-noticias .vm-leit-texto li{margin:.3rem 0;}
+#tela-noticias .vm-leit-texto li::marker{color:var(--vm-dsol);}
+#tela-noticias .vm-leit-texto mark{background:var(--vm-dou);color:inherit;padding:0 .1em;}
+#tela-noticias .vm-leit-texto code{font:400 .9em ui-monospace,"IBM Plex Mono",monospace;background:#ECE7D6;padding:0 .25em;}
+#tela-noticias .vm-leit-texto a{color:var(--vm-vm);}
+#tela-noticias .vm-leit-texto a.vm-ticker{font-weight:500;text-decoration:underline dotted;text-underline-offset:3px;}
+#tela-noticias .vm-art-tab{margin:1.5rem 0;}
+#tela-noticias .vm-art-tab>div{overflow-x:auto;}
+#tela-noticias .vm-art-tab table{width:100%;border-collapse:collapse;font:400 14px "Jost",sans-serif;color:var(--vm-tinta);}
+#tela-noticias .vm-art-tab th{text-align:left;font-weight:500;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--vm-creme);background:var(--vm-vm);padding:.55rem .75rem;}
+#tela-noticias .vm-art-tab td{padding:.5rem .75rem;border-bottom:1px solid var(--vm-linha);}
+#tela-noticias .vm-art-tab tr:nth-child(even) td{background:rgba(236,231,214,.6);}
+#tela-noticias .vm-art-tab td.num{text-align:right;font-variant-numeric:tabular-nums;}
+#tela-noticias .vm-art-tab figcaption{font:400 12px "Jost",sans-serif;color:var(--vm-tinta2);margin-top:.4rem;text-align:left;}
+#tela-noticias .vm-art-num{display:flex;align-items:center;gap:1.2rem;border-left:4px solid var(--vm-dsol);background:#ECE7D6;padding:1rem 1.2rem;margin:1.5rem 0;}
+#tela-noticias .vm-art-num b{font:400 2.8rem/1 "Newsreader",Georgia,serif;color:var(--vm-vm);white-space:nowrap;}
+#tela-noticias .vm-art-num span{font:400 14px/1.4 "Jost",sans-serif;color:var(--vm-tinta);}
+#tela-noticias .vm-art-pdf{display:flex;align-items:center;gap:1rem;border:1px solid var(--vm-linha);background:rgba(255,255,255,.6);padding:.8rem 1rem;margin:1.3rem 0;text-decoration:none;}
+#tela-noticias .vm-art-pdf:hover{border-color:var(--vm-vm);}
+#tela-noticias .vm-art-pdf i{font:500 11px "Jost",sans-serif;font-style:normal;background:var(--vm-vm);color:var(--vm-creme);padding:.25rem .5rem;}
+#tela-noticias .vm-art-pdf span{flex:1;font:400 1.05rem "Newsreader",Georgia,serif;color:var(--vm-tinta);}
+#tela-noticias .vm-art-pdf small{display:block;font:400 12px "Jost",sans-serif;color:var(--vm-tinta2);}
+#tela-noticias .vm-art-corr{font:400 13px/1.55 "Jost",sans-serif;color:var(--vm-tinta2);background:#ECE7D6;padding:.8rem 1rem;margin-top:1.2rem;}
+#tela-noticias .vm-art-tags{font:400 12px "Jost",sans-serif;color:var(--vm-tinta2);margin-top:1rem;}
+#tela-noticias .vm-pub{margin:1.4rem auto;width:100%;}
+#tela-noticias .vm-pub-rot{display:block;font:500 10px "Jost",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--vm-tinta2);margin-bottom:.3rem;}
+#tela-noticias .vm-pub a{display:block;margin:0 auto;max-width:var(--mw);aspect-ratio:var(--ar);background:#ECE7D6;border:1px solid var(--vm-linha);overflow:hidden;}
+#tela-noticias .vm-pub img{width:100%;height:100%;object-fit:cover;display:block;}
+#tela-noticias .vm-pub-topo{margin:0 auto 1.6rem;}
+#tela-noticias.vm-modo-leitura #vm-pub-topo{display:none;}
+#tela-noticias .vm-pub-topo .vm-pub-rot,#tela-noticias .vm-pub-texto .vm-pub-rot{text-align:center;}
+@media (max-width:640px){#tela-noticias .vm-pub a{max-width:var(--mwc);aspect-ratio:var(--arc);}}
+@media (max-width:860px){
+  #tela-noticias .vm-grade{grid-template-areas:"main" "side" "artigos" "lista";}
+  #tela-noticias .vm-art-dest{grid-template-columns:minmax(0,1fr);}
+}
+#tela-noticias .vm-compart{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:1.1rem 0 1.5rem;}
+#tela-noticias .vm-compart span{font:500 11.5px "Jost",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--vm-tinta2);margin-right:.3rem;}
+#tela-noticias .vm-comp-bt{font:500 13px "Jost",sans-serif;color:var(--vm-tinta);background:transparent;border:1px solid var(--vm-tinta);border-radius:2px;padding:.45rem .9rem;text-decoration:none;cursor:pointer;}
+#tela-noticias .vm-comp-bt:hover{background:var(--vm-tinta);color:#F4EFE1;}
+#tela-noticias .vm-comp-wa{border-color:#1F7A4D;color:#1F7A4D;}
+#tela-noticias .vm-comp-wa:hover{background:#1F7A4D;color:#fff;}
+#tela-noticias .vm-comp-tg{border-color:#2A6F9E;color:#2A6F9E;}
+#tela-noticias .vm-comp-tg:hover{background:#2A6F9E;color:#fff;}
+#tela-noticias .vm-leit-plataforma{font:400 14px/1.6 "Jost",sans-serif;color:var(--vm-tinta2);background:#ECE7D6;border-left:3px solid var(--vm-vm);padding:.8rem 1rem;margin:1.6rem 0;}
+#tela-noticias .vm-leit-plataforma a{color:var(--vm-tinta);}
+#tela-noticias .vm-leit-anteriores h2{font:500 12.5px "Jost",sans-serif;letter-spacing:.15em;text-transform:uppercase;color:var(--vm-tinta);border-bottom:1px solid var(--vm-tinta);padding-bottom:.5rem;margin:2rem 0 .3rem;}
+#tela-noticias .vm-leit-anteriores ul{list-style:none;margin:0;padding:0;}
+#tela-noticias .vm-leit-anteriores li a{display:block;padding:.7rem 0;border-bottom:1px solid #D9D3BF;color:var(--vm-tinta);text-decoration:none;font:400 1.08rem/1.35 "Newsreader",Georgia,serif;}
+#tela-noticias .vm-leit-anteriores li a span{display:block;font:500 11px "Jost",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--vm-tinta2);margin-bottom:.2rem;}
+#tela-noticias .vm-leit-anteriores li a:hover{color:var(--vm-vm);}
+/* v129: formatação dos textos do jornal (plano editorial 1.2, cap. 4.9) — corpo e linhas finas justificados, com hifenização */
+#tela-noticias .vm .vm-texto p,#tela-noticias .vm .vm-sc-texto p,#tela-noticias .vm .vm-leit-texto p,#tela-noticias .vm .vm-linhafina,#tela-noticias .vm .vm-sc-linhafina,#tela-noticias .vm .vm-leit-linhafina,#tela-noticias .vm .vm-scan li{--v107-alin:justify;text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word;text-wrap:pretty;}
+#tela-noticias .vm-titulo,#tela-noticias .vm-scanner-tit,#tela-noticias .vm-leit-titulo{text-align:left;text-wrap:balance;hyphens:manual;}
+/* v129: Redação (fila de aprovação e publicados) com a mesma formatação da página */
+#tela-noticias .vm-red-previa p,#tela-noticias .vm .vm-red-previa p{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word;text-wrap:pretty;--v107-alin:justify;}
+#tela-noticias .vm-red-previa h4,#tela-noticias .vm .vm-red-previa h4{text-align:left;text-wrap:balance;hyphens:manual;}
+#tela-noticias .vm-leit-vazio h1{font:500 2rem "Newsreader",Georgia,serif;margin:0 0 .6rem;}
+#tela-noticias .vm-leit-vazio p, #tela-noticias .vm-leit-carregando{font:400 1.05rem/1.6 "Newsreader",Georgia,serif;color:var(--vm-tinta2);}
+@media (max-width:760px){ #tela-noticias .vm-leitura{padding:1rem 0 2rem;} #tela-noticias .vm-leit-texto p{font-size:1.1rem;} }
