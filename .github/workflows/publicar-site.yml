@@ -31,12 +31,26 @@ jobs:
           test -f site/publicar/index.html || { echo "ERRO: falta site/publicar/index.html"; exit 1; }
           test -f site/publicar/noticias/index.html || { echo "ERRO: falta site/publicar/noticias/index.html"; exit 1; }
           echo "Arquivos no pacote: $(find site/publicar -type f | wc -l)"
-      - name: Publicar no Netlify
-        working-directory: site
+      - name: Achar o site no Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
           test -n "$NETLIFY_AUTH_TOKEN" || { echo "ERRO: falta o segredo NETLIFY_AUTH_TOKEN"; exit 1; }
-          test -n "$NETLIFY_SITE_ID" || { echo "ERRO: falta o segredo NETLIFY_SITE_ID"; exit 1; }
-          npx --yes netlify-cli@17.38.1 deploy --prod --dir publicar --message "SOLIDUNS ${{ github.event.inputs.versao }}"
+          SID=$(echo -n "$NETLIFY_SITE_ID" | tr -d '[:space:]')
+          curl -sf -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" "https://api.netlify.com/api/v1/sites?per_page=100&filter=all" -o sites.json \
+            || { echo "ERRO: o Netlify recusou o NETLIFY_AUTH_TOKEN (token errado ou vencido)"; exit 1; }
+          echo "Sites que este token enxerga:"; jq -r '.[] | "  - \(.name)  (\(.custom_domain // .url))"' sites.json
+          # 1º: o segredo NETLIFY_SITE_ID (aceita o ID ou o nome); 2º: o site com o domínio soliduns.com.br
+          ID=$(jq -r --arg s "$SID" '[.[] | select(.id == $s or .site_id == $s or .name == $s)][0].id // empty' sites.json)
+          [ -n "$ID" ] || ID=$(jq -r '[.[] | select((.custom_domain // "") == "soliduns.com.br" or (.custom_domain // "") == "www.soliduns.com.br" or ((.domain_aliases // []) | index("soliduns.com.br")))][0].id // empty' sites.json)
+          [ -n "$ID" ] || { echo "ERRO: nenhum site com soliduns.com.br para este token (o token é da conta dona do site?)"; exit 1; }
+          NOME=$(jq -r --arg i "$ID" '.[] | select(.id == $i) | "\(.name) (\(.custom_domain // .url))"' sites.json)
+          echo "Site escolhido: $NOME"
+          echo "SITE_OK=$ID" >> "$GITHUB_ENV"
+      - name: Publicar no Netlify
+        working-directory: site
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          NETLIFY_SITE_ID="$SITE_OK" npx --yes netlify-cli@17.38.1 deploy --prod --dir publicar --site "$SITE_OK" --message "SOLIDUNS ${{ github.event.inputs.versao }}"
