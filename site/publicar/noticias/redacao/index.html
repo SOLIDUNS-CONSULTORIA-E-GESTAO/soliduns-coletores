@@ -1067,8 +1067,9 @@ const LUGAR_DB = {'Seção Artigos': 'artigos', 'Manchete do dia': 'manchete', '
 const SIT = {rascunho: 'Rascunho', revisao: 'Em revisão', agendado: 'Agendado', publicado: 'Publicado', despublicado: 'Fora do ar'};
 function estadoArtigo() {
   const pub = artigo.situacao === 'publicado';
-  $('#btn-publicar').innerHTML = pub ? '<i data-lucide="check" class="w-4 h-4"></i>Salvar correção' : '<i data-lucide="send" class="w-4 h-4"></i>Publicar';
-  $('#btn-agendar').classList.toggle('hidden', pub); $('#btn-salvar').classList.toggle('hidden', pub);
+  $('#btn-publicar').innerHTML = pub ? '<i data-lucide="send" class="w-4 h-4"></i>Publicar correção' : '<i data-lucide="send" class="w-4 h-4"></i>Publicar';
+  $('#btn-agendar').classList.toggle('hidden', pub);   /* v151: no artigo publicado, "Salvar correção" só guarda; "Publicar correção" publica */
+  $('#btn-salvar').innerHTML = pub ? '<i data-lucide="save" class="w-4 h-4"></i>Salvar correção' : '<i data-lucide="save" class="w-4 h-4"></i>Salvar rascunho';
   $('#sit-artigo').textContent = artigo.id ? `nº ${artigo.id} · ${SIT[artigo.situacao] || artigo.situacao}${artigo.versao > 1 ? ' · versão ' + artigo.versao : ''}` : 'Artigo novo';
   icones();
 }
@@ -1120,7 +1121,8 @@ async function dadosDoArtigo() {
 let sujo = false, salvando = null;
 function atualizar() { contadores(); verificar(); sujo = true; if (artigo.id || $('#f-titulo').value.trim()) selo('Alterações não salvas'); }
 async function salvar(manual = false) {
-  if (artigo.situacao === 'publicado' || artigo.situacao === 'despublicado') { if (manual) toast('Artigo publicado: use "Salvar correção".', 'aviso'); return false; }
+  if (artigo.situacao === 'despublicado') { if (manual) toast('Artigo fora do ar: não há o que salvar.', 'aviso'); return false; }
+  if (artigo.situacao === 'publicado') return salvarCorrecao(manual);   /* v151 */
   if (!manual && (!sujo || !$('#f-titulo').value.trim())) return false;
   if (!$('#f-titulo').value.trim()) { toast('Dê um título antes de salvar.', 'aviso'); return false; }
   if (salvando) return salvando;
@@ -1134,6 +1136,25 @@ async function salvar(manual = false) {
       if (manual) toast('Rascunho salvo.');
       return true;
     } catch (e) { sujo = true; selo('Não salvo', 'text-[#e2564f]'); falha(e); return false; }
+    finally { salvando = null; }
+  })();
+  return salvando;
+}
+/* v151: correção de artigo publicado fica GUARDADA (o site não muda) até "Publicar correção" */
+async function salvarCorrecao(manual = false) {
+  if (!manual && !sujo) return false;
+  if (salvando) return salvando;
+  sujo = false; selo('Guardando a correção…');
+  salvando = (async () => {
+    try {
+      const d = await dadosDoArtigo();
+      await rpc('vm_artigo_correcao_salvar', {p_id: artigo.id, p_dados: {titulo: d.titulo, linha_fina: d.linha_fina, corpo: d.corpo, fontes: d.fontes}});
+      artigo.pendente = true;
+      const h = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}).replace(':', 'h');
+      selo(`Correção guardada às ${h} — ainda não publicada`, 'text-[#eec617]');
+      if (manual) toast('Correção guardada. O site só muda quando você clicar em "Publicar correção".');
+      return true;
+    } catch (e) { sujo = true; selo('Correção não guardada', 'text-[#e2564f]'); falha(e); return false; }
     finally { salvando = null; }
   })();
   return salvando;
@@ -1158,6 +1179,9 @@ async function abrirArtigo(id) {
   try {
     const a = await rpc('vm_artigo_editar', {p_id: id});
     if (!a) return toast('Artigo não encontrado.', 'erro');
+    const pend = a.situacao === 'publicado' && a.correcao_pendente && a.correcao_pendente.dados;   /* v151 */
+    if (pend) { Object.entries(a.correcao_pendente.dados).forEach(([k, v]) => { if (v !== null && v !== undefined) a[k] = v; });
+      setTimeout(() => { selo('Correção guardada — ainda não publicada', 'text-[#eec617]'); toast('Aberta a correção guardada (ainda não publicada no site).'); }, 400); }
     limparEditor();
     artigo = {id: a.id, situacao: a.situacao, versao: a.versao || 1};
     $('#f-chapeu').value = a.chapeu || ''; $('#f-titulo').value = a.titulo || ''; $('#f-linha').value = a.linha_fina || ''; $('#f-autor').value = a.autor || EDITOR_FIXO;
@@ -1217,13 +1241,13 @@ function confirmar(acao) {
   };
 }
 function corrigir() {
-  abrirModal('Salvar correção do artigo publicado', `<div class="p-5 space-y-3">
+  abrirModal('Publicar correção do artigo', `<div class="p-5 space-y-3">
     <p class="text-sm">A versão anterior fica guardada e a nota de correção aparece no fim do artigo (Manual, cap. 9).</p>
     <label for="cr-oque" class="block text-[11px] uppercase tracking-wider text-[#a89f88]">O que foi corrigido</label>
     <input id="cr-oque" maxlength="300" class="w-full h-10 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="Ex.: a variação do IPCA em 12 meses">
     <label for="cr-antes" class="block text-[11px] uppercase tracking-wider text-[#a89f88]">O que a versão anterior dizia</label>
     <textarea id="cr-antes" rows="2" maxlength="500" class="w-full bg-black border border-[#2e2a1e] rounded px-3 py-2 text-sm" placeholder="Ex.: informava 4,8%"></textarea>
-    <div class="flex justify-end gap-2 pt-2"><button id="cr-nao" class="px-4 py-2 text-sm border border-[#2e2a1e] rounded">Voltar</button><button id="cr-sim" class="px-4 py-2 text-sm rounded bg-[#eec617] text-black font-semibold">Salvar correção</button></div></div>`);
+    <div class="flex justify-end gap-2 pt-2"><button id="cr-nao" class="px-4 py-2 text-sm border border-[#2e2a1e] rounded">Voltar</button><button id="cr-sim" class="px-4 py-2 text-sm rounded bg-[#eec617] text-black font-semibold">Publicar correção</button></div></div>`);
   $('#cr-nao').onclick = fecharModal;
   $('#cr-sim').onclick = async () => {
     const oque = $('#cr-oque').value.trim(), antes = $('#cr-antes').value.trim();
@@ -1231,8 +1255,9 @@ function corrigir() {
     $('#cr-sim').disabled = true;
     try {
       const d = await dadosDoArtigo();
-      const r = await rpc('vm_artigo_corrigir', {p_id: artigo.id, p_dados: {titulo: d.titulo, linha_fina: d.linha_fina, corpo: d.corpo, fontes: d.fontes}, p_o_que: oque, p_versao_anterior_informava: antes});
-      artigo.versao = r.versao; sujo = false; estadoArtigo(); fecharModal(); selo('Correção publicada', 'text-[#3ecb99]'); toast('Correção publicada.'); carregarListas();
+      await rpc('vm_artigo_correcao_salvar', {p_id: artigo.id, p_dados: {titulo: d.titulo, linha_fina: d.linha_fina, corpo: d.corpo, fontes: d.fontes}});
+      const r = await rpc('vm_artigo_correcao_publicar', {p_id: artigo.id, p_o_que: oque, p_versao_anterior_informava: antes});   /* v151 */
+      artigo.versao = r.versao; artigo.pendente = false; sujo = false; estadoArtigo(); fecharModal(); selo('Correção publicada', 'text-[#3ecb99]'); toast('Correção publicada.'); carregarListas();
     } catch (e) { $('#cr-sim').disabled = false; falha(e); }
   };
 }
