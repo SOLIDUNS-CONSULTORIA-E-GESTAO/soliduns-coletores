@@ -10,7 +10,7 @@
 // Variáveis: TELEGRAM_TOKEN, TELEGRAM_DONO_ID, COLETOR_TOKEN (manuais); SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas).
 // Nenhuma chave neste arquivo. A mensagem nunca menciona IA.
 
-export const VERSAO = "1.4";   // v1.4 (19/10/2026): a mensagem do artigo não mostra mais o autor ("Por Dr. Thiago Viegas") — pedido do Thiago.
+export const VERSAO = "1.5";   // v1.5 (19/10/2026): grupo migrado para supergrupo com o número novo já cadastrado não trava mais o envio. v1.4:   // v1.4 (19/10/2026): a mensagem do artigo não mostra mais o autor ("Por Dr. Thiago Viegas") — pedido do Thiago.
 const SITE = "https://soliduns.com.br/noticias/";
 const JANELA_H = 12;
 // v1.2 (Thiago, 16/10 10h16): o Scanner vai com a logomarca "Scanner do Dia" (Opção 2 — Radar). Imagem pública no Storage do
@@ -214,17 +214,18 @@ export async function enviar(tg: Tg, itens: Item[], destinos: Destino[], jaFeito
       }
       if (!r.ok && r.parameters?.migrate_to_chat_id) {               // grupo virou supergrupo: novo número
         const novo = String(r.parameters.migrate_to_chat_id);
-        await desliga(d.chat_id, novo);
+        try { await desliga(d.chat_id, novo); } catch (_) { /* v1.5: não trava os outros grupos */ }
         d.chat_id = novo;
         r = await tg(metodo, { ...corpo, chat_id: novo });
       }
       if (!r.ok && r.error_code === 429) { notas.push(`limite do Telegram; tenta de novo em ${r.parameters?.retry_after ?? "?"} s`); return { enviados, falhas, notas }; }
       if (r.ok) enviados++; else falhas++;
+      jaFeitos.add(`${it.chave}|${d.chat_id}`);                       // v1.5: o mesmo grupo (número novo) não recebe duas vezes
       await grava({ item: it.chave, chat_id: d.chat_id, ok: r.ok,
         mensagem_id: r.ok ? (r.result as { message_id?: number })?.message_id ?? null : null,
         erro: r.ok ? null : `${r.error_code ?? ""} ${r.description ?? ""}`.trim().slice(0, 300) });
       if (!r.ok && (r.error_code === 403 || /chat not found/i.test(r.description ?? ""))) {
-        await desliga(d.chat_id);                                     // robô removido ou grupo apagado
+        try { await desliga(d.chat_id); } catch (_) { /* v1.5 */ }    // robô removido ou grupo apagado
         notas.push(`${d.nome ?? d.chat_id}: robô sem acesso — destino desligado`);
       }
       await espera(1100);                                              // abaixo do limite de 1 mensagem/s por conversa
@@ -306,8 +307,14 @@ export async function tratar(req: Request): Promise<Response> {
     if (corpo.acao === "teste") return Response.json({ ...resumo, exemplos: itens.map((i) => envio(i, "teste")) });
     const grava = (l: Record<string, unknown>) => pgEscreve("POST", "rpc/vm_telegram_registrar", { p: l });
     const desliga = async (chat: string, novo?: string) => {
-      if (novo) await pgEscreve("PATCH", `vm_telegram_destinos?chat_id=eq.${encodeURIComponent(chat)}`, { chat_id: novo });
-      else await pgEscreve("PATCH", `vm_telegram_destinos?chat_id=eq.${encodeURIComponent(chat)}`, { ativo: false });
+      // v1.5: grupo que virou supergrupo e cujo número novo JÁ está cadastrado -> desliga o número antigo (antes: erro 409 e o
+      // envio inteiro parava a cada 5 min). Nenhuma falha aqui interrompe os outros grupos.
+      try {
+        if (novo) {
+          try { await pgEscreve("PATCH", `vm_telegram_destinos?chat_id=eq.${encodeURIComponent(chat)}`, { chat_id: novo }); }
+          catch (_) { await pgEscreve("PATCH", `vm_telegram_destinos?chat_id=eq.${encodeURIComponent(chat)}`, { ativo: false }); }
+        } else await pgEscreve("PATCH", `vm_telegram_destinos?chat_id=eq.${encodeURIComponent(chat)}`, { ativo: false });
+      } catch (_) { /* segue para o próximo grupo */ }
     };
     const r = await enviar(tg, itens, destinos, new Set(feitos.map((f) => `${f.item}|${f.chat_id}`)), grava, desliga);
     Object.assign(resumo, r);
