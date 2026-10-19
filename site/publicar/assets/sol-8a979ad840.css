@@ -13,6 +13,22 @@
 #tela-noticias .vm-leit-linhafina{font:400 1.3rem/1.45 "Newsreader",Georgia,serif;color:var(--vm-tinta2);margin:0 0 1rem;}
 #tela-noticias .vm-leit-assin{font:400 13px "Jost",sans-serif;color:var(--vm-tinta2);margin:0;padding-bottom:1rem;border-bottom:1px solid #CFC9B4;}
 #tela-noticias .vm-leit-texto p{font:400 1.2rem/1.75 "Newsreader",Georgia,serif;color:var(--vm-tinta);margin:0 0 1.15rem;}
+#tela-noticias .vm-agi{margin:2rem 0 1.4rem;border-top:3px solid var(--vm-vm);padding-top:1rem;}
+#tela-noticias .vm-agi h2{font:500 1.45rem/1.3 "Newsreader",Georgia,serif;color:var(--vm-tinta);margin:0 0 .3rem;text-align:left;}
+#tela-noticias .vm-agi .vm-agi-sub{font:400 13px/1.5 "Jost",sans-serif;color:var(--vm-tinta2);margin:0 0 1rem;}
+#tela-noticias .vm-agi h3{font:600 12px "Jost",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--vm-dsol);margin:1.3rem 0 .55rem;}
+#tela-noticias .vm-agi h4{font:600 13.5px "Jost",sans-serif;color:var(--vm-tinta);margin:1rem 0 .35rem;}
+#tela-noticias .vm-agi-rola{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--vm-linha);}
+#tela-noticias .vm-agi table{width:100%;border-collapse:collapse;font:400 13.5px/1.4 "Jost",sans-serif;color:var(--vm-tinta);min-width:640px;}
+#tela-noticias .vm-agi th{background:var(--vm-vm);color:#F5F2E7;font-weight:500;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:.55rem .6rem;white-space:nowrap;}
+#tela-noticias .vm-agi td{padding:.5rem .6rem;border-top:1px solid var(--vm-linha);vertical-align:top;}
+#tela-noticias .vm-agi tr:nth-child(even) td{background:rgba(65,74,56,.05);}
+#tela-noticias .vm-agi td.vm-agi-h{white-space:nowrap;font-variant-numeric:tabular-nums;}
+#tela-noticias .vm-agi td.vm-agi-ind{font-weight:600;}
+#tela-noticias .vm-agi ul{margin:0 0 .4rem;padding-left:1.1rem;font:400 14px/1.55 "Jost",sans-serif;color:var(--vm-tinta);}
+#tela-noticias .vm-agi li{margin:.15rem 0;}
+#tela-noticias .vm-agi li b{font-weight:600;}
+#tela-noticias .vm-agi .vm-agi-nota{font:400 12px/1.5 "Jost",sans-serif;color:var(--vm-tinta2);margin:.8rem 0 0;}
 #tela-noticias .vm-leit-fontes{font:400 13px/1.6 "Jost",sans-serif;color:var(--vm-tinta2);border-top:1px solid #CFC9B4;padding-top:1rem;margin-top:1.4rem;}
 #tela-noticias .vm-leit-fontes ul{margin:.4rem 0 0;padding-left:1.1rem;}
 #tela-noticias .vm-leit-fontes a{color:inherit;}

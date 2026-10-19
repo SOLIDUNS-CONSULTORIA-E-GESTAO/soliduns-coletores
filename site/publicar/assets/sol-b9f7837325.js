@@ -13099,6 +13099,35 @@ async function vmScannerPagina(data){
   if(!tela.classList.contains('vm-modo-leitura')) return;
   vmDesenharLeitura(d && d.texto && d.texto.titulo ? d : null, data);
 }
+/* v152: agenda de indicadores (Brasil e EUA) abaixo do texto do Scanner — dados do banco (SQL 168), nada escrito pela IA */
+function vmAgendaIndicadoresHtml(lista, semana){
+  const l = Array.isArray(lista) ? lista.filter(x => x && x.indicador) : [];
+  if(!l.length) return '';
+  const DIA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  const dia = x => { const p = String(x.data || '').slice(0, 10).split('-'); if(p.length !== 3) return ''; const d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+    return DIA[d.getUTCDay()] + ' ' + p[2] + '/' + p[1]; };
+  const v = t => (t === null || t === undefined || String(t).trim() === '') ? '—' : escHtml(String(t));
+  const pais = p => p === 'EUA' ? 'EUA' : p === 'BR' ? 'Brasil' : '—';
+  const altos = l.filter(x => x.impacto === 'alto'), demais = l.filter(x => x.impacto !== 'alto');
+  let h = '<section class="vm-agi" aria-labelledby="vm-agi-tit"><h2 id="vm-agi-tit">' + (semana ? 'Agenda de indicadores da semana' : 'Agenda de indicadores do dia') + '</h2>'
+    + '<p class="vm-agi-sub">Divulgações previstas de indicadores econômicos do Brasil e dos Estados Unidos' + (semana ? ', de segunda a sexta' : '') + '. Horários de Brasília.</p>';
+  if(altos.length){
+    h += '<h3>Maior impacto</h3><div class="vm-agi-rola"><table><thead><tr>' + (semana ? '<th>Dia</th>' : '') + '<th>Hora</th><th>País</th><th>Indicador</th><th>Instituição</th><th>Referência</th><th>Consenso</th><th>Anterior</th></tr></thead><tbody>'
+      + altos.map(x => '<tr>' + (semana ? '<td class="vm-agi-h">' + escHtml(dia(x)) + '</td>' : '') + '<td class="vm-agi-h">' + v(x.hora) + '</td><td>' + pais(x.pais) + '</td><td class="vm-agi-ind">' + v(x.indicador)
+        + '</td><td>' + v(x.instituicao) + '</td><td>' + v(x.referencia) + '</td><td>' + v(x.consenso) + '</td><td>' + v(x.anterior) + '</td></tr>').join('') + '</tbody></table></div>';
+  }
+  if(demais.length){
+    h += '<h3>Demais indicadores</h3>';
+    const grupos = {};
+    demais.forEach(x => { const g = pais(x.pais) + ' — ' + (x.grupo || 'Outros'); (grupos[g] = grupos[g] || []).push(x); });
+    Object.keys(grupos).sort((a, b) => (a.indexOf('Brasil') === 0 ? 0 : 1) - (b.indexOf('Brasil') === 0 ? 0 : 1) || a.localeCompare(b, 'pt-BR')).forEach(g => {
+      h += '<h4>' + escHtml(g) + '</h4><ul>' + grupos[g].map(x => '<li>' + (semana ? '<b>' + escHtml(dia(x)) + '</b> · ' : '') + '<b>' + v(x.hora) + '</b> · ' + v(x.indicador)
+        + (x.instituicao ? ' (' + escHtml(x.instituicao) + ')' : '') + (x.referencia ? ' · ' + escHtml(x.referencia) : '')
+        + (x.consenso ? ' · consenso ' + escHtml(x.consenso) : '') + (x.anterior ? ' · anterior ' + escHtml(x.anterior) : '') + '</li>').join('') + '</ul>';
+    });
+  }
+  return h + '<p class="vm-agi-nota">Datas e horários podem mudar por decisão das instituições. Consenso e resultado anterior aparecem quando divulgados pelas fontes.</p></section>';
+}
 function vmDesenharLeitura(d, pedida){
   const art = document.getElementById('vm-leitura');
   const voltar = '<a class="vm-leit-voltar" href="#/noticias">&larr; Capa do Valor e Mercado</a>';
@@ -13124,6 +13153,7 @@ function vmDesenharLeitura(d, pedida){
     + '<p class="vm-leit-assin">Redação Valor e Mercado · ' + escHtml(VM_EDITOR) + (d.publicado_em ? ' · ' + escHtml(vmHora(d.publicado_em)) : '') + '</p></header>'
     + vmCompartilharHtml(link, msg, 'topo')
     + '<div class="vm-leit-texto">' + (t.paragrafos || []).map(p => '<p>' + vmTxt(p) + '</p>').join('') + '</div>'
+    + vmAgendaIndicadoresHtml(d.agenda, d.semana === true)   /* v152 */
     + (fontes.length ? '<div class="vm-leit-fontes"><b>Fontes dos dados</b><ul>' + fontes.map(f =>
         '<li><a href="' + escHtml(f.url) + '" target="_blank" rel="noopener noreferrer">' + escHtml(f.fonte || f.url) + '</a></li>').join('') + '</ul></div>' : '')
     + vmCompartilharHtml(link, msg, 'fim')

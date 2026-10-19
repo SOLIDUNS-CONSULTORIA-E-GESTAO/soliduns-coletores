@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "2.3";   // v2.3 (18/10/2026): REDATOR DeepSeek V4 Pro (decisão do Thiago: escrever fora do pico, às 07h00 em dias úteis); o Claude fica de reserva.
+const VERSAO = "2.4";   // v2.4 (19/10/2026): agenda de INDICADORES (SQL 168): no texto só os de impacto ALTO (até 5); segunda-feira traz a semana. A planilha completa sai do banco, abaixo do texto. v2.3:   // v2.3 (18/10/2026): REDATOR DeepSeek V4 Pro (decisão do Thiago: escrever fora do pico, às 07h00 em dias úteis); o Claude fica de reserva.
 // O Scanner não pesquisa na web: escreve só com a base própria (agenda, cotações, radar). Por isso a DeepSeek pode escrevê-lo sozinha.
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.2";   // v2.0: revisão do plano editorial (Thiago, 15/10 20h55)
@@ -59,7 +59,7 @@ const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julh
 
 type Registro = Record<string, unknown> & { id: string };
 export type Contexto = { data_de_hoje: string; abertura_do_dia?: string; agenda_do_dia: Registro[]; indicadores: Registro[]; maiores_variacoes_b3: Registro[];
-  fontes_oficiais_livres: Registro[]; assuntos_em_pauta: Registro[]; observacao: string };
+  fontes_oficiais_livres: Registro[]; assuntos_em_pauta: Registro[]; observacao: string; agenda_da_semana?: Registro[] };
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 export function hojeBrasilia(agora = new Date()): Date { return new Date(iso(new Date(agora.getTime() - 3 * 3600e3)) + "T00:00:00Z"); }
@@ -87,7 +87,8 @@ async function pgPost(tabela: string, linhas: unknown[], prefer = "return=minima
 // ------------------------------------------------------------------ contexto do dia
 type Cot = { id: number; fonte: string; codigo: string; descricao: string | null; data_ref: string; fechamento: number;
   unidade: string; url_fonte: string; volume?: number | null; codbdi?: string | null };
-type Ag = { id: number; hora: string; regiao: string; categoria: string; evento: string; consenso: string | null; fonte: string; url: string; origem: string };
+type Ag = { id: number; data_ref?: string; hora: string; regiao: string; categoria: string; evento: string; consenso: string | null; fonte: string; url: string; origem: string;
+  tipo?: string; pais?: string | null; grupo?: string | null; indicador?: string | null; instituicao?: string | null; impacto?: string | null; referencia?: string | null; anterior?: string | null };
 type Ach = { id: number; fonte_nome: string; camada: string; titulo: string; resumo: string | null; link: string; publicado_em: string | null };
 
 const VAZIAS = new Set(["para", "pelo", "pela", "com", "dos", "das", "nos", "nas", "que", "uma", "the", "and", "for", "eua", "brasil", "banco", "central", "dados", "divulga", "divulgacao", "indice", "taxa", "mensal", "relatorio", "reuniao", "setembro", "outubro", "agosto"]);
@@ -149,7 +150,17 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
     }
   }
   const agenda: Registro[] = [];
-  const ags = await pgGet<Ag[]>(`vm_agenda?select=id,hora,regiao,categoria,evento,consenso,fonte,url,origem&data_ref=eq.${iso(hoje)}&order=hora&limit=80`);
+  // v2.4: com a SQL 168, a agenda traz os indicadores (impacto vem da lista mestre); sem ela, cai na consulta antiga
+  const segunda = hoje.getUTCDay() === 1, sexta = iso(new Date(hoje.getTime() + 4 * 864e5));
+  let ags: Ag[], semana: Ag[] = [];
+  try {
+    const todos = await pgGet<Ag[]>(`vm_agenda?select=id,data_ref,hora,regiao,categoria,evento,consenso,fonte,url,origem,tipo,pais,grupo,indicador,instituicao,impacto,referencia,anterior` +
+      `&data_ref=gte.${iso(hoje)}&data_ref=lte.${segunda ? sexta : iso(hoje)}&order=data_ref,hora&limit=200`);
+    ags = todos.filter((a) => a.data_ref === iso(hoje)).slice(0, 90);
+    semana = todos.filter((a) => a.data_ref !== iso(hoje) && a.tipo === "indicador" && a.impacto !== "baixo").slice(0, 60);
+  } catch (_) {
+    ags = await pgGet<Ag[]>(`vm_agenda?select=id,hora,regiao,categoria,evento,consenso,fonte,url,origem&data_ref=eq.${iso(hoje)}&order=hora&limit=80`);
+  }
   // v1.7: o item da pesquisa na web só sai quando é O MESMO evento de um item oficial (mesmo horário e assunto parecido),
   // e não qualquer evento do mesmo horário (ex.: PPI oficial às 9h30 não apaga as vendas no varejo das 9h30)
   const oficiais = ags.filter((a) => a.origem === "calendario_oficial");
@@ -157,9 +168,17 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
   for (const a of ags) {
     if (a.origem === "pesquisa_web" && repetido(a)) continue;   // calendário oficial tem prioridade
     const id = `ag:${a.id}`;
-    agenda.push({ id, hora_brasilia: a.hora, regiao: a.regiao, categoria: a.categoria, evento: a.evento, consenso: a.consenso, fonte: a.fonte });
+    agenda.push(a.tipo === "indicador"
+      ? { id, tipo: "indicador", hora_brasilia: a.hora, pais: a.pais, indicador: a.indicador ?? a.evento, instituicao: a.instituicao, impacto: a.impacto,
+          referencia: a.referencia, consenso: a.consenso, anterior: a.anterior, fonte: a.fonte }
+      : { id, hora_brasilia: a.hora, regiao: a.regiao, categoria: a.categoria, evento: a.evento, consenso: a.consenso, fonte: a.fonte });
     urls[id] = { fonte: a.fonte, url: a.url };
   }
+  const agendaSemana: Registro[] = semana.map((a) => {
+    const id = `ag:${a.id}`; urls[id] = { fonte: a.fonte, url: a.url };
+    return { id, data: a.data_ref, hora_brasilia: a.hora, pais: a.pais, indicador: a.indicador ?? a.evento, instituicao: a.instituicao, impacto: a.impacto,
+             referencia: a.referencia, consenso: a.consenso, anterior: a.anterior, fonte: a.fonte };
+  });
   const desde = new Date(Date.now() - 30 * 3600e3).toISOString();
   const achados = await pgGet<Ach[]>(`vm_achados?select=id,fonte_nome,camada,titulo,resumo,link,publicado_em&coletado_em=gte.${desde}` +
     `&order=publicado_em.desc.nullslast&limit=200`);
@@ -172,7 +191,8 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
     if (a.camada === "livre" && (ehCvm ? nCvm < 15 : livres.length - nCvm < 20)) livres.push({ id, fonte: a.fonte_nome, titulo: a.titulo, resumo: a.resumo, publicado_em: a.publicado_em, link: a.link });
     else if (a.camada === "pauta" && pauta.length < 30) pauta.push({ id, fonte: a.fonte_nome, assunto: a.titulo, publicado_em: a.publicado_em });
   }
-  return { urls, ctx: { data_de_hoje: iso(hoje), abertura_do_dia: aberturaDoDia(hoje), agenda_do_dia: agenda, indicadores, maiores_variacoes_b3: variacoes, fontes_oficiais_livres: livres, assuntos_em_pauta: pauta,
+  return { urls, ctx: { data_de_hoje: iso(hoje), abertura_do_dia: aberturaDoDia(hoje), agenda_do_dia: agenda, ...(agendaSemana.length ? { agenda_da_semana: agendaSemana } : {}),
+    indicadores, maiores_variacoes_b3: variacoes, fontes_oficiais_livres: livres, assuntos_em_pauta: pauta,
     observacao: "'agenda_do_dia' traz os eventos previstos para hoje, com horário de Brasília e fonte. Indicadores e cotações são de FECHAMENTO. 'fontes_oficiais_livres' trazem só o resumo publicado pela própria fonte (uso com crédito). " +
       "'assuntos_em_pauta' trazem só o assunto: o texto desses veículos não está no contexto e não pode ser reproduzido nem resumido." } };
 }
@@ -182,6 +202,11 @@ export function pedido(hoje: Date, ctx: Contexto, anterior?: unknown, instrucao?
     "Reúna, em ordem decrescente de importância: o que está previsto para hoje na agenda do dia (Brasil e Estados Unidos, com horário de Brasília e consenso quando houver), " +
     "o que os indicadores de fechamento mais recentes mostram, as maiores variações da bolsa no último pregão e o que as fontes oficiais publicaram nas últimas 24 horas. " +
     "Use o chapéu \"Scanner\". " +
+    // v2.4 (Thiago, 19/10): indicadores de maior impacto no texto; os demais ficam na planilha da agenda, montada abaixo do texto
+    "INDICADORES ECONÔMICOS: na agenda, os itens com tipo \"indicador\" trazem o campo \"impacto\". No texto, trate SOMENTE os de impacto \"alto\" (no máximo cinco), " +
+    "com horário, instituição, período de referência, consenso e resultado anterior quando houver. Não enumere os de impacto \"medio\" ou \"baixo\": " +
+    "a agenda completa de indicadores já aparece numa planilha logo abaixo do texto. Se não houver indicador de impacto alto hoje, não mencione a planilha nem a ausência; siga com os demais assuntos. " +
+    (ctx.agenda_da_semana?.length ? "HOJE É SEGUNDA-FEIRA: \"agenda_da_semana\" traz os indicadores de terça a sexta. Dedique o segundo parágrafo aos destaques de impacto alto da semana, com o dia de cada um. " : "") +
     "Entregue a edição chamando a ferramenta \"entregar_edicao\" uma única vez, com o objeto JSON pedido. " +
     "Os identificadores das referências são o campo \"id\" de cada registro do contexto. " +
     "Itens de \"assuntos_em_pauta\" servem só para indicar temas: não os cite, não atribua nada aos veículos e não reproduza nem resuma o texto deles; escreva sobre um desses temas apenas se houver registro oficial ou livre no contexto que o sustente." +
