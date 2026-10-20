@@ -10290,6 +10290,7 @@ function mostrarTela(nome){
   document.getElementById('auth-screen').style.display = nome==='auth' ? 'flex' : 'none';
   document.getElementById('tela-dashboard').style.display = nome==='dashboard' ? 'block' : 'none';
   document.getElementById('main-app').style.display = nome==='fiscal' ? 'flex' : 'none';
+  if(typeof vmAudAgendar === 'function') vmAudAgendar();   /* v155: audiência */
 
   // Título da aba (helper único setTituloPagina, 31º prompt): os casos simples
   // são resolvidos aqui mesmo; "dashboard" e "fiscal" têm o título mais
@@ -13436,6 +13437,53 @@ function vmCab(){
   if(!/^sb_/.test(SUPABASE_KEY)) cab['Authorization'] = 'Bearer ' + SUPABASE_KEY;
   return cab;
 }
+/* v155: medição de audiência das páginas públicas (SQL 174) — anônima: sem IP, sem cookie, sem dado pessoal */
+var VM_AUD_TELAS = {landing: '/', noticias: '/noticias', 'quem-somos': '/quem-somos', servico: '/servico', equipe: '/equipe', executivo: '/executivo'};
+var _vmAudUlt = '', _vmAudTimer = null;   /* var: sem zona morta se mostrarTela rodar antes desta linha */
+function vmAudVisitante(){
+  const novo = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+    : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
+  try{
+    let v = localStorage.getItem('vm-visitante');
+    if(!/^[0-9a-f-]{36}$/i.test(v || '')){ v = novo(); localStorage.setItem('vm-visitante', v); }
+    return v;
+  }catch(e){ return window._vmAudVis || (window._vmAudVis = novo()); }
+}
+function vmAudCaminho(){
+  let tela = null;
+  for(const t in VM_AUD_TELAS){ const el = document.getElementById('tela-' + t); if(el && el.style.display && el.style.display !== 'none'){ tela = t; break; } }
+  if(!tela) return '';
+  if(tela !== 'noticias') return VM_AUD_TELAS[tela];
+  const h = (location.hash || '').replace(/^#\/?/, '').split('?')[0].toLowerCase();
+  const m = /^noticias(\/[a-z0-9_\-\/]*)?$/.exec(h);
+  if(m) return ('/noticias' + (m[1] || '')).replace(/\/+$/, '') || '/noticias';
+  const art = /[?&]artigo=(\d{1,12})/.exec(location.search);
+  return art ? '/noticias/artigo/' + art[1] : '/noticias';
+}
+function vmAudEnviar(){
+  _vmAudTimer = null;
+  try{
+    const ua = navigator.userAgent || '';
+    if(navigator.webdriver || /bot|crawl|spider|slurp|preview|facebookexternalhit|whatsapp|telegrambot|headless|lighthouse/i.test(ua)) return;
+    const cam = vmAudCaminho();
+    if(!cam || cam === _vmAudUlt) return;
+    _vmAudUlt = cam;
+    let origem = null;
+    try{
+      if(!sessionStorage.getItem('vm-aud-ori')){
+        sessionStorage.setItem('vm-aud-ori', '1');
+        const q = /[?&]utm_source=([a-z0-9.\-]{1,60})/i.exec(location.search);
+        origem = q ? q[1].toLowerCase() : (document.referrer ? new URL(document.referrer).hostname : null);
+      }
+    }catch(e){}
+    const disp = /ipad|tablet/i.test(ua) || (/android/i.test(ua) && !/mobi/i.test(ua)) ? 'tablet' : /mobi|iphone|android/i.test(ua) ? 'celular' : 'computador';
+    const corpo = JSON.stringify({p_visitante: vmAudVisitante(), p_caminho: cam, p_origem: origem, p_dispositivo: disp});
+    fetch(SUPABASE_URL + '/rest/v1/rpc/vm_registrar_visita', {method: 'POST', headers: vmCab(), body: corpo, keepalive: true}).catch(() => {});
+  }catch(e){}
+}
+function vmAudAgendar(){ if(_vmAudTimer) clearTimeout(_vmAudTimer); _vmAudTimer = setTimeout(vmAudEnviar, 700); }
+window.addEventListener('hashchange', vmAudAgendar);
+window.addEventListener('popstate', vmAudAgendar);
 async function vmRpc(nome){
   try{
     const r = await fetch(SUPABASE_URL + '/rest/v1/rpc/' + nome, {method: 'POST', headers: vmCab(), body: '{}'});

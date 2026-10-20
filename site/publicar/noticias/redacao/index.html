@@ -273,6 +273,28 @@
         <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88]">Scanner com alerta (mês)</div><div id="p-alertas" class="f-mono text-2xl mt-1 text-[#dba22a]">–</div></div>
         <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88]">Custo dos robôs (mês)</div><div id="p-custo" class="f-mono text-2xl mt-1">–</div></div>
       </div>
+      <div class="flex flex-wrap items-center justify-between gap-2 mt-8 mb-3">
+        <h2 class="text-xs uppercase tracking-widest text-[#a89f88]">Audiência do site (visitantes únicos)</h2>
+        <button id="aud-copiar" type="button" class="text-xs border border-[#2e2a1e] rounded px-3 py-1.5 hover:border-[#a89f88]">Copiar números para o mídia kit</button>
+      </div>
+      <div id="aud-off" class="hidden text-sm text-[#a89f88] mb-3">Medição ainda não ligada (rode a SQL 174 e publique a v155). Os números começam a contar a partir daí.</div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88]">Hoje</div><div id="aud-hoje" class="f-mono text-2xl mt-1">–</div><div id="aud-hoje-p" class="text-[11px] text-[#a89f88] mt-1"></div></div>
+        <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88]">Últimos 7 dias</div><div id="aud-7" class="f-mono text-2xl mt-1">–</div><div id="aud-7-p" class="text-[11px] text-[#a89f88] mt-1"></div></div>
+        <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88]">Últimos 30 dias</div><div id="aud-30" class="f-mono text-2xl mt-1">–</div><div id="aud-30-p" class="text-[11px] text-[#a89f88] mt-1"></div></div>
+        <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88]">Mês atual</div><div id="aud-mes" class="f-mono text-2xl mt-1">–</div><div id="aud-mes-p" class="text-[11px] text-[#a89f88] mt-1"></div></div>
+      </div>
+      <div class="mt-4 bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4">
+        <div class="text-[11px] uppercase tracking-wider text-[#a89f88] mb-3">Páginas vistas por dia — últimos 30 dias</div>
+        <div id="aud-graf" class="flex items-end gap-[3px] h-32" role="img" aria-label="Gráfico de páginas vistas por dia"></div>
+        <div class="flex justify-between text-[10px] text-[#a89f88] mt-1 f-mono"><span id="aud-graf-ini"></span><span id="aud-graf-fim"></span></div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
+        <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4 lg:col-span-2"><div class="text-[11px] uppercase tracking-wider text-[#a89f88] mb-2">Artigos mais lidos (30 dias)</div><ol id="aud-artigos" class="text-sm space-y-1.5 list-decimal pl-5"></ol></div>
+        <div class="bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg p-4"><div class="text-[11px] uppercase tracking-wider text-[#a89f88] mb-2">De onde vêm (30 dias)</div><ul id="aud-origens" class="text-sm space-y-1"></ul>
+          <div class="text-[11px] uppercase tracking-wider text-[#a89f88] mt-4 mb-2">Aparelho</div><div id="aud-aparelhos" class="text-sm"></div>
+          <div class="text-[11px] uppercase tracking-wider text-[#a89f88] mt-4 mb-2">Meses fechados</div><ul id="aud-meses" class="text-sm f-mono space-y-0.5"></ul></div>
+      </div>
       <h2 class="text-xs uppercase tracking-widest text-[#a89f88] mt-8 mb-3">Últimas coletas dos robôs</h2>
       <div class="overflow-x-auto bg-[#0d0d0c] border border-[#2e2a1e] rounded-lg"><table class="w-full text-xs f-mono"><tbody id="p-coletas"></tbody></table></div>
     </section>
@@ -1354,7 +1376,55 @@ function pedirMotivo(titulo, acao) {
   $('#mt-sim').onclick = async () => { const m = $('#mt-txt').value.trim(); if (m.length < 5) return toast('Escreva o motivo (pelo menos 5 letras).', 'aviso');
     try { await acao(m); fecharModal(); toast('Tirado do ar.'); carregarListas(); } catch (e) { falha(e); } };
 }
+/* v155: audiência (SQL 174) */
+let audiencia = null;
+const nBR = n => Number(n || 0).toLocaleString('pt-BR');
+const ORIGEM_NOME = {'direto': 'Direto / link salvo', 'google.com': 'Google', 'google.com.br': 'Google', 't.me': 'Telegram', 'telegram': 'Telegram', 'web.telegram.org': 'Telegram',
+  'l.instagram.com': 'Instagram', 'instagram.com': 'Instagram', 'facebook.com': 'Facebook', 'm.facebook.com': 'Facebook', 'l.facebook.com': 'Facebook',
+  'linkedin.com': 'LinkedIn', 'lnkd.in': 'LinkedIn', 'bing.com': 'Bing', 'x.com': 'X (Twitter)', 't.co': 'X (Twitter)', 'whatsapp': 'WhatsApp'};
+async function carregarAudiencia() {
+  try { audiencia = await rpc('vm_audiencia_resumo', {p_dias: 30}); } catch (e) { audiencia = null; }
+  desenharAudiencia();
+}
+function desenharAudiencia() {
+  const a = audiencia;
+  $('#aud-off').classList.toggle('hidden', !!a);
+  if (!a) return;
+  const par = (id, o) => { $('#' + id).textContent = nBR(o && o.visitantes); $('#' + id + '-p').textContent = nBR(o && o.visualizacoes) + ' páginas vistas'; };
+  par('aud-hoje', a.hoje); par('aud-7', a.sete_dias); par('aud-30', a.periodo); par('aud-mes', a.mes_atual);
+  const dias = a.por_dia || [], max = Math.max(1, ...dias.map(d => d.visualizacoes || 0));
+  $('#aud-graf').innerHTML = dias.map(d => `<div class="flex-1 bg-[#eec617]/80 hover:bg-[#eec617] rounded-t-sm" style="height:${Math.max(2, Math.round(100 * (d.visualizacoes || 0) / max))}%"
+    title="${String(d.dia).slice(8, 10)}/${String(d.dia).slice(5, 7)}: ${nBR(d.visitantes)} visitantes · ${nBR(d.visualizacoes)} páginas"></div>`).join('');
+  const dm = x => x ? String(x).slice(8, 10) + '/' + String(x).slice(5, 7) : '';
+  $('#aud-graf-ini').textContent = dm(dias[0] && dias[0].dia); $('#aud-graf-fim').textContent = dm(dias.length && dias[dias.length - 1].dia);
+  $('#aud-artigos').innerHTML = (a.artigos || []).map(x => `<li><span class="text-[#f5f2e7]">${escapar(x.titulo || ('Artigo ' + x.id))}</span>
+    <span class="text-[#a89f88] text-xs"> · ${nBR(x.leitores)} leitores · ${nBR(x.visualizacoes)} leituras</span></li>`).join('') || '<li class="list-none -ml-5 text-[#a89f88]">Ainda sem leituras registradas.</li>';
+  const ori = {};
+  (a.origens || []).forEach(o => { const n = ORIGEM_NOME[o.origem] || o.origem; ori[n] = (ori[n] || 0) + (o.visitas || 0); });
+  const totO = Object.values(ori).reduce((s, v) => s + v, 0) || 1;
+  $('#aud-origens').innerHTML = Object.entries(ori).sort((x, y) => y[1] - x[1]).map(([n, v]) => `<li class="flex justify-between gap-2"><span>${escapar(n)}</span><span class="f-mono text-[#a89f88]">${Math.round(100 * v / totO)}%</span></li>`).join('')
+    || '<li class="text-[#a89f88]">—</li>';
+  const ap = a.aparelhos || {}, totA = (ap.celular || 0) + (ap.computador || 0) + (ap.tablet || 0) || 1;
+  $('#aud-aparelhos').textContent = totA > 1 || ap.celular || ap.computador || ap.tablet
+    ? `Celular ${Math.round(100 * (ap.celular || 0) / totA)}% · Computador ${Math.round(100 * (ap.computador || 0) / totA)}% · Tablet ${Math.round(100 * (ap.tablet || 0) / totA)}%` : '—';
+  const MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  $('#aud-meses').innerHTML = (a.meses || []).map(m => `<li>${MES[+String(m.mes).slice(5, 7) - 1]}/${String(m.mes).slice(0, 4)} · ${nBR(m.visitantes)} visitantes · ${nBR(m.visualizacoes)} páginas</li>`).join('')
+    || '<li class="text-[#a89f88] font-sans">O primeiro mês fecha no dia 1º.</li>';
+}
+$('#aud-copiar').addEventListener('click', async () => {
+  const a = audiencia;
+  if (!a) return toast('Medição ainda não ligada.', 'aviso');
+  const ap = a.aparelhos || {}, totA = (ap.celular || 0) + (ap.computador || 0) + (ap.tablet || 0) || 1;
+  const txt = [`Valor e Mercado — audiência (${new Date().toLocaleDateString('pt-BR')})`,
+    `Últimos 30 dias: ${nBR(a.periodo && a.periodo.visitantes)} visitantes únicos · ${nBR(a.periodo && a.periodo.visualizacoes)} páginas vistas`,
+    `Últimos 7 dias: ${nBR(a.sete_dias && a.sete_dias.visitantes)} visitantes únicos · ${nBR(a.sete_dias && a.sete_dias.visualizacoes)} páginas vistas`,
+    `Mês atual: ${nBR(a.mes_atual && a.mes_atual.visitantes)} visitantes únicos · ${nBR(a.mes_atual && a.mes_atual.visualizacoes)} páginas vistas`,
+    `Aparelho: celular ${Math.round(100 * (ap.celular || 0) / totA)}% · computador ${Math.round(100 * (ap.computador || 0) / totA)}%`,
+    'Mais lidos: ' + (a.artigos || []).slice(0, 5).map(x => x.titulo).join(' | ')].join('\n');
+  try { await navigator.clipboard.writeText(txt); toast('Números copiados.'); } catch (e) { toast('Não consegui copiar: ' + e.message, 'erro'); }
+});
 function desenharPainel() {
+  if (audiencia === null) carregarAudiencia(); else desenharAudiencia();
   const hoje = new Date(Date.now() - 3 * 3600e3).toISOString().slice(0, 10);
   const pubHoje = listaArtigos.filter(a => a.situacao === 'publicado' && a.publicado_em && new Date(new Date(a.publicado_em).getTime() - 3 * 3600e3).toISOString().slice(0, 10) === hoje).length;
   const mt = (filaScanner && filaScanner.metricas) || {};
