@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function do Netlify "previa-artigo" — v1.1 (20/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function do Netlify "previa-artigo" — v1.2 (20/10/2026)
 // Pedido do Thiago (19/10 01h06): o link https://soliduns.com.br/noticias/?artigo=N compartilhado no WhatsApp/Telegram deve
 // mostrar a foto, o título e a linha fina DAQUELE artigo. O WhatsApp não roda o código do site; ele lê só o HTML da resposta.
 // Aqui: com ?artigo=N, o Netlify busca a página de prévia montada no banco (public.vm_previa, SQL 163) e a entrega como HTML.
@@ -23,10 +23,26 @@ export default async function previa(req: Request, context: Ctx): Promise<Respon
     if (!r.ok) return context.next();
     const html = await r.text();
     if (!html.startsWith("<!doctype html>") || !html.includes('property="og:image"')) return context.next();
-    return new Response(html, { status: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" } });
+    return new Response(fotoLeve(html), { status: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" } });
   } catch {
     return context.next();
   }
+}
+
+// v1.2 (20/10/2026): o WhatsApp descarta a prévia quando a foto é pesada (as fotos de capa podem passar de 1 MB).
+// A foto da prévia passa pelo serviço de imagens do Netlify: JPEG 1200x630, qualidade 70 (~100 KB). A foto do artigo não muda.
+function fotoLeve(html: string): string {
+  let foto = "";
+  const out = html.replace(/(<meta (?:property|name)="(?:og:image|og:image:secure_url|twitter:image)" content=")(https:\/\/[^"]+)(")/g,
+    (_m, a: string, url: string, b: string) => {
+      const u = url.replace(/&amp;/g, "&");
+      if (u.startsWith("https://soliduns.com.br/")) return a + url + b;
+      foto = "/.netlify/images?url=" + encodeURIComponent(u) + "&amp;w=1200&amp;h=630&amp;fit=cover&amp;fm=jpg&amp;q=70";
+      return a + "https://soliduns.com.br" + foto + b;
+    });
+  if (!foto) return out;
+  return out.replace('<meta property="og:image:alt"',
+    '<meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt"');
 }
 
 export const config = { path: ["/noticias", "/noticias/"] };

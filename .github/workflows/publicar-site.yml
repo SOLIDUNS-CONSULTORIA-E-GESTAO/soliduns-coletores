@@ -60,9 +60,11 @@ jobs:
           sleep 20
           H=$(curl -s -A "TelegramBot (like TwitterBot)" "https://soliduns.com.br/noticias/?artigo=1&conferencia=$GITHUB_RUN_ID")
           echo "$H" | grep -o '<meta property="og:image" content="[^"]*"' || true
-          if echo "$H" | grep -q 'og:image" content="https://evcsniicnrlrtzpdmeza.supabase.co'; then echo "PRÉVIA OK: o link do artigo mostra a foto do artigo."
+          if echo "$H" | grep -q 'og:image" content="https://\(evcsniicnrlrtzpdmeza.supabase.co\|soliduns.com.br/.netlify/images\)'; then echo "PRÉVIA OK: o link do artigo mostra a foto do artigo."
           else echo "ATENÇÃO: a prévia ainda mostra a imagem padrão (função do Netlify não respondeu)."; exit 1; fi
       - name: Conferir a prévia da manchete (/noticias/)
         run: |
           H=$(curl -s -A "TelegramBot (like TwitterBot)" "https://soliduns.com.br/noticias/?conferencia=$GITHUB_RUN_ID")
           echo "$H" | grep -o '<meta property="og:\(title\|image\)" content="[^"]*"' || true
+          F=$(echo "$H" | grep -o '<meta property="og:image" content="[^"]*"' | sed 's/.*content="//; s/"$//; s/&amp;/\&/g')
+          if [ -n "$F" ]; then curl -s -o /tmp/foto -w "FOTO DA PRÉVIA: código %{http_code}, %{size_download} bytes, %{content_type}\n" "$F"; fi

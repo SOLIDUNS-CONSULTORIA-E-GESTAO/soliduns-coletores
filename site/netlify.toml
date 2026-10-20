@@ -3,3 +3,7 @@
 [build]
   publish = "publicar"
   edge_functions = "netlify/edge-functions"
+
+# v156b (20/10/2026): fotos de fora que o serviço de imagens do Netlify pode reduzir (prévia do WhatsApp, ~100 KB)
+[images]
+  remote_images = ["https://evcsniicnrlrtzpdmeza\\.supabase\\.co/storage/v1/object/public/.*", "https://images\\.unsplash\\.com/.*", "https://soliduns\\.com\\.br/.*"]
