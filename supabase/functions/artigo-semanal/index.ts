@@ -20,7 +20,7 @@
 //   opcionais VM_MODELO, VM_BUSCAS_SEMANAL, VM_DEEPSEEK_MODELO (padrão deepseek-flash).
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. O artigo nunca menciona IA.
 
-export const VERSAO = "1.7";   // v1.7 (20/10/2026): CUSTO — buscas contadas no total (antes cada continuação liberava 50 de novo: US$ 7 num dia), teto de US$ por apuração, complemento só se couber no teto; apuração entregue como texto JSON passa a ser lida. v1.6:   // v1.6 (20/10/2026): complemento da apuração com tool_result (a Anthropic recusava); pautas reconhecidas também pelo nome; DeepSeek com limite maior. v1.5:   // v1.5 (18/10/2026): pautas DIÁRIAS (dias_semana + periodo "dia"): apuração ampla às 07h00 de segunda a sexta e 5 artigos no mesmo dia; DeepSeek V4 Pro escreve fora do pico.
+export const VERSAO = "1.8";   // v1.8 (20/10/2026, decisão do Thiago): 1 artigo diário em rodízio, o Sonnet apura e escreve (SQL 171); buscas por pauta. v1.7:   // v1.7 (20/10/2026): CUSTO — buscas contadas no total (antes cada continuação liberava 50 de novo: US$ 7 num dia), teto de US$ por apuração, complemento só se couber no teto; apuração entregue como texto JSON passa a ser lida. v1.6:   // v1.6 (20/10/2026): complemento da apuração com tool_result (a Anthropic recusava); pautas reconhecidas também pelo nome; DeepSeek com limite maior. v1.5:   // v1.5 (18/10/2026): pautas DIÁRIAS (dias_semana + periodo "dia"): apuração ampla às 07h00 de segunda a sexta e 5 artigos no mesmo dia; DeepSeek V4 Pro escreve fora do pico.
 
 // v1.6/v1.3 (20/10/2026): ao pedir complemento, cada "tool_use" da resposta anterior precisa de um "tool_result" logo depois
 // (sem isso a Anthropic recusa: "tool_use ids were found without tool_result blocks immediately after").
@@ -445,7 +445,7 @@ export function nova(p: Pauta, semana: string, modo: "producao" | "teste", redat
     mensagens: [{ role: "user", content: r === "deepseek"
       ? `Apure ${diario(p) ? "as últimas 24 horas" : "a semana"} até hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_apuracao.`
       : `Apure e escreva o artigo ${diario(p) ? "do dia" : "semanal"} de hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_artigo.` }],
-    buscas: BUSCAS, urls: {}, artigo: { redator: r }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };
+    buscas: Math.max(4, Math.min(30, p.buscas ?? BUSCAS)), urls: {}, artigo: { redator: r }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };   // v1.8: buscas da pauta
 }
 let _membros: Pauta[] = [];                 // pautas do grupo (preenchido em passo)
 async function enviarPedido(x: Execucao, p: Pauta) {

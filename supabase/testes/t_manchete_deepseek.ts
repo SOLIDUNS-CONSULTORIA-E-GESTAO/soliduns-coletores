@@ -2,7 +2,7 @@
 (Deno as unknown as { serve: unknown }).serve = () => {};
 Deno.env.set("SUPABASE_URL", "https://sb.test"); Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", "sb_secret_teste");
 Deno.env.set("ANTHROPIC_API_KEY", "chave-teste"); Deno.env.set("COLETOR_TOKEN", "tok"); Deno.env.set("UNSPLASH_ACCESS_KEY", "un-teste");
-Deno.env.set("ANTHROPIC_URL", "https://api.test/v1"); Deno.env.set("DEEPSEEK_API_KEY", "ds-teste"); Deno.env.set("DEEPSEEK_URL", "https://ds.test"); Deno.env.set("UNSPLASH_URL", "https://un.test");
+Deno.env.set("ANTHROPIC_URL", "https://api.test/v1"); Deno.env.set("DEEPSEEK_API_KEY", "ds-teste"); Deno.env.set("VM_REDATOR", "deepseek"); Deno.env.set("DEEPSEEK_URL", "https://ds.test"); Deno.env.set("UNSPLASH_URL", "https://un.test");
 const m = await import("../functions/manchete-do-dia/index.ts");
 let falhas = 0; const ok = (c: boolean, n: string) => { console.log((c ? "OK  " : "FALHOU ") + n); if (!c) falhas++; };
 type O = Record<string, any>;

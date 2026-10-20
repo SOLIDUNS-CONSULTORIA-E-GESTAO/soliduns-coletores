@@ -124,7 +124,7 @@ fn = "/home/claude/soliduns-coletores/supabase/functions/"
 procs = [subprocess.Popen([deno, "run", "--allow-net", "--allow-env", "--allow-read", "/home/claude/v120/t_etapa3/lancar.ts", "file://" + fn + nome + "/index.ts", str(pt)], env=env,
                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) for nome, pt in (("radar-fontes", 8701), ("scanner-do-dia", 8702), ("agenda-do-dia", 8703))]
 procs.append(subprocess.Popen([deno, "run", "--allow-net", "--allow-env", "--allow-read", "/home/claude/v120/t_etapa3/lancar.ts", "file://" + fn + "scanner-do-dia/index.ts", "8704"],
-                              env=dict(env, DEEPSEEK_API_KEY="ds-teste", DEEPSEEK_URL=base), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
+                              env=dict(env, DEEPSEEK_API_KEY="ds-teste", DEEPSEEK_URL=base, VM_SCANNER_REDATOR="deepseek"), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
 F = []
 def ok(c, m):
     print(("  ok  " if c else "  FALHA ") + m, flush=True)

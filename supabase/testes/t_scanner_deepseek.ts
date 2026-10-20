@@ -1,7 +1,7 @@
 // teste do scanner-do-dia v2.3: DeepSeek V4 Pro escreve; se falhar, o Claude assume (rodar: deno run -A t_scanner_deepseek.ts)
 (Deno as unknown as { serve: unknown }).serve = () => {};
 Deno.env.set("SUPABASE_URL", "https://sb.test"); Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", "sb_x"); Deno.env.set("ANTHROPIC_API_KEY", "k");
-Deno.env.set("DEEPSEEK_API_KEY", "ds"); Deno.env.set("DEEPSEEK_URL", "https://ds.test"); Deno.env.set("VM_ANTHROPIC_URL", "https://api.test/v1/messages");
+Deno.env.set("DEEPSEEK_API_KEY", "ds"); Deno.env.set("VM_SCANNER_REDATOR", "deepseek"); Deno.env.set("DEEPSEEK_URL", "https://ds.test"); Deno.env.set("VM_ANTHROPIC_URL", "https://api.test/v1/messages");
 const s = await import("../functions/scanner-do-dia/index.ts");
 let falhas = 0; const ok = (c: boolean, n: string) => { console.log((c ? "OK  " : "FALHOU ") + n); if (!c) falhas++; };
 const pedidos: any[] = []; let dsStatus = 200;
