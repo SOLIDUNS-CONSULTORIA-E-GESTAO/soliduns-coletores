@@ -54,7 +54,9 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run: |
           # --build: empacota as Edge Functions (netlify/edge-functions); sem ele o Netlify publica só os arquivos
-          NETLIFY_SITE_ID="$SITE_OK" npx --yes netlify-cli@17.38.1 deploy --build --prod --dir publicar --site "$SITE_OK" --message "SOLIDUNS ${{ github.event.inputs.versao }}"
+          # instala o netlify-cli com até 3 tentativas (falha de rede do npm, ECONNRESET, não derruba a publicação)
+          for i in 1 2 3; do npm install -g netlify-cli@17.38.1 --no-audit --no-fund && break; echo "npm falhou (tentativa $i); nova tentativa em 20 s"; sleep 20; done
+          NETLIFY_SITE_ID="$SITE_OK" netlify deploy --build --prod --dir publicar --site "$SITE_OK" --message "SOLIDUNS ${{ github.event.inputs.versao }}"
       - name: Conferir a prévia do link (artigo 1)
         run: |
           sleep 20
