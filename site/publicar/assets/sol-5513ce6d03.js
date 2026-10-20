@@ -13334,7 +13334,7 @@ function vmDesenharArtigo(a){
   const texto = vmBlocos(a.corpo);
   const pal = String(texto).replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
   const f = a.foto && /^https:\/\//i.test(a.foto.src || '') ? a.foto : null;
-  const fontes = (a.fontes || []).filter(x => x && /^https:\/\//i.test(x.url || ''));
+  const fontes = (a.fontes || []).filter(x => x && (x.titulo || /^https:\/\//i.test(x.url || '')));   /* v154: link opcional */
   const corr = (a.correcoes || []).filter(c => c && c.o_que);
   art.innerHTML = voltar
     + '<header class="vm-leit-cab"><span class="vm-chapeu">' + escHtml(a.chapeu || a.editoria || 'Artigo') + '</span>'
@@ -13348,7 +13348,7 @@ function vmDesenharArtigo(a){
     + '<div class="vm-leit-texto" id="vm-art-texto">' + texto + '</div>'
     + (corr.length ? corr.map(c => '<p class="vm-art-corr"><b>Correção' + (c.quando ? ' (' + escHtml(new Date(c.quando).toLocaleDateString('pt-BR', {timeZone: 'America/Sao_Paulo'})) + ')' : '') + ':</b> ' + escHtml(c.o_que)
         + (c.antes ? '. A versão anterior informava: ' + escHtml(c.antes) : '') + '.</p>').join('') : '')
-    + (fontes.length ? '<div class="vm-leit-fontes"><b>Fontes consultadas</b><ul>' + fontes.map(x => '<li><a href="' + escHtml(x.url) + '" target="_blank" rel="noopener noreferrer">' + escHtml(x.titulo || x.url) + '</a></li>').join('') + '</ul>'
+    + (fontes.length ? '<div class="vm-leit-fontes"><b>Fontes consultadas</b><ul>' + fontes.map(x => /^https:\/\//i.test(x.url || '') ? '<li><a href="' + escHtml(x.url) + '" target="_blank" rel="noopener noreferrer">' + escHtml(x.titulo || x.url) + '</a></li>' : '<li>' + escHtml(x.titulo) + '</li>').join('') + '</ul>'
         + (f && f.fotografo ? '<p class="vm-foto-credito">Foto de capa: ' + escHtml(f.fotografo) + ' / ' + escHtml(f.origem || 'Foto própria') + '</p>' : '') + '</div>'
       : (f && f.fotografo ? '<div class="vm-leit-fontes"><p class="vm-foto-credito">Foto de capa: ' + escHtml(f.fotografo) + ' / ' + escHtml(f.origem || 'Foto própria') + '</p></div>' : ''))
     + ((a.tags || []).length ? '<p class="vm-art-tags">Assuntos: ' + a.tags.map(escHtml).join(' · ') + '</p>' : '')
@@ -13544,9 +13544,10 @@ function vmDesenhar(d){
   document.getElementById('vm-assin').innerHTML = '<span>Redação Valor e Mercado</span><span class="vm-hora">' + escHtml(VM_EDITOR) + '</span>'
     + (hora ? '<span class="vm-hora">' + escHtml(hora) + '</span>' : '')
     + '<span class="vm-hora">' + Math.max(1, Math.round(palavras / 200)) + ' min de leitura</span>';
-  const fontes = (d.fontes || []).filter(f => /^https?:\/\//i.test(f.url || ''));
+  const fontes = (d.fontes || []).filter(f => f && (f.titulo || /^https?:\/\//i.test(f.url || '')));   /* v154: link opcional */
   document.getElementById('vm-fontes').innerHTML = fontes.length ? '<h3>Fontes consultadas</h3><ol>' + fontes.map(f =>
-    '<li><a href="' + escHtml(f.url) + '" target="_blank" rel="noopener noreferrer">' + escHtml(f.titulo || f.url) + '</a></li>').join('') + '</ol>' : '';
+    /^https?:\/\//i.test(f.url || '') ? '<li><a href="' + escHtml(f.url) + '" target="_blank" rel="noopener noreferrer">' + escHtml(f.titulo || f.url) + '</a></li>'
+      : '<li>' + escHtml(f.titulo) + '</li>').join('') + '</ol>' : '';
   /* v129: crédito completo da foto de capa no fim da reportagem (regra da API do Unsplash: fotógrafo + Unsplash, com links) */
   const fc = m.foto, lk = (u, t) => /^https:\/\//i.test(u || '') ? '<a href="' + escHtml(u) + '" target="_blank" rel="noopener noreferrer">' + escHtml(t) + '</a>' : escHtml(t);
   if(fc && fc.src && fc.fotografo) document.getElementById('vm-fontes').innerHTML += '<p class="vm-foto-credito">Foto de capa: ' + lk(fc.fotografo_url || fc.pagina_url, fc.fotografo) + ' / ' + lk(fc.pagina_url, fc.fonte || 'Unsplash') + '</p>';
