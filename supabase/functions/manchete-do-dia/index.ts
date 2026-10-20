@@ -21,7 +21,7 @@
 // Variáveis: ANTHROPIC_API_KEY, COLETOR_TOKEN, UNSPLASH_ACCESS_KEY (sem ela, sai sem foto); opcionais VM_MODELO, VM_BUSCAS.
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. A página nunca menciona IA.
 
-export const VERSAO = "1.5";   // v1.5 (20/10/2026, decisão do Thiago: "deixar só o Sonnet escrever"): o padrão volta a ser o Sonnet (apura e escreve); DeepSeek só com VM_REDATOR=deepseek. v1.4:   // v1.4 (20/10/2026): DeepSeek falhou 2x → o CLAUDE escreve na hora, com a apuração já feita (antes ficava para o robô do GitHub, que pode não rodar). v1.3:   // v1.3 (20/10/2026): complemento da apuração com tool_result; DeepSeek com limite de 16 mil (a resposta saía cortada em 8 mil). v1.2:   // v1.2 (18/10/2026): o Sonnet APURA às 05h00 (busca na web) e a DeepSeek V4 Pro ESCREVE às 07h00 (fora do pico); publica às 07h15. Sem DEEPSEEK_API_KEY, volta ao fluxo antigo.
+export const VERSAO = "1.6";   // v1.6 (20/10/2026, opção B "enxuta"): até 8 buscas na apuração da manchete. v1.5:   // v1.5 (20/10/2026, decisão do Thiago: "deixar só o Sonnet escrever"): o padrão volta a ser o Sonnet (apura e escreve); DeepSeek só com VM_REDATOR=deepseek. v1.4:   // v1.4 (20/10/2026): DeepSeek falhou 2x → o CLAUDE escreve na hora, com a apuração já feita (antes ficava para o robô do GitHub, que pode não rodar). v1.3:   // v1.3 (20/10/2026): complemento da apuração com tool_result; DeepSeek com limite de 16 mil (a resposta saía cortada em 8 mil). v1.2:   // v1.2 (18/10/2026): o Sonnet APURA às 05h00 (busca na web) e a DeepSeek V4 Pro ESCREVE às 07h00 (fora do pico); publica às 07h15. Sem DEEPSEEK_API_KEY, volta ao fluxo antigo.
 
 // v1.6/v1.3 (20/10/2026): ao pedir complemento, cada "tool_use" da resposta anterior precisa de um "tool_result" logo depois
 // (sem isso a Anthropic recusa: "tool_use ids were found without tool_result blocks immediately after").
@@ -32,7 +32,7 @@ export function comResultados(conteudo: Record<string, unknown>[], texto: string
 // v1.1   // v1.1 (18/10/2026): foto de capa vem primeiro do BANCO DE IMAGENS PRÓPRIO (SQL 161); Unsplash é a reserva
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = Deno.env.get("VM_MODELO_RESERVA") || "claude-sonnet-4-5";
-const BUSCAS = (() => { const n = parseInt(Deno.env.get("VM_BUSCAS") ?? "", 10); return isNaN(n) ? 12 : Math.max(1, Math.min(20, n)); })();
+const BUSCAS = (() => { const n = parseInt(Deno.env.get("VM_BUSCAS") ?? "", 10); return isNaN(n) ? 8 : Math.max(1, Math.min(20, n)); })();   // v1.6: 8 buscas (opção B, economia)
 const API = Deno.env.get("ANTHROPIC_URL") || "https://api.anthropic.com/v1";
 const UNSPLASH = Deno.env.get("UNSPLASH_URL") || "https://api.unsplash.com";
 // preço do LOTE (metade do normal), por milhão de tokens — só para o registro de custo

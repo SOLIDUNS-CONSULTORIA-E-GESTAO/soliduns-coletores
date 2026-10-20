@@ -101,7 +101,7 @@ let r = await m.passo("", brt("05:00"));
 ok(r.etapa === "aguardando" && lotes.length === 1, "05h00: pedido em lote enviado");
 const p1 = lotes[0].requests[0].params;
 ok(p1.model === "claude-sonnet-5-5" && p1.max_tokens === 16000, "modelo e limite iguais ao robô do GitHub");
-ok(p1.tools[0].type === "web_search_20250305" && p1.tools[0].max_uses === 12 && p1.tools[1].name === "entregar_edicao", "busca na web (12) + ferramenta de entrega");
+ok(p1.tools[0].type === "web_search_20250305" && p1.tools[0].max_uses === 8 && p1.tools[1].name === "entregar_edicao", "busca na web (8, opção B) + ferramenta de entrega");
 ok(p1.system.includes("sexta-feira, 16 de outubro de 2026 (2026-10-16)"), "instruções com a data de hoje");
 respostas.push({ pendente: true });
 r = await m.passo("", brt("05:05"));

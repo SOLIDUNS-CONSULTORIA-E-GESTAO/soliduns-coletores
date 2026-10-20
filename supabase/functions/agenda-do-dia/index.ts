@@ -14,12 +14,12 @@
 // Variáveis: COLETOR_TOKEN · ANTHROPIC_API_KEY · VM_MODELO (opcional) · VM_BUSCAS (opcional, padrão 10) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "1.1";   // v1.1 (19/10/2026, pedido do Thiago): agenda de INDICADORES do universo public.vm_indicadores_universo
+const VERSAO = "1.2";   // v1.2 (20/10/2026, opção B "enxuta" do Thiago): menos buscas — 6 por dia e 10 na segunda (semana). v1.1:   // v1.1 (19/10/2026, pedido do Thiago): agenda de INDICADORES do universo public.vm_indicadores_universo
                         // (SQL 168); na segunda-feira, a semana inteira (segunda a sexta). Impacto vem da lista mestre, não da IA.
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = "claude-sonnet-4-5";
-const BUSCAS = Math.max(1, Math.min(20, parseInt(Deno.env.get("VM_BUSCAS") ?? "12", 10) || 12));
-const BUSCAS_SEMANA = Math.max(1, Math.min(24, parseInt(Deno.env.get("VM_BUSCAS_SEMANA") ?? "16", 10) || 16));   // v1.1: segunda-feira
+const BUSCAS = Math.max(1, Math.min(20, parseInt(Deno.env.get("VM_BUSCAS") ?? "6", 10) || 6));   // v1.2: 6 (opção B, economia)
+const BUSCAS_SEMANA = Math.max(1, Math.min(24, parseInt(Deno.env.get("VM_BUSCAS_SEMANA") ?? "10", 10) || 10));   // v1.1: segunda-feira
 const ANTHROPIC_URL = Deno.env.get("VM_ANTHROPIC_URL") ?? "https://api.anthropic.com/v1/messages";   // troca só em teste
 const PRECO_ENT = 3.0, PRECO_SAI = 15.0, PRECO_BUSCA = 0.01;
 const CATEGORIAS = ["CVM", "Banco Central", "Governo e Congresso", "Federal Reserve", "Agenda EUA", "Empresas", "Outros"];
