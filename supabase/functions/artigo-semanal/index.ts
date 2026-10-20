@@ -20,7 +20,7 @@
 //   opcionais VM_MODELO, VM_BUSCAS_SEMANAL, VM_DEEPSEEK_MODELO (padrão deepseek-flash).
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. O artigo nunca menciona IA.
 
-export const VERSAO = "1.6";   // v1.6 (20/10/2026): complemento da apuração com tool_result (a Anthropic recusava); pautas reconhecidas também pelo nome; DeepSeek com limite maior. v1.5:   // v1.5 (18/10/2026): pautas DIÁRIAS (dias_semana + periodo "dia"): apuração ampla às 07h00 de segunda a sexta e 5 artigos no mesmo dia; DeepSeek V4 Pro escreve fora do pico.
+export const VERSAO = "1.7";   // v1.7 (20/10/2026): CUSTO — buscas contadas no total (antes cada continuação liberava 50 de novo: US$ 7 num dia), teto de US$ por apuração, complemento só se couber no teto; apuração entregue como texto JSON passa a ser lida. v1.6:   // v1.6 (20/10/2026): complemento da apuração com tool_result (a Anthropic recusava); pautas reconhecidas também pelo nome; DeepSeek com limite maior. v1.5:   // v1.5 (18/10/2026): pautas DIÁRIAS (dias_semana + periodo "dia"): apuração ampla às 07h00 de segunda a sexta e 5 artigos no mesmo dia; DeepSeek V4 Pro escreve fora do pico.
 
 // v1.6/v1.3 (20/10/2026): ao pedir complemento, cada "tool_use" da resposta anterior precisa de um "tool_result" logo depois
 // (sem isso a Anthropic recusa: "tool_use ids were found without tool_result blocks immediately after").
@@ -38,7 +38,7 @@ const UNSPLASH = Deno.env.get("UNSPLASH_URL") || "https://api.unsplash.com";
 const PRECO_ENT = 1.5, PRECO_SAI = 7.5, PRECO_BUSCA = 0.01;
 const JANELA_HORAS = 6;                 // a produção pode começar até 6 h depois da hora marcada
 const minFatos = (p: Pauta) => diario(p) ? MIN_FATOS_DIA : MIN_FATOS_SEMANA;
-const MAX_CONTINUA = 10, MAX_REENVIO = 3, MAX_CONTINUA_GRUPO = 30, MIN_FATOS_SEMANA = 15, MIN_FATOS_DIA = 10, ESPERA_MAX_HORAS = 10;
+const MAX_CONTINUA = 10, MAX_REENVIO = 3, MAX_CONTINUA_GRUPO = 12, MIN_FATOS_SEMANA = 15, MIN_FATOS_DIA = 10, ESPERA_MAX_HORAS = 10;
 const AUTOR = "Redação Valor e Mercado";
 const DEEPSEEK_URL = Deno.env.get("DEEPSEEK_URL") || "https://api.deepseek.com";
 const DS_ENT = 0.30, DS_SAI = 1.20;   // US$ por milhão (preço de pico do deepseek-flash, conferido em 17/10/2026) — só para o registro
@@ -226,7 +226,11 @@ export const ENTREGA = { name: "entregar_artigo", description: "Entrega o artigo
 
 export type Artigo = { chapeu: string; titulo: string; linha_fina: string; corpo: { tipo: string; texto: string }[];
   foto_busca: string; foto_alternativa: string; seo_titulo: string; seo_descricao: string; foto?: Obj };
-const arr = (v: unknown): Obj[] => (Array.isArray(v) ? v.filter((x) => x && typeof x === "object") as Obj[] : []);
+// v1.7: o Sonnet às vezes entrega listas da ferramenta como TEXTO JSON ("[{...}]"): converte antes de ler
+const solto = (v: unknown): unknown => { if (typeof v === "string" && /^\s*[\[{]/.test(v)) { try { return JSON.parse(v); } catch { return v; } } return v; };
+const arr = (v: unknown): Obj[] => { v = solto(v); return Array.isArray(v) ? v.filter((x) => x && typeof x === "object") as Obj[] : []; };
+// v1.7: teto de gasto por apuração/artigo (US$); passa do teto -> pede a entrega na hora, sem novas buscas
+const TETO_DIA = Number(Deno.env.get("VM_TETO_DIA_USD") ?? "2.5"), TETO_SEMANA = Number(Deno.env.get("VM_TETO_SEMANA_USD") ?? "4");
 
 export function desembrulhar(d: unknown): Obj | null {
   if (typeof d === "string") { try { d = JSON.parse(d); } catch { return null; } }
@@ -433,7 +437,7 @@ export const ehGrupo = (p: Pauta) => p.tipo === "apuracao";
 export function nova(p: Pauta, semana: string, modo: "producao" | "teste", redator?: string): Execucao {
   if (ehGrupo(p)) return { pauta: p.id, semana, modo, etapa: "nova", rodada: 0, continuacoes: 0, reenvios: 0, modelo: MODELO, lote_id: null,
     mensagens: [{ role: "user", content: `Faça a apuração ampla ${diario(p) ? "do dia" : "da semana"} até hoje (${dataExtenso(semana)}) e entregue pela ferramenta entregar_apuracao_ampla.` }],
-    buscas: Math.max(10, Math.min(90, p.buscas ?? 60)), urls: {}, artigo: { redator: "apuracao" }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };
+    buscas: Math.max(10, Math.min(diario(p) ? 25 : 40, p.buscas ?? 30)), urls: {}, artigo: { redator: "apuracao" }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };
   if (p.grupo) return { pauta: p.id, semana, modo, etapa: "esperando", rodada: 0, continuacoes: 0, reenvios: 0, modelo: MODELO, lote_id: null,
     mensagens: [], buscas: 0, urls: {}, artigo: { redator: "deepseek" }, fontes: [], artigo_id: null, ent: 0, sai: 0, nbuscas: 0, registro: [] };
   const r = (redator ?? p.redator ?? "claude") === "deepseek" ? "deepseek" : "claude";
@@ -450,7 +454,7 @@ async function enviarPedido(x: Execucao, p: Pauta) {
     const tick = [...new Set(membros.flatMap((m) => m.tickers))];
     const dados = await dadosDaCasa({ ...p, tickers: tick }, x.semana);
     x.lote_id = await mandarLote(`vm-amp-${x.pauta}-${x.semana}-${x.modo}-${x.continuacoes}-${x.reenvios}`,
-      pedido(x.mensagens, instrucoesApuracaoGrupo(p, membros, x.semana, dados), x.buscas, x.modelo, APURACAO_GRUPO));
+      pedido(x.mensagens, instrucoesApuracaoGrupo(p, membros, x.semana, dados), Math.max(1, x.buscas - x.nbuscas), x.modelo, APURACAO_GRUPO));
     x.etapa = "aguardando";
     anota(x, `apuração ampla enviada (${membros.length} pautas: ${membros.map((m) => m.id).join(", ")}; ${x.modelo}, até ${x.buscas} buscas)`);
     return;
@@ -458,7 +462,7 @@ async function enviarPedido(x: Execucao, p: Pauta) {
   const ds = redatorDe(x, p) === "deepseek", dados = await dadosDaCasa(p, x.semana);
   const sistema = ds ? instrucoesApuracao(p, x.semana, dados) : instrucoes(p, x.semana, dados);
   x.lote_id = await mandarLote(`vm-sem-${x.pauta}-${x.semana}-${x.modo}-${x.rodada}-${x.continuacoes}-${x.reenvios}`,
-    pedido(x.mensagens, sistema, x.buscas, x.modelo, ds ? APURACAO : ENTREGA));
+    pedido(x.mensagens, sistema, x.buscas ? Math.max(1, x.buscas - x.nbuscas) : 0, x.modelo, ds ? APURACAO : ENTREGA));
   x.etapa = "aguardando";
   anota(x, `pedido enviado (rodada ${x.rodada + 1}, ${x.modelo}, até ${x.buscas} buscas)`);
 }
@@ -476,8 +480,16 @@ export async function processarResposta(x: Execucao, p: Pauta, msg: Obj) {
   }
   if (msg.stop_reason === "pause_turn") {
     if (++x.continuacoes > (ehGrupo(p) ? MAX_CONTINUA_GRUPO : MAX_CONTINUA)) { x.etapa = "falhou"; anota(x, "ERRO: a redação não terminou (pause_turn repetido)."); return; }
-    x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }];
-    anota(x, "busca pausada — continuando");
+    const teto = diario(p) ? TETO_DIA : TETO_SEMANA;
+    if (custo(x) > teto || x.nbuscas >= x.buscas) {               // v1.7: chega de buscar — entrega com o que já apurou
+      x.buscas = x.nbuscas;
+      x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content:
+        "Pare de buscar. Entregue AGORA pela ferramenta, só com o que já apurou." }];
+      anota(x, `limite atingido (US$ ${custo(x)}, ${x.nbuscas} buscas) — pedindo a entrega sem novas buscas`);
+    } else {
+      x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }];
+      anota(x, "busca pausada — continuando");
+    }
     await enviarPedido(x, p);
     return;
   }
@@ -498,13 +510,15 @@ export async function processarResposta(x: Execucao, p: Pauta, msg: Obj) {
     }
     const conta = (id: string) => (porPauta[id] ?? []).reduce((n, s) => n + s.fatos.length, 0);
     const fracas = membros.filter((m) => conta(m.id) < minFatos(p));
-    if (!fracas.length || (x.reenvios >= 1 && membros.some((m) => conta(m.id) >= minFatos(p)))) {
+    const semFolga = custo(x) >= (diario(p) ? TETO_DIA : TETO_SEMANA) * 0.6;
+    if (!fracas.length || ((x.reenvios >= 1 || semFolga) && membros.some((m) => conta(m.id) >= minFatos(p)))) {
       x.artigo = { redator: "apuracao", por_pauta: porPauta }; x.etapa = "concluida"; x.mensagens = [];
       anota(x, `apuração ampla pronta: ${membros.map((m) => `${m.id} ${conta(m.id)}`).join(", ")} fatos; ${Object.keys(x.urls).length} páginas — US$ ${custo(x)}`
         + (fracas.length ? ` (pautas com menos de ${minFatos(p)} fatos não serão escritas: ${fracas.map((m) => m.id).join(", ")})` : ""));
       return;
     }
-    if (++x.reenvios <= 1) {
+    if (custo(x) < (diario(p) ? TETO_DIA : TETO_SEMANA) * 0.6 && ++x.reenvios <= 1) {   // v1.7: complemento só se couber no teto
+      x.buscas = x.nbuscas + 8;                                                              // e com no máximo 8 buscas a mais
       x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content: comResultados(conteudo as Record<string, unknown>[],
         `Estas pautas vieram fracas (mínimo ${minFatos(p)} fatos cada): ${fracas.map((m) => `${m.id} (${conta(m.id)})`).join(", ")}. Complete a apuração delas (pode buscar mais) e entregue de novo a apuração COMPLETA de todas as pautas pela ferramenta entregar_apuracao_ampla, com o campo pauta exatamente igual a um destes identificadores: ${membros.map((m) => m.id).join(", ")}.`) }];
       anota(x, `apuração ampla incompleta (${fracas.map((m) => m.id).join(", ")}; pautas recebidas: ${arr(ap?.pautas).map((it) => txt(it.pauta)).join(", ") || "nenhuma"}) — pedindo complemento`); await enviarPedido(x, p); return;
@@ -548,7 +562,7 @@ export async function processarResposta(x: Execucao, p: Pauta, msg: Obj) {
   x.mensagens = [{ role: "user", content: "Este é o artigo semanal que você escreveu:\n" + JSON.stringify(entrega ?? {}).slice(0, 60000) +
     "\n\nEle não passou na conferência automática. Corrija SÓ estes pontos, mantenha o resto e entregue o artigo completo pela ferramenta entregar_artigo" +
     (precisaBuscar ? " (pode fazer até 5 buscas para achar as fontes com o endereço exato)" : "") + ":\n- " + erros.join("\n- ") }];
-  x.buscas = precisaBuscar ? 5 : 0; x.rodada = 1; x.continuacoes = 0; x.reenvios = 0;
+  x.buscas = precisaBuscar ? x.nbuscas + 5 : 0; x.rodada = 1; x.continuacoes = 0; x.reenvios = 0;
   await enviarPedido(x, p);
 }
 

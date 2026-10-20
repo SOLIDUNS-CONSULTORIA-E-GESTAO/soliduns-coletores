@@ -21,7 +21,7 @@
 // Variáveis: ANTHROPIC_API_KEY, COLETOR_TOKEN, UNSPLASH_ACCESS_KEY (sem ela, sai sem foto); opcionais VM_MODELO, VM_BUSCAS.
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. A página nunca menciona IA.
 
-export const VERSAO = "1.3";   // v1.3 (20/10/2026): complemento da apuração com tool_result; DeepSeek com limite de 16 mil (a resposta saía cortada em 8 mil). v1.2:   // v1.2 (18/10/2026): o Sonnet APURA às 05h00 (busca na web) e a DeepSeek V4 Pro ESCREVE às 07h00 (fora do pico); publica às 07h15. Sem DEEPSEEK_API_KEY, volta ao fluxo antigo.
+export const VERSAO = "1.4";   // v1.4 (20/10/2026): DeepSeek falhou 2x → o CLAUDE escreve na hora, com a apuração já feita (antes ficava para o robô do GitHub, que pode não rodar). v1.3:   // v1.3 (20/10/2026): complemento da apuração com tool_result; DeepSeek com limite de 16 mil (a resposta saía cortada em 8 mil). v1.2:   // v1.2 (18/10/2026): o Sonnet APURA às 05h00 (busca na web) e a DeepSeek V4 Pro ESCREVE às 07h00 (fora do pico); publica às 07h15. Sem DEEPSEEK_API_KEY, volta ao fluxo antigo.
 
 // v1.6/v1.3 (20/10/2026): ao pedir complemento, cada "tool_use" da resposta anterior precisa de um "tool_result" logo depois
 // (sem isso a Anthropic recusa: "tool_use ids were found without tool_result blocks immediately after").
@@ -506,7 +506,14 @@ export async function redigirDeepSeek(x: Execucao, fotosUsadas: () => Promise<Se
     anota(x, `pronta (redator DeepSeek): [${lim.ed.manchete.cartola}] ${lim.ed.manchete.titulo} — ${lim.fontes.length} fontes`);
     return;
   }
-  if (x.rodada >= 1) { x.etapa = "falhou"; anota(x, "NÃO publicada: o texto da DeepSeek falhou duas vezes na conferência (o robô de reserva do GitHub escreve às 08h00)."); return; }
+  if (x.rodada >= 1) {                       // v1.4: reserva imediata — o Claude escreve com a apuração já feita
+    const ap = apuracaoTexto((e0.apuracao ?? []) as { secao: string; fatos: { fato: string }[] }[]);
+    x.edicao = null; x.etapa = "nova"; x.rodada = 0; x.continuacoes = 0; x.reenvios = 0; x.buscas = 4; x.modelo = MODELO;
+    x.mensagens = [{ role: "user", content: `Escreva a edição de hoje (${dataExtenso(x.data)}) e entregue pela ferramenta entregar_edicao. ` +
+      `Use como base a apuração abaixo, já feita hoje (fatos com data e fonte); busque na web só para confirmar algum dado.\n\n${ap}` }];
+    anota(x, "a DeepSeek falhou duas vezes — o Claude escreve agora (reserva), com a apuração de hoje");
+    return;
+  }
   x.edicao = { ...e0, rascunho: bruto, erros }; x.rodada = 1;            // a correção sai no próximo passo (5 min)
 }
 

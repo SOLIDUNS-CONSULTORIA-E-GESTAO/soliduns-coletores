@@ -55,7 +55,7 @@ const g1 = bd.exec.find((e: O) => e.pauta === "apuracao-semanal");
 ok(lotes.length === 1 && g1?.etapa === "aguardando", "16h10: UMA apuração ampla enviada");
 const sys = lotes[0].requests[0].params.system;
 ok(sys.includes('PAUTA "juros-inflacao"') && sys.includes('PAUTA "cambio"') && sys.includes("Banco Central, IBGE") && !sys.includes('PAUTA "apuracao-semanal"'), "o pedido traz as 2 pautas do grupo com suas fontes");
-ok(lotes[0].requests[0].params.tools.some((t: O) => t.name === "entregar_apuracao_ampla" ) && lotes[0].requests[0].params.tools[0].max_uses === 60, "ferramenta da apuração ampla e 60 buscas");
+ok(lotes[0].requests[0].params.tools.some((t: O) => t.name === "entregar_apuracao_ampla" ) && lotes[0].requests[0].params.tools[0].max_uses === 40, "ferramenta da apuração ampla e 40 buscas (v1.7: teto semanal)");
 ok(bd.exec.filter((e: O) => e.etapa === "esperando").length === 2, "as 2 pautas esperam a apuração");
 // 1ª resposta: câmbio fraco (3 fatos) -> pede complemento uma vez
 await m.passo("", undefined, T("16:15"));

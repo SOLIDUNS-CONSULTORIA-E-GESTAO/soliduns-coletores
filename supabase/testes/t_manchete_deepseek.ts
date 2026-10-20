@@ -132,7 +132,11 @@ respostas.push(sucesso([BUSCA, { ...apuracao(30), input: { data_referencia: "202
 await m.passo("", brt("05:05", "2026-10-19"));
 dsResp.push("sem json"); dsResp.push("de novo sem json");
 await m.passo("", brt("07:00", "2026-10-19")); r = await m.passo("", brt("07:05", "2026-10-19"));
-ok(r.etapa === "falhou" && db.ed.length === 0, "DeepSeek falhou 2 vezes: NÃO publica (reserva às 08h00)");
+ok(r.etapa === "nova" && db.ed.length === 0, "DeepSeek falhou 2 vezes: NÃO publica o texto dela e passa para o Claude (v1.4)");
+r = await m.passo("", brt("07:10", "2026-10-19"));
+{ const ul = lotes.at(-1)?.requests?.[0]?.params ?? {}; const msg = JSON.stringify(ul.messages ?? []);
+  ok(r.etapa === "aguardando" && (ul.tools ?? []).some((t: Record<string, unknown>) => t.name === "entregar_edicao") && msg.includes("apuração abaixo"),
+     "v1.4: 07h10 o Claude recebe a apuração de hoje e escreve (ferramenta entregar_edicao)"); }
 // teste à mão: a DeepSeek escreve na hora, sem esperar 07h00
 db.exec = []; lotes.length = 0; ds.length = 0;
 await m.passo("teste", brt("15:00", "2026-10-20"));

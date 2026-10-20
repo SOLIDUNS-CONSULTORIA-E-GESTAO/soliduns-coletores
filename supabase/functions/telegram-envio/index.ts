@@ -10,7 +10,7 @@
 // Variáveis: TELEGRAM_TOKEN, TELEGRAM_DONO_ID, COLETOR_TOKEN (manuais); SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas).
 // Nenhuma chave neste arquivo. A mensagem nunca menciona IA.
 
-export const VERSAO = "1.5";   // v1.5 (19/10/2026): grupo migrado para supergrupo com o número novo já cadastrado não trava mais o envio. v1.4:   // v1.4 (19/10/2026): a mensagem do artigo não mostra mais o autor ("Por Dr. Thiago Viegas") — pedido do Thiago.
+export const VERSAO = "1.6";   // v1.6 (20/10/2026): {"acao":"alerta","texto":"..."} manda aviso só para o Thiago (TELEGRAM_DONO_ID) — usado pelo vigia das 08h30 (SQL 170). v1.5:   // v1.5 (19/10/2026): grupo migrado para supergrupo com o número novo já cadastrado não trava mais o envio. v1.4:   // v1.4 (19/10/2026): a mensagem do artigo não mostra mais o autor ("Por Dr. Thiago Viegas") — pedido do Thiago.
 const SITE = "https://soliduns.com.br/noticias/";
 const JANELA_H = 12;
 // v1.2 (Thiago, 16/10 10h16): o Scanner vai com a logomarca "Scanner do Dia" (Opção 2 — Radar). Imagem pública no Storage do
@@ -285,10 +285,16 @@ export async function tratar(req: Request): Promise<Response> {
   // 2. chamada do agendador
   const token = Deno.env.get("COLETOR_TOKEN");
   if (!token || req.headers.get("Authorization") !== `Bearer ${token}`) return Response.json({ erro: "não autorizado" }, { status: 401 });
-  let corpo: { acao?: string; webhook_url?: string } = {};
+  let corpo: { acao?: string; webhook_url?: string; texto?: string } = {};
   try { corpo = await req.json(); } catch (_) { /* vazio */ }
   const resumo: Record<string, unknown> = { versao: VERSAO };
   try {
+    if (corpo.acao === "alerta") {                      // v1.6: aviso privado ao dono (nunca vai aos grupos)
+      const texto = String(corpo.texto ?? "").replace(/[<>&]/g, "").slice(0, 3500);
+      if (!texto) return Response.json({ ...resumo, erro: "alerta sem texto" }, { status: 400 });
+      const r = await tg("sendMessage", { chat_id: dono, text: `⚠️ Valor e Mercado — vigia\n\n${texto}`, link_preview_options: { is_disabled: true } });
+      return Response.json({ ...resumo, alerta: r.ok ? "enviado" : `falhou: ${r.description ?? ""}` }, { status: r.ok ? 200 : 502 });
+    }
     if (corpo.acao === "configurar") {
       if (!/^https:\/\//.test(corpo.webhook_url ?? "")) return Response.json({ erro: "webhook_url inválida" }, { status: 400 });
       const eu = await tg("getMe", {});
