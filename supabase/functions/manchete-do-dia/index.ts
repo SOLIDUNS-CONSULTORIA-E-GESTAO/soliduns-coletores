@@ -21,7 +21,14 @@
 // Variáveis: ANTHROPIC_API_KEY, COLETOR_TOKEN, UNSPLASH_ACCESS_KEY (sem ela, sai sem foto); opcionais VM_MODELO, VM_BUSCAS.
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. A página nunca menciona IA.
 
-export const VERSAO = "1.2";   // v1.2 (18/10/2026): o Sonnet APURA às 05h00 (busca na web) e a DeepSeek V4 Pro ESCREVE às 07h00 (fora do pico); publica às 07h15. Sem DEEPSEEK_API_KEY, volta ao fluxo antigo.
+export const VERSAO = "1.3";   // v1.3 (20/10/2026): complemento da apuração com tool_result; DeepSeek com limite de 16 mil (a resposta saía cortada em 8 mil). v1.2:   // v1.2 (18/10/2026): o Sonnet APURA às 05h00 (busca na web) e a DeepSeek V4 Pro ESCREVE às 07h00 (fora do pico); publica às 07h15. Sem DEEPSEEK_API_KEY, volta ao fluxo antigo.
+
+// v1.6/v1.3 (20/10/2026): ao pedir complemento, cada "tool_use" da resposta anterior precisa de um "tool_result" logo depois
+// (sem isso a Anthropic recusa: "tool_use ids were found without tool_result blocks immediately after").
+export function comResultados(conteudo: Record<string, unknown>[], texto: string): unknown {
+  const ids = conteudo.filter((b) => b.type === "tool_use" && b.id).map((b) => String(b.id));
+  return ids.length ? [...ids.map((id) => ({ type: "tool_result", tool_use_id: id, content: "Recebido. Veja a instrução abaixo." })), { type: "text", text: texto }] : texto;
+}
 // v1.1   // v1.1 (18/10/2026): foto de capa vem primeiro do BANCO DE IMAGENS PRÓPRIO (SQL 161); Unsplash é a reserva
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
 const RESERVA = Deno.env.get("VM_MODELO_RESERVA") || "claude-sonnet-4-5";
@@ -415,8 +422,8 @@ export async function processarResposta(x: Execucao, msg: Obj, fotosUsadas: () =
       return;
     }
     if (++x.reenvios <= 1) {
-      x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content:
-        `A apuração veio com ${nf} fatos (mínimo ${MIN_FATOS}). Complete a apuração (pode buscar mais) e entregue pela ferramenta entregar_apuracao.` }];
+      x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content: comResultados(conteudo as Record<string, unknown>[],
+        `A apuração veio com ${nf} fatos (mínimo ${MIN_FATOS}). Complete a apuração (pode buscar mais) e entregue pela ferramenta entregar_apuracao.`) }];
       anota(x, `apuração insuficiente (${nf} fatos) — pedindo complemento`); await enviarPedido(x); return;
     }
     x.etapa = "falhou"; anota(x, `NÃO apurado: ${nf} fatos. US$ ${custo(x)} (o robô de reserva do GitHub escreve às 08h00)`); return;
@@ -465,7 +472,7 @@ export async function chamarDeepSeek(sistema: string, usuario: string): Promise<
     const r = await http(`${DS_URL}/chat/completions`, { method: "POST", signal: ctl.signal,
       headers: { Authorization: `Bearer ${chave}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: DS_MODELO, messages: [{ role: "system", content: sistema }, { role: "user", content: usuario }],
-        response_format: { type: "json_object" }, max_tokens: 8000, temperature: 0.5 }) });
+        response_format: { type: "json_object" }, max_tokens: 16000, temperature: 0.5 }) });   // v1.3: 8 mil cortava a resposta (raciocínio conta no limite)
     if (r.status === 402) throw new Error("DeepSeek sem crédito (402)");
     if (r.status === 401) throw new Error("chave da DeepSeek recusada (401)");
     if (!r.ok) throw new Error(`DeepSeek respondeu ${r.status}: ${(await r.text()).slice(0, 200)}`);

@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "2.6";   // v2.6 (19/10/2026, "RESERVA CLAUDE NO SCANNER"): texto da DeepSeek reprovado na conferência → o Claude reescreve e vai ao ar a melhor versão. v2.5:   // v2.5 (19/10/2026): DeepSeek com limite maior (32 mil) e, se a resposta vier cortada ou vazia, o Claude assume. v2.4:   // v2.4 (19/10/2026): agenda de INDICADORES (SQL 168): no texto só os de impacto ALTO (até 5); segunda-feira traz a semana. A planilha completa sai do banco, abaixo do texto. v2.3:   // v2.3 (18/10/2026): REDATOR DeepSeek V4 Pro (decisão do Thiago: escrever fora do pico, às 07h00 em dias úteis); o Claude fica de reserva.
+const VERSAO = "2.7";   // v2.7 (20/10/2026): DeepSeek com teto de 75 s e 14 mil tokens; se não terminar, o Claude escreve (às 07h00 de 20/10 a função estourou 150 s). v2.6:   // v2.6 (19/10/2026, "RESERVA CLAUDE NO SCANNER"): texto da DeepSeek reprovado na conferência → o Claude reescreve e vai ao ar a melhor versão. v2.5:   // v2.5 (19/10/2026): DeepSeek com limite maior (32 mil) e, se a resposta vier cortada ou vazia, o Claude assume. v2.4:   // v2.4 (19/10/2026): agenda de INDICADORES (SQL 168): no texto só os de impacto ALTO (até 5); segunda-feira traz a semana. A planilha completa sai do banco, abaixo do texto. v2.3:   // v2.3 (18/10/2026): REDATOR DeepSeek V4 Pro (decisão do Thiago: escrever fora do pico, às 07h00 em dias úteis); o Claude fica de reserva.
 // O Scanner não pesquisa na web: escreve só com a base própria (agenda, cotações, radar). Por isso a DeepSeek pode escrevê-lo sozinha.
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.2";   // v2.0: revisão do plano editorial (Thiago, 15/10 20h55)
@@ -230,12 +230,12 @@ const DS_MODELO = Deno.env.get("VM_SCANNER_DEEPSEEK_MODELO") || "deepseek-v4-pro
 export const usaDeepSeek = () => !!Deno.env.get("DEEPSEEK_API_KEY") && (Deno.env.get("VM_SCANNER_REDATOR") ?? "deepseek") === "deepseek";
 export const precoDe = (modelo: string) => modelo.startsWith("deepseek") ? { ent: 0.66, sai: 1.98 } : { ent: PRECO_ENT, sai: PRECO_SAI };
 async function chamarDeepSeek(mensagens: unknown[]): Promise<{ texto: string; modelo: string; ent: number; sai: number; diag: string }> {
-  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 120000);
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 75000);   // v2.7: 75 s — sobra tempo para o Claude de reserva no limite de 150 s
   try {
     const r = await fetch(`${DS_URL}/chat/completions`, { method: "POST", signal: ctl.signal,
       headers: { Authorization: `Bearer ${Deno.env.get("DEEPSEEK_API_KEY")}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: DS_MODELO, messages: [{ role: "system", content: SISTEMA }, ...(mensagens as unknown[])],
-        response_format: { type: "json_object" }, max_tokens: 32000, temperature: 0.4 }) });   // v2.5: o raciocínio da V4 Pro conta no limite
+        response_format: { type: "json_object" }, max_tokens: 14000, temperature: 0.4 }) });   // v2.7: 14 mil (32 mil passava de 150 s em 20/10)
     if (!r.ok) throw new Error(`DeepSeek ${r.status}: ${(await r.text()).slice(0, 200)}`);
     const j = await r.json(), texto = String(j.choices?.[0]?.message?.content ?? "");
     // v2.5: resposta cortada ou vazia não serve — o Claude de reserva assume na hora
@@ -436,7 +436,7 @@ export async function tratar(req: Request): Promise<Response> {
     let verificacoes = verificar(gerado, ctx, hoje);
     const falhas = (v: { ok: boolean; bloqueia: boolean }[]) => v.filter((c) => !c.ok && c.bloqueia).length;
     // v2.6: texto da DeepSeek reprovado → o Claude reescreve (se houver tempo no limite de 150 s da função) e fica a melhor versão
-    if (falhas(verificacoes) && r.modelo.startsWith("deepseek") && Date.now() - t0 < 80000) {
+    if (falhas(verificacoes) && r.modelo.startsWith("deepseek") && Date.now() - t0 < 85000) {
       try {
         const rc = await chamar(msgs, true); ent += rc.ent; sai += rc.sai; somaCusto(rc);
         const gc = extrairJson(rc.texto), vc = verificar(gc, ctx, hoje);

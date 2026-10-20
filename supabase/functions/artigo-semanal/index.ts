@@ -20,7 +20,14 @@
 //   opcionais VM_MODELO, VM_BUSCAS_SEMANAL, VM_DEEPSEEK_MODELO (padrão deepseek-flash).
 // SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY são automáticas. Nenhuma chave neste arquivo. O artigo nunca menciona IA.
 
-export const VERSAO = "1.5";   // v1.5 (18/10/2026): pautas DIÁRIAS (dias_semana + periodo "dia"): apuração ampla às 07h00 de segunda a sexta e 5 artigos no mesmo dia; DeepSeek V4 Pro escreve fora do pico.
+export const VERSAO = "1.6";   // v1.6 (20/10/2026): complemento da apuração com tool_result (a Anthropic recusava); pautas reconhecidas também pelo nome; DeepSeek com limite maior. v1.5:   // v1.5 (18/10/2026): pautas DIÁRIAS (dias_semana + periodo "dia"): apuração ampla às 07h00 de segunda a sexta e 5 artigos no mesmo dia; DeepSeek V4 Pro escreve fora do pico.
+
+// v1.6/v1.3 (20/10/2026): ao pedir complemento, cada "tool_use" da resposta anterior precisa de um "tool_result" logo depois
+// (sem isso a Anthropic recusa: "tool_use ids were found without tool_result blocks immediately after").
+export function comResultados(conteudo: Record<string, unknown>[], texto: string): unknown {
+  const ids = conteudo.filter((b) => b.type === "tool_use" && b.id).map((b) => String(b.id));
+  return ids.length ? [...ids.map((id) => ({ type: "tool_result", tool_use_id: id, content: "Recebido. Veja a instrução abaixo." })), { type: "text", text: texto }] : texto;
+}
 // v1.4   // v1.4 (18/10/2026): APURAÇÃO AMPLA SEMANAL — uma apuração (Sonnet) para várias pautas do mesmo grupo; a DeepSeek escreve um artigo por pauta. Perfil, regras e fontes por pauta.
 // v1.3   // v1.3 (18/10/2026): foto vem primeiro do BANCO DE IMAGENS PRÓPRIO (SQL 161); Unsplash é a reserva
 const MODELO = Deno.env.get("VM_MODELO") || "claude-sonnet-5-5";
@@ -479,7 +486,12 @@ export async function processarResposta(x: Execucao, p: Pauta, msg: Obj) {
     const ap = desembrulhar(conteudo.find((b) => b.type === "tool_use" && b.name === "entregar_apuracao_ampla")?.input);
     const porPauta: Record<string, { secao: string; fatos: { data: string; fato: string; url: string }[] }[]> = {};
     for (const it of arr(ap?.pautas)) {
-      const id = txt(it.pauta).replace(/^"|"$/g, "").toLowerCase();
+      const bruto = txt(it.pauta).replace(/^"|"$/g, "").trim().toLowerCase();
+      // v1.6: aceita o identificador, o identificador sem "-dia" ou o nome da pauta (a 1ª apuração de 20/10 não casou nenhuma)
+      const semAc = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+      const achado = membros.find((m) => m.id === bruto) ?? membros.find((m) => m.id.replace(/-dia$/, "") === bruto.replace(/-dia$/, ""))
+        ?? membros.find((m) => semAc(m.nome ?? "") === semAc(bruto)) ?? membros.find((m) => semAc(bruto).includes(semAc(m.id.replace(/-dia$/, "").replace(/-/g, " "))));
+      const id = achado?.id ?? bruto;
       const secoes = arr(it.secoes).map((s) => ({ secao: txt(s.secao), fatos: arr(s.fatos).map((f) => ({ data: txt(f.data), fato: txt(f.fato), url: txt(f.url) })).filter((f) => f.fato) }))
         .filter((s) => s.fatos.length);
       if (id) porPauta[id] = [...(porPauta[id] ?? []), ...secoes];
@@ -493,9 +505,9 @@ export async function processarResposta(x: Execucao, p: Pauta, msg: Obj) {
       return;
     }
     if (++x.reenvios <= 1) {
-      x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content:
-        `Estas pautas vieram fracas (mínimo ${minFatos(p)} fatos cada): ${fracas.map((m) => `${m.id} (${conta(m.id)})`).join(", ")}. Complete a apuração delas (pode buscar mais) e entregue de novo a apuração COMPLETA de todas as pautas pela ferramenta entregar_apuracao_ampla.` }];
-      anota(x, `apuração ampla incompleta (${fracas.map((m) => m.id).join(", ")}) — pedindo complemento`); await enviarPedido(x, p); return;
+      x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content: comResultados(conteudo as Record<string, unknown>[],
+        `Estas pautas vieram fracas (mínimo ${minFatos(p)} fatos cada): ${fracas.map((m) => `${m.id} (${conta(m.id)})`).join(", ")}. Complete a apuração delas (pode buscar mais) e entregue de novo a apuração COMPLETA de todas as pautas pela ferramenta entregar_apuracao_ampla, com o campo pauta exatamente igual a um destes identificadores: ${membros.map((m) => m.id).join(", ")}.`) }];
+      anota(x, `apuração ampla incompleta (${fracas.map((m) => m.id).join(", ")}; pautas recebidas: ${arr(ap?.pautas).map((it) => txt(it.pauta)).join(", ") || "nenhuma"}) — pedindo complemento`); await enviarPedido(x, p); return;
     }
     x.etapa = "falhou"; anota(x, `NÃO apurado: nenhuma pauta com ${minFatos(p)} fatos. US$ ${custo(x)}`); return;
   }
@@ -510,8 +522,8 @@ export async function processarResposta(x: Execucao, p: Pauta, msg: Obj) {
       return;
     }
     if (++x.reenvios <= 1) {
-      x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content:
-        `A apuração veio com ${nf} fatos (mínimo 20). Complete a apuração (pode buscar mais) e entregue pela ferramenta entregar_apuracao.` }];
+      x.mensagens = [...x.mensagens, { role: "assistant", content: conteudo }, { role: "user", content: comResultados(conteudo as Record<string, unknown>[],
+        `A apuração veio com ${nf} fatos (mínimo 20). Complete a apuração (pode buscar mais) e entregue pela ferramenta entregar_apuracao.`) }];
       anota(x, `apuração insuficiente (${nf} fatos) — pedindo complemento`); await enviarPedido(x, p); return;
     }
     x.etapa = "falhou"; anota(x, `NÃO apurado: a apuração veio com ${nf} fatos. US$ ${custo(x)}`); return;
@@ -548,7 +560,7 @@ export async function chamarDeepSeek(sistema: string, usuario: string, modelo: s
   try {
     const r = await http(`${DEEPSEEK_URL}/chat/completions`, { method: "POST", signal: ctl.signal,
       headers: { Authorization: `Bearer ${chave}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: modelo, temperature: 0.6, max_tokens: 12000, response_format: { type: "json_object" },
+      body: JSON.stringify({ model: modelo, temperature: 0.6, max_tokens: 16000, response_format: { type: "json_object" },
         messages: [{ role: "system", content: sistema }, { role: "user", content: usuario }] }) });
     const corpo = await r.text();
     if (r.status === 401 || r.status === 403) throw new Error(`chave da DeepSeek recusada (${r.status})`);
