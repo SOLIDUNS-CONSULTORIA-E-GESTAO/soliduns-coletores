@@ -153,7 +153,7 @@
             </div>
             <div id="blocos" class="p-5 space-y-8 min-h-[260px]"></div>
             <div id="add-fim" class="mx-5 mb-3 flex flex-wrap items-center gap-2 text-[#a89f88]"><span class="text-[10px] uppercase tracking-widest mr-1">Acrescentar no fim</span>
-              <button type="button" data-add="paragrafo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Parágrafo</button><button type="button" data-add="intertitulo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Intertítulo</button><button type="button" data-add="imagem" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Imagem</button><button type="button" data-add="citacao" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Citação</button><button type="button" data-add="lista" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Lista</button><button type="button" data-add="tabela" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Tabela</button><button type="button" data-add="numero" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Box numérico</button><button type="button" data-add="anexo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ PDF</button></div>
+              <button type="button" data-add="paragrafo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Parágrafo</button><button type="button" data-add="intertitulo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Intertítulo</button><button type="button" data-add="imagem" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Imagem</button><button type="button" data-add="citacao" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Citação</button><button type="button" data-add="lista" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Lista</button><button type="button" data-add="tabela" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Tabela</button><button type="button" data-add="numero" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Box numérico</button><button type="button" data-add="anexo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ PDF</button><button type="button" data-add="olho" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Olho</button><button type="button" data-add="fio" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Fio de separação</button></div>
             <div id="soltar-img" class="mx-5 mb-4 flex items-center justify-center gap-2 h-16 border-2 border-dashed border-[#2e2a1e] rounded cursor-pointer text-xs text-[#a89f88] hover:border-[#a89f88]" role="button" tabindex="0" aria-label="Arraste imagens para o corpo ou clique para escolher"><i data-lucide="image-plus" class="w-4 h-4"></i>Arraste imagens aqui (ou para qualquer ponto do texto) — ou clique para escolher. JPG, PNG ou WEBP, até 5 MB cada</div>
             <div class="flex flex-wrap gap-x-6 gap-y-1 px-5 py-3 border-t border-[#2e2a1e] text-[11px] f-mono text-[#a89f88]">
               <span id="m-palavras">0 palavras</span><span id="m-leitura">0 min de leitura</span><span>Colar texto do Word ou da web limpa a formatação</span>
@@ -420,7 +420,7 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
   const w = document.createElement('div');
   w.className = 'group relative bg-black/40 border border-transparent hover:border-[#2e2a1e] rounded px-3 py-2';
   w.dataset.tipo = tipo;
-  if (tipo === 'lista' || tipo === 'tabela' || tipo === 'numero' || tipo === 'anexo') {
+  if (tipo === 'lista' || tipo === 'tabela' || tipo === 'numero' || tipo === 'anexo' || tipo === 'olho' || tipo === 'fio') {
     montarBlocoEspecial(w, tipo, texto || {});
     w.firstElementChild?.classList.add('pr-72');      /* v160: espaço para a barra Mover/↑/↓/Apagar campo */
   } else if (tipo === 'imagem') {
@@ -487,7 +487,7 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
   ins.className = 'bloco-ins absolute left-1/2 -translate-x-1/2 -bottom-7 z-20 flex items-center gap-1 bg-[#0d0d0c] border border-[#2e2a1e] rounded-full px-2 py-0.5 text-[11px] text-[#a89f88] opacity-70 hover:opacity-100 focus-within:opacity-100 whitespace-nowrap';
   ins.innerHTML = [['paragrafo', 'Parágrafo'], ['imagem', 'Imagem'], ['intertitulo', 'Intertítulo'], ['citacao', 'Citação']]
     .map(([t, rot]) => `<button type="button" data-ins="${t}" class="px-1.5 hover:text-[#eec617]" aria-label="Inserir ${rot.toLowerCase()} aqui">+ ${rot}</button>`).join('<span aria-hidden="true">·</span>')
-    + '<span aria-hidden="true">·</span><select class="ins-mais bg-transparent px-1 hover:text-[#eec617] cursor-pointer" aria-label="Inserir outro tipo de campo aqui"><option value="" class="bg-black">+ Mais…</option><option value="lista" class="bg-black">Lista</option><option value="tabela" class="bg-black">Tabela</option><option value="numero" class="bg-black">Box numérico</option><option value="anexo" class="bg-black">PDF para download</option></select>';
+    + '<span aria-hidden="true">·</span><select class="ins-mais bg-transparent px-1 hover:text-[#eec617] cursor-pointer" aria-label="Inserir outro tipo de campo aqui"><option value="" class="bg-black">+ Mais…</option><option value="lista" class="bg-black">Lista</option><option value="tabela" class="bg-black">Tabela</option><option value="numero" class="bg-black">Box numérico</option><option value="anexo" class="bg-black">PDF para download</option><option value="olho" class="bg-black">Olho (frase em destaque)</option><option value="fio" class="bg-black">Fio de separação</option></select>';
   w.appendChild(ins);
   ctl.addEventListener('mousedown', e => { if (e.target.closest('[data-a="arrastar"]')) w.draggable = true; });
   ctl.addEventListener('click', e => {
@@ -545,7 +545,7 @@ function inserirAqui(tipo, depois) {
   if (tipo === 'imagem') { blocoRef = depois || $('#blocos').lastElementChild; return $('#arq-img').click(); }
   if (tipo === 'anexo') { blocoRef = depois || $('#blocos').lastElementChild; return $('#arq-anexo').click(); }
   if (tipo === 'intertitulo' && $('#f-tipo').value === 'Nota') return toast('Nota curta não tem intertítulo.', 'aviso');
-  const n = novoBloco(tipo, ['lista', 'tabela', 'numero'].includes(tipo) ? {} : '', depois || $('#blocos').lastElementChild);
+  const n = novoBloco(tipo, ['lista', 'tabela', 'numero', 'olho', 'fio'].includes(tipo) ? {} : '', depois || $('#blocos').lastElementChild);
   (n.querySelector('.editor-bloco') || n.querySelector('input,textarea,[contenteditable]'))?.focus();
   n.scrollIntoView({block: 'nearest'}); atualizar();
 }
@@ -764,7 +764,7 @@ function corpoJSON() {
     if (w._json) return w._json();
     const conteudo = [...w.querySelector('.editor-bloco').childNodes].map(noJSON).filter(Boolean);
     return {tipo, texto: textoDe(conteudo).replace(/\s+/g, ' ').trim(), conteudo};
-  }).filter(b => !['paragrafo','intertitulo','citacao'].includes(b.tipo) || b.texto);
+  }).filter(b => (!['paragrafo','intertitulo','citacao'].includes(b.tipo) || b.texto) && (b.tipo !== 'olho' || b.texto));   /* v163: olho vazio não vai */
 }
 /* JSON -> HTML seguro (mesma regra da página pública: escape + só marcas da lista; nada vindo do usuário vira tag) */
 const TAG_SAIDA = {negrito:'strong', italico:'em', sublinhado:'u', riscado:'s', marcador:'mark', menor:'small', sobrescrito:'sup', subscrito:'sub', codigo:'code'};
@@ -795,6 +795,8 @@ function blocosHTML(blocos) {
         <thead><tr>${(b.cabecalho || []).map(c => `<th class="text-left font-medium uppercase tracking-wider text-[11px] text-[#F5F2E7] bg-[#414A38] px-3 py-2">${escapar(c)}</th>`).join('')}</tr></thead>
         <tbody>${(b.linhas || []).map(l => `<tr class="border-b border-[#D9D3BF] even:bg-[#ECE7D6]/60">${l.map((c, i) => `<td class="px-3 py-2 ${/^[-+−]?[\d.,]+%?$/.test(String(c).trim()) ? 'text-right tabular-nums' : ''}">${comTickers(escapar(c))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
         ${b.legenda || b.fonte ? `<figcaption class="f-marca text-[12px] text-[#4F5446] mt-1.5">${escapar(b.legenda || '')}${b.fonte ? ` <span class="text-[#7A6629]">Fonte: ${escapar(b.fonte)}</span>` : ''}</figcaption>` : ''}</figure>`;
+    if (b.tipo === 'olho') return b.texto ? `<aside class="my-7 mx-auto max-w-[34rem] ${b.fios === false ? '' : 'border-y-2 border-[#b8963e]'} py-4"><p class="f-jornal italic text-[1.45rem] leading-snug text-[#1C1F18]">${escapar(/^[“"]/.test(b.texto) ? b.texto : '“' + b.texto + '”')}</p>${b.autor ? `<p class="f-marca text-[12px] text-[#7A6629] mt-2">— ${escapar(b.autor)}</p>` : ''}</aside>` : '';
+    if (b.tipo === 'fio') return `<hr class="my-6 mx-auto" style="border:0;border-top:${b.espessura || 1}px ${({continuo: 'solid', tracejado: 'dashed', pontilhado: 'dotted'})[b.estilo] || 'solid'} ${({dourado: '#b8963e', oliva: '#6b7a55', cinza: '#8a8576'})[b.cor] || '#b8963e'};width:${({inteira: '100%', media: '60%', curta: '25%'})[b.largura] || '100%'}">`;
     if (b.tipo === 'numero') return `<aside class="my-6 flex items-center gap-5 border-l-4 border-[#7A6629] bg-[#ECE7D6] px-5 py-4"><div class="f-jornal text-5xl leading-none text-[#414A38] whitespace-nowrap">${escapar(b.valor)}</div><div class="f-marca text-[14px] leading-snug text-[#1C1F18]">${escapar(b.legenda)}</div></aside>`;
     if (b.tipo === 'anexo') return `<a href="${escapar(b.url || '#')}" target="_blank" rel="noopener noreferrer" class="my-5 flex items-center gap-4 border border-[#D9D3BF] bg-white/60 px-4 py-3 no-underline hover:border-[#414A38]"><span class="f-marca text-[11px] font-medium bg-[#414A38] text-[#F5F2E7] px-2 py-1">PDF</span><span class="flex-1"><span class="block f-jornal text-[1.05rem] text-[#1C1F18]">${escapar(b.titulo || b.nome)}</span><span class="block f-marca text-[12px] text-[#4F5446]">${escapar(b.nome)} · ${escapar(b.tamanho || '')} · baixar</span></span><span aria-hidden="true" class="text-[#414A38] text-xl">⇩</span></a>`;
     const h = comTickers(conteudoHTML(b.conteudo));
@@ -846,6 +848,39 @@ function montarBlocoEspecial(w, tipo, d) {
     w._json = () => { ler(); const limpa = v => String(v).replace(/\s+/g, ' ').trim().slice(0, 200);
       return {tipo, cabecalho: dados[0].map(limpa), linhas: dados.slice(1).map(l => l.map(limpa)).filter(l => l.some(Boolean)),
               legenda: w.querySelector('.t-leg').value.trim(), fonte: w.querySelector('.t-fonte').value.trim()}; };
+  }
+  /* v163: OLHO da matéria (frase em destaque entre fios) e FIO DE SEPARAÇÃO editável */
+  if (tipo === 'olho') {
+    w.innerHTML = `<div class="flex flex-wrap items-center gap-3 mb-2"><span class="text-[10px] uppercase tracking-widest text-[#a89f88]">Olho da matéria</span>
+        <label class="text-[11px] text-[#a89f88] flex items-center gap-1"><input type="checkbox" class="o-fios accent-[#eec617]" checked> fios em cima e embaixo</label></div>
+      <div class="o-caixa border-y-2 border-[#b8963e] py-3">
+        <textarea class="o-txt w-full bg-transparent f-jornal italic text-xl leading-relaxed text-[#f2ecd8] resize-none overflow-hidden outline-none" rows="2" placeholder="“Frase forte tirada do texto ou de um entrevistado”" aria-label="Frase do olho"></textarea>
+        <input class="o-autor w-full bg-transparent text-xs text-[#d4b25a] outline-none mt-1" maxlength="300" placeholder="— Quem disse, onde (ex.: Yasuo Matsubara e coautores, na EES Solar, tradução livre)" aria-label="Atribuição do olho">
+      </div>`;
+    const t = w.querySelector('.o-txt'), cx = w.querySelector('.o-caixa'), fi = w.querySelector('.o-fios');
+    const cresce = () => { t.style.height = 'auto'; t.style.height = t.scrollHeight + 'px'; };
+    t.value = d.texto || ''; w.querySelector('.o-autor').value = (d.autor || '').replace(/^\s*[—–-]\s*/, ''); fi.checked = d.fios !== false;
+    const vfios = () => cx.classList.toggle('border-y-2', fi.checked);
+    t.addEventListener('input', () => { cresce(); atualizar(); }); w.querySelector('.o-autor').addEventListener('input', atualizar);
+    fi.addEventListener('change', () => { vfios(); atualizar(); }); vfios(); requestAnimationFrame(cresce);
+    w._json = () => ({tipo, texto: t.value.replace(/\s+/g, ' ').trim(), autor: w.querySelector('.o-autor').value.replace(/^\s*[—–-]\s*/, '').trim(), fios: fi.checked});
+  }
+  if (tipo === 'fio') {
+    const SEL = 'h-8 bg-black border border-[#2e2a1e] rounded px-2 text-xs';
+    w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2">Fio de separação</div>
+      <div class="flex flex-wrap gap-2 items-center">
+        <select class="f-esp ${SEL}" aria-label="Espessura"><option value="1">Fino</option><option value="2">Médio</option><option value="4">Grosso</option></select>
+        <select class="f-cor ${SEL}" aria-label="Cor"><option value="dourado">Dourado</option><option value="oliva">Verde-oliva</option><option value="cinza">Cinza</option></select>
+        <select class="f-est ${SEL}" aria-label="Estilo"><option value="continuo">Contínuo</option><option value="tracejado">Tracejado</option><option value="pontilhado">Pontilhado</option></select>
+        <select class="f-larg ${SEL}" aria-label="Largura"><option value="inteira">Largura inteira</option><option value="media">Média (60%)</option><option value="curta">Curta (25%)</option></select>
+      </div>
+      <div class="py-4"><div class="f-amostra mx-auto"></div></div>`;
+    const COR = {dourado: '#b8963e', oliva: '#6b7a55', cinza: '#8a8576'}, EST = {continuo: 'solid', tracejado: 'dashed', pontilhado: 'dotted'}, LARG = {inteira: '100%', media: '60%', curta: '25%'};
+    const q = c => w.querySelector(c);
+    q('.f-esp').value = String(d.espessura || 1); q('.f-cor').value = d.cor || 'dourado'; q('.f-est').value = d.estilo || 'continuo'; q('.f-larg').value = d.largura || 'inteira';
+    const amostra = () => { const a = q('.f-amostra'); a.style.borderTop = `${q('.f-esp').value}px ${EST[q('.f-est').value]} ${COR[q('.f-cor').value]}`; a.style.width = LARG[q('.f-larg').value]; };
+    w.querySelectorAll('select').forEach(s => s.addEventListener('change', () => { amostra(); atualizar(); })); amostra();
+    w._json = () => ({tipo, espessura: +q('.f-esp').value, cor: q('.f-cor').value, estilo: q('.f-est').value, largura: q('.f-larg').value});
   }
   if (tipo === 'numero') {
     w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2">Box de destaque numérico</div>

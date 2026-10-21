@@ -13217,6 +13217,16 @@ function vmBlocos(blocos){
     if(b.tipo === 'tabela') return '<figure class="vm-art-tab"><div><table><thead><tr>' + (b.cabecalho || []).map(c => '<th>' + escHtml(c) + '</th>').join('') + '</tr></thead><tbody>'
       + (b.linhas || []).map(l => '<tr>' + (l || []).map(c => '<td' + (/^[-+−]?[\d.,]+%?$/.test(String(c).trim()) ? ' class="num"' : '') + '>' + vmComTickers(escHtml(c)) + '</td>').join('') + '</tr>').join('') + '</tbody></table></div>'
       + (b.legenda || b.fonte ? '<figcaption>' + escHtml(b.legenda || '') + (b.fonte ? ' Fonte: ' + escHtml(b.fonte) : '') + '</figcaption>' : '') + '</figure>';
+    if(b.tipo === 'olho'){        /* v163: olho da matéria */
+      if(!b.texto) return '';
+      const t = /^[“"]/.test(b.texto) ? b.texto : '“' + b.texto + '”';
+      return '<aside class="vm-art-olho' + (b.fios === false ? ' vm-sem-fios' : '') + '"><p>' + escHtml(t) + '</p>' + (b.autor ? '<cite>— ' + escHtml(b.autor) + '</cite>' : '') + '</aside>';
+    }
+    if(b.tipo === 'fio'){         /* v163: fio de separação */
+      const cor = {dourado: '#b8963e', oliva: '#414A38', cinza: '#9a9484'}[b.cor] || '#b8963e', est = {continuo: 'solid', tracejado: 'dashed', pontilhado: 'dotted'}[b.estilo] || 'solid';
+      const larg = {inteira: '100%', media: '60%', curta: '25%'}[b.largura] || '100%', esp = [1, 2, 4].includes(+b.espessura) ? +b.espessura : 1;
+      return '<hr class="vm-art-fio" style="border-top:' + esp + 'px ' + est + ' ' + cor + ';width:' + larg + '">';
+    }
     if(b.tipo === 'numero') return '<aside class="vm-art-num"><b>' + escHtml(b.valor) + '</b><span>' + escHtml(b.legenda || '') + '</span></aside>';
     if(b.tipo === 'anexo') return /^https:\/\//i.test(b.url || '') ? '<a class="vm-art-pdf" href="' + escHtml(b.url) + '" target="_blank" rel="noopener noreferrer"><i>PDF</i><span>' + escHtml(b.titulo || b.nome || 'Documento')
       + '<small>' + escHtml(b.nome || '') + (b.tamanho ? ' · ' + escHtml(b.tamanho) : '') + ' · baixar</small></span></a>' : '';
