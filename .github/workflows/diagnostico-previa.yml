@@ -1,0 +1,46 @@
+# SOLIDUNS — DIAGNÓSTICO DA PRÉVIA DO LINK (WhatsApp/Telegram). 21/10/2026.
+# Não publica nada e não gasta créditos do Netlify: só abre o link como o WhatsApp abre e mede o tempo e o peso da foto.
+# Uso: Actions › Diagnóstico da prévia › Run workflow (artigo = número do artigo; 0 = manchete do dia).
+name: Diagnóstico da prévia
+on:
+  workflow_dispatch:
+    inputs:
+      artigo:
+        description: "Número do artigo (0 = manchete do dia)"
+        required: true
+        default: "61"
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Abrir o link como o WhatsApp
+        run: |
+          A="${{ github.event.inputs.artigo }}"
+          UA="WhatsApp/2.24.20.80 A"
+          if [ "$A" = "0" ]; then L="https://soliduns.com.br/noticias/?v=diag$GITHUB_RUN_ID"; else L="https://soliduns.com.br/noticias/?artigo=$A&v=diag$GITHUB_RUN_ID"; fi
+          R=$(curl -s -A "$UA" -o pag.html -w "código %{http_code}, %{size_download} bytes, %{time_total}s" "$L")
+          echo "::notice title=1 PÁGINA::$R"
+          T=$(grep -o '<meta property="og:title" content="[^"]*"' pag.html | head -1 | sed 's/.*content="//; s/"$//')
+          echo "::notice title=2 TÍTULO::${T:-NÃO ENCONTRADO}"
+          P=$(grep -ob 'og:image" content=' pag.html | head -1 | cut -d: -f1)
+          echo "::notice title=3 POSIÇÃO DA FOTO NO HTML::byte ${P:-AUSENTE} de $(wc -c < pag.html)"
+          F=$(grep -o '<meta property="og:image" content="[^"]*"' pag.html | head -1 | sed 's/.*content="//; s/"$//; s/&amp;/\&/g')
+          echo "::notice title=4 ENDEREÇO DA FOTO::${F:-NÃO ENCONTRADO}"
+          [ -n "$F" ] || exit 0
+          for i in 1 2 3; do
+            R=$(curl -s -A "$UA" -o foto$i -w "código %{http_code}, %{size_download} bytes, %{content_type}, %{time_total}s, redirecionou para: %{redirect_url}" "$F")
+            echo "::notice title=5.$i FOTO (sem seguir redirecionamento)::$R"
+          done
+          R=$(curl -sL -A "$UA" -o fotoL -w "código %{http_code}, %{size_download} bytes, %{content_type}, %{time_total}s, final: %{url_effective}" "$F")
+          echo "::notice title=6 FOTO (seguindo redirecionamento)::$R"
+          file fotoL | sed 's/^/::notice title=7 TIPO REAL::/'
+          B=$(echo "$F" | sed -n 's#.*/noticias/foto/\(.*\)\.jpg#\1#p')
+          if [ -n "$B" ]; then
+            O=$(echo "$B" | tr '_-' '/+' | awk '{l=length($0)%4; if(l==2)print $0"=="; else if(l==3)print $0"="; else print $0}' | base64 -d 2>/dev/null)
+            R=$(curl -s -o orig -w "código %{http_code}, %{size_download} bytes, %{content_type}, %{time_total}s" "$O")
+            echo "::notice title=8 FOTO ORIGINAL::$O → $R"
+            Q=$(python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1],safe=''))" "$O")
+            R=$(curl -s -o img -w "código %{http_code}, %{size_download} bytes, %{content_type}, %{time_total}s" "https://soliduns.com.br/.netlify/images?url=$Q&w=1200&h=630&fit=cover&fm=jpg&q=70")
+            echo "::notice title=9 SERVIÇO DE IMAGENS DO NETLIFY DIRETO::$R"
+          fi
