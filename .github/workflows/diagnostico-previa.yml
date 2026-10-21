@@ -32,6 +32,9 @@ jobs:
             R=$(curl -s -A "$UA" -o foto$i -w "código %{http_code}, %{size_download} bytes, %{content_type}, %{time_total}s, redirecionou para: %{redirect_url}" "$F")
             echo "::notice title=5.$i FOTO (sem seguir redirecionamento)::$R"
           done
+          curl -s -A "$UA" -D cab_foto -o /dev/null "$F"; curl -s -A "$UA" -D cab_pag -o /dev/null "$L"
+          echo "::notice title=5.9 CABEÇALHOS DA FOTO::$(tr -d '\r' < cab_foto | grep -viE '^(date|x-nf-request-id|server):' | paste -sd '|')"
+          echo "::notice title=1.9 CABEÇALHOS DA PÁGINA::$(tr -d '\r' < cab_pag | grep -viE '^(date|x-nf-request-id|server):' | paste -sd '|')"
           R=$(curl -sL -A "$UA" -o fotoL -w "código %{http_code}, %{size_download} bytes, %{content_type}, %{time_total}s, final: %{url_effective}" "$F")
           echo "::notice title=6 FOTO (seguindo redirecionamento)::$R"
           file fotoL | sed 's/^/::notice title=7 TIPO REAL::/'
