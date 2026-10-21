@@ -788,7 +788,7 @@ function comTickers(html) {
 }
 function blocosHTML(blocos) {
   return blocos.map(b => {
-    if (b.tipo === 'imagem') return `<figure class="my-5">${b.src ? `<img src="${escapar(b.src)}" alt="" class="w-full rounded-sm">` : '<div class="h-40 bg-[#D9D3BF]/60"></div>'}<figcaption class="text-xs f-marca text-[#4F5446] mt-1">${escapar(b.legenda || '')}${b.credito ? ` <span class="text-[#7A6629]">Foto: ${escapar(b.credito)}</span>` : ''}</figcaption></figure>`;
+    if (b.tipo === 'imagem') return `<figure class="my-5">${b.src ? `<img src="${escapar(b.src)}" alt="" class="w-full rounded-sm">` : '<div class="h-40 bg-[#D9D3BF]/60"></div>'}<figcaption class="text-[12.5px] leading-relaxed text-justify f-marca text-[#4F5446] mt-1.5">${escapar(b.legenda || '')}${b.credito ? `<span class="block text-left text-[#7A6629] mt-0.5">${escapar(rotuloCredito(b.credito))}</span>` : ''}</figcaption></figure>`;
     if (b.tipo === 'lista') { const tg = b.ordenada ? 'ol' : 'ul';
       return `<${tg} class="${b.ordenada ? 'list-decimal' : 'list-disc'} pl-6 my-4 space-y-1.5 f-jornal text-[1.13rem] leading-[1.6] text-[#1C1F18] marker:text-[#7A6629]">${(b.itens || []).map(it => `<li class="pl-1">${comTickers(conteudoHTML(it.conteudo))}</li>`).join('')}</${tg}>`; }
     if (b.tipo === 'tabela') return `<figure class="my-6"><div class="overflow-x-auto"><table class="w-full border-collapse f-marca text-[14px] text-[#1C1F18]">
@@ -1071,6 +1071,8 @@ function verificar() {
   return itens.filter(i => !i.ok).length;
 }
 
+/* v165: "Foto: X", sem repetir quando o crédito já traz o rótulo (Ilustração, Imagem, Arte, Reprodução…) */
+function rotuloCredito(c) { const t = String(c || '').trim(); return /^(foto|fotos|ilustra[cç][aã]o|imagem|arte|infogr[aá]fico|reprodu[cç][aã]o|divulga[cç][aã]o)\b/i.test(t) ? t : 'Foto: ' + t; }
 /* ---------- fontes (v160: caixa de texto livre, uma por linha) ---------- */
 function lerFontes() {
   return ($('#fontes-texto').value || '').split(/\r?\n/).map(l => l.replace(/^\s*(?:[-•*–·▪]|\d{1,3}[.)])\s*/, '').trim()).filter(Boolean).map(l => {
@@ -1172,7 +1174,7 @@ function previa() {
       <h1 class="prev-titulo f-jornal text-4xl leading-tight mt-2 mb-3">${escapar($('#f-titulo').value || 'Título da matéria')}</h1>
       <p class="f-jornal text-xl text-[#4F5446] leading-snug mb-4 text-justify [hyphens:auto]">${escapar($('#f-linha').value || 'Linha fina da matéria.')}</p>
       <div class="f-marca text-[13px] text-[#4F5446] flex flex-wrap gap-3 pb-4 mb-5 border-b border-[#D9D3BF]"><span>Por ${escapar(autor)}</span><span class="text-[#7A6629]">Editor: Thiago Viegas</span><span class="text-[#7A6629]">${h}</span><span class="text-[#7A6629]">${Math.max(1, Math.round(pal / 200))} min de leitura</span></div>
-      ${foto ? `<figure class="mb-5"><img src="${$('#thumb').src}" alt="${escapar($('#f-alt').value)}" class="w-full rounded-sm"><figcaption class="f-marca text-[12px] text-[#4F5446] mt-1">${escapar($('#f-legenda').value.trim())}${fotog ? ` <span class="text-[#7A6629]">Foto: ${escapar(fotog)}</span>` : ''}</figcaption></figure>` : ''}
+      ${foto ? `<figure class="mb-5"><img src="${$('#thumb').src}" alt="${escapar($('#f-alt').value)}" class="w-full rounded-sm"><figcaption class="f-marca text-[12.5px] leading-relaxed text-justify text-[#4F5446] mt-1.5">${escapar($('#f-legenda').value.trim())}${fotog ? `<span class="block text-left text-[#7A6629] mt-0.5">${escapar(rotuloCredito(fotog))}</span>` : ''}</figcaption></figure>` : ''}
       <div class="prev-corpo">${(() => { if (!b.length) return '<p class="f-jornal text-[#4F5446]">O corpo aparece aqui.</p>';
         const esp = ESPACOS.find(x => x.id === 'artigo'), ban = banners.find(x => x.espaco === 'artigo');
         let n = 0, corte = b.findIndex(x => x.tipo === 'paragrafo' && ++n === 2);
