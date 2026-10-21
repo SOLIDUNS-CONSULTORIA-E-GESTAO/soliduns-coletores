@@ -425,13 +425,16 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
     if (texto && texto.src) w.dataset.src = texto.src;
     w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2 pr-72">Imagem no texto</div>
       <div class="img-area"></div>
-      <input class="mt-2 w-full h-8 bg-black border border-[#2e2a1e] rounded px-2 text-xs" maxlength="200" placeholder="Legenda (só o nome do fotógrafo)" aria-label="Legenda da imagem">
+      <textarea class="i-leg mt-2 w-full bg-black border border-[#2e2a1e] rounded px-2 py-1.5 text-xs leading-snug resize-none overflow-hidden" rows="1" placeholder="Legenda da imagem" aria-label="Legenda da imagem"></textarea>
       <div class="flex flex-wrap gap-2 mt-2">
         <button type="button" data-img="trocar" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1 hover:border-[#eec617] hover:text-[#eec617]">Trocar imagem</button>
         <button type="button" data-img="remover" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1 hover:border-[#e2564f] hover:text-[#e2564f]">Remover imagem</button>
       </div>
       <input type="file" accept="image/jpeg,image/png,image/webp" class="img-arq hidden" aria-hidden="true" tabindex="-1">`;
-    if (texto && texto.legenda) w.querySelector('input').value = texto.legenda;
+    /* v177: legenda sem limite de caracteres; a caixa cresce para mostrar o texto inteiro */
+    const leg = w.querySelector('.i-leg'), ajustaLeg = () => { leg.style.height = 'auto'; leg.style.height = leg.scrollHeight + 'px'; };
+    if (texto && texto.legenda) leg.value = texto.legenda;
+    leg.addEventListener('input', ajustaLeg); requestAnimationFrame(ajustaLeg);
     desenharImg(w);
     const arq = w.querySelector('.img-arq');
     w.querySelector('[data-img="trocar"]').onclick = () => arq.click();
@@ -750,7 +753,7 @@ const textoDe = c => (c || []).map(x => x.texto ?? textoDe(x.conteudo)).join('')
 function corpoJSON() {
   return $$('#blocos > div').map(w => {
     const tipo = w.dataset.tipo;
-    if (tipo === 'imagem') return {tipo, legenda: w.querySelector('input').value.trim(), ...(w.dataset.src ? {src: w.dataset.src} : {})};
+    if (tipo === 'imagem') return {tipo, legenda: w.querySelector('.i-leg').value.replace(/\s+/g, ' ').trim(), ...(w.dataset.src ? {src: w.dataset.src} : {})};
     if (w._json) return w._json();
     const conteudo = [...w.querySelector('.editor-bloco').childNodes].map(noJSON).filter(Boolean);
     return {tipo, texto: textoDe(conteudo).replace(/\s+/g, ' ').trim(), conteudo};
@@ -815,7 +818,7 @@ function montarBlocoEspecial(w, tipo, d) {
       <button type="button" class="t-menos-c text-[11px] border border-[#2e2a1e] rounded px-2 py-0.5 hover:border-[#a89f88]">− coluna</button>
       <span class="text-[11px] text-[#a89f88]">1ª linha = cabeçalho · colar do Excel funciona</span></div>
       <div class="t-grade overflow-x-auto"></div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2"><input class="t-leg h-8 ${CAMPO}" placeholder="Legenda da tabela" aria-label="Legenda da tabela" maxlength="200"><input class="t-fonte h-8 ${CAMPO}" placeholder="Fonte (ex.: balanços das companhias)" aria-label="Fonte da tabela" maxlength="120"></div>`;
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2"><input class="t-leg h-8 ${CAMPO}" placeholder="Legenda da tabela" aria-label="Legenda da tabela"><input class="t-fonte h-8 ${CAMPO}" placeholder="Fonte (ex.: balanços das companhias)" aria-label="Fonte da tabela" maxlength="120"></div>`;
     w.querySelector('.t-leg').value = d.legenda || ''; w.querySelector('.t-fonte').value = d.fonte || '';
     let dados = [cab, ...lin];
     const ler = () => { dados = [...w.querySelectorAll('.t-grade tr')].map(tr => [...tr.querySelectorAll('input')].map(i => i.value)); };
@@ -841,7 +844,7 @@ function montarBlocoEspecial(w, tipo, d) {
     w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2">Box de destaque numérico</div>
       <div class="grid grid-cols-1 sm:grid-cols-[10rem_1fr] gap-2 items-end">
         <input class="n-valor h-12 ${CAMPO} f-jornal text-3xl text-[#eec617]" placeholder="13,75%" maxlength="16" aria-label="Número em destaque">
-        <input class="n-leg h-12 ${CAMPO}" placeholder="Selic mantida pela 4ª reunião seguida" maxlength="120" aria-label="Legenda do número"></div>`;
+        <input class="n-leg h-12 ${CAMPO}" placeholder="Selic mantida pela 4ª reunião seguida" aria-label="Legenda do número"></div>`;
     w.querySelector('.n-valor').value = d.valor || ''; w.querySelector('.n-leg').value = d.legenda || '';
     w._json = () => ({tipo, valor: w.querySelector('.n-valor').value.trim(), legenda: w.querySelector('.n-leg').value.trim()});
   }
@@ -1261,7 +1264,7 @@ async function dadosDoArtigo() {
   for (const w of $$('#blocos > div')) {
     if (w.dataset.tipo === 'imagem' && w.dataset.src && !/^https:\/\//.test(w.dataset.src)) {
       const blob = w._arquivo || await dataURLparaBlob(w.dataset.src);
-      const r = await enviarArquivo(blob, {fotografo: w.querySelector('input').value.trim() || null});
+      const r = await enviarArquivo(blob, {fotografo: w.querySelector('.i-leg').value.trim() || null});
       w.dataset.src = r.url; w._arquivo = null;
     }
     if (w.dataset.tipo === 'anexo' && w._d && w._arquivo) {
@@ -1274,7 +1277,7 @@ async function dadosDoArtigo() {
   }
   const corpo = corpoJSON().filter(b => b.tipo !== 'imagem' || /^https:\/\//.test(b.src || ''))
     .filter(b => b.tipo !== 'anexo' || /^https:\/\//.test(b.url || ''))
-    .map(b => b.tipo === 'imagem' ? {tipo: 'imagem', src: b.src, ...(b.legenda ? {legenda: b.legenda.slice(0, 200)} : {})} : b);
+    .map(b => b.tipo === 'imagem' ? {tipo: 'imagem', src: b.src, ...(b.legenda ? {legenda: b.legenda} : {})} : b);
   const foto = fotoAtual && !$('#thumb').classList.contains('hidden') ? Object.fromEntries(Object.entries({src: fotoAtual.src, alt: $('#f-alt').value.trim(),
     fotografo: $('#f-fotografo').value.trim() || undefined, origem: $('#f-origem').value, midia_id: fotoAtual.midia_id}).filter(([, v]) => v !== undefined && v !== '')) : null;
   // v154: link opcional — fonte com texto entra; link em branco = texto simples; link preenchido tem de ser https:// válido
