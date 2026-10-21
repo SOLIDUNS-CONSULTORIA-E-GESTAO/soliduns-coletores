@@ -1,4 +1,4 @@
-// SOLIDUNS · Valor e Mercado — Edge Function do Netlify "previa-artigo" — v1.3 (21/10/2026)
+// SOLIDUNS · Valor e Mercado — Edge Function do Netlify "previa-artigo" — v1.4 (21/10/2026)
 // Pedido do Thiago (19/10 01h06): o link https://soliduns.com.br/noticias/?artigo=N compartilhado no WhatsApp/Telegram deve
 // mostrar a foto, o título e a linha fina DAQUELE artigo. O WhatsApp não roda o código do site; ele lê só o HTML da resposta.
 // Aqui: com ?artigo=N, o Netlify busca a página de prévia montada no banco (public.vm_previa, SQL 163) e a entrega como HTML.
@@ -23,10 +23,22 @@ export default async function previa(req: Request, context: Ctx): Promise<Respon
     if (!r.ok) return context.next();
     const html = await r.text();
     if (!html.startsWith("<!doctype html>") || !html.includes('property="og:image"')) return context.next();
-    return new Response(fotoLeve(html), { status: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" } });
+    return new Response(mesmoEndereco(fotoLeve(html), req.url), { status: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" } });
   } catch {
     return context.next();
   }
+}
+
+// v1.4 (21/10/2026, v166): o WhatsApp guarda a prévia pelo og:url. Com og:url sem o "&v=…", o link novo herdava a prévia
+// antiga (falha) do mesmo artigo. Agora og:url e canonical repetem o endereço compartilhado (sem os parâmetros de rastreio).
+function mesmoEndereco(html: string, pedido: string): string {
+  const u = new URL(pedido);
+  const q = new URLSearchParams();
+  for (const k of ["artigo", "v", "t"]) if (u.searchParams.has(k)) q.set(k, u.searchParams.get(k) ?? "");
+  const end = "https://soliduns.com.br/noticias/" + (q.toString() ? "?" + q.toString() : "");
+  const e = end.replace(/&/g, "&amp;");
+  return html.replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${e}$2`)
+             .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${e}$2`);
 }
 
 // v1.2 (20/10/2026): o WhatsApp descarta a prévia quando a foto é pesada (as fotos de capa podem passar de 1 MB).
