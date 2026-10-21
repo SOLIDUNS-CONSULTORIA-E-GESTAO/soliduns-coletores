@@ -18,7 +18,7 @@
 // Variáveis: COLETOR_TOKEN (manual) · ANTHROPIC_API_KEY (manual) · VM_MODELO (opcional) ·
 //            SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY (automáticas). Nenhuma chave neste arquivo.
 
-const VERSAO = "2.8";   // v2.8 (20/10/2026, decisão do Thiago): o Sonnet escreve o Scanner (padrão); DeepSeek só com VM_SCANNER_REDATOR=deepseek. v2.7:   // v2.7 (20/10/2026): DeepSeek com teto de 75 s e 14 mil tokens; se não terminar, o Claude escreve (às 07h00 de 20/10 a função estourou 150 s). v2.6:   // v2.6 (19/10/2026, "RESERVA CLAUDE NO SCANNER"): texto da DeepSeek reprovado na conferência → o Claude reescreve e vai ao ar a melhor versão. v2.5:   // v2.5 (19/10/2026): DeepSeek com limite maior (32 mil) e, se a resposta vier cortada ou vazia, o Claude assume. v2.4:   // v2.4 (19/10/2026): agenda de INDICADORES (SQL 168): no texto só os de impacto ALTO (até 5); segunda-feira traz a semana. A planilha completa sai do banco, abaixo do texto. v2.3:   // v2.3 (18/10/2026): REDATOR DeepSeek V4 Pro (decisão do Thiago: escrever fora do pico, às 07h00 em dias úteis); o Claude fica de reserva.
+const VERSAO = "2.9";   // v2.9 (21/10/2026): indicadores (Ibovespa, dólar, euro, juros) chegam com a variação % sobre o registro anterior já calculada; a conferência deixa de reprovar variação correta citada só com o registro do dia. v2.8: v2.8 (20/10/2026, decisão do Thiago): o Sonnet escreve o Scanner (padrão); DeepSeek só com VM_SCANNER_REDATOR=deepseek. v2.7:   // v2.7 (20/10/2026): DeepSeek com teto de 75 s e 14 mil tokens; se não terminar, o Claude escreve (às 07h00 de 20/10 a função estourou 150 s). v2.6:   // v2.6 (19/10/2026, "RESERVA CLAUDE NO SCANNER"): texto da DeepSeek reprovado na conferência → o Claude reescreve e vai ao ar a melhor versão. v2.5:   // v2.5 (19/10/2026): DeepSeek com limite maior (32 mil) e, se a resposta vier cortada ou vazia, o Claude assume. v2.4:   // v2.4 (19/10/2026): agenda de INDICADORES (SQL 168): no texto só os de impacto ALTO (até 5); segunda-feira traz a semana. A planilha completa sai do banco, abaixo do texto. v2.3:   // v2.3 (18/10/2026): REDATOR DeepSeek V4 Pro (decisão do Thiago: escrever fora do pico, às 07h00 em dias úteis); o Claude fica de reserva.
 // O Scanner não pesquisa na web: escreve só com a base própria (agenda, cotações, radar). Por isso a DeepSeek pode escrevê-lo sozinha.
 const REVISAO_HUMANA = Deno.env.get("VM_REVISAO_HUMANA") === "1";
 const PROMPT_VERSAO = "1.2";   // v2.0: revisão do plano editorial (Thiago, 15/10 20h55)
@@ -111,10 +111,14 @@ export async function montarContexto(hoje: Date): Promise<{ ctx: Contexto; urls:
     const fonte = cod === "BOVA11" ? "&fonte=eq.B3%20COTAHIST" : cod === "IBOV" ? "&fonte=eq.B3%20%C3%8Dndices" : "";
     const ls = await pgGet<Cot[]>(`cotacoes?select=id,fonte,codigo,descricao,data_ref,fechamento,unidade,url_fonte&codigo=eq.${cod}${fonte}` +
       `&data_ref=lte.${iso(hoje)}&order=data_ref.desc&limit=2`);
-    for (const c of ls) {
+    for (const [k, c] of ls.entries()) {
       const id = `cot:${c.id}`;
+      // v2.9: o registro mais recente já traz a variação sobre o anterior, calculada aqui (o redator não precisa calcular e a conferência bate)
+      const ant = k === 0 ? ls[1] : undefined;
+      const varPct = ant && Number(ant.fechamento) ? Math.round((Number(c.fechamento) / Number(ant.fechamento) - 1) * 10000) / 100 : undefined;
       indicadores.push({ id, codigo: c.codigo, descricao: cod === "BOVA11" ? "BOVA11, fundo de índice que replica o Ibovespa (preço da cota, em reais)" : c.descricao,
-        data_de_referencia: c.data_ref, valor: c.fechamento, unidade: c.unidade, fonte: c.fonte });
+        data_de_referencia: c.data_ref, valor: c.fechamento, unidade: c.unidade, fonte: c.fonte,
+        ...(varPct !== undefined ? { valor_anterior: ant!.fechamento, data_anterior: ant!.data_ref, variacao_percentual_sobre_anterior: varPct } : {}) });
       urls[id] = { fonte: c.fonte, url: c.url_fonte };
     }
   }
