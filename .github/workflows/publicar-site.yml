@@ -62,7 +62,7 @@ jobs:
           sleep 20
           H=$(curl -s -A "TelegramBot (like TwitterBot)" "https://soliduns.com.br/noticias/?artigo=1&conferencia=$GITHUB_RUN_ID")
           echo "$H" | grep -o '<meta property="og:image" content="[^"]*"' || true
-          if echo "$H" | grep -q 'og:image" content="https://\(evcsniicnrlrtzpdmeza.supabase.co\|soliduns.com.br/.netlify/images\)'; then echo "PRÉVIA OK: o link do artigo mostra a foto do artigo."
+          if echo "$H" | grep -q 'og:image" content="https://\(evcsniicnrlrtzpdmeza.supabase.co\|soliduns.com.br/.netlify/images\|soliduns.com.br/noticias/foto/\)'; then echo "PRÉVIA OK: o link do artigo mostra a foto do artigo."
           else echo "ATENÇÃO: a prévia ainda mostra a imagem padrão (função do Netlify não respondeu)."; exit 1; fi
       - name: Conferir a prévia da manchete (/noticias/)
         run: |
