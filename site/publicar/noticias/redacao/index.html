@@ -153,7 +153,7 @@
             </div>
             <div id="blocos" class="p-5 space-y-8 min-h-[260px]"></div>
             <div id="add-fim" class="mx-5 mb-3 flex flex-wrap items-center gap-2 text-[#a89f88]"><span class="text-[10px] uppercase tracking-widest mr-1">Acrescentar no fim</span>
-              <button type="button" data-add="paragrafo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Parágrafo</button><button type="button" data-add="intertitulo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Intertítulo</button><button type="button" data-add="imagem" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Imagem</button><button type="button" data-add="citacao" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Citação</button><button type="button" data-add="lista" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Lista</button><button type="button" data-add="tabela" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Tabela</button></div>
+              <button type="button" data-add="paragrafo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Parágrafo</button><button type="button" data-add="intertitulo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Intertítulo</button><button type="button" data-add="imagem" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Imagem</button><button type="button" data-add="citacao" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Citação</button><button type="button" data-add="lista" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Lista</button><button type="button" data-add="tabela" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Tabela</button><button type="button" data-add="numero" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Box numérico</button><button type="button" data-add="anexo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ PDF</button></div>
             <div id="soltar-img" class="mx-5 mb-4 flex items-center justify-center gap-2 h-16 border-2 border-dashed border-[#2e2a1e] rounded cursor-pointer text-xs text-[#a89f88] hover:border-[#a89f88]" role="button" tabindex="0" aria-label="Arraste imagens para o corpo ou clique para escolher"><i data-lucide="image-plus" class="w-4 h-4"></i>Arraste imagens aqui (ou para qualquer ponto do texto) — ou clique para escolher. JPG, PNG ou WEBP, até 5 MB cada</div>
             <div class="flex flex-wrap gap-x-6 gap-y-1 px-5 py-3 border-t border-[#2e2a1e] text-[11px] f-mono text-[#a89f88]">
               <span id="m-palavras">0 palavras</span><span id="m-leitura">0 min de leitura</span><span>Colar texto do Word ou da web limpa a formatação</span>
@@ -420,6 +420,7 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
   w.dataset.tipo = tipo;
   if (tipo === 'lista' || tipo === 'tabela' || tipo === 'numero' || tipo === 'anexo') {
     montarBlocoEspecial(w, tipo, texto || {});
+    w.firstElementChild?.classList.add('pr-72');      /* v160: espaço para a barra Mover/↑/↓/Apagar campo */
   } else if (tipo === 'imagem') {
     if (texto && texto.src) w.dataset.src = texto.src;
     w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2 pr-72">Imagem no texto</div>
@@ -475,7 +476,8 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
   const ins = document.createElement('div');
   ins.className = 'bloco-ins absolute left-1/2 -translate-x-1/2 -bottom-7 z-20 flex items-center gap-1 bg-[#0d0d0c] border border-[#2e2a1e] rounded-full px-2 py-0.5 text-[11px] text-[#a89f88] opacity-70 hover:opacity-100 focus-within:opacity-100 whitespace-nowrap';
   ins.innerHTML = [['paragrafo', 'Parágrafo'], ['imagem', 'Imagem'], ['intertitulo', 'Intertítulo'], ['citacao', 'Citação']]
-    .map(([t, rot]) => `<button type="button" data-ins="${t}" class="px-1.5 hover:text-[#eec617]" aria-label="Inserir ${rot.toLowerCase()} aqui">+ ${rot}</button>`).join('<span aria-hidden="true">·</span>');
+    .map(([t, rot]) => `<button type="button" data-ins="${t}" class="px-1.5 hover:text-[#eec617]" aria-label="Inserir ${rot.toLowerCase()} aqui">+ ${rot}</button>`).join('<span aria-hidden="true">·</span>')
+    + '<span aria-hidden="true">·</span><select class="ins-mais bg-transparent px-1 hover:text-[#eec617] cursor-pointer" aria-label="Inserir outro tipo de campo aqui"><option value="" class="bg-black">+ Mais…</option><option value="lista" class="bg-black">Lista</option><option value="tabela" class="bg-black">Tabela</option><option value="numero" class="bg-black">Box numérico</option><option value="anexo" class="bg-black">PDF para download</option></select>';
   w.appendChild(ins);
   ctl.addEventListener('mousedown', e => { if (e.target.closest('[data-a="arrastar"]')) w.draggable = true; });
   ctl.addEventListener('click', e => {
@@ -488,8 +490,9 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
       blocoRef = vizinho && vizinho.isConnected ? vizinho : $('#blocos').lastElementChild; atualizar(); toast('Bloco apagado.');
     }
   });
-  ins.addEventListener('mousedown', e => e.preventDefault());
+  ins.addEventListener('mousedown', e => { if (e.target.closest('button')) e.preventDefault(); });
   ins.addEventListener('click', e => { const t = e.target.closest('[data-ins]')?.dataset.ins; if (t) inserirAqui(t, w); });
+  ins.querySelector('.ins-mais').addEventListener('change', e => { const t = e.target.value; e.target.value = ''; if (t) inserirAqui(t, w); });
   w.addEventListener('dragstart', e => {
     if (!w.draggable) return;
     e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('application/x-vm-bloco', '1');
@@ -530,8 +533,9 @@ async function trocarImg(w, f) {
 let blocoArrastado = null;
 function inserirAqui(tipo, depois) {
   if (tipo === 'imagem') { blocoRef = depois || $('#blocos').lastElementChild; return $('#arq-img').click(); }
+  if (tipo === 'anexo') { blocoRef = depois || $('#blocos').lastElementChild; return $('#arq-anexo').click(); }
   if (tipo === 'intertitulo' && $('#f-tipo').value === 'Nota') return toast('Nota curta não tem intertítulo.', 'aviso');
-  const n = novoBloco(tipo, ['lista', 'tabela'].includes(tipo) ? {} : '', depois || $('#blocos').lastElementChild);
+  const n = novoBloco(tipo, ['lista', 'tabela', 'numero'].includes(tipo) ? {} : '', depois || $('#blocos').lastElementChild);
   (n.querySelector('.editor-bloco') || n.querySelector('input,textarea,[contenteditable]'))?.focus();
   n.scrollIntoView({block: 'nearest'}); atualizar();
 }
