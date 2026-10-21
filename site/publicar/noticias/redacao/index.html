@@ -151,7 +151,7 @@
               <button data-cmd="desfazer" class="ferr inline-flex items-center px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Desfazer"><span class="text-base leading-none">↶</span></button>
               <button data-cmd="refazer" class="ferr inline-flex items-center px-2.5 py-1.5 text-xs rounded hover:bg-[#141411]" title="Refazer"><span class="text-base leading-none">↷</span></button>
             </div>
-            <div id="blocos" class="p-5 space-y-3 min-h-[260px]"></div>
+            <div id="blocos" class="p-5 space-y-8 min-h-[260px]"></div>
             <div id="add-fim" class="mx-5 mb-3 flex flex-wrap items-center gap-2 text-[#a89f88]"><span class="text-[10px] uppercase tracking-widest mr-1">Acrescentar no fim</span>
               <button type="button" data-add="paragrafo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Parágrafo</button><button type="button" data-add="intertitulo" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Intertítulo</button><button type="button" data-add="imagem" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Imagem</button><button type="button" data-add="citacao" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Citação</button><button type="button" data-add="lista" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Lista</button><button type="button" data-add="tabela" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1.5 hover:border-[#eec617] hover:text-[#eec617]">+ Tabela</button></div>
             <div id="soltar-img" class="mx-5 mb-4 flex items-center justify-center gap-2 h-16 border-2 border-dashed border-[#2e2a1e] rounded cursor-pointer text-xs text-[#a89f88] hover:border-[#a89f88]" role="button" tabindex="0" aria-label="Arraste imagens para o corpo ou clique para escolher"><i data-lucide="image-plus" class="w-4 h-4"></i>Arraste imagens aqui (ou para qualquer ponto do texto) — ou clique para escolher. JPG, PNG ou WEBP, até 5 MB cada</div>
@@ -420,15 +420,31 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
     montarBlocoEspecial(w, tipo, texto || {});
   } else if (tipo === 'imagem') {
     if (texto && texto.src) w.dataset.src = texto.src;
-    w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2">Imagem no texto</div>
-      ${w.dataset.src ? `<img src="${escapar(w.dataset.src)}" alt="" class="max-h-40 rounded">` : '<div class="h-28 rounded bg-[#141411] border border-dashed border-[#2e2a1e] flex items-center justify-center text-xs text-[#a89f88]">imagem escolhida na Mídia</div>'}
-      <input class="mt-2 w-full h-8 bg-black border border-[#2e2a1e] rounded px-2 text-xs" maxlength="200" placeholder="Legenda (só o nome do fotógrafo)" aria-label="Legenda da imagem">`;
+    w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2 pr-72">Imagem no texto</div>
+      <div class="img-area"></div>
+      <input class="mt-2 w-full h-8 bg-black border border-[#2e2a1e] rounded px-2 text-xs" maxlength="200" placeholder="Legenda (só o nome do fotógrafo)" aria-label="Legenda da imagem">
+      <div class="flex flex-wrap gap-2 mt-2">
+        <button type="button" data-img="trocar" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1 hover:border-[#eec617] hover:text-[#eec617]">Trocar imagem</button>
+        <button type="button" data-img="remover" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1 hover:border-[#e2564f] hover:text-[#e2564f]">Remover imagem</button>
+      </div>
+      <input type="file" accept="image/jpeg,image/png,image/webp" class="img-arq hidden" aria-hidden="true" tabindex="-1">`;
     if (texto && texto.legenda) w.querySelector('input').value = texto.legenda;
+    desenharImg(w);
+    const arq = w.querySelector('.img-arq');
+    w.querySelector('[data-img="trocar"]').onclick = () => arq.click();
+    w.querySelector('[data-img="remover"]').onclick = () => { delete w.dataset.src; w._arquivo = null; desenharImg(w); atualizar(); toast('Imagem removida. Escolha outra ou apague o campo.'); };
+    arq.addEventListener('change', async () => { const f = arq.files[0]; arq.value = ''; if (f) await trocarImg(w, f); });
   } else {
     const t = TIPOS[tipo];
-    w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-1">${t.rot}</div>
+    w.innerHTML = `<div class="mb-1 pr-72"><select class="tipo-sel bg-transparent text-[10px] uppercase tracking-widest text-[#a89f88] hover:text-[#eec617] border border-transparent hover:border-[#2e2a1e] rounded px-1 cursor-pointer" aria-label="Tipo do campo">
+        ${Object.keys(TIPOS).map(k => `<option value="${k}" ${k === tipo ? 'selected' : ''} class="bg-black">${TIPOS[k].rot}</option>`).join('')}</select></div>
       <div class="editor-bloco ${t.cls}" contenteditable="true" spellcheck="true" lang="pt-BR" data-placeholder="${t.ph}" role="textbox" aria-multiline="true" aria-label="${t.rot}"></div>`;
     const ed = w.querySelector('.editor-bloco'); if (typeof texto === 'string') ed.textContent = texto; else if (texto && texto.html) ed.innerHTML = texto.html;
+    w.querySelector('.tipo-sel').addEventListener('change', e => {      /* v159: troca o tipo e mantém o texto */
+      const novo = e.target.value;
+      if (novo === 'intertitulo' && $('#f-tipo').value === 'Nota') { e.target.value = tipo; return toast('Nota curta não tem intertítulo.', 'aviso'); }
+      const n = novoBloco(novo, {html: ed.innerHTML}, w); w.remove(); blocoRef = n; n.querySelector('.editor-bloco')?.focus(); atualizar();
+    });
     ed.addEventListener('focus', () => { blocoAtual = ed; });
     ed.addEventListener('input', atualizar);
     ed.addEventListener('paste', e => {          // colar sempre limpa a formatação
@@ -448,14 +464,14 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
     });
   }
   /* v158: barrinha do bloco (arrastar, subir, descer, apagar) e inserção entre blocos */
-  const B = (a, ic, rot, extra = '') => `<button type="button" data-a="${a}" class="p-1 rounded text-[#a89f88] ${extra}" aria-label="${rot}" title="${rot}"><i data-lucide="${ic}" class="w-3.5 h-3.5"></i></button>`;
+  const B = (a, ic, rot, extra = '', txt = '') => `<button type="button" data-a="${a}" class="inline-flex items-center gap-1 px-1.5 py-1 rounded text-[11px] text-[#a89f88] ${extra}" aria-label="${rot}" title="${rot}"><i data-lucide="${ic}" class="w-3.5 h-3.5"></i>${txt}</button>`;
   const ctl = document.createElement('div');
-  ctl.className = 'bloco-ctl absolute top-1 right-1 z-10 flex items-center gap-0.5 bg-[#0d0d0c] border border-[#2e2a1e] rounded opacity-0 group-hover:opacity-100 focus-within:opacity-100';
-  ctl.innerHTML = B('arrastar', 'grip-vertical', 'Arrastar o bloco para outro ponto', 'cursor-grab hover:text-[#eec617]') + B('subir', 'arrow-up', 'Subir o bloco', 'hover:text-[#eec617]')
-    + B('descer', 'arrow-down', 'Descer o bloco', 'hover:text-[#eec617]') + B('tirar', 'x', 'Apagar o bloco', 'hover:text-[#e2564f]');
+  ctl.className = 'bloco-ctl absolute top-1 right-1 z-10 flex items-center gap-0.5 bg-[#0d0d0c] border border-[#2e2a1e] rounded';
+  ctl.innerHTML = B('arrastar', 'grip-vertical', 'Arrastar o campo para outro ponto', 'cursor-grab hover:text-[#eec617]', 'Mover') + B('subir', 'arrow-up', 'Subir o campo', 'hover:text-[#eec617]')
+    + B('descer', 'arrow-down', 'Descer o campo', 'hover:text-[#eec617]') + B('tirar', 'trash-2', 'Apagar o campo', 'hover:text-[#e2564f]', 'Apagar campo');
   w.appendChild(ctl);
   const ins = document.createElement('div');
-  ins.className = 'bloco-ins absolute left-1/2 -translate-x-1/2 -bottom-3.5 z-20 flex items-center gap-1 bg-[#0d0d0c] border border-[#2e2a1e] rounded-full px-2 py-0.5 text-[11px] text-[#a89f88] opacity-0 group-hover:opacity-100 focus-within:opacity-100 whitespace-nowrap';
+  ins.className = 'bloco-ins absolute left-1/2 -translate-x-1/2 -bottom-7 z-20 flex items-center gap-1 bg-[#0d0d0c] border border-[#2e2a1e] rounded-full px-2 py-0.5 text-[11px] text-[#a89f88] opacity-70 hover:opacity-100 focus-within:opacity-100 whitespace-nowrap';
   ins.innerHTML = [['paragrafo', 'Parágrafo'], ['imagem', 'Imagem'], ['intertitulo', 'Intertítulo'], ['citacao', 'Citação']]
     .map(([t, rot]) => `<button type="button" data-ins="${t}" class="px-1.5 hover:text-[#eec617]" aria-label="Inserir ${rot.toLowerCase()} aqui">+ ${rot}</button>`).join('<span aria-hidden="true">·</span>');
   w.appendChild(ins);
@@ -466,7 +482,7 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
     else if (a === 'descer' && w.nextElementSibling) { w.nextElementSibling.after(w); w.scrollIntoView({block: 'nearest'}); atualizar(); }
     else if (a === 'tirar') {
       const vizinho = w.previousElementSibling || w.nextElementSibling;
-      w.remove(); if (!$('#blocos').children.length) novoBloco('paragrafo', '');
+      w.remove(); if (!$('#blocos').children.length) novoBloco('paragrafo', '');   /* apagar campo: some de vez (texto ou imagem) */
       blocoRef = vizinho && vizinho.isConnected ? vizinho : $('#blocos').lastElementChild; atualizar(); toast('Bloco apagado.');
     }
   });
@@ -484,6 +500,29 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
   w.addEventListener('focusin', () => { blocoRef = w; });
   if (depois) blocoRef = w;
   icones(); return w;
+}
+/* v159: área da imagem do bloco (com imagem: miniatura; sem: campo para clicar ou soltar uma imagem) */
+function desenharImg(w) {
+  const area = w.querySelector('.img-area');
+  if (w.dataset.src) area.innerHTML = `<img src="${escapar(w.dataset.src)}" alt="" class="max-h-48 rounded">`;
+  else {
+    area.innerHTML = `<div class="img-vazia h-28 rounded bg-[#141411] border-2 border-dashed border-[#2e2a1e] hover:border-[#eec617] flex items-center justify-center gap-2 text-xs text-[#a89f88] cursor-pointer" role="button" tabindex="0">
+      <i data-lucide="image-plus" class="w-4 h-4"></i>Clique ou arraste uma imagem aqui (JPG, PNG ou WEBP, até 5 MB)</div>`;
+    const v = area.querySelector('.img-vazia');
+    v.onclick = () => w.querySelector('.img-arq').click();
+    v.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); w.querySelector('.img-arq').click(); } };
+    v.addEventListener('dragover', e => { if ([...(e.dataTransfer?.types || [])].includes('Files')) { e.preventDefault(); e.stopPropagation(); } });
+    v.addEventListener('drop', async e => { if (!e.dataTransfer?.files?.length) return; e.preventDefault(); e.stopPropagation(); await trocarImg(w, e.dataTransfer.files[0]); });
+  }
+  const tem = !!w.dataset.src;
+  w.querySelector('[data-img="remover"]')?.classList.toggle('hidden', !tem);
+  const tr = w.querySelector('[data-img="trocar"]'); if (tr) tr.textContent = tem ? 'Trocar imagem' : 'Escolher imagem';
+  icones();
+}
+async function trocarImg(w, f) {
+  if (f.size > MAX) return toast(`${f.name}: acima de 5 MB.`, 'erro');
+  if (!tipoPelosBytes(new Uint8Array(await f.slice(0, 12).arrayBuffer()))) return toast(`${f.name}: não é JPG, PNG ou WEBP.`, 'erro');
+  w.dataset.src = URL.createObjectURL(f); w._arquivo = f; desenharImg(w); blocoRef = w; atualizar(); toast('Imagem trocada: sobe quando salvar.');
 }
 /* v158: inserir em qualquer ponto · arrastar blocos */
 let blocoArrastado = null;
