@@ -1177,7 +1177,10 @@ async function rpc(nome, corpo) {
     'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(corpo || {})});
   const j = await r.json().catch(() => null);
   if (!r.ok) { const m = (j && (j.message || j.hint)) || ('HTTP ' + r.status), k = Object.keys(ERROS).find(x => m.indexOf(x) >= 0);
-    const e = new Error(k ? ERROS[k] : (/check constraint|violates/i.test(m) ? 'O banco recusou um campo (tamanho ou formato). Confira e salve de novo.' : m)); e.codigo = k || m; throw e; }
+    const c = (m.match(/constraint "(?:vm_artigos_)?([a-z_]+?)(?:_check)?"/) || [])[1], CAMPO_DB = {chapeu: 'Chapéu', titulo: 'Título', linha_fina: 'Linha fina',
+      autor: 'Autor', corpo: 'Corpo do texto', foto: 'Foto de capa', fontes: 'Fontes consultadas', tags: 'Tags', seo_titulo: 'Título SEO', seo_descricao: 'Descrição SEO'};
+    /* v178: diz QUAL campo o banco recusou */
+    const e = new Error(k ? ERROS[k] : (/check constraint|violates/i.test(m) ? 'O banco recusou o campo ' + (CAMPO_DB[c] ? '"' + CAMPO_DB[c] + '"' : '(' + (c || 'desconhecido') + ')') + ' (tamanho ou formato). Confira e salve de novo.' : m)); e.codigo = k || m; throw e; }
   return j;
 }
 const falha = e => toast(e.message === 'SEM_SESSAO' ? 'Sessão expirada: entre de novo no site.' : e.message, 'erro');
