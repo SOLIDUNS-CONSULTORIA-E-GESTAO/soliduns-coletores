@@ -221,12 +221,14 @@
               <div><label for="f-alt" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1">Texto alternativo (obrigatório)</label>
                 <input id="f-alt" maxlength="160" class="w-full h-9 bg-black border border-[#2e2a1e] rounded px-3 text-sm" placeholder="Descreva a imagem para quem não a vê"></div>
               <div class="grid grid-cols-2 gap-3">
-                <div><label for="f-fotografo" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1">Fotógrafo</label>
-                  <input id="f-fotografo" maxlength="60" class="w-full h-9 bg-black border border-[#2e2a1e] rounded px-3 text-sm"></div>
+                <div><label for="f-fotografo" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1">Crédito / Fonte</label>
+                  <input id="f-fotografo" maxlength="300" placeholder="Fotógrafo, veículo ou agência" class="w-full h-9 bg-black border border-[#2e2a1e] rounded px-3 text-sm"></div>
                 <div><label for="f-origem" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1">Origem</label>
                   <select id="f-origem" class="w-full h-9 bg-black border border-[#2e2a1e] rounded px-2 text-sm"><option>Foto própria</option><option>Unsplash</option><option>Outra, com autorização</option></select></div>
               </div>
-              <p class="text-[11px] text-[#a89f88]">Legenda sob a foto: só o fotógrafo. Crédito completo no fim da reportagem.</p>
+              <div><label for="f-legenda" class="block text-[11px] uppercase tracking-wider text-[#a89f88] mb-1">Legenda</label>
+                <textarea id="f-legenda" rows="3" class="w-full bg-black border border-[#2e2a1e] rounded px-3 py-2 text-sm leading-relaxed" placeholder="O que a foto mostra (sem limite de tamanho)"></textarea></div>
+              <p class="text-[11px] text-[#a89f88]">Sob a foto: a legenda e, ao lado, "Foto: crédito/fonte".</p>
             </div>
           </div>
 
@@ -425,7 +427,10 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
     if (texto && texto.src) w.dataset.src = texto.src;
     w.innerHTML = `<div class="text-[10px] uppercase tracking-widest text-[#a89f88] mb-2 pr-72">Imagem no texto</div>
       <div class="img-area"></div>
-      <textarea class="i-leg mt-2 w-full bg-black border border-[#2e2a1e] rounded px-2 py-1.5 text-xs leading-snug resize-none overflow-hidden" rows="1" placeholder="Legenda da imagem" aria-label="Legenda da imagem"></textarea>
+      <label class="block text-[10px] uppercase tracking-widest text-[#a89f88] mt-2 mb-1">Legenda</label>
+      <textarea class="i-leg w-full bg-black border border-[#2e2a1e] rounded px-2 py-1.5 text-xs leading-snug resize-none overflow-hidden" rows="1" placeholder="O que a imagem mostra (sem limite de tamanho)" aria-label="Legenda da imagem"></textarea>
+      <label class="block text-[10px] uppercase tracking-widest text-[#a89f88] mt-2 mb-1">Crédito / Fonte</label>
+      <input class="img-cred w-full h-8 bg-black border border-[#2e2a1e] rounded px-2 text-xs" maxlength="300" placeholder="Fotógrafo, veículo ou agência (ex.: Reuters, Agência Brasil, Divulgação)" aria-label="Crédito ou fonte da imagem">
       <div class="flex flex-wrap gap-2 mt-2">
         <button type="button" data-img="trocar" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1 hover:border-[#eec617] hover:text-[#eec617]">Trocar imagem</button>
         <button type="button" data-img="remover" class="text-xs border border-[#2e2a1e] rounded px-2.5 py-1 hover:border-[#e2564f] hover:text-[#e2564f]">Remover imagem</button>
@@ -434,6 +439,8 @@ function novoBloco(tipo = 'paragrafo', texto = '', depois = null) {
     /* v177: legenda sem limite de caracteres; a caixa cresce para mostrar o texto inteiro */
     const leg = w.querySelector('.i-leg'), ajustaLeg = () => { leg.style.height = 'auto'; leg.style.height = leg.scrollHeight + 'px'; };
     if (texto && texto.legenda) leg.value = texto.legenda;
+    if (texto && texto.credito) w.querySelector('.img-cred').value = texto.credito;
+    leg.addEventListener('input', atualizar); w.querySelector('.img-cred').addEventListener('input', atualizar);
     leg.addEventListener('input', ajustaLeg); requestAnimationFrame(ajustaLeg);
     desenharImg(w);
     const arq = w.querySelector('.img-arq');
@@ -753,7 +760,7 @@ const textoDe = c => (c || []).map(x => x.texto ?? textoDe(x.conteudo)).join('')
 function corpoJSON() {
   return $$('#blocos > div').map(w => {
     const tipo = w.dataset.tipo;
-    if (tipo === 'imagem') return {tipo, legenda: w.querySelector('.i-leg').value.replace(/\s+/g, ' ').trim(), ...(w.dataset.src ? {src: w.dataset.src} : {})};
+    if (tipo === 'imagem') return {tipo, legenda: w.querySelector('.i-leg').value.replace(/\s+/g, ' ').trim(), credito: w.querySelector('.img-cred').value.trim(), ...(w.dataset.src ? {src: w.dataset.src} : {})};
     if (w._json) return w._json();
     const conteudo = [...w.querySelector('.editor-bloco').childNodes].map(noJSON).filter(Boolean);
     return {tipo, texto: textoDe(conteudo).replace(/\s+/g, ' ').trim(), conteudo};
@@ -781,7 +788,7 @@ function comTickers(html) {
 }
 function blocosHTML(blocos) {
   return blocos.map(b => {
-    if (b.tipo === 'imagem') return `<figure class="my-5">${b.src ? `<img src="${escapar(b.src)}" alt="" class="w-full rounded-sm">` : '<div class="h-40 bg-[#D9D3BF]/60"></div>'}<figcaption class="text-xs f-marca text-[#4F5446] mt-1">${escapar(b.legenda ? 'Foto: ' + b.legenda : '')}</figcaption></figure>`;
+    if (b.tipo === 'imagem') return `<figure class="my-5">${b.src ? `<img src="${escapar(b.src)}" alt="" class="w-full rounded-sm">` : '<div class="h-40 bg-[#D9D3BF]/60"></div>'}<figcaption class="text-xs f-marca text-[#4F5446] mt-1">${escapar(b.legenda || '')}${b.credito ? ` <span class="text-[#7A6629]">Foto: ${escapar(b.credito)}</span>` : ''}</figcaption></figure>`;
     if (b.tipo === 'lista') { const tg = b.ordenada ? 'ol' : 'ul';
       return `<${tg} class="${b.ordenada ? 'list-decimal' : 'list-disc'} pl-6 my-4 space-y-1.5 f-jornal text-[1.13rem] leading-[1.6] text-[#1C1F18] marker:text-[#7A6629]">${(b.itens || []).map(it => `<li class="pl-1">${comTickers(conteudoHTML(it.conteudo))}</li>`).join('')}</${tg}>`; }
     if (b.tipo === 'tabela') return `<figure class="my-6"><div class="overflow-x-auto"><table class="w-full border-collapse f-marca text-[14px] text-[#1C1F18]">
@@ -1130,7 +1137,7 @@ function previa() {
       <h1 class="prev-titulo f-jornal text-4xl leading-tight mt-2 mb-3">${escapar($('#f-titulo').value || 'Título da matéria')}</h1>
       <p class="f-jornal text-xl text-[#4F5446] leading-snug mb-4 text-justify [hyphens:auto]">${escapar($('#f-linha').value || 'Linha fina da matéria.')}</p>
       <div class="f-marca text-[13px] text-[#4F5446] flex flex-wrap gap-3 pb-4 mb-5 border-b border-[#D9D3BF]"><span>Por ${escapar(autor)}</span><span class="text-[#7A6629]">Editor: Thiago Viegas</span><span class="text-[#7A6629]">${h}</span><span class="text-[#7A6629]">${Math.max(1, Math.round(pal / 200))} min de leitura</span></div>
-      ${foto ? `<figure class="mb-5"><img src="${$('#thumb').src}" alt="${escapar($('#f-alt').value)}" class="w-full rounded-sm"><figcaption class="text-right f-marca text-[11px] text-[#4F5446] mt-1">${fotog ? 'Foto: ' + escapar(fotog) : ''}</figcaption></figure>` : ''}
+      ${foto ? `<figure class="mb-5"><img src="${$('#thumb').src}" alt="${escapar($('#f-alt').value)}" class="w-full rounded-sm"><figcaption class="f-marca text-[12px] text-[#4F5446] mt-1">${escapar($('#f-legenda').value.trim())}${fotog ? ` <span class="text-[#7A6629]">Foto: ${escapar(fotog)}</span>` : ''}</figcaption></figure>` : ''}
       <div class="prev-corpo">${(() => { if (!b.length) return '<p class="f-jornal text-[#4F5446]">O corpo aparece aqui.</p>';
         const esp = ESPACOS.find(x => x.id === 'artigo'), ban = banners.find(x => x.espaco === 'artigo');
         let n = 0, corte = b.findIndex(x => x.tipo === 'paragrafo' && ++n === 2);
@@ -1267,7 +1274,7 @@ async function dadosDoArtigo() {
   for (const w of $$('#blocos > div')) {
     if (w.dataset.tipo === 'imagem' && w.dataset.src && !/^https:\/\//.test(w.dataset.src)) {
       const blob = w._arquivo || await dataURLparaBlob(w.dataset.src);
-      const r = await enviarArquivo(blob, {fotografo: w.querySelector('.i-leg').value.trim() || null});
+      const r = await enviarArquivo(blob, {fotografo: w.querySelector('.img-cred').value.trim() || null});
       w.dataset.src = r.url; w._arquivo = null;
     }
     if (w.dataset.tipo === 'anexo' && w._d && w._arquivo) {
@@ -1280,9 +1287,9 @@ async function dadosDoArtigo() {
   }
   const corpo = corpoJSON().filter(b => b.tipo !== 'imagem' || /^https:\/\//.test(b.src || ''))
     .filter(b => b.tipo !== 'anexo' || /^https:\/\//.test(b.url || ''))
-    .map(b => b.tipo === 'imagem' ? {tipo: 'imagem', src: b.src, ...(b.legenda ? {legenda: b.legenda} : {})} : b);
+    .map(b => b.tipo === 'imagem' ? {tipo: 'imagem', src: b.src, ...(b.legenda ? {legenda: b.legenda} : {}), ...(b.credito ? {credito: b.credito.slice(0, 300)} : {})} : b);
   const foto = fotoAtual && !$('#thumb').classList.contains('hidden') ? Object.fromEntries(Object.entries({src: fotoAtual.src, alt: $('#f-alt').value.trim(),
-    fotografo: $('#f-fotografo').value.trim() || undefined, origem: $('#f-origem').value, midia_id: fotoAtual.midia_id}).filter(([, v]) => v !== undefined && v !== '')) : null;
+    fotografo: $('#f-fotografo').value.trim() || undefined, legenda: $('#f-legenda').value.trim() || undefined, origem: $('#f-origem').value, midia_id: fotoAtual.midia_id}).filter(([, v]) => v !== undefined && v !== '')) : null;
   // v154: link opcional — fonte com texto entra; link em branco = texto simples; link preenchido tem de ser https:// válido
   // v160: fontes vêm da caixa de texto (uma por linha; endereço https:// na linha vira o link)
   const fontes = lerFontes();
@@ -1335,7 +1342,7 @@ async function salvarCorrecao(manual = false) {
   return salvando;
 }
 setInterval(() => salvar(false), 30000);
-['#f-chapeu','#f-titulo','#f-linha','#f-autor','#f-alt','#f-fotografo','#f-seo-tit','#f-seo-desc'].forEach(s => { $(s).addEventListener('input', atualizar); $(s).addEventListener('blur', () => salvar(false)); });
+['#f-chapeu','#f-titulo','#f-linha','#f-autor','#f-alt','#f-fotografo','#f-legenda','#f-seo-tit','#f-seo-desc'].forEach(s => { $(s).addEventListener('input', atualizar); $(s).addEventListener('blur', () => salvar(false)); });
 ['#f-tipo','#f-editoria','#f-lugar','#f-origem'].forEach(s => $(s).addEventListener('change', atualizar));
 $('#btn-salvar').onclick = () => salvar(true);
 window.addEventListener('beforeunload', e => { if (sujo && artigo.situacao !== 'publicado' && $('#f-titulo').value.trim()) { e.preventDefault(); e.returnValue = ''; } });
@@ -1343,7 +1350,7 @@ window.addEventListener('beforeunload', e => { if (sujo && artigo.situacao !== '
 /* ---------- abrir artigo salvo / novo artigo ---------- */
 function limparEditor() {
   artigo = {id: null, situacao: 'rascunho', versao: 1}; fotoArquivo = null; fotoAtual = null;
-  ['#f-chapeu','#f-titulo','#f-linha','#f-alt','#f-fotografo','#f-seo-tit','#f-seo-desc','#f-quando','#f-tag'].forEach(s => { $(s).value = ''; });
+  ['#f-chapeu','#f-titulo','#f-linha','#f-alt','#f-fotografo','#f-legenda','#f-seo-tit','#f-seo-desc','#f-quando','#f-tag'].forEach(s => { $(s).value = ''; });
   $('#f-autor').value = EDITOR_FIXO; $('#f-tipo').value = 'Reportagem'; $('#f-editoria').value = 'Mercados'; $('#f-lugar').value = 'Seção Artigos'; $('#f-origem').value = 'Foto própria';
   $('#blocos').innerHTML = ''; novoBloco('paragrafo', ''); $('#fontes-texto').value = ''; contarFontes(); tags = []; desenharTags();
   const img = $('#thumb'); img.removeAttribute('src'); img.classList.add('hidden'); $('#drop-txt').classList.remove('hidden'); $('#foto-remover').classList.add('hidden'); $('#foto-info').textContent = '';
@@ -1367,7 +1374,7 @@ async function abrirArtigo(id) {
     (a.corpo || []).forEach(b => {
       if (['paragrafo', 'intertitulo', 'citacao'].includes(b.tipo)) { const w = novoBloco(b.tipo, ''); desenharTrechos(w.querySelector('.editor-bloco'), trechosDeConteudo(b.conteudo)); }
       else if (b.tipo === 'lista') novoBloco('lista', {ordenada: b.ordenada, itens: (b.itens || []).map(i => textoDe(i.conteudo))});
-      else if (b.tipo === 'imagem') novoBloco('imagem', {src: b.src, legenda: b.legenda});
+      else if (b.tipo === 'imagem') novoBloco('imagem', {src: b.src, legenda: b.legenda, credito: b.credito});
       else novoBloco(b.tipo, b);
     });
     if (!$('#blocos').children.length) novoBloco('paragrafo', '');
@@ -1376,7 +1383,7 @@ async function abrirArtigo(id) {
     if (a.foto && a.foto.src) {
       fotoAtual = {src: a.foto.src, midia_id: a.foto.midia_id};
       const img = $('#thumb'); img.src = a.foto.src; img.classList.remove('hidden'); $('#drop-txt').classList.add('hidden'); $('#foto-remover').classList.remove('hidden');
-      $('#f-alt').value = a.foto.alt || ''; $('#f-fotografo').value = a.foto.fotografo || ''; $('#f-origem').value = a.foto.origem || 'Foto própria';
+      $('#f-alt').value = a.foto.alt || ''; $('#f-fotografo').value = a.foto.fotografo || ''; $('#f-legenda').value = a.foto.legenda || ''; $('#f-origem').value = a.foto.origem || 'Foto própria';
       $('#foto-info').textContent = 'Foto já gravada';
     }
     contadores(); contadoresSeo(); verificar(); sujo = false;

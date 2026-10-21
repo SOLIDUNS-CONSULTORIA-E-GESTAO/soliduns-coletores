@@ -29,6 +29,7 @@
 #tela-noticias .vm-agi li{margin:.15rem 0;}
 #tela-noticias .vm-agi li b{font-weight:600;}
 #tela-noticias .vm-agi .vm-agi-nota{font:400 12px/1.5 "Jost",sans-serif;color:var(--vm-tinta2);margin:.8rem 0 0;}
+#tela-noticias figcaption .vm-cred{color:var(--vm-dsol);white-space:normal;}
 #tela-noticias .vm-leit-fontes{font:400 13px/1.6 "Jost",sans-serif;color:var(--vm-tinta2);border-top:1px solid #CFC9B4;padding-top:1rem;margin-top:1.4rem;}
 #tela-noticias .vm-leit-fontes ul{margin:.4rem 0 0;padding-left:1.1rem;}
 #tela-noticias .vm-leit-fontes a{color:inherit;}
