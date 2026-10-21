@@ -1166,9 +1166,23 @@ async function prepararImagem(blob) {            // até 1880 px no lado maior, 
     const k = Math.min(1, 1880 / Math.max(img.naturalWidth, img.naturalHeight));
     const w = Math.max(1, Math.round(img.naturalWidth * k)), h = Math.max(1, Math.round(img.naturalHeight * k));
     const c = document.createElement('canvas'); c.width = w; c.height = h; c.getContext('2d').drawImage(img, 0, 0, w, h);
-    const tipo = blob.type === 'image/png' ? 'image/png' : 'image/jpeg';
-    const out = await new Promise(ok => c.toBlob(ok, tipo, 0.86));
-    return {blob: out, tipo, largura: w, altura: h};
+    let tipo = blob.type === 'image/png' ? 'image/png' : 'image/jpeg';
+    let out = await new Promise(ok => c.toBlob(ok, tipo, 0.86));
+    /* v160: o banco aceita imagens até 5 MB. PNG regravado pesado (infográfico) vira JPEG; se ainda for grande, reduz até caber */
+    if (tipo === 'image/png' && out && out.size > 1.5 * 1024 * 1024) {
+      tipo = 'image/jpeg';
+      const cj = document.createElement('canvas'); cj.width = w; cj.height = h;
+      const g = cj.getContext('2d'); g.fillStyle = '#ffffff'; g.fillRect(0, 0, w, h); g.drawImage(c, 0, 0);
+      out = await new Promise(ok => cj.toBlob(ok, tipo, 0.9));
+    }
+    let lw = w, lh = h, q = 0.82;
+    while (out && out.size > 4.5 * 1024 * 1024 && lw > 400) {
+      lw = Math.round(lw * 0.85); lh = Math.round(lh * 0.85);
+      const cr = document.createElement('canvas'); cr.width = lw; cr.height = lh;
+      const g = cr.getContext('2d'); g.fillStyle = '#ffffff'; g.fillRect(0, 0, lw, lh); g.drawImage(img, 0, 0, lw, lh);
+      tipo = 'image/jpeg'; out = await new Promise(ok => cr.toBlob(ok, tipo, q)); q = Math.max(0.6, q - 0.06);
+    }
+    return {blob: out, tipo, largura: lw, altura: lh};
   } finally { URL.revokeObjectURL(url); }
 }
 async function enviarArquivo(blob, opc = {}) {
@@ -1183,7 +1197,7 @@ async function enviarArquivo(blob, opc = {}) {
   if (!r.ok) { const t = await r.text(); if (!/exist|duplicate/i.test(t)) throw new Error('Envio do arquivo falhou (' + r.status + ').'); }
   const url = SUPA + '/storage/v1/object/public/' + balde + '/' + caminho;
   try { const m = await rpc('vm_midia_registrar', {p_caminho: caminho, p_tipo: tipo, p_bytes: blob.size, p_largura: largura, p_altura: altura,
-      p_alt: opc.alt || null, p_fotografo: opc.fotografo || null, p_origem: opc.origem || null}); return {url: m.url, id: m.id, largura, altura}; }
+      p_alt: opc.alt ? String(opc.alt).slice(0, 300) : null, p_fotografo: opc.fotografo ? String(opc.fotografo).slice(0, 80) : null, p_origem: opc.origem || null}); return {url: m.url, id: m.id, largura, altura}; }
   catch (e) { if (/duplicate|unique|23505/i.test(String(e.codigo || e.message))) return {url, id: null, largura, altura}; throw e; }
 }
 const dataURLparaBlob = async u => (await fetch(u)).blob();
