@@ -1,4 +1,4 @@
-# Bibliografia do Score Exponencial — artigos recebidos (47 de 50 em 22/10; faltam 44, 45 e 46) e conferidos (só referências; os PDFs não ficam no repositório)
+# Bibliografia do Score Exponencial — artigos recebidos (50 de 50 em 22/10/2026 — lista completa) e conferidos (só referências; os PDFs não ficam no repositório)
 
 ## Da lista principal (número da lista de 22/10/2026)
 - 1  Altman (1968) — amostra: 33 + 33 indústrias (1946-1965); Z < 1,81 falência, Z > 2,99 seguro. DOI 10.1111/j.1540-6261.1968.tb00843.x
@@ -43,6 +43,10 @@
 - 40 Mohanram (2005) — GSCORE. DOI 10.1007/s11142-005-1526-4
 - 42 Newey; West (1987). DOI 10.2307/1913610
 - 43 Novy-Marx (2012) — Is momentum really momentum? DOI 10.1016/j.jfineco.2011.05.003
+- 41 Molodovsky; May; Chottiner (1965) — PDF original recebido. DOI 10.2469/faj.v21.n2.104
+- 44 Novy-Marx (2013) — lucro bruto (receita − custo dos produtos vendidos) ÷ ativo prevê retornos tanto quanto o P/VPA. DOI 10.1016/j.jfineco.2013.01.003
+- 45 Novy-Marx (2015, NBER WP 20984) — o momentum de preço é explicado pelo momentum de lucro (surpresas de lucro). DOI 10.3386/w20984
+- 46 Novy-Marx; Velikov (2016) — anomalias com giro < 50% ao mês sobrevivem aos custos; a 'faixa de manutenção' (entrar com critério mais exigente que o de sair) é a técnica mais eficaz para reduzir custos. DOI 10.1093/rfs/hhv063
 - 47 Piotroski (2000). DOI 10.2307/2672906
 - 48 Shumway (1997) — retornos de deslistagem por motivos negativos faltam na base e são grandes. DOI 10.1111/j.1540-6261.1997.tb03818.x
 - 49 Sloan (1996). DOI 10.2308/tar-9608042309
