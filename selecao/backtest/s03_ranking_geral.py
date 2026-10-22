@@ -6,13 +6,16 @@ import numpy as np, pandas as pd
 from openpyxl.styles import Font, PatternFill, Alignment
 B, O = sys.argv[1], sys.argv[2]
 FORA_GRUPOS = sys.argv[3].split(',') if len(sys.argv) > 3 else []
+FORA_ACOES = sys.argv[4].split(',') if len(sys.argv) > 4 else []   # ações retiradas por decisão de gestão
 E = pd.read_pickle(f'{B}/setorial/carteira_setorial.pkl')
 E = E[~E['grupo'].isin(FORA_GRUPOS)].copy()
+RET = E[E['ticker'].isin(FORA_ACOES)]
+E = E[~E['ticker'].isin(FORA_ACOES)]
 RJ = E[E['empresa'].str.contains('RECUPERA', case=False, na=False)]
 E = E[~E.index.isin(RJ.index)]
 X = pd.read_pickle(f'{B}/setorial/carteira_setorial_fora.pkl')
 X = X[~X['grupo'].isin(FORA_GRUPOS)]
-X = pd.concat([X, RJ[['ticker', 'empresa', 'grupo', 'setor_cvm', 'lucro_liq_ttm', 'patrimonio_liq', 'receita_ttm']].assign(so_holding=False, rj=True)])
+X = pd.concat([X, RJ[['ticker', 'empresa', 'grupo', 'setor_cvm', 'lucro_liq_ttm', 'patrimonio_liq', 'receita_ttm']].assign(so_holding=False, rj=True), RET[['ticker', 'empresa', 'grupo', 'setor_cvm', 'lucro_liq_ttm', 'patrimonio_liq', 'receita_ttm']].assign(so_holding=False, ret=True)])
 NOMES = {'agro_exportador': 'Agro exportador', 'bancos': 'Bancos e financeiras', 'consumo_basico': 'Consumo básico', 'energia_saneamento': 'Energia e saneamento',
          'holdings': 'Holdings', 'industria': 'Indústria (bens de capital)', 'lazer_turismo': 'Lazer e turismo', 'mineracao_siderurgia': 'Mineração e siderurgia',
          'papel_celulose': 'Papel e celulose', 'petroleo': 'Petróleo e gás', 'petroquimica': 'Petroquímica', 'saude_educacao': 'Saúde e educação',
@@ -50,8 +53,8 @@ cols = {'Nº': 'Nº', 'ticker': 'Ação', 'empresa': 'Empresa', 'Setor': 'Setor'
         'cagr_lucro': 'CAGR lucro 5a', 'dl_ebitda': 'Dív. líquida/EBITDA', 'Alertas': 'Alertas (fora da nota)', 'dt_refer': 'Último balanço'}
 R = E.rename(columns=cols)[list(cols.values())]
 PCT = {'Margem bruta', 'CAGR receita 5a', 'PL/Ativo', 'Margem líquida', 'ROE', 'CAGR lucro 5a'}
-X = X.assign(Motivo=np.where(X.get('rj', False) == True, 'em recuperação judicial', np.where(X['so_holding'], 'holding sem receita operacional',
-                             np.where(X['patrimonio_liq'] <= 0, 'patrimônio líquido negativo', 'prejuízo nos últimos 12 meses'))),
+X = X.assign(Motivo=np.where(X.get('ret', False) == True, 'retirada por decisão de gestão (alertas de dívida, lucro ou dividendos)', np.where(X.get('rj', False) == True, 'em recuperação judicial', np.where(X['so_holding'], 'holding sem receita operacional',
+                             np.where(X['patrimonio_liq'] <= 0, 'patrimônio líquido negativo', 'prejuízo nos últimos 12 meses')))),
              Setor=X['grupo'].map(NOMES))[['ticker', 'empresa', 'Setor', 'Motivo', 'lucro_liq_ttm']]
 X.columns = ['Ação', 'Empresa', 'Setor', 'Motivo', 'Lucro 12 meses (R$)']
 VERDE, VERDE_F = PatternFill('solid', fgColor='C6EFCE'), Font(color='006100', bold=True)
