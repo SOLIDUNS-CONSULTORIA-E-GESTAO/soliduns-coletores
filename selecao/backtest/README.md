@@ -15,6 +15,7 @@ balanços da CVM na data de entrega (DT_RECEB).
 | b03_macro.py | Selic, CDI, Ibovespa, IPCA, PIB (SGS) e EMBI+ (Ipeadata) |
 | b04_cvm.py | DFP/ITR da CVM com data de entrega |
 | b05_ref.py | setor, controle, free float, conselho, sanções |
+| b05c_ajustes_ref.py | raízes de código sem CNPJ no FCA (BTG, CSN, CSN Mineração) |
 | b05b_datas.py | datas trimestrais e universo líquido |
 | b06_fund_pit.py | fundamentos na data (point-in-time) |
 | b06b_fre_acoes.py | ações em circulação pelo FRE |
@@ -27,3 +28,9 @@ balanços da CVM na data de entrega (DT_RECEB).
 sem viés de retrospectiva. `configs/atual` = parâmetros publicados.
 
 Correções da revisão independente estão ativas por padrão em b07 (`est, ctl2010, stale, macro, fre`).
+
+## Carteira setorial por fundamentos
+
+`s01_carteira_setorial.py B SAIDA` ranqueia as ações líquidas de cada setor por liquidez corrente, margem bruta, giro do ativo,
+renovação de ativos (capex/depreciação) e CAGR de receita; bancos e seguradoras por PL/Ativo, margem líquida, ROE e CAGR.
+`s02_excel_setorial.py B PASTA` gera a planilha.

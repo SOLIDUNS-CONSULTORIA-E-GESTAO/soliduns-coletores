@@ -12,8 +12,8 @@ B, OUT = sys.argv[1], sys.argv[2]
 sys.argv = [sys.argv[0], B]
 import b06_fund_pit as F
 HOJE = pd.Timestamp('2026-10-22')
-st = yaml.safe_load(open(os.path.join(RAIZ, 'selecao', 'setores.yaml'), encoding='utf-8')
-cfg = yaml.safe_load(open(os.path.join(RAIZ, 'selecao', 'parametros.yaml'), encoding='utf-8')
+st = yaml.safe_load(open(os.path.join(RAIZ, 'selecao', 'setores.yaml'), encoding='utf-8'))
+cfg = yaml.safe_load(open(os.path.join(RAIZ, 'selecao', 'parametros.yaml'), encoding='utf-8'))
 EXCL = set(cfg['universo']['grupos_excluidos'])
 mapa = {sem_acento(k): v for k, v in st['mapa_cvm'].items()}
 NOME = {k: v['nome'] for k, v in st['grupos'].items()} if 'grupos' in st else {}
