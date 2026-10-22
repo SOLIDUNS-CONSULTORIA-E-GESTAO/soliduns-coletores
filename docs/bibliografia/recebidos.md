@@ -25,13 +25,23 @@
 - 23 Chan; Karceski; Lakonishok (2003). DOI 10.1111/1540-6261.00540
 - 24 Civiletti; Campani; Roquete (2020) — 64 carteiras = 32 pares; as 32 vencedoras superaram as perdedoras, mas só 12 diferenças foram significativas a 10% (7 por retorno, 5 por alfa). DOI 10.15728/bbr.2020.17.5.2
 - 25 Da; Gurun; Warachka (2014). DOI 10.1093/rfs/hhu003
+- 26 Daniel; Moskowitz (2016) — Momentum crashes (manuscrito aceito). DOI 10.1016/j.jfineco.2015.12.002
+- 27 DeMiguel; Garlappi; Uppal (2009) — 14 modelos em 7 bases: nenhum supera 1/N de forma consistente. DOI 10.1093/rfs/hhm075
 - 28 Fama; MacBeth (1973). DOI 10.1086/260061
+- 29 Frazzini; Pedersen (2014) — Betting against beta. DOI 10.1016/j.jfineco.2013.10.005
+- 30 George; Hwang (2004) — The 52-week high and momentum investing. DOI 10.1111/j.1540-6261.2004.00695.x
+- 31 Hansen (2005) — A test for superior predictive ability. DOI 10.1198/073500105000000063
+- 32 Harvey; Liu; Zhu (2016) — limiar t > 3,0. DOI 10.1093/rfs/hhv059
+- 33 Hou; Xue; Zhang (2020) — 65% das 452 anomalias não passam |t| ≥ 1,96; 82% com o limiar de 2,78. DOI 10.1093/rfs/hhy131
+- 34 Jegadeesh; Titman (1993). DOI 10.1111/j.1540-6261.1993.tb04702.x
 - 39 McLean; Pontiff (2016). DOI 10.1111/jofi.12365
 - 42 Newey; West (1987). DOI 10.2307/1913610
 - 47 Piotroski (2000). DOI 10.2307/2672906
 - 50 White (2000). DOI 10.1111/1468-0262.00152
 
 ## Fora da lista, enviados pelo Thiago (22/10/2026)
+- Altman, Edward I. An emerging market credit scoring system for corporate bonds. Emerging Markets Review, v. 6, n. 4, p. 311-323, 2005. DOI 10.1016/j.ememar.2005.09.007
+  -> EM Score = 6,56·X1 + 3,26·X2 + 6,72·X3 + 1,05·X4 + 3,25 (X3 = lucro operacional/ativo; X4 = PL contábil/passivo total). Fig. 1: zona segura ≥ 5,85 (BBB ou melhor); cinzenta 4,15–5,85 (BBB- a B); perigo < 4,15 (B- ou pior); < 1,75 = D. Passos 2-6 são ajustes de analista para títulos de dívida; o passo 1 pode ser usado sozinho.
 - Fama, Eugene F.; French, Kenneth R. Size, value, and momentum in international stock returns. Journal of Financial Economics, v. 105, n. 3, p. 457-472, 2012. DOI 10.1016/j.jfineco.2012.05.011
 - Cakici, Nusret; Tang, Yi; Yan, An. Do the size, value, and momentum factors drive stock returns in emerging markets? Journal of International Money and Finance, v. 69, p. 179-204, 2016. DOI 10.1016/j.jimonfin.2016.06.001
   -> BRASIL 1990-2013: momentum (UMD) 0,73% ao mês, t = 1,47 (não significativo); valor (HML) 0,41% ao mês, não significativo (Tabelas 2 e 3).
