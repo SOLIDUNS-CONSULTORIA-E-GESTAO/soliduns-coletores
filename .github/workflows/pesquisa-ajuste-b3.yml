@@ -1,0 +1,38 @@
+# SOLIDUNS — BASE DE PESQUISA DO SCORE EXPONENCIAL: cotações ajustadas e retorno total (etapa 2). 22/10/2026.
+# Junta as Releases "pesquisa-b3-cotahist" e "pesquisa-b3-eventos" e publica a Release "pesquisa-b3-ajustada".
+# Só roda à mão: Actions › Pesquisa - ajuste B3 › Run workflow.
+name: Pesquisa - ajuste B3
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ajuste:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Baixar as bases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p dados_b3 dados_eventos
+          gh release download pesquisa-b3-cotahist -D dados_b3 -p "cotahist_*.csv.gz"
+          gh release download pesquisa-b3-eventos -D dados_eventos -p "*.csv.gz"
+      - name: Ajustar
+        run: python coletor/pesquisa_ajuste_b3.py --cotacoes dados_b3 --eventos dados_eventos --saida dados_ajustados
+      - name: Publicar na Release pesquisa-b3-ajustada
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view pesquisa-b3-ajustada >/dev/null 2>&1 || \
+            gh release create pesquisa-b3-ajustada --title "Pesquisa — cotações ajustadas e retorno total (B3)" \
+              --notes "Base de pesquisa do Score Exponencial: preços ajustados por eventos em ações e índice de retorno total com proventos reinvestidos. Ver auditoria.md."
+          gh release upload pesquisa-b3-ajustada dados_ajustados/* --clobber
