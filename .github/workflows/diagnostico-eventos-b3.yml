@@ -18,17 +18,22 @@ jobs:
               if isinstance(d, str): d = json.loads(d)
               return r.status_code, d
           B = "https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/"
-          for em in ["PETR", "OGXP", "VIVO", "AMBV", "SDIA"]:
-              for ep in ["GetListedCashDividends", "GetListedStockDividends", "GetListedSubscriptions"]:
-                  try:
-                      st, d = get(B + ep + "/" + tok({"language": "pt-br", "pageNumber": 1, "pageSize": 120, "tradingName": em, "issuingCompany": em}))
-                      res = d.get("results") if isinstance(d, dict) else d
-                      pag = d.get("page") if isinstance(d, dict) else None
-                      res = res or []
-                      datas = sorted((x.get("lastDatePriorEx") or x.get("lastDatePrior") or x.get("dateApproval") or "")[-4:] for x in res)
-                      print(f"::notice title={em} {ep}::HTTP {st}; itens {len(res)}; página {pag}; anos {datas[0] if datas else '-'}–{datas[-1] if datas else '-'}; exemplo {json.dumps(res[-1], ensure_ascii=False)[:250] if res else str(d)[:200]}")
-                  except Exception as e:
-                      print(f"::notice title={em} {ep}::erro {type(e).__name__} {str(e)[:100]}")
-                  time.sleep(1)
+          for em in ["PETR", "AMBV", "VALE", "ITUB", "SDIA", "TNLP", "LAME"]:
+              try:
+                  st, s = get(B + "GetListedSupplementCompany/" + tok({"issuingCompany": em, "language": "pt-br"}))
+                  while isinstance(s, list): s = s[0] if s else {}
+                  nome = (s.get("tradingName") or "").strip()
+                  todos, pg = [], 1
+                  while True:
+                      st, d = get(B + "GetListedCashDividends/" + tok({"language": "pt-br", "pageNumber": pg, "pageSize": 120, "tradingName": nome}))
+                      todos += d.get("results") or []
+                      if pg >= (d.get("page") or {}).get("totalPages", 0): break
+                      pg += 1; time.sleep(0.5)
+                  anos = sorted(int(x["lastDatePriorEx"][-4:]) for x in todos if x.get("lastDatePriorEx"))
+                  tipos = sorted({x.get("corporateAction") for x in todos})
+                  print(f"::notice title={em} ({nome})::{len(todos)} proventos em {pg} páginas; de {anos[0] if anos else '-'} a {anos[-1] if anos else '-'}; tipos {tipos}; campos {sorted(todos[0].keys()) if todos else '-'}")
+              except Exception as e:
+                  print(f"::notice title={em}::erro {type(e).__name__} {str(e)[:100]}")
+              time.sleep(1)
           PY
           pip install -q requests && python d.py
