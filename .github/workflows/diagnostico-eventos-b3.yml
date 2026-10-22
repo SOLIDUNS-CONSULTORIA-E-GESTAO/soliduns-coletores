@@ -17,16 +17,16 @@ jobs:
               try:
                   r = requests.get(URL.format(tok), headers=H, timeout=25, verify=False)
                   d = r.json() if r.text.strip() else {}
-                  if em == "PETR":
-                      print(f"::notice title=PETR bruto::{type(d).__name__} {r.text[:600]}")
+                  if isinstance(d, str):
+                      d = json.loads(d)
                   while isinstance(d, list):
                       d = d[0] if d else {}
                   if not isinstance(d, dict):
                       print(f"::notice title={em}::HTTP {r.status_code}; resposta {type(d).__name__}: {str(d)[:200]}"); continue
                   cd = d.get("cashDividends") or []; sd = d.get("stockDividends") or []
                   datas = sorted(x.get("lastDatePrior", "")[-4:] + x.get("lastDatePrior", "")[3:5] for x in cd if x.get("lastDatePrior"))
-                  ex = cd[0] if cd else {}
-                  print(f"::notice title={em}::HTTP {r.status_code}; proventos em dinheiro: {len(cd)} ({datas[0] if datas else '-'} a {datas[-1] if datas else '-'}); eventos em ações: {len(sd)}; exemplo: { {k: ex.get(k) for k in ('label','rate','lastDatePrior','isinCode','relatedTo')} }")
+                  ex = cd[-1] if cd else {}
+                  print(f"::notice title={em}::HTTP {r.status_code}; proventos em dinheiro: {len(cd)} ({datas[0] if datas else '-'} a {datas[-1] if datas else '-'}); eventos em ações: {len(sd)}; exemplo: { {k: ex.get(k) for k in ('label','rate','lastDatePrior','assetIssued','relatedTo')} }")
               except Exception as e:
                   print(f"::notice title={em}::erro {type(e).__name__}")
               time.sleep(1)
