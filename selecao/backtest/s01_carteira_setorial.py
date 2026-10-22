@@ -94,9 +94,9 @@ for g, x in E.groupby('grupo'):
 E = pd.concat(partes)
 E['nome_grupo'] = E['grupo'].map(lambda g: NOME.get(g, g))
 cols = ['grupo', 'nome_grupo', 'pos', 'ticker', 'empresa', 'setor_cvm', 'nota', 'n_ind', 'liq_corrente', 'margem_bruta', 'giro_ativo', 'renovacao',
-        'cagr_receita', 'pl_ativo', 'margem_liq', 'roe', 'cagr_lucro', 'receita_ttm', 'lucro_liq_ttm', 'dt_refer', 'vol_medio']
+        'cagr_receita', 'pl_ativo', 'margem_liq', 'roe', 'cagr_lucro', 'receita_ttm', 'lucro_liq_ttm', 'dt_refer', 'vol_medio', 'tipo', 'divida_bruta', 'caixa', 'ebit_ttm', 'da', 'patrimonio_liq', 'ativo_total', 'dividendos_ttm']
 E[cols].to_pickle(f'{OUT}/carteira_setorial.pkl')
-fora = U[~U.index.isin(E.index) | ~U['lucro_positivo']][['ticker', 'empresa', 'grupo', 'lucro_liq_ttm']]
+fora = U[~U.index.isin(E.index)][['ticker', 'empresa', 'grupo', 'setor_cvm', 'lucro_liq_ttm', 'patrimonio_liq', 'receita_ttm', 'so_holding']]
 fora.to_pickle(f'{OUT}/carteira_setorial_fora.pkl')
 pd.set_option('display.width', 250)
 print(U['grupo'].value_counts().to_string()); print('sem mapeamento:', U[U.grupo == 'nao_mapeado'][['ticker', 'setor_cvm']].values.tolist())
