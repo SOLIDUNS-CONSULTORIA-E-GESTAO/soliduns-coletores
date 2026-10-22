@@ -1,0 +1,40 @@
+# SOLIDUNS — BASE DE PESQUISA DO SCORE EXPONENCIAL: proventos e eventos societários da B3 (etapa 2). 22/10/2026.
+# Lê os emissores da Release "pesquisa-b3-cotahist" e publica proventos/eventos na Release "pesquisa-b3-eventos".
+# Só roda à mão: Actions › Pesquisa - eventos B3 › Run workflow (limite = 0 para todos; ex.: 30 para teste).
+name: Pesquisa - eventos B3
+
+on:
+  workflow_dispatch:
+    inputs:
+      limite:
+        description: "Só os N primeiros emissores (0 = todos)"
+        required: true
+        default: "0"
+
+permissions:
+  contents: write
+
+jobs:
+  eventos:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Baixar a base de cotações
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: mkdir -p dados_b3 && gh release download pesquisa-b3-cotahist -D dados_b3 -p "cotahist_*.csv.gz"
+      - name: Consultar a B3
+        run: python coletor/pesquisa_eventos_b3.py --cotacoes dados_b3 --saida dados_eventos --limite "${{ github.event.inputs.limite }}"
+      - name: Publicar na Release pesquisa-b3-eventos
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view pesquisa-b3-eventos >/dev/null 2>&1 || \
+            gh release create pesquisa-b3-eventos --title "Pesquisa — proventos e eventos societários da B3" \
+              --notes "Base de pesquisa do Score Exponencial: proventos em dinheiro, eventos em ações e cadastro de emissores (B3). Gerado pelo workflow 'Pesquisa - eventos B3'."
+          gh release upload pesquisa-b3-eventos dados_eventos/*.csv.gz --clobber
