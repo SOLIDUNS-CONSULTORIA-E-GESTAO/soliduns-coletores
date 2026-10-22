@@ -8,7 +8,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import BaseDocTemplate, Frame, PageTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, KeepTogether
 from reportlab.lib.styles import ParagraphStyle
-XLS, OUT = sys.argv[1], sys.argv[2]
+XLS, OUT, LOGO = sys.argv[1], sys.argv[2], sys.argv[3]
 D = '/usr/share/fonts/truetype/dejavu/'
 pdfmetrics.registerFont(TTFont('Sans', D + 'DejaVuSansCondensed.ttf'))
 pdfmetrics.registerFont(TTFont('SansB', D + 'DejaVuSansCondensed-Bold.ttf'))
@@ -18,12 +18,15 @@ W, H = landscape(A4)
 
 def cabecalho(c, doc):
     c.saveState()
-    c.setFillColor(ESC); c.rect(0, H - 22 * mm, W, 22 * mm, stroke=0, fill=1)
+    c.setFillColor(colors.HexColor('#10171F')); c.rect(0, H - 22 * mm, W, 22 * mm, stroke=0, fill=1)
     x, y, s = 12 * mm, H - 18 * mm, 14 * mm
-    c.setStrokeColor(OURO); c.setLineWidth(1.6); c.rect(x, y, s, s, stroke=1, fill=0)
-    c.setFillColor(OURO); c.setFont('SansB', 26); c.drawCentredString(x + s / 2, y + 3.2 * mm, 'S')
-    c.setFillColor(colors.white); c.setFont('SansB', 17); c.drawString(x + s + 4 * mm, y + 6.2 * mm, 'SOLIDUNS')
-    c.setFillColor(colors.HexColor('#96A0A8')); c.setFont('Sans', 7.5); c.drawString(x + s + 4.2 * mm, y + 1.6 * mm, 'CONSULTORIA E GESTÃO')
+    from PIL import Image as _I
+    ic, nm = LOGO.replace('soliduns_logo.jpg', 'icone.png'), LOGO.replace('soliduns_logo.jpg', 'nome.png')
+    (iw, ih), (nw, nh) = _I.open(ic).size, _I.open(nm).size
+    hi = 15 * mm; c.drawImage(ic, 12 * mm, H - 18.5 * mm, width=hi * iw / ih, height=hi)
+    hn = 5.2 * mm; xn = 12 * mm + hi * iw / ih + 4 * mm
+    c.drawImage(nm, xn, H - 10.6 * mm, width=hn * nw / nh, height=hn)
+    c.setFillColor(colors.HexColor('#96A0A8')); c.setFont('Sans', 7.5); c.drawString(xn + 0.3 * mm, H - 16.6 * mm, 'CONSULTORIA E GESTÃO')
     c.setFillColor(colors.white); c.setFont('SansB', 11.5); c.drawRightString(W - 12 * mm, y + 6.4 * mm, 'Ranking de ações brasileiras por fundamentos contábeis')
     c.setFillColor(OURO); c.setFont('Sans', 8.5); c.drawRightString(W - 12 * mm, y + 1.6 * mm, 'Balanços entregues à CVM até 22/10/2026')
     c.setFillColor(OURO); c.rect(0, H - 23 * mm, W, 1 * mm, stroke=0, fill=1)
