@@ -1,0 +1,26 @@
+# SOLIDUNS — diagnóstico (só leitura): proventos de nomes de pregão com barra. 22/10/2026.
+name: Diagnóstico nome B3
+on: workflow_dispatch
+jobs:
+  d:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          pip install -q requests
+          cat > d.py <<'PY'
+          import sys; sys.path.insert(0, "coletor")
+          import pesquisa_eventos_b3 as p, time
+          for nome in ["AMBEV S/A", "AMBEV S A", "AMBEV SA", "AMBEV S.A.", "WEG", "MAGAZ LUIZA", "B3", "SADIA S/A", "SADIA SA", "SADIA"]:
+              d = p.consultar("GetListedCashDividends", {"language": "pt-br", "pageNumber": 1, "pageSize": 20, "tradingName": nome})
+              tot = ((d or {}).get("page") or {}).get("totalRecords")
+              ult = ((d or {}).get("results") or [{}])[0].get("lastDatePriorEx")
+              print(f"::notice title={nome}::registros {tot}; mais recente {ult}")
+              time.sleep(1)
+          for em in ["ABEV", "MGLU", "WEGE", "B3SA", "SDIA"]:
+              s = p.consultar("GetListedSupplementCompany", {"issuingCompany": em, "language": "pt-br"})
+              while isinstance(s, list): s = s[0] if s else {}
+              print(f"::notice title=cadastro {em}::{ {k: s.get(k) for k in ('tradingName','companyName','code','codeCVM')} if isinstance(s, dict) else s}")
+          PY
+          python d.py
