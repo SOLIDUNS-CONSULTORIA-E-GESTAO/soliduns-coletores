@@ -1,0 +1,42 @@
+# SOLIDUNS — DIAGNÓSTICO DAS FONTES DE FECHAMENTO. 21/10/2026.
+# Só leitura: confere se o fechamento do pregão já está publicado nas fontes oficiais (B3 e Banco Central) e a que horas.
+# Não grava nada no banco. Uso: Actions › Diagnóstico do fechamento › Run workflow (data em branco = hoje).
+name: Diagnóstico do fechamento
+on:
+  workflow_dispatch:
+    inputs:
+      data:
+        description: "Pregão (AAAA-MM-DD; em branco = hoje)"
+        required: false
+        default: ""
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Conferir as fontes
+        run: |
+          D="${{ github.event.inputs.data }}"; [ -n "$D" ] || D=$(TZ=America/Sao_Paulo date +%F)
+          echo "::notice title=0 AGORA::$(TZ=America/Sao_Paulo date '+%d/%m/%Y %H:%M') (Brasília) — pregão $D"
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36"
+          DD=$(date -d "$D" +%d%m%Y)
+          U="https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_D$DD.ZIP"
+          curl -s -A "$UA" -D cab -o cot.zip -w "%{http_code} %{size_download}" "$U" > r.txt
+          LM=$(tr -d '\r' < cab | grep -i '^last-modified:' | cut -d' ' -f2-)
+          echo "::notice title=1 B3 COTAHIST (ações, FIIs, ETFs)::código $(cut -d' ' -f1 r.txt), $(cut -d' ' -f2 r.txt) bytes; publicado em: ${LM:-não informado}"
+          if unzip -tq cot.zip >/dev/null 2>&1; then
+            N=$(unzip -p cot.zip | grep -c '^01'); P=$(unzip -p cot.zip | grep -E '^01.{10}PETR4' | head -1)
+            echo "::notice title=2 B3 COTAHIST conteúdo::$N papéis; PETR4 fechamento: $(echo "$P" | cut -c109-121 | sed 's/^0*//')"
+          fi
+          A=$(date -d "$D" +%Y)
+          PARAM=$(printf '{"index":"IBOV","language":"pt-br","year":"%s"}' "$A" | base64 -w0)
+          curl -s -A "$UA" "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetPortfolioDay/$PARAM" -o ibov.json
+          M=$((10#$(date -d "$D" +%m))); DIA=$((10#$(date -d "$D" +%d)))
+          V=$(jq -r --argjson d "$DIA" --arg k "rateValue$M" '.results[]? | select((.day|tonumber)==$d) | .[$k] // empty' ibov.json)
+          U2=$(jq -r --arg k "rateValue$M" '[.results[]? | select(.[$k] != null and .[$k] != "") | (.day|tonumber)] | max // empty' ibov.json)
+          echo "::notice title=3 B3 IBOVESPA::fechamento do dia $D: ${V:-AINDA NÃO PUBLICADO}; último dia do mês com valor: ${U2:-nenhum}"
+          MDY=$(date -d "$D" +%m-%d-%Y)
+          curl -s "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaPeriodo(moeda=@moeda,dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@moeda=%27USD%27&@dataInicial=%27$MDY%27&@dataFinalCotacao=%27$MDY%27&\$format=json" -o ptax.json
+          echo "::notice title=4 BCB PTAX dólar::$(jq -r '[.value[]? | select(.tipoBoletim=="Fechamento") | "\(.cotacaoVenda) às \(.dataHoraCotacao)"] | first // "AINDA NÃO PUBLICADO"' ptax.json)"
+          DMY=$(date -d "$D" +%d/%m/%Y)
+          echo "::notice title=5 BCB CDI::$(curl -s "https://api.bcb.gov.br/dados/serie/bcdata.sgs.4389/dados?formato=json&dataInicial=$DMY&dataFinal=$DMY" | jq -r '.[0].valor // "AINDA NÃO PUBLICADO"' 2>/dev/null)"
