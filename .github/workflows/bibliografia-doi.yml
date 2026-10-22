@@ -1,0 +1,14 @@
+# SOLIDUNS — confere DOI e autores completos dos artigos da bibliografia na Crossref (só leitura). 22/10/2026.
+name: Bibliografia (DOI)
+on: workflow_dispatch
+permissions: { contents: write }
+jobs:
+  doi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 docs/bibliografia/buscar_doi.py docs/bibliografia/artigos.tsv docs/bibliografia/artigos_doi.tsv
+      - run: |
+          git config user.name "drthiagoviegas"; git config user.email "dr.thiago.viegas@gmail.com"
+          git add docs/bibliografia/artigos_doi.tsv && git commit -m "Bibliografia: DOI conferidos na Crossref" && git push
