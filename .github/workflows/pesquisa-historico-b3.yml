@@ -1,0 +1,39 @@
+# SOLIDUNS — BASE DE PESQUISA DO SCORE EXPONENCIAL: cotações históricas da B3 (COTAHIST anual). 22/10/2026.
+# Fonte oficial e gratuita, a mesma do coletor diário. Não grava no Supabase: publica um arquivo por ano
+# (CSV compactado) na Release "pesquisa-b3-cotahist" do repositório. Só roda à mão:
+# Actions › Pesquisa - histórico B3 › Run workflow (anos: ex. 1995-2026).
+name: Pesquisa - histórico B3
+
+on:
+  workflow_dispatch:
+    inputs:
+      anos:
+        description: "Anos (ex.: 1995-2026 ou 2024,2025)"
+        required: true
+        default: "1995-2026"
+
+permissions:
+  contents: write
+
+jobs:
+  historico:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Instalar dependencias
+        run: pip install requests
+      - name: Baixar e ler os arquivos anuais da B3
+        run: python coletor/pesquisa_historico_b3.py --anos "${{ github.event.inputs.anos }}" --saida dados_b3
+      - name: Publicar na Release pesquisa-b3-cotahist
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view pesquisa-b3-cotahist >/dev/null 2>&1 || \
+            gh release create pesquisa-b3-cotahist --title "Pesquisa — cotações históricas da B3 (COTAHIST)" \
+              --notes "Base de pesquisa do Score Exponencial: um arquivo por ano, preços originais da B3 (sem ajuste). Gerado pelo workflow 'Pesquisa - histórico B3'."
+          gh release upload pesquisa-b3-cotahist dados_b3/*.csv.gz --clobber
+          echo "Arquivos publicados: $(ls dados_b3 | wc -l)" >> "$GITHUB_STEP_SUMMARY"
