@@ -10,6 +10,21 @@
 - 5  Asness; Frazzini; Pedersen (2019) — Quality minus junk. DOI 10.1007/s11142-018-9470-2
 - 7  Bailey; López de Prado (2014) — The deflated Sharpe ratio (versão de trabalho de 31/07/2014). DOI 10.3905/jpm.2014.40.5.094
 - 9  Baker; Bradley; Wurgler (2011) — Benchmarks as limits to arbitrage. DOI 10.2469/faj.v67.n1.4
+- 10 Bali; Cakici; Whitelaw (2011) — Maxing out. DOI 10.1016/j.jfineco.2010.08.014
+- 11 Barber; Lyon (1997) — Detecting long-run abnormal stock returns. DOI 10.1016/S0304-405X(96)00890-2
+- 12 Barroso; Santa-Clara (2015) — alvo de volatilidade de 12% ao ano, 126 pregões (seis meses). DOI 10.1016/j.jfineco.2014.11.010
+- 13 Beneish (1999, versão corrigida em 2003) — limiar do escore M: −1,78. DOI 10.2469/faj.v55.n5.2296
+- 14 Bernard; Thomas (1989). DOI 10.2307/2491062
+- 15 Bessembinder (2018) — Do stocks outperform Treasury bills? (manuscrito aceito). DOI 10.1016/j.jfineco.2018.06.004
+- 16 Bessembinder; Chen; Choi; Wei (2023) — BRASIL (Tab. 3 e 8): 395 ações (1993-2020); só 34,7% superaram o mercado; 20 das 390 empresas (5%) criaram 98% da riqueza líquida. DOI 10.1080/0015198X.2023.2188870
+- 17 Bortoluzzo; Pistili; Bortoluzzo (2021) — Brasil 2000-2018. DOI 10.12660/rbfin.v19n3.2021.83068
+- 18 Boyer; Mitton; Vorkink (2010). DOI 10.1093/rfs/hhp041
+- 19 Brock; Lakonishok; LeBaron (1992). DOI 10.1111/j.1540-6261.1992.tb04681.x
+- 21 Carhart (1997). DOI 10.1111/j.1540-6261.1997.tb03808.x
+- 22 Chan; Jegadeesh; Lakonishok (1996). DOI 10.1111/j.1540-6261.1996.tb05222.x
+- 23 Chan; Karceski; Lakonishok (2003). DOI 10.1111/1540-6261.00540
+- 24 Civiletti; Campani; Roquete (2020) — 64 carteiras = 32 pares; as 32 vencedoras superaram as perdedoras, mas só 12 diferenças foram significativas a 10% (7 por retorno, 5 por alfa). DOI 10.15728/bbr.2020.17.5.2
+- 25 Da; Gurun; Warachka (2014). DOI 10.1093/rfs/hhu003
 - 28 Fama; MacBeth (1973). DOI 10.1086/260061
 - 39 McLean; Pontiff (2016). DOI 10.1111/jofi.12365
 - 42 Newey; West (1987). DOI 10.2307/1913610
