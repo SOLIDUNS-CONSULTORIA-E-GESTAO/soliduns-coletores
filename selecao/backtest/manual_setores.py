@@ -36,3 +36,8 @@ MANUAL = {
     'LATS': ('Embalagens', 'Privado'),
 }
 NAO_ACAO = {'IBOV', 'BOVA'}   # índice e ETF: fora do universo de ações
+
+# Raízes de código sem CNPJ no FCA (units e empresas cujo FCA não lista o código). Conferido no cadastro da CVM.
+RAIZ_MANUAL = {'BPAC': '30.306.294/0001-45',   # Banco BTG Pactual (units BPAC11)
+               'CSNA': '33.042.730/0001-04',   # Cia Siderúrgica Nacional
+               'CMIN': '08.902.291/0001-15'}   # CSN Mineração

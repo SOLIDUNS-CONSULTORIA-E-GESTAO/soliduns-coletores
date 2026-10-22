@@ -16,7 +16,7 @@ for f in arquivos:
     manter = ((df['DEMO'] == 'DRE')
               | (df['DEMO'] == 'DFC')
               | cd.isin(['1', '1.01', '1.01.01', '1.01.02'])
-              | cd.str.match(r'^2\.0[1237]'))
+              | cd.str.match(r'^2\.0[1-9]'))
     df = df[manter][['CNPJ_CIA', 'DENOM_CIA', 'DT_REFER', 'VERSAO', 'DT_INI_EXERC', 'ORDEM_EXERC', 'CD_CONTA', 'DS',
                      'VALOR', 'ORDEM', 'DEMO', 'TIPO', 'DOCUMENTO']].copy()
     for c in ['CNPJ_CIA', 'DENOM_CIA', 'DT_REFER', 'DT_INI_EXERC', 'ORDEM_EXERC', 'CD_CONTA', 'DS', 'ORDEM', 'DEMO', 'TIPO', 'DOCUMENTO']:
