@@ -14,7 +14,8 @@ Passos:
      como "heuristica" (cobre as empresas que saíram da bolsa, que a B3 não lista mais).
   3. PROVENTOS: cada provento vai para o papel do mesmo emissor e da mesma classe (final 3 = ON, 4 = PN, 5 = PNA,
      6 = PNB, 7 = PNC, 8 = PND, 11 = UNT) negociado na data-com. Entra na data ex (1º pregão depois da data-com).
-     Provento maior que 60% do preço da data-com é recusado (provável erro de unidade) e vai para a auditoria.
+     Provento maior que 60% do preço da data-com só entra se o preço da véspera informado pela B3 conferir com o
+     nosso (ex.: devolução de capital); acima de 98%, ou sem conferência, é recusado e vai para a auditoria.
   4. RETORNO TOTAL do dia: r(t) = [A(t) + D(t)] / A(t−1) − 1, com A = preço ajustado por desdobramentos e grupamentos
      e D = provento por ação na mesma base. Os proventos são reinvestidos no próprio papel.
 
@@ -123,6 +124,12 @@ def ler_eventos(pasta):
             dc, fx = cc.data_br(r["data_com"]), num(r["fator"])
             if dc and fx and fx > 0:
                 acoes[r["emissor"]].append((dc, fx, re.sub(r"\s+", " ", (r["rotulo"] or "").upper()), (r["isin"] or "").upper() or None))
+    f = os.path.join(pasta, "emissores_b3.csv.gz")
+    nomes = defaultdict(int)
+    if os.path.exists(f):
+        for r in csv.DictReader(gzip.open(f, "rt", encoding="utf-8")):
+            if r["nome_pregao"]:
+                nomes[r["nome_pregao"]] += 1
     f = os.path.join(pasta, "proventos_b3.csv.gz")
     vistos = set()
     for r in csv.DictReader(gzip.open(f, "rt", encoding="utf-8")):
@@ -134,7 +141,8 @@ def ler_eventos(pasta):
             continue
         vistos.add(chave)
         f_b3 = num(r["fech_vespera_ex"])
-        prov[(r["emissor"], (r["classe"] or "").upper())].append((dc, v / q, r["tipo"], num(r["percentual"]), (f_b3 / q) if f_b3 else None))
+        prov[(r["emissor"], (r["classe"] or "").upper())].append((dc, v / q, r["tipo"], num(r["percentual"]), (f_b3 / q) if f_b3 else None,
+                                                                 nomes.get(r["nome_pregao"], 0) > 1))
     return acoes, prov
 
 
@@ -208,7 +216,7 @@ def main():
         # 3. proventos do mesmo emissor e classe, na data ex (proporção do preço da data-com, na base ajustada)
         cls = classe_de(tk_final) or classe_de(serie[0][1])
         prov_dia = defaultdict(float)
-        for (dc, v, tipo, pct, f_b3) in prov.get((emissor, cls or ""), []):
+        for (dc, v, tipo, pct, f_b3, nome_rep) in prov.get((emissor, cls or ""), []):
             if dc < datas[0] or dc >= datas[-1]:
                 continue
             j_com = bisect.bisect_right(datas, dc) - 1              # último pregão até a data-com
@@ -221,12 +229,21 @@ def main():
             if (dt.date.fromisoformat(datas[j_ex]) - dt.date.fromisoformat(dc)).days > 31:
                 tot["proventos_sem_pregao_proximo"] += 1
                 continue
+            confere = False
             if f_b3 and f_b3 > 0:                                   # conferência: preço da B3 na véspera da data ex
                 tot["conf_preco_total"] += 1
                 if abs(math.log(f_b3 / p_com)) <= math.log(1.02):
                     tot["conf_preco_ok"] += 1
+                    confere = True
+                elif nome_rep:                                       # nome de pregão de dois emissores: o preço decide
+                    tot["proventos_de_outro_emissor"] += 1
+                    continue
+            elif nome_rep:
+                tot["proventos_de_outro_emissor"] += 1
+                continue
             frac = v / p_com
-            if frac > 0.6:
+            # até 60% do preço: aceito; de 60% a 98% (ex.: devolução de capital): só se o preço da B3 confere com o nosso
+            if frac > 0.98 or (frac > 0.6 and not confere):
                 recusados.append(f"{pid} {tk_final} {dc} {tipo}: provento {v:.6f} sobre preço {p_com:.6f}")
                 continue
             if pct and pct > 0 and abs(math.log(frac / (pct / 100))) > math.log(1.5):
@@ -286,7 +303,8 @@ def main():
     aud(f"- Proventos aplicados: {tot['proventos_aplicados']} de {nprov} ({tot['proventos_aplicados']/max(1,nprov):.0%}); "
         f"recusados por tamanho: {len(recusados)}; divergentes do percentual da B3 (> 50%): {tot['provento_divergente_do_percentual_b3']}")
     aud(f"- Conferência com o preço da véspera informado pela B3 em cada provento: {tot['conf_preco_ok']} de "
-        f"{tot['conf_preco_total']} iguais ao nosso fechamento (até 2%) = {tot['conf_preco_ok']/max(1,tot['conf_preco_total']):.0%}")
+        f"{tot['conf_preco_total']} iguais ao nosso fechamento (até 2%) = {tot['conf_preco_ok']/max(1,tot['conf_preco_total']):.0%}; "
+        f"descartados por pertencerem a outro emissor com o mesmo nome de pregão: {tot['proventos_de_outro_emissor']}")
     aud(f"- Papéis gravados: {len(cad)}; linhas diárias: {sum(len(v) for v in diario.values())}; linhas mensais: {len(mensal)}")
     for alvo in ["PETR4", "VALE3", "ITUB4", "WEGE3", "AMBV4", "TNLP4"]:
         c = [x for x in cad if alvo in x["tickers"].split()]
