@@ -11,7 +11,7 @@ Fonte OFICIAL e gratuita: Portal de Dados Abertos da CVM (dados.cvm.gov.br), a m
   - Cadastro das companhias abertas (setor, situação, data e motivo do cancelamento de registro).
 Contas guardadas (para não estourar o tamanho): Balanço até o 3º nível (ex.: 2.03.04 reservas de lucros), DRE e DFC
 até o 4º nível (ex.: 3.99.01.01 lucro por ação; 6.01.01.02 depreciação). Só o exercício atual (ORDEM_EXERC = ÚLTIMO).
-Valores em reais (a escala "MIL" é convertida).
+Valores em reais (a escala "MIL" é convertida; o lucro por ação, contas 3.99, já vem em reais por ação).
 
 NÃO grava no Supabase: publica arquivos na Release "pesquisa-cvm" pelo workflow "Pesquisa - CVM".
 Uso: python coletor/pesquisa_cvm.py --anos 2010-2026 --saida dados_cvm
@@ -103,8 +103,9 @@ def documento(doc, ano, saida):
             nivel = df["CD_CONTA"].str.count(r"\.") + 1
             df = df[nivel <= NIVEL_MAX[demo]].copy()
             esc = df.get("ESCALA_MOEDA", pd.Series("UNIDADE", index=df.index)).map(sem_acento)
-            df["VALOR"] = pd.to_numeric(df["VL_CONTA"].str.replace(",", ".", regex=False), errors="coerce") \
-                * esc.map(lambda e: 1000.0 if e.startswith("MIL") else 1.0)
+            fator = esc.map(lambda e: 1000.0 if e.startswith("MIL") else 1.0)
+            fator[df["CD_CONTA"].str.startswith("3.99")] = 1.0      # lucro por ação já vem em reais por ação
+            df["VALOR"] = pd.to_numeric(df["VL_CONTA"].str.replace(",", ".", regex=False), errors="coerce") * fator
             df["DEMO"], df["GRUPO"] = demo, grupo
             cols = ["CNPJ_CIA", "CD_CVM", "DT_REFER", "VERSAO", "DT_INI_EXERC", "DT_FIM_EXERC", "DEMO", "GRUPO",
                     "CD_CONTA", "DS_CONTA", "ST_CONTA_FIXA", "VALOR"]
