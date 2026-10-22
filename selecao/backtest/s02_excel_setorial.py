@@ -3,7 +3,9 @@ import sys
 import pandas as pd
 from openpyxl.styles import Font, PatternFill
 B, O = sys.argv[1], sys.argv[2]
+FORA = sys.argv[3].split(',') if len(sys.argv) > 3 else []   # grupos retirados da lista por decisão de gestão
 E = pd.read_pickle(f'{B}/setorial/carteira_setorial.pkl')
+E = E[~E['grupo'].isin(FORA)]
 NOMES = {'agro_exportador': 'Agro exportador', 'bancos': 'Bancos e financeiras', 'consumo_basico': 'Consumo básico', 'energia_saneamento': 'Energia e saneamento',
          'holdings': 'Holdings', 'industria': 'Indústria (bens de capital)', 'lazer_turismo': 'Lazer e turismo', 'mineracao_siderurgia': 'Mineração e siderurgia',
          'papel_celulose': 'Papel e celulose', 'petroleo': 'Petróleo e gás', 'petroquimica': 'Petroquímica', 'saude_educacao': 'Saúde e educação',
@@ -26,7 +28,7 @@ with pd.ExcelWriter(f'{O}/Carteira_Setorial_Fundamentos_SOLIDUNS.xlsx', engine='
                             'Média dos percentis de cada indicador dentro do setor (pesos iguais); maior é melhor',
                             'Aquisição de imobilizado e intangível dividida pela depreciação e amortização do ano (DFP 2025): acima de 1 = renovando/expandindo a base de ativos',
                             'CVM: ITR e DFP entregues até 22/10/2026 (últimos 12 meses); mesmas contas da plataforma',
-                            'Varejo e construção civil (parametros.yaml)',
+                            'Varejo e construção civil (parametros.yaml); saúde e educação e transporte e logística retirados desta lista em 22/10/2026',
                             'Itaúsa (ITSA4) é controladora do Itaú (ITUB4): os dois juntos são a mesma exposição']}).to_excel(xw, sheet_name='Metodologia', index=False)
     for ws in xw.book.worksheets:
         ws.freeze_panes = 'A2'
