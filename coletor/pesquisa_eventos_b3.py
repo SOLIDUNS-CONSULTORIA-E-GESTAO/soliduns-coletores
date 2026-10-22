@@ -1,6 +1,6 @@
 """
 SOLIDUNS — BASE DE PESQUISA: PROVENTOS E EVENTOS SOCIETÁRIOS DA B3 (Score Exponencial v1.0.2, camada 1, etapa 2)
-v1.0 (22/10/2026)
+v1.1 (22/10/2026)
 
 Fonte OFICIAL e gratuita: páginas de empresas listadas da B3 (sistemaswebb3-listados), as mesmas consultas do site
 da B3, sem chave. Testado em 22/10/2026 (workflow "Diagnóstico eventos B3"):
@@ -94,10 +94,14 @@ def main():
             acoes.append({"emissor": em, "isin": e.get("isinCode") or e.get("assetIssued") or "", "rotulo": e.get("label"),
                           "fator": e.get("factor"), "data_com": e.get("lastDatePrior"), "aprovacao": e.get("approvedOn")})
         qtd = 0
-        if nome:
+        # v1.1: a consulta não aceita a barra do nome de pregão ("AMBEV S/A" -> 0; "AMBEV SA" -> 40 registros)
+        nomes = list(dict.fromkeys([nome.replace("/", ""), nome.replace("/", " "), nome])) if nome else []
+        for nome_c in nomes:
+            if qtd:
+                break
             pg = 1
             while True:
-                d = consultar("GetListedCashDividends", {"language": "pt-br", "pageNumber": pg, "pageSize": 120, "tradingName": nome})
+                d = consultar("GetListedCashDividends", {"language": "pt-br", "pageNumber": pg, "pageSize": 120, "tradingName": nome_c})
                 if not isinstance(d, dict):
                     break
                 for x in d.get("results") or []:
@@ -111,6 +115,7 @@ def main():
                     break
                 pg += 1
                 time.sleep(0.4)
+            time.sleep(0.3)
         cad.append({"emissor": em, "nome_pregao": nome, "codigos": " ".join(sorted(emissores[em])), "proventos": qtd,
                     "eventos_acoes": sum(1 for x in acoes if x["emissor"] == em), "situacao": "ok" if nome else "sem cadastro na B3"})
         if n % 100 == 0:
