@@ -9,26 +9,26 @@ jobs:
       - run: |
           cat > d.py <<'PY'
           import base64, json, requests, time
-          URL = "https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedSupplementCompany/{}"
           H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/129.0 Safari/537.36",
                "Accept": "application/json", "Referer": "https://sistemaswebb3-listados.b3.com.br/listedCompaniesPage/"}
-          for em in ["PETR", "OGXP", "VIVO", "AMBV", "TNLP", "SDIA", "ARCZ", "MMXM"]:
-              tok = base64.b64encode(json.dumps({"issuingCompany": em, "language": "pt-br"}, separators=(",", ":")).encode()).decode()
-              try:
-                  r = requests.get(URL.format(tok), headers=H, timeout=25, verify=False)
-                  d = r.json() if r.text.strip() else {}
-                  if isinstance(d, str):
-                      d = json.loads(d)
-                  while isinstance(d, list):
-                      d = d[0] if d else {}
-                  if not isinstance(d, dict):
-                      print(f"::notice title={em}::HTTP {r.status_code}; resposta {type(d).__name__}: {str(d)[:200]}"); continue
-                  cd = d.get("cashDividends") or []; sd = d.get("stockDividends") or []
-                  datas = sorted(x.get("lastDatePrior", "")[-4:] + x.get("lastDatePrior", "")[3:5] for x in cd if x.get("lastDatePrior"))
-                  ex = cd[-1] if cd else {}
-                  print(f"::notice title={em}::HTTP {r.status_code}; proventos em dinheiro: {len(cd)} ({datas[0] if datas else '-'} a {datas[-1] if datas else '-'}); eventos em ações: {len(sd)}; exemplo: { {k: ex.get(k) for k in ('label','rate','lastDatePrior','assetIssued','relatedTo')} }")
-              except Exception as e:
-                  print(f"::notice title={em}::erro {type(e).__name__}")
-              time.sleep(1)
+          def tok(d): return base64.b64encode(json.dumps(d, separators=(",", ":")).encode()).decode()
+          def get(url):
+              r = requests.get(url, headers=H, timeout=25, verify=False)
+              d = r.json() if r.text.strip() else {}
+              if isinstance(d, str): d = json.loads(d)
+              return r.status_code, d
+          B = "https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/"
+          for em in ["PETR", "OGXP", "VIVO", "AMBV", "SDIA"]:
+              for ep in ["GetListedCashDividends", "GetListedStockDividends", "GetListedSubscriptions"]:
+                  try:
+                      st, d = get(B + ep + "/" + tok({"language": "pt-br", "pageNumber": 1, "pageSize": 120, "tradingName": em, "issuingCompany": em}))
+                      res = d.get("results") if isinstance(d, dict) else d
+                      pag = d.get("page") if isinstance(d, dict) else None
+                      res = res or []
+                      datas = sorted((x.get("lastDatePriorEx") or x.get("lastDatePrior") or x.get("dateApproval") or "")[-4:] for x in res)
+                      print(f"::notice title={em} {ep}::HTTP {st}; itens {len(res)}; página {pag}; anos {datas[0] if datas else '-'}–{datas[-1] if datas else '-'}; exemplo {json.dumps(res[-1], ensure_ascii=False)[:250] if res else str(d)[:200]}")
+                  except Exception as e:
+                      print(f"::notice title={em} {ep}::erro {type(e).__name__} {str(e)[:100]}")
+                  time.sleep(1)
           PY
           pip install -q requests && python d.py
