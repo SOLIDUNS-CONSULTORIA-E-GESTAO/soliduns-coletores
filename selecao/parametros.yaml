@@ -52,6 +52,13 @@ governanca:                         # (6.1) Tabela 5
   pesos: {segmento: 0.30, tag_along: 0.15, conselho: 0.15, free_float: 0.10, controle: 0.15, historico: 0.15}
   anos_historico: 5
 
+universo:                           # 10.1 filtros de elegibilidade
+  # Decisão de gestão (22/10/2026): fora da carteira e do ranking. Grupos definidos em setores.yaml:
+  #   varejo     = Comércio (Atacado e Varejo) e Têxtil e Vestuário (CVM)
+  #   construcao = Construção Civil, Mat. Constr. e Decoração (CVM), inclusive holdings do setor
+  grupos_excluidos: [varejo, construcao]
+  manter_mesmo_excluidos: []        # exceções por código, ex.: [VBBR3]
+
 site:                               # página "Carteira SOLIDUNS" (Mercado financeiro › Ações)
   publicar_automaticamente: false   # false = cada execução entra como prévia; o administrador publica na página
 

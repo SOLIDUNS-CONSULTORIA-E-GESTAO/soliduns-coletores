@@ -12,7 +12,11 @@
 grupos:
   varejo:              {eps: 1.6, eta: 0.9,  lambda: 1.25, politico: domestica_ciclica, nome: "Varejo e consumo discricionário"}
   construcao:          {eps: 1.8, eta: 1.4,  lambda: 1.30, politico: domestica_ciclica, nome: "Construção civil e incorporação"}
-  bancos:              {eps: 1.0, eta: 0.0,  lambda: 1.15, politico: financeira,        nome: "Bancos e serviços financeiros"}
+  # bancos (decisão de gestão, 22/10/2026): a queda da Selic e da curva longa reduz o custo de captação e a
+  # inadimplência e melhora o spread; o efeito chega primeiro aos bancos. Daí eta > 0 (juro menor = receita maior)
+  # e lambda alto (receita praticamente toda doméstica, captação atrelada à curva local).
+  # Confirmação nos preços: em 05/10/2026 (pós 1º turno) os bancos subiram 10,7% (mediana) contra 7,6% do BOVA11.
+  bancos:              {eps: 1.0, eta: 1.0,  lambda: 1.30, politico: financeira,        nome: "Bancos e serviços financeiros"}
   seguradoras:         {eps: 0.8, eta: -0.3, lambda: 1.10, politico: financeira,        nome: "Seguradoras"}
   energia_saneamento:  {eps: 0.5, eta: 0.3,  lambda: 1.10, politico: regulada,          nome: "Energia elétrica e saneamento"}
   petroleo:            {eps: 0.3, eta: 0.1,  lambda: 0.55, politico: exportadora,       nome: "Petróleo e gás"}
@@ -26,6 +30,7 @@ grupos:
   transporte:          {eps: 1.1, eta: 0.6,  lambda: 1.05, politico: domestica_ciclica, nome: "Transporte e logística"}
   petroquimica:        {eps: 0.7, eta: 0.3,  lambda: 0.75, politico: exportadora,       nome: "Petroquímica e química"}
   holdings:            {eps: 1.0, eta: 0.5,  lambda: 1.00, politico: domestica_ciclica, nome: "Holdings diversificadas"}
+  lazer_turismo:       {eps: 1.4, eta: 0.8,  lambda: 1.25, politico: domestica_ciclica, nome: "Lazer, academias e turismo"}
 
 # Setor de atividade da CVM (sem o prefixo "Emp. Adm. Part. - ") -> grupo
 mapa_cvm:
@@ -34,6 +39,7 @@ mapa_cvm:
   "Construção Civil, Mat. Constr. e Decoração": construcao
   "Const. Civil, Mat. Const. e Decoração": construcao
   "Bancos": bancos
+  "Bolsas de Valores/Mercadorias e Futuros": bancos
   "Intermediação Financeira": bancos
   "Crédito Imobiliário": bancos
   "Arrendamento Mercantil": bancos
@@ -42,8 +48,8 @@ mapa_cvm:
   "Previdência": seguradoras
   "Comércio (Atacado e Varejo)": varejo
   "Têxtil e Vestuário": varejo
-  "Brinquedos e Lazer": varejo
-  "Hospedagem e Turismo": varejo
+  "Brinquedos e Lazer": lazer_turismo
+  "Hospedagem e Turismo": lazer_turismo
   "Máquinas, Equipamentos, Veículos e Peças": industria
   "Máqs., Equip., Veíc. e Peças": industria
   "Embalagens": industria

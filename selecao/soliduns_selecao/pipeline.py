@@ -200,10 +200,18 @@ def montar_tabela(base, cfg, st, pasta_cache, fundamentos_json=None):
 
     # --- filtros (10.1)
     vmin = cfg["carteira"]["volume_minimo_rs"]
+    uni = cfg.get("universo") or {}
+    excl_grupos = set(uni.get("grupos_excluidos") or [])
+    manter = {str(t).upper() for t in (uni.get("manter_mesmo_excluidos") or [])}
+    if excl_grupos:
+        origem("Setores excluídos", ", ".join(st["grupos"][g]["nome"] for g in sorted(excl_grupos) if g in st["grupos"]),
+               "parametros.yaml (universo.grupos_excluidos)")
     motivos = []
     for r in tab.itertuples():
         m_ = None
-        if "recupera" in sem_acento(r.situacao):
+        if r.grupo in excl_grupos and r.ticker not in manter:
+            m_ = f"setor excluído por decisão de gestão ({st['grupos'][r.grupo]['nome']})"
+        elif "recupera" in sem_acento(r.situacao):
             m_ = "recuperação judicial/extrajudicial"
         elif not (r.volume_medio >= vmin):
             m_ = f"liquidez abaixo de R$ {vmin / 1e6:.0f} mi/dia"

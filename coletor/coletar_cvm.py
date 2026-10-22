@@ -449,7 +449,8 @@ def ler_tickers(conteudo_zip):
     mapa = defaultdict(set)
     for _, r in df.iterrows():
         cod = str(r[c_cod] or "").strip().upper()
-        if not re.fullmatch(r"[A-Z]{4}(3|4|5|6|7|8|11)", cod):
+        # v8.2 (22/10/2026): a raiz do código pode ter algarismo (B3SA3, da própria B3); antes ficava de fora
+        if not re.fullmatch(r"[A-Z][A-Z0-9]{3}(3|4|5|6|7|8|11)", cod) or sum(c.isalpha() for c in cod[:4]) < 3:
             continue
         if c_merc and "bolsa" not in sem_acento(r[c_merc] or ""):
             continue
