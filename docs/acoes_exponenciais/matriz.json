@@ -1,0 +1,5644 @@
+{
+ "titulo": "Matriz de hipóteses — ações exponenciais (10x ou mais)",
+ "base": "601 fichas de Phelps (1972), Mayer (2015), O'Neil (2009), Fisher (1958/1975/1980) e Lynch (1989)",
+ "definicoes": {
+  "vencedora": "Ação com retorno total (preço ajustado + proventos) de 10x ou mais a partir de t0; horizonte principal de 10 anos, com variantes de 5 e 15 anos; 100x apenas para comparar com Phelps e Mayer.",
+  "t0": "Início da janela: último pregão do mês-base. Só entram dados contábeis já entregues à CVM/SEC até t0.",
+  "controle": "Para cada vencedora, ações do mesmo setor, faixa de tamanho e mesmo t0 que não chegaram a 10x no mesmo horizonte, incluindo deslistadas.",
+  "aviso": "Hipóteses de tamanho, setor e data não podem ser testadas contra o controle pareado nessas variáveis; para elas o teste usa a taxa-base do universo.",
+  "fontes_fora_da_lista": "Algumas medidas citam fontes fora da lista (13F, Form 4, Res. CVM 44, analistas, juros, IBGE/Census); quando citadas, a viabilidade foi rebaixada."
+ },
+ "estudos": [
+  {
+   "autor": "Thomas W. Phelps",
+   "livro": "100 to 1 in the Stock Market (1972; reedição Echo Point 2014)",
+   "amostra": {
+    "quantidade": "360 a 365 títulos que multiplicaram 100x (contagem do fichador no Apêndice: ~374 linhas, com classes separadas); subamostra de 7 casos comprados em 1961-1967.",
+    "periodo": "Anos de compra de 1932 a 1967 (32 anos distintos); valor final em 1971.",
+    "fonte_dados": "Cotações públicas da época: Wall Street Journal, Moody's, Commercial and Financial Chronicle, Bank and Quotation Record."
+   },
+   "metodo": "Lista de títulos que, em algum ano de compra, custavam 1% ou menos do valor de 1971 (pico do ano, ajustado por desdobramentos, bonificações e fusões, em geral sem dividendos). Análise por casos e quatro categorias de vencedoras.",
+   "limites": [
+    "Lista não exaustiva: são os casos de que o autor se lembrou; olhar retrospectivo.",
+    "Sem contagem das ações que não multiplicaram e sem grupo de controle.",
+    "Mistura ordinárias, preferenciais, bônus em default e warrants; várias entradas vêm de fusões.",
+    "Compras concentradas em 1932-1949 (fundo de 1932-33): viés de janela.",
+    "Retorno em geral sem dividendos."
+   ],
+   "ids": [
+    "PHE-001",
+    "PHE-002",
+    "PHE-003",
+    "PHE-005"
+   ]
+  },
+  {
+   "autor": "Christopher W. Mayer",
+   "livro": "100 Baggers: Stocks That Return 100-to-1 and How to Find Them (2015)",
+   "amostra": {
+    "quantidade": "365 ações com retorno total de 100x ou mais; piso de valor de mercado de US$ 50 milhões (em dólares de hoje) antes da alta.",
+    "periodo": "1962 a 2014 (52 anos).",
+    "fonte_dados": "Compustat (base montada com Stephen Jones, String Advisors), com dividendos reinvestidos."
+   },
+   "metodo": "Levantamento de todas as ações de 100x no período; estatísticas descritivas no início da alta (vendas e valor de mercado medianos, P/V, tempo até 100x) e estudo de casos, apoiado em estudos de terceiros.",
+   "limites": [
+    "O autor admite viés retrospectivo e de sobrevivência: só olhou vencedoras.",
+    "Sem grupo de controle; oferece 'princípios', não inferência estatística.",
+    "Censura à esquerda: 89 das 365 começam no início da base (1962), o que distorce o tempo até 100x (contagem do fichador).",
+    "Só 29 janelas começam em 1990 ou depois."
+   ],
+   "estudos_terceiros": [
+    "'Tony' (TS Analysis): 19 ações de 100x; lucro crescendo junto com expansão do P/L (MAY-008).",
+    "Motilal Oswal: 47 ações de 100x na Índia em 20 anos; crescimento de vendas, margem e avaliação (MAY-009).",
+    "Martelli: ~21.000 empresas com valor de mercado ≥ US$ 100 mi; 3.795 (18%) fizeram 10x em 15 anos (MAY-010).",
+    "Heiserman: escada de lucros em multibaggers de crescimento (MAY-011).",
+    "Berry: 4.000 empresas, 1990-2004; margem bruta é a variável mais persistente (MAY-044)."
+   ],
+   "ids": [
+    "MAY-001",
+    "MAY-002",
+    "MAY-003",
+    "MAY-004",
+    "MAY-005",
+    "MAY-006",
+    "MAY-007",
+    "MAY-008",
+    "MAY-009",
+    "MAY-010",
+    "MAY-011",
+    "MAY-044",
+    "MAY-077"
+   ]
+  },
+  {
+   "autor": "William J. O'Neil",
+   "livro": "How to Make Money in Stocks: A Winning System in Good Times and Bad (4. ed., McGraw-Hill, 2009)",
+   "amostra": {
+    "quantidade": "Mais de 1.000 vencedoras em dez 'model books'; 100 gráficos anotados (99 legendas); 600 melhores ações de 1952-2001 no estudo do lucro trimestral.",
+    "periodo": "1880 a 2008 (subperíodos: 1910-1950, 1952-2001, 1953-1985, 1980-2000, 1950-2008).",
+    "fonte_dados": "Base própria da William O'Neil + Co. / IBD; não publicada como tabela."
+   },
+   "metodo": "Estudo das melhores ações de cada ano e das características que tinham antes da alta (CAN SLIM e padrões de preço), com frequências e médias (ex.: RS médio 87; 3 em 4 com LPA trimestral >70%).",
+   "limites": [
+    "Seleção feita depois do fato; só vencedoras.",
+    "Sem grupo de controle: as frequências não dão a taxa de acerto da regra.",
+    "Sem tabela estatística publicada; metodologia do índice IBD NSMI não descrita.",
+    "Ganho medido do ponto de compra ao pico da fase (média de 745%; mediana de 85 semanas), não 10x."
+   ],
+   "ids": [
+    "ONE-001",
+    "ONE-002",
+    "ONE-003",
+    "ONE-004",
+    "ONE-007",
+    "ONE-009",
+    "ONE-011",
+    "ONE-023",
+    "ONE-028",
+    "ONE-045",
+    "ONE-109"
+   ]
+  },
+  {
+   "autor": "Philip A. Fisher",
+   "livro": "Common Stocks and Uncommon Profits and Other Writings (Wiley 2003) - prefácio/introdução de Kenneth Fisher",
+   "amostra": {
+    "quantidade": "Sem amostra formal; exemplos de empresas acompanhadas pelo autor. Cita estudo de Stanford com 140 ações da NYSE (iniciais A e T).",
+    "periodo": "Exemplos de ~1928 a 1978; estudo de Stanford do fim de 1956 a 13/10/1961.",
+    "fonte_dados": "Experiência do autor, visitas e 'scuttlebutt'; estudo de Stanford com cotações da NYSE."
+   },
+   "metodo": "Método qualitativo dos 15 pontos e das quatro dimensões (CISW), com apuração junto a clientes, fornecedores, concorrentes e ex-funcionários.",
+   "limites": [
+    "Evidência ilustrativa, não estatística.",
+    "Sem grupo de controle; casos escolhidos pelo autor.",
+    "Estudo de Stanford mostra só a dispersão de retornos (11% subiram 200-1020%; 27% perderam), não as características das vencedoras."
+   ],
+   "ids": [
+    "FIS-001",
+    "FIS-002",
+    "FIS-072"
+   ]
+  },
+  {
+   "autor": "Peter Lynch (com John Rothchild)",
+   "livro": "One Up on Wall Street (Simon & Schuster, 1989; ed. 2000)",
+   "amostra": {
+    "quantidade": "Sem amostra sistemática; casos da carteira do Magellan; carteira ilustrativa de 11 ações (22/12/1980 a 4/10/1983); 20 nomes da lista das 100 maiores altas dos anos 1990.",
+    "periodo": "Não definido; casos de várias décadas, até a introdução da edição do milênio (anos 1990).",
+    "fonte_dados": "Experiência de gestor, relatórios das empresas, visitas e Value Line."
+   },
+   "metodo": "Classificação das empresas em seis categorias e checklists por categoria, apoiados em casos.",
+   "limites": [
+    "Anedótico, sem grupo de controle.",
+    "As recuperações que falham somem das bases (viés de sobrevivência).",
+    "OPAs e fechamentos de capital cortam tenbaggers antes do tempo: tratar empresas deslistadas à parte."
+   ],
+   "ids": [
+    "LYN-001",
+    "LYN-006",
+    "LYN-013",
+    "LYN-048",
+    "LYN-198"
+   ]
+  }
+ ],
+ "hipoteses": [
+  {
+   "codigo": "H01",
+   "tema": "Crescimento de vendas e lucro",
+   "titulo": "LPA anual crescendo forte há anos",
+   "enunciado": "Empresas com LPA crescendo 20% a 25% ao ano ou mais nos 3 a 5 anos antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-031"
+     ],
+     "ref": "Cap. XIX; Cap. XXV"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-016",
+      "MAY-105"
+     ],
+     "ref": "Cap. 15, p. 46, 173-174 | Cap. 15, p. 171-174, 176, 179, 181-183, 187-188"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-022",
+      "ONE-023"
+     ],
+     "ref": "Cap. 4, p. 161-165; Cap. 20 p. 424 | Cap. 4, p. 161-165"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-063"
+     ],
+     "ref": "Parte 3, cap. 1, p. 227-237"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-044",
+      "LYN-145",
+      "LYN-153"
+     ],
+     "ref": "Cap. 7, pp. 118-119 | Cap. 15, p. 229 | Cap. 15, p. 232"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Phelps: 100x em 40 anos exige 12,2% a.a.; em 25 anos, 20%; em 20 anos, 26%; em 15 anos, 36%.",
+    "Mayer: Tractor Supply com lucro +23% a.a. (100x em ~12 anos); Monster com lucro +50% a.a. (100x em 10 anos).",
+    "O'Neil: LPA +25% ou mais em cada um dos 3 últimos anos; mediana de 36% nas vencedoras de 1980-2000.",
+    "Lynch: fast growers crescem 20% a 25% a.a.; prefere essa faixa e desconfia de mais de 25%."
+   ],
+   "medida": "CAGR do LPA (lucro líquido / ações em circulação ajustadas) nos 3 e nos 5 exercícios encerrados antes de t0, só com DFP/10-K já entregues em t0. Também: nº de anos com crescimento ≥25%. Faixas: <10%, 10-20%, 20-25%, 25-50%, >50% a.a. LPA-base ≤0 vai para a hipótese de virada.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 5
+  },
+  {
+   "codigo": "H02",
+   "tema": "Crescimento de vendas e lucro",
+   "titulo": "LPA trimestral forte e acelerando",
+   "enunciado": "Empresas cujo LPA do último trimestre divulgado antes da alta cresce 25% ou mais sobre o mesmo trimestre do ano anterior, com taxa em aceleração, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-075",
+      "MAY-008"
+     ],
+     "ref": "Cap. 4, p. 32 | Cap. 4, p. 32-34"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-010",
+      "ONE-011",
+      "ONE-013",
+      "ONE-014",
+      "ONE-016"
+     ],
+     "ref": "Cap. 3, p. 153 | Cap. 3, p. 153-154 | Cap. 3, p. 154 | Cap. 3, p. 152-160"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-093"
+     ],
+     "ref": "Cap. 11, p. 176"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-087",
+      "PHE-086"
+     ],
+     "ref": "Cap. XXIII"
+    }
+   ],
+   "numeros": [
+    "O'Neil: piso de 18-20%; mínimo prático de 25-30%; em mercado de alta, 40% a 500% ou mais.",
+    "O'Neil: 3 em 4 das 600 vencedoras de 1952-2001 tinham média acima de 70% no último trimestre antes da alta; as demais mostraram ~90% no trimestre seguinte; só ~2% das ações atingem esse crescimento.",
+    "Mayer (estudo de 'Tony'): Hansen com LPA trimestral crescendo 20%, 40%, 100%, 120%, 150%, 170% e 220% (4T04).",
+    "Lynch: La Quinta com lucro em alta em todo trimestre."
+   ],
+   "medida": "Variação do LPA do último ITR/10-Q divulgado até t0 contra o mesmo trimestre do ano anterior. Limiares: 18%, 25%, 40%, 70%. Aceleração: taxa em t > t-1 > t-2 (três trimestres). LPA-base ≤0 tratado à parte.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H03",
+   "tema": "Crescimento de vendas e lucro",
+   "titulo": "Receita crescendo acima do setor",
+   "enunciado": "Empresas com receita crescendo 10% ao ano ou mais, e acima da mediana do setor, nos 5 anos antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-032"
+     ],
+     "ref": "Cap. XXIII; Cap. XXVIII; Cap. XXII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-016",
+      "MAY-028",
+      "MAY-009"
+     ],
+     "ref": "Cap. 15, p. 46, 173-174 | Cap. 6, p. 80-81 | Cap. 4, p. 35-37"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-019"
+     ],
+     "ref": "Cap. 3, p. 152-160; Cap. 20 p. 424"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-006"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 1, p. 47-53"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-046"
+     ],
+     "ref": "Cap. 7, p. 118"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Phelps: Masco com vendas por ação +60% em 1956-60; Tampax dobrou as vendas em 6 anos; olhar a tendência de pelo menos 10 anos.",
+    "Mayer: piso de 10% a.a. de receita (Donville); receita ≤5% a.a. 'não vai a lugar nenhum'; Amazon com vendas >40% a.a. desde 1997.",
+    "O'Neil: receita do último trimestre +25% ou taxa acelerando por 3 trimestres.",
+    "Lynch: setor hoteleiro ~2% a.a. contra Marriott ~20% a.a."
+   ],
+   "medida": "CAGR da receita líquida em 5 anos até t0 e diferença, em p.p., para a mediana do setor (mesma classificação do pareamento). Receita do último ITR contra o mesmo trimestre do ano anterior (limiar 25%).",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 5
+  },
+  {
+   "codigo": "H04",
+   "tema": "Crescimento de vendas e lucro",
+   "titulo": "Lucro crescendo ano após ano",
+   "enunciado": "Empresas com 5 ou mais anos seguidos de LPA crescente, e pouca oscilação em torno da tendência, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-026",
+      "ONE-023"
+     ],
+     "ref": "Cap. 4, p. 162 | Cap. 4, p. 161-165"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-033",
+      "LYN-080"
+     ],
+     "ref": "Cap. 6, pp. 96-97 | Cap. 10, p. 164"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-049"
+     ],
+     "ref": "Cap. 5, p. 61-62"
+    }
+   ],
+   "numeros": [
+    "Lynch: ADP com lucro em alta todo ano desde 1961 (pior ano +11%); Masco com 30 anos seguidos de alta do lucro; Shoney's com 116 trimestres seguidos de receita crescente.",
+    "O'Neil: nota de estabilidade abaixo de 20-25 é boa; acima de 30 indica cíclica; 75% das vencedoras tinham crescimento positivo em 3-5 anos.",
+    "Mayer (contra): a margem líquida da Electronic Arts variou de 0,8% a 18,5% e a ação fez 100x."
+   ],
+   "medida": "Nº de exercícios consecutivos com LPA maior que o anterior até t0 (corte ≥5). Desvio-padrão dos resíduos de uma regressão log-linear do LPA trimestral em 12 a 20 trimestres até t0.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 2
+  },
+  {
+   "codigo": "H05",
+   "tema": "Crescimento de vendas e lucro",
+   "titulo": "Lucro positivo já comprovado na entrada",
+   "enunciado": "Empresas com lucro operacional positivo nos 4 trimestres antes da alta, e pelo menos 2 a 3 anos de operação, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-093"
+     ],
+     "ref": "Cap. 3, p. 30"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-021"
+     ],
+     "ref": "Cap. 3, p. 154"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-032"
+     ],
+     "ref": "Parte 1, cap. 8, p. 123-134"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-074",
+      "LYN-151"
+     ],
+     "ref": "Cap. 9, p. 159 | Cap. 15, p. 231"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-004"
+     ],
+     "ref": "Cap. II"
+    }
+   ],
+   "numeros": [
+    "Fisher: exigir 2-3 anos de operação e pelo menos 1 ano de lucro operacional.",
+    "Mayer: 9 em 10 ações de tecnologia e biotecnologia com 'histórias fabulosas' faliram; uma (Amgen) rendeu 800x.",
+    "Phelps (contra): Goodyear e Sears estavam em prejuízo em 1932 e viraram 100x."
+   ],
+   "medida": "Dummy: EBIT e LPA somados dos 4 trimestres até t0 maiores que zero. Anos entre o primeiro balanço na CVM/SEC e t0 ≥3.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H06",
+   "tema": "Crescimento de vendas e lucro",
+   "titulo": "Rede crescendo e fórmula já replicada",
+   "enunciado": "Empresas de varejo e serviços com unidades crescendo 20% ao ano ou mais, já presentes em várias regiões antes da alta, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-038"
+     ],
+     "ref": "Cap. 5, p. 33-34, 55-56, 78-79, 124"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-014",
+      "LYN-093",
+      "LYN-098",
+      "LYN-145"
+     ],
+     "ref": "Introdução, pp. 33-35, 41 | Cap. 11, p. 176 | Cap. 11, pp. 180-181 | Cap. 15, p. 229"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Lynch: La Quinta com +20% de unidades no ano; observar se a expansão acelera (3 → 5 motéis) ou desacelera (5 → 3).",
+    "Mayer: Chipotle de 0 a 500 lojas em 13 anos; MTY de 260 lojas (2003) a 2.590 (2013); Dunkin' com 35 lojas e potencial de 8.000."
+   ],
+   "medida": "Variação anual do nº de unidades (lojas, franquias, agências, quartos) nos 2 anos até t0, lida no FRE (atividades) ou no 10-K (Item 2). Nº de estados ou regiões com unidades. Só setores com unidades físicas.",
+   "dados": [
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "média",
+   "convergencia": 2
+  },
+  {
+   "codigo": "H07",
+   "tema": "Crescimento de vendas e lucro",
+   "titulo": "Virada: volta ao lucro após prejuízo",
+   "enunciado": "Empresas que voltam ao lucro após 2 ou mais anos de prejuízo e forte queda do preço, com caixa para sobreviver, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-073"
+     ],
+     "ref": "Cap. 4, p. 32-34"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-027"
+     ],
+     "ref": "Cap. 4, p. 161-165"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-048",
+      "LYN-091",
+      "LYN-148"
+     ],
+     "ref": "Cap. 7, pp. 122-124 | Cap. 11, pp. 175-176 | Cap. 15, pp. 230-231"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-068"
+     ],
+     "ref": "Cap. XXIII"
+    }
+   ],
+   "numeros": [
+    "Lynch: Chrysler comprada a US$ 6 (1982) fez 5x em menos de 2 anos e 15x em 5 anos; Lockheed de US$ 1 (1973) a US$ 60 (1986); Apple tinha US$ 200 mi de caixa e nenhuma dívida na crise.",
+    "Mayer: MTY comprada a ~3,5x o lucro em 2003, com P/L de 26x em 2013.",
+    "O'Neil: cerca de 1 em 4 vencedoras era cíclica ou de recuperação, com LPA anual de 5-10% e dois trimestres fortes antes de subir.",
+    "Phelps (contra): se a virada leva 10 anos para dobrar o preço, o ganho é de só 7,2% a.a."
+   ],
+   "medida": "Dummy: LPA ≤0 em pelo menos 2 dos 3 exercícios anteriores e LPA dos 4 trimestres até t0 >0. Queda do preço ajustado desde a máxima de 36 meses. Caixa líquido e dívida de curto prazo no último balanço.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL",
+    "B3 COTAHIST",
+    "preços EUA"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H08",
+   "tema": "Rentabilidade e reinvestimento",
+   "titulo": "ROE alto e persistente sem alavancagem",
+   "enunciado": "Empresas com ROE de 15% ou mais na maioria dos 5 anos antes da alta, obtido por margem e não por dívida, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-029"
+     ],
+     "ref": "Cap. XIX; Cap. XXVII; Cap. XXVIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-022",
+      "MAY-023",
+      "MAY-105"
+     ],
+     "ref": "Cap. 6, p. 75-78 | Cap. 6, p. 79 | Cap. 15, p. 171-174, 176, 179, 181-183, 187-188"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-024",
+      "ONE-112"
+     ],
+     "ref": "Cap. 4, p. 161-165; Cap. 20 p. 424 | Cap. 16, p. 340-380"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-054"
+     ],
+     "ref": "Parte 2 (CISW), 3a dimensão, p. 198-206"
+    }
+   ],
+   "numeros": [
+    "Phelps: Tampax com ROE de 39,7% (1956) a 36,7% (1970); ROIC médio da indústria dos EUA ~9%.",
+    "Mayer: ROE ≥15% na maioria dos anos; Donville busca ≥20% por 4-5 anos seguidos; Home Capital com ROE de 20,7%-31,8% e 49x em 16 anos; Pfizer com ROE de 15-19% por 20 anos e 141x.",
+    "O'Neil: ROE ≥17%; as melhores mostram 25% a 50%.",
+    "Fisher (contra): para segurança, a margem sobre vendas pesa mais que o retorno sobre ativos."
+   ],
+   "medida": "ROE anual = lucro líquido / PL médio, nos 5 exercícios até t0: média, mínimo, nº de anos ≥15%, ≥17% e ≥20%. DuPont: margem líquida × giro do ativo × (ativo/PL); marcar quando a alavancagem explica a maior parte do ROE. Excluir PL ≤0.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H09",
+   "tema": "Rentabilidade e reinvestimento",
+   "titulo": "ROIC alto reinvestido e VPA crescendo",
+   "enunciado": "Empresas com ROIC alto por vários anos, que reinvestem o lucro com o mesmo retorno e fazem o VPA crescer rápido, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-029",
+      "PHE-030",
+      "PHE-036",
+      "PHE-091"
+     ],
+     "ref": "Cap. XIX; Cap. XXVII; Cap. XXVIII | Cap. XXVII; Cap. XXVIII | Cap. XXII; Cap. XXVIII | Cap. XVIII; Cap. XIX"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-025",
+      "MAY-026",
+      "MAY-046"
+     ],
+     "ref": "Cap. 15, p. 171-173 | Cap. 6, p. 76-77, 79 | Cap. 12, p. 128, 170"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Phelps: com 15% de retorno e sem dividendos, o VPA dobra em 5 anos, quadruplica em 10 e chega a 100x em 33; Tampax com VPA 8,2x e LPA 7,6x em 1956-70.",
+    "Mayer: reinvestir a 20% a.a. dá 2x no 4º ano, 6,19x em 10 anos e ~100x em ~25 anos; Home Capital rendeu 28% a.a., perto do ROE de 20-32%."
+   ],
+   "medida": "ROIC = NOPAT / (PL + dívida líquida) médio, anual, em 5 e 10 anos até t0; nº de anos com ROIC >15%. ROIC incremental = ΔNOPAT / Δcapital investido em 5 anos. CAGR do VPA por ação, ajustado por proventos e emissões, em 5 e 10 anos.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 2
+  },
+  {
+   "codigo": "H10",
+   "tema": "Rentabilidade e reinvestimento",
+   "titulo": "Payout baixo e lucro retido",
+   "enunciado": "Empresas que pagam pouco dividendo e retêm a maior parte do lucro antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-030"
+     ],
+     "ref": "Cap. XXVII; Cap. XXVIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-068",
+      "MAY-069"
+     ],
+     "ref": "Cap. 15, p. 180 | Cap. 15, p. 171, 181"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-030"
+     ],
+     "ref": "Cap. 4, p. 163-165; Cap. 13 p. 305"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-031",
+      "FIS-070"
+     ],
+     "ref": "Parte 1, cap. 7, p. 114-122 | Parte 3, cap. 3, p. 252-265"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-120",
+      "LYN-121"
+     ],
+     "ref": "Cap. 13, pp. 204-206 | Cap. 13, pp. 205-207"
+    }
+   ],
+   "numeros": [
+    "Phelps: com payout de 1/3, o VPA quadruplica em 15 anos e leva mais de 48 anos para 100x.",
+    "Mayer: com payout de 1/3, o capital fica 23x em 33 anos em vez de 100x.",
+    "Fisher: payout de 25-40% em empresas maduras; Rohm & Haas de 41,25 (1949) a mais de 400 com payout baixo.",
+    "Lynch (contra): em 1987, pagadoras de dividendos altos caíram menos da metade do mercado."
+   ],
+   "medida": "Payout = dividendos e JCP declarados / lucro líquido, média dos 3 exercícios até t0. Dividend yield em t0 = proventos de 12 meses / preço. Faixas: 0%, <25%, 25-40%, >40%.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H11",
+   "tema": "Rentabilidade e reinvestimento",
+   "titulo": "Margem acima dos concorrentes",
+   "enunciado": "Empresas com margem operacional acima da mediana do setor nos 5 anos antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-033"
+     ],
+     "ref": "Cap. XXIII; Cap. XXVIII"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-112"
+     ],
+     "ref": "Cap. 16, p. 340-380"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-010",
+      "FIS-054",
+      "FIS-055"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 5, p. 62-63 | Parte 2 (CISW), 3a dimensão, p. 198-206"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-133",
+      "LYN-134"
+     ],
+     "ref": "Cap. 13, p. 220"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Fisher: margem ideal 2-3 pontos acima do concorrente mais forte; alta de 2% nos custos zera margem de 1% e consome só 1/5 de margem de 10%.",
+    "Lynch: margem pré-imposto média das empresas ~5%; Ford 10,3% em 1987; Merck ≥25%; corte de preço de 10% leva margem de 12% a 2% e a de 2% a −8%.",
+    "O'Neil: nota SMR (vendas, margem, ROE) A ou B."
+   ],
+   "medida": "Margem operacional (EBIT / receita) e margem antes do IR: média de 5 exercícios até t0 e percentil no setor no mesmo ano. Diferença em p.p. para a melhor concorrente listada (testar a faixa de 2-3 p.p.).",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H12",
+   "tema": "Rentabilidade e reinvestimento",
+   "titulo": "Margens e retornos em expansão",
+   "enunciado": "Empresas com margem e ROE subindo nos 3 a 5 anos antes da alta, e margem recente perto do pico histórico, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-037"
+     ],
+     "ref": "Cap. XXII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-024",
+      "MAY-031",
+      "MAY-045",
+      "MAY-009"
+     ],
+     "ref": "Cap. 5, p. 52 | Cap. 5, p. 51-52 | Cap. 12, p. 128 | Cap. 4, p. 35-37"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-020"
+     ],
+     "ref": "Cap. 3, p. 152-160; Cap. 20 p. 424"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-011"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 6, p. 63-65"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-131"
+     ],
+     "ref": "Cap. 13, pp. 217-219"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "O'Neil: margem líquida dos trimestres recentes melhorando e perto do máximo histórico.",
+    "Mayer: Monster com ROE de 10,7% (2002) a 50,0% (2005) e margem bruta de 34,8% a 52,3% (2002-2006).",
+    "Lynch: custo +4% e preço +6% levam a margem de 10% a 12% e o lucro a +20%."
+   ],
+   "medida": "Inclinação (regressão linear) da margem operacional e do ROE nos 5 exercícios até t0. Razão entre a margem líquida dos 4 trimestres até t0 e a maior margem anual dos 10 anos anteriores (limiar 0,9). ΔEBIT% / Δreceita% em 3 anos.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 5
+  },
+  {
+   "codigo": "H13",
+   "tema": "Rentabilidade e reinvestimento",
+   "titulo": "Capital leve e fluxo de caixa livre",
+   "enunciado": "Empresas que crescem com pouco capital imobilizado e geram fluxo de caixa livre alto antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-034",
+      "PHE-088"
+     ],
+     "ref": "Cap. XXII; Cap. XXVII | Cap. XXVIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-052",
+      "MAY-053",
+      "MAY-062"
+     ],
+     "ref": "Cap. 5, p. 49, 52 | Cap. 13, p. 151-153 | Cap. 8, p. 94-96"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-045"
+     ],
+     "ref": "Parte 2 (CISW), 1a dimensão, p. 180-186"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-128"
+     ],
+     "ref": "Cap. 13, pp. 213-215"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Lynch: ação de US$ 20 com fluxo de caixa de US$ 2/ação é padrão; US$ 4 é excelente; US$ 10 sustentável é para 'hipotecar a casa'.",
+    "Mayer: See's com US$ 4 mi de ativos tangíveis e US$ 2 mi de lucro contra 'Gold-Oil' com US$ 18 mi para o mesmo lucro.",
+    "Phelps: vendas / capital investido está entre os seis indicadores de poder de ganho, por 10 anos."
+   ],
+   "medida": "Imobilizado líquido / receita e capex / depreciação, média de 3 anos até t0. FCF = FCO − capex, por ação e dividido pelo valor de mercado em t0. Receita / capital investido.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H14",
+   "tema": "Preço e avaliação",
+   "titulo": "P/L inicial baixo ou abaixo do mercado",
+   "enunciado": "Empresas com P/L no início da alta igual ou menor que o do índice amplo têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-006",
+      "PHE-007"
+     ],
+     "ref": "Cap. XXII | Cap. XXVIII; Cap. XXVII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-032",
+      "MAY-073"
+     ],
+     "ref": "Cap. 15, p. 176-177 | Cap. 4, p. 32-34"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-082",
+      "LYN-094"
+     ],
+     "ref": "Cap. 10, p. 169 | Cap. 11, pp. 177-178"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-028",
+      "ONE-029",
+      "ONE-030"
+     ],
+     "ref": "Cap. 4, p. 163-165 | Cap. 4, p. 163-165; Cap. 13 p. 305"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-035",
+      "FIS-064"
+     ],
+     "ref": "Parte 1, cap. 8, p. 123-134 | Parte 3, cap. 1, p. 227-237"
+    }
+   ],
+   "numeros": [
+    "Phelps: P/L inicial de 2,7x a 12,5x nas sete vencedoras de 1961-71; regra: P/L da ação ≤ P/L do Dow (ex.: Dow a 15x).",
+    "Lynch: La Quinta com P/L 10 crescendo 50% a.a.; P/L médios de 1988: 7-9 (slow growers), 10-14 (stalwarts), 14-20 (fast growers).",
+    "Mayer: múltiplos baixos preferidos, mas P/L de 5 ou desconto profundo sobre o valor contábil é 'campo errado'; MTY comprada a ~3,5x.",
+    "O'Neil (contra): P/L inicial médio ~20 em 1953-85 (Dow em 15) e 36 em 1990-95; faixa recente de 25 a 50."
+   ],
+   "medida": "P/L = preço de fechamento em t0 / LPA dos 4 trimestres divulgados até t0. P/L relativo = P/L da ação / P/L agregado do Ibovespa ou do S&P 500 em t0 (limiar 1,0). Decis do P/L no universo do mês. LPA ≤0 em grupo separado.",
+   "dados": [
+    "B3 COTAHIST",
+    "CVM DFP/ITR",
+    "preços EUA",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H15",
+   "tema": "Preço e avaliação",
+   "titulo": "P/L abaixo do crescimento (PEG ≤ 1)",
+   "enunciado": "Empresas com P/L igual ou menor que a taxa de crescimento do LPA no início da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-007"
+     ],
+     "ref": "Cap. XXVIII; Cap. XXVII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-034",
+      "MAY-035",
+      "MAY-036"
+     ],
+     "ref": "Cap. 5, p. 71-72 | Cap. 5, p. 48, 53 | Cap. 15, p. 179"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-039",
+      "FIS-064"
+     ],
+     "ref": "Parte 1, cap. 9, p. 135-161 | Parte 3, cap. 1, p. 227-237"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-112",
+      "LYN-113",
+      "LYN-145"
+     ],
+     "ref": "Cap. 13, p. 199 | Cap. 15, p. 229"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-029"
+     ],
+     "ref": "Cap. 4, p. 163-165"
+    }
+   ],
+   "numeros": [
+    "Lynch: P/L igual ao crescimento é preço justo; metade do crescimento é muito positivo; o dobro é muito negativo. Variante (crescimento + yield) / P/L: <1 ruim, 1,5 aceitável, ≥2 desejado.",
+    "Mayer: PEG ≤1 (Interactive Brokers com P/L ~25-26 e crescimento de 29%); Monster com P/L entre 17 e 39 em 2005-2014.",
+    "Fisher: Texas Instruments comprada a ~20x o lucro esperado de US$ 0,70; lucro de US$ 1,84 em 1958 e alta de mais de 1.000%.",
+    "Phelps: muitas 100x estavam com preço que embutia só o ganho previsível de 1 a 2 anos."
+   ],
+   "medida": "PEG = P/L em t0 / CAGR do LPA nos 3 a 5 exercícios até t0 (em %). Faixas: ≤0,5; 0,5-1; 1-2; >2. Variante de Lynch: (CAGR% + dividend yield%) / P/L, com cortes em 1; 1,5; 2.",
+   "dados": [
+    "B3 COTAHIST",
+    "CVM DFP/ITR",
+    "preços EUA",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H16",
+   "tema": "Preço e avaliação",
+   "titulo": "Múltiplo com espaço para subir",
+   "enunciado": "Empresas com P/L abaixo do P/L do próprio setor e da própria história no início da alta, e lucro crescendo, têm maior chance de subir 10x que o controle, porque somam lucro e múltiplo.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-009"
+     ],
+     "ref": "Cap. IX; Cap. XXII; Cap. XXVIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-017",
+      "MAY-008",
+      "MAY-075"
+     ],
+     "ref": "Cap. 5, p. 34, 44, 46, 62, 179 | Cap. 4, p. 32-34 | Cap. 4, p. 32"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-058",
+      "FIS-060"
+     ],
+     "ref": "Parte 2 (CISW), 4a dimensão, p. 207-224"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-028"
+     ],
+     "ref": "Cap. 4, p. 163-165"
+    }
+   ],
+   "numeros": [
+    "Phelps: 100x ≈ lucro 25x × múltiplo 4x; Masco com múltiplo 14x e lucro ~7x; AMI com múltiplo 11x e lucro 9x.",
+    "Mayer: MTY com P/L de 3,5x a 26-27x e preço 100x; Hansen com lucro 25x e preço 125x.",
+    "O'Neil (contra o P/L baixo): P/L ~20 no início e ~45 no fim (+125%) nas vencedoras de 1953-85.",
+    "Fisher: LPA de 1 para 1,82 e P/L de 10 para 22 levam o preço de 10 a 40."
+   ],
+   "medida": "Ex ante: P/L em t0 / mediana do P/L do setor em t0, e / mediana do P/L da própria ação nos 5 anos até t0. Ex post (descritivo): ln(P1/P0) = ln(LPA1/LPA0) + ln(PL1/PL0) para vencedoras e controle.",
+   "dados": [
+    "B3 COTAHIST",
+    "CVM DFP/ITR",
+    "preços EUA",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H17",
+   "tema": "Preço e avaliação",
+   "titulo": "Muita receita por real de valor",
+   "enunciado": "Empresas com valor de mercado muito baixo em relação à receita, e margem deprimida, no início da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-022",
+      "PHE-021"
+     ],
+     "ref": "Cap. XIX"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-033"
+     ],
+     "ref": "Cap. 5, p. 45-46"
+    }
+   ],
+   "numeros": [
+    "Phelps: US$ 10 a 20 de vendas por US$ 1 de valor de mercado; basta a margem voltar a 5%; ação valendo 5% a 10% do valor da empresa sobe 10x a 20x se esse valor dobrar.",
+    "Mayer (contra): P/V mediano ~3 na data-base; boa parte das vencedoras não parecia barata."
+   ],
+   "medida": "P/V = valor de mercado em t0 / receita dos 4 trimestres até t0 (faixa de Phelps: 0,05 a 0,10). Margem líquida em t0 abaixo da média de 10 anos da empresa. Valor de mercado do PL / (valor de mercado + dívida líquida).",
+   "dados": [
+    "B3 COTAHIST",
+    "CVM DFP/ITR",
+    "preços EUA",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 1
+  },
+  {
+   "codigo": "H18",
+   "tema": "Preço e avaliação",
+   "titulo": "Ativos ocultos e caixa acima do preço",
+   "enunciado": "Empresas cujos ativos reavaliados ou caixa líquido cobrem grande parte do preço no início da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-027"
+     ],
+     "ref": "Cap. IV; Cap. XIX"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-070",
+      "MAY-081"
+     ],
+     "ref": "Cap. 9, p. 104, 106, 108-109 | Cap. 14, p. 163-164"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-050",
+      "LYN-090",
+      "LYN-108",
+      "LYN-114",
+      "LYN-115",
+      "LYN-123",
+      "LYN-125",
+      "LYN-127"
+     ],
+     "ref": "Cap. 7, pp. 125-127 | Cap. 11, p. 175 | Cap. 12, pp. 194-195 | Cap. 13, pp. 199-200 | Cap. 13, p. 201 | Cap. 13, pp. 209-210 | Cap. 13, pp. 212-213 | Cap. 13, p. 213"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-021"
+     ],
+     "ref": "Parte 1, cap. 4, p. 79-88"
+    }
+   ],
+   "numeros": [
+    "Lynch: Ford a US$ 38 com US$ 16,30 de caixa líquido por ação; caixa só pesa se for grande (Bristol-Myers com US$ 5 por ação e preço acima de US$ 40); Pebble Beach de US$ 14,5 (1976) a US$ 42,5 (1979); TCI 250x.",
+    "Mayer: Odlum comprou 22 fundos abaixo do valor dos ativos; Berkshire com float de seguros a custo médio de 2,2% a.a.",
+    "Phelps: Old Ben com 54.300 acres e 10 minas, no setor impopular do carvão.",
+    "Fisher (contra): o ganho de uma barganha raramente passa de 50% de subvalorização."
+   ],
+   "medida": "Caixa líquido por ação = (caixa + aplicações − dívida de longo prazo) / ações, dividido pelo preço em t0 (testar faixas). P/VPA em t0. Desconto de holding = (valor de mercado das participações listadas × % detida − valor de mercado da holding) / valor de mercado da holding. Prejuízo fiscal acumulado / valor de mercado (nota de tributos diferidos).",
+   "dados": [
+    "B3 COTAHIST",
+    "CVM DFP/ITR",
+    "preços EUA",
+    "SEC XBRL"
+   ],
+   "viabilidade": "média",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H19",
+   "tema": "Tamanho e atenção do mercado",
+   "titulo": "Empresa pequena no início da alta",
+   "enunciado": "Empresas com valor de mercado abaixo de US$ 1 bilhão (em moeda constante) e poucas ações em circulação no início da alta têm maior chance de subir 10x que o universo do mesmo ano.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-017"
+     ],
+     "ref": "Cap. I; Cap. IV; Cap. V"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-010",
+      "MAY-012",
+      "MAY-013",
+      "MAY-015"
+     ],
+     "ref": "Cap. 4, p. 38 | Cap. 5, p. 45-46 | Cap. 15, p. 181 | Cap. 4, p. 34-35"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-038"
+     ],
+     "ref": "Cap. 6, p. 180-185"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-026",
+      "LYN-040",
+      "LYN-151"
+     ],
+     "ref": "Cap. 2, p. 64 | Cap. 7, p. 109 | Cap. 15, p. 231"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-004",
+      "FIS-022"
+     ],
+     "ref": "Parte 1, cap. 1, p. 42 | Parte 1, cap. 4, p. 79-88"
+    }
+   ],
+   "numeros": [
+    "Mayer: mediana de valor de mercado ~US$ 500 mi e de vendas ~US$ 170 mi no início; regra prática < US$ 1 bi; piso do estudo US$ 50 mi; Martelli: 68% abaixo de US$ 300 mi no ponto mínimo.",
+    "Phelps: sem limite numérico; Old Ben com 194.037 ações novas em 1935.",
+    "Lynch: fundos com piso de valor de mercado (ex.: US$ 100 mi); GE de US$ 39 bi não consegue dobrar de tamanho.",
+    "O'Neil: quanto menos ações em circulação, mais fácil subir; qualquer porte serve.",
+    "Fisher (contra): Dow, Du Pont e IBM subiram ~5x em 1946-56."
+   ],
+   "medida": "Valor de mercado em t0 (preço × ações totais), deflacionado (IPCA/CPI) e em US$; faixas <100 mi, 100-500 mi, 0,5-1 bi, 1-5 bi, >5 bi. Ações em circulação e free float (FRE). Como o controle é pareado por tamanho, testar contra a taxa-base do universo em cada faixa.",
+   "dados": [
+    "B3 COTAHIST",
+    "CVM FRE",
+    "preços EUA",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H20",
+   "tema": "Tamanho e atenção do mercado",
+   "titulo": "Pouco conhecida e pouco acompanhada",
+   "enunciado": "Empresas acompanhadas por 3 analistas ou menos no início da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-018"
+     ],
+     "ref": "Cap. I; Cap. V"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-100"
+     ],
+     "ref": "Cap. 5, p. 52-53"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-103"
+     ],
+     "ref": "Cap. 13, p. 306"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-041"
+     ],
+     "ref": "Parte 1, cap. 9, p. 135-161"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-023",
+      "LYN-025",
+      "LYN-057",
+      "LYN-104",
+      "LYN-147"
+     ],
+     "ref": "Cap. 2, pp. 57-59 | Cap. 2, pp. 57-60 | Cap. 8, p. 136 | Cap. 12, p. 190 | Cap. 15, p. 230"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Lynch: 0 a 6 analistas nas vencedoras contra 56 na IBM e 44 na Exxon; La Quinta com 3 corretoras em 1978; Limited subiu 18x (1979-83) antes das casas de análise.",
+    "Mayer: Monster com 1, 1, 3, 4 e 8 analistas nas teleconferências de 2003-2004.",
+    "Phelps: Garrett exigia empresa relativamente desconhecida."
+   ],
+   "medida": "Nº de analistas com estimativa em t0 (base paga, fora da lista de fontes). Proxies públicos: volume financeiro médio dos 60 pregões até t0, em percentil do universo; presença no Ibovespa/IBrX ou no S&P 500 em t0.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA"
+   ],
+   "viabilidade": "baixa",
+   "convergencia": 5
+  },
+  {
+   "codigo": "H21",
+   "tema": "Tamanho e atenção do mercado",
+   "titulo": "Poucas instituições entre os acionistas",
+   "enunciado": "Empresas com menos de 20% das ações com instituições no início da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-019"
+     ],
+     "ref": "Cap. I"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-057"
+     ],
+     "ref": "Cap. 7, p. 84"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-024",
+      "LYN-057",
+      "LYN-094",
+      "LYN-196"
+     ],
+     "ref": "Cap. 2, pp. 57-59 | Cap. 8, p. 136 | Cap. 11, pp. 177-178 | Cap. 20, pp. 280-281"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-053",
+      "ONE-054"
+     ],
+     "ref": "Cap. 8, p. 193-198"
+    }
+   ],
+   "numeros": [
+    "Lynch: em 1979, duas instituições com 0,6% da Limited; La Quinta com menos de 20% institucional em 1978; SCI só passou de 50% em 1986, depois de 20x; instituições acertam só nos últimos 20% da alta.",
+    "Mayer: índices ponderados por free float evitam empresas controladas por insiders, que ficam baratas.",
+    "O'Neil (contra): é preciso patrocínio de vários fundos (cerca de 20 em casos raros), com 1-2 bons fundos comprando no último trimestre."
+   ],
+   "medida": "EUA: % das ações em formulários 13F em t0 (SEC, fora da lista). B3: % em fundos (carteiras CVM, fora da lista) ou, como proxy, % fora do bloco de controle no FRE item 15. Faixas: <5%, 5-20%, 20-50%, >50%.",
+   "dados": [
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "média",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H22",
+   "tema": "Tamanho e atenção do mercado",
+   "titulo": "Fundos comprando nos trimestres recentes",
+   "enunciado": "Empresas com número de fundos acionistas crescendo nos 2 a 4 trimestres antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-019"
+     ],
+     "ref": "Cap. I"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-053",
+      "ONE-054",
+      "ONE-055"
+     ],
+     "ref": "Cap. 8, p. 193-198"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-018",
+      "LYN-196"
+     ],
+     "ref": "Introdução, pp. 39-40 | Cap. 20, pp. 280-281"
+    }
+   ],
+   "numeros": [
+    "O'Neil: nº de fundos subindo por vários trimestres; importam fundos com nota B+ ou melhor em 36 meses.",
+    "Lynch (contra): Limited comprada a ~US$ 50 com ~30 analistas e instituições comprando caiu a US$ 16."
+   ],
+   "medida": "Variação do nº de fundos com posição entre t0 − 4 trimestres e t0 (13F; carteiras CVM — fora da lista). Qualidade: fundos no quartil superior de retorno em 36 meses.",
+   "dados": [
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "baixa",
+   "convergencia": 2
+  },
+  {
+   "codigo": "H23",
+   "tema": "Tamanho e atenção do mercado",
+   "titulo": "Setor sem glamour, impopular ou tabu",
+   "enunciado": "Empresas de setores enfadonhos, desagradáveis ou impopulares, com P/L do setor abaixo do mercado no início da alta, têm maior chance de subir 10x que o controle.",
+   "tipo": "qualitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-011",
+      "PHE-027",
+      "PHE-028"
+     ],
+     "ref": "Cap. IV; Cap. XXI; Cap. XI | Cap. IV; Cap. XIX | Cap. V"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-092"
+     ],
+     "ref": "Cap. 13, p. 133-136"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-028",
+      "LYN-053",
+      "LYN-054",
+      "LYN-055",
+      "LYN-058",
+      "LYN-059"
+     ],
+     "ref": "Cap. 2, p. 58 | Cap. 8, pp. 130-131 | Cap. 8, pp. 131-132 | Cap. 8, pp. 132-133 | Cap. 8, p. 137 | Cap. 8, pp. 137-139"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-110"
+     ],
+     "ref": "Cap. 15, p. 323 ss; Cap. 20 p. 424"
+    }
+   ],
+   "numeros": [
+    "Lynch: Waste Management ~100x; SCI 20x antes da chegada das instituições; Seven Oaks de US$ 4 a US$ 33; Envirodyne de US$ 3 a US$ 36⅞.",
+    "Phelps: Tampax rendia 100x se comprada em qualquer ano de 1938 a 1948.",
+    "O'Neil (contra): comprar em grupos no top 20 de 197 subgrupos."
+   ],
+   "medida": "Lista fixa de setores (resíduos, funerário, embalagens, serviços industriais, tabaco, cassinos) na classificação setorial. P/L agregado do setor / P/L do índice em t0. Retorno do setor contra o índice nos 36 meses até t0.",
+   "dados": [
+    "B3 COTAHIST",
+    "CVM DFP/ITR",
+    "preços EUA",
+    "SEC XBRL"
+   ],
+   "viabilidade": "média",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H24",
+   "tema": "Tamanho e atenção do mercado",
+   "titulo": "Empresa listada há poucos anos",
+   "enunciado": "Empresas com IPO nos 8 a 10 anos anteriores à alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-026"
+     ],
+     "ref": "Cap. III; Cap. V"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-037",
+      "ONE-112"
+     ],
+     "ref": "Cap. 5, p. 171-179 | Cap. 16, p. 340-380"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-032",
+      "FIS-004"
+     ],
+     "ref": "Parte 1, cap. 8, p. 123-134 | Parte 1, cap. 1, p. 42"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-075"
+     ],
+     "ref": "Cap. 9, p. 159"
+    }
+   ],
+   "numeros": [
+    "O'Neil: IPO nos últimos 8-10 anos; o lucro cresce mais entre o 5º e o 10º ano de vida.",
+    "Phelps: Pfizer (oferta de 1942) 141x; Schering (1952) 41x.",
+    "Lynch (contra): ~3 em 4 IPOs de empresas novas decepcionaram; Federal Express fez 25x.",
+    "Fisher (contra): exigir 2-3 anos de operação e 1 ano de lucro operacional."
+   ],
+   "medida": "Anos entre a primeira cotação (COTAHIST; preços EUA) ou o registro na CVM/SEC e t0. Faixas: <3, 3-8, 8-15, >15 anos.",
+   "dados": [
+    "B3 COTAHIST",
+    "CVM FRE",
+    "preços EUA"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 2
+  },
+  {
+   "codigo": "H25",
+   "tema": "Tamanho e atenção do mercado",
+   "titulo": "Spin-off recente",
+   "enunciado": "Empresas separadas de uma controladora nos 3 anos antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-099"
+     ],
+     "ref": "Cap. 13, p. 147-148"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-049",
+      "LYN-056"
+     ],
+     "ref": "Cap. 7, pp. 124, 126 | Cap. 8, pp. 133-136"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Lynch: Baby Bells +114% em preço e ~170% com dividendos (nov/1983 a out/1988); Toys R Us 57x após a separação da Interstate.",
+    "Mayer: Howard Hughes (spin-off de 2010) fez 4x em poucos anos."
+   ],
+   "medida": "Dummy de cisão com listagem nova nos 36 meses até t0 (fatos relevantes CVM; Form 10/8-K). Dívida líquida/EBITDA no primeiro balanço. Compras de administradores 1 a 2 meses depois.",
+   "dados": [
+    "CVM FRE",
+    "CVM DFP/ITR",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "média",
+   "convergencia": 2
+  },
+  {
+   "codigo": "H26",
+   "tema": "Preço, volume e força relativa",
+   "titulo": "Força relativa alta antes da alta",
+   "enunciado": "Empresas no percentil 80 ou mais de retorno de 12 meses do universo no início da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-045",
+      "ONE-046",
+      "ONE-064"
+     ],
+     "ref": "Cap. 7, p. 186-192 | Cap. 2, p. 112"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-004",
+      "PHE-066"
+     ],
+     "ref": "Cap. II | Cap. IX; Cap. XXVI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-089",
+      "MAY-091"
+     ],
+     "ref": "Cap. 5, p. 6, 17, 66, 69-70 | Cap. 13, p. 130-133"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-190"
+     ],
+     "ref": "Cap. 18, p. 269"
+    }
+   ],
+   "numeros": [
+    "O'Neil: RS médio de 87 antes da alta (1950-2008); mínimo de 80 (85 no Cap. 20); líderes com RS ≥90 na 1ª ou 2ª base; alta prévia de pelo menos 30% antes da base.",
+    "Phelps (contra): em 1932, o preço relativo ao Dow subia em 2 das 5 vencedoras e desabava em outras 2.",
+    "Mayer (contra): Gillette ficou 20 anos quase parada (+40%) antes do 100x."
+   ],
+   "medida": "RS = percentil do retorno total de 12 meses até t0 no universo do mês (variante com peso maior nos últimos 3 meses). Usar o fator momento do NEFIN como controle na B3.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA",
+    "NEFIN"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 1
+  },
+  {
+   "codigo": "H27",
+   "tema": "Preço, volume e força relativa",
+   "titulo": "Rompimento de máxima com volume forte",
+   "enunciado": "Empresas que, no início da alta, fecham acima da máxima de 52 semanas com volume 40% a 50% acima da média de 50 dias têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-033",
+      "ONE-043",
+      "ONE-070",
+      "ONE-071",
+      "ONE-072"
+     ],
+     "ref": "Cap. 5, p. 171-179 | Cap. 6, p. 180-185; Cap. 2 p. 118 | Cap. 2, p. 117-118 | Cap. 2, p. 118 | Cap. 2, p. 118-119"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-073"
+     ],
+     "ref": "Cap. 4, p. 32-34"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-039"
+     ],
+     "ref": "Parte 1, cap. 9, p. 135-161"
+    }
+   ],
+   "numeros": [
+    "O'Neil: volume no rompimento pelo menos 40-50% acima do normal (50% no Cap. 20); Microsoft rompeu com volume 545% acima da média; pivô 5-10% abaixo do topo, na máxima da alça; 1-2 semanas de volume seco nos mínimos da base.",
+    "Fisher (contra): preços e lucros passados importam pouco; o que conta é o futuro."
+   ],
+   "medida": "Distância do fechamento em t0 à máxima de 52 semanas. Dummy de fechamento acima dessa máxima no mês de t0. Volume do dia / média de 50 pregões. Semanas de alta com volume acima da média contra semanas de baixa com volume acima da média, na base.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 1
+  },
+  {
+   "codigo": "H28",
+   "tema": "Preço, volume e força relativa",
+   "titulo": "Base de preço sólida antes do rompimento",
+   "enunciado": "Empresas que saem de base de 7 a 65 semanas, com queda de 12% a 33% e até 2,5 vezes a queda do índice, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-063",
+      "ONE-065",
+      "ONE-067",
+      "ONE-069",
+      "ONE-075",
+      "ONE-077",
+      "ONE-081"
+     ],
+     "ref": "Cap. 2, p. 112 | Cap. 2, p. 113 | Cap. 2, p. 116-117 | Cap. 2, p. 117 | Cap. 2, p. 127 | Cap. 2, p. 131 | Cap. 2, p. 146"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "O'Neil: xícara de 7 a 65 semanas (maioria de 3 a 6 meses) e queda de 12-15% até 33%; correção de 1,5 a 2,5 vezes o índice; alça com queda de 8-12% na metade superior; base mínima de 7-8 semanas, salvo base plana de 5-6 semanas (queda ≤10-15%) e bandeira alta (+100-120% em 4-8 semanas e correção de 10-25%)."
+   ],
+   "medida": "Algoritmo em série semanal: duração da base, queda máxima do topo ao fundo, queda do índice no mesmo intervalo, posição e queda da alça, amplitude média semanal nas últimas 3 a 5 semanas.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA"
+   ],
+   "viabilidade": "média",
+   "convergencia": 1
+  },
+  {
+   "codigo": "H29",
+   "tema": "Preço, volume e força relativa",
+   "titulo": "Preço muito deprimido antes da alta",
+   "enunciado": "Empresas 50% ou mais abaixo da máxima de 3 a 5 anos no início da alta, com fundamentos preservados, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-010",
+      "PHE-011"
+     ],
+     "ref": "Cap. II; Cap. XIX | Cap. IV; Cap. XXI; Cap. XI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-073"
+     ],
+     "ref": "Cap. 4, p. 32-34"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-065"
+     ],
+     "ref": "Parte 3, cap. 2, p. 238-251"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-048"
+     ],
+     "ref": "Cap. 7, pp. 122-124"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-035",
+      "ONE-066",
+      "ONE-099"
+     ],
+     "ref": "Cap. 5, p. 171-179 | Cap. 2, p. 113-116 | Cap. 13, p. 303"
+    }
+   ],
+   "numeros": [
+    "Phelps: Kodak 87% abaixo do pico de 1929 em 1932; Polaroid de mais de 50 (1946) para menos de 20 (1949).",
+    "Mayer: MTY 'deixada como morta' a ~3,5x o lucro em 2003.",
+    "Fisher: Food Machinery a US$ 3¾-5 em 1932-34.",
+    "O'Neil (contra): queda de mais de 50% exige mais de 100% para voltar, e o rompimento falha 5-15% acima do pivô; Cisco comprada a US$ 50 (era US$ 82) valia US$ 16 em 2009."
+   ],
+   "medida": "Drawdown em t0 = preço ajustado / máxima dos 36 e dos 60 meses anteriores − 1. Faixas: 0-20%, 20-50%, 50-80%, >80%. Cruzar com margem bruta e ROE de 5 anos acima da mediana do setor (fundamentos preservados).",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA",
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H30",
+   "tema": "Preço, volume e força relativa",
+   "titulo": "Preço parado enquanto o lucro sobe",
+   "enunciado": "Empresas com 3 anos ou mais de preço lateral e LPA crescente antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-069"
+     ],
+     "ref": "Cap. III; Cap. V; Cap. VII; Cap. XXIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-089"
+     ],
+     "ref": "Cap. 5, p. 6, 17, 66, 69-70"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-188"
+     ],
+     "ref": "Cap. 18, pp. 264-266"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-047"
+     ],
+     "ref": "Cap. 7, p. 186-192"
+    }
+   ],
+   "numeros": [
+    "Lynch: Merck parada de 1972 a 1981 com lucro +14% a.a., depois 4x em 5 anos; Lukens 14 anos parada e 6x no 15º; a maior parte do ganho de Lynch veio no 3º ou 4º ano.",
+    "Mayer: Pfizer caiu em 1946-49 e 1951-56 e ainda deu 141x.",
+    "Phelps: General American Oil ficou 16 anos atrás do Dow e fez 120x desde 1937.",
+    "O'Neil (contra): evitar RS de 40 a 60 ou abaixo de 70."
+   ],
+   "medida": "Retorno total dos 36 meses até t0 numa faixa estreita (ex.: −20% a +20%, a calibrar) e CAGR do LPA no mesmo período >0. P/L em t0 / P/L 36 meses antes (compressão do múltiplo).",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA",
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H31",
+   "tema": "Preço, volume e força relativa",
+   "titulo": "Setor entre os mais fortes da bolsa",
+   "enunciado": "Empresas cujo subsetor está no top 10% de retorno de 6 meses no início da alta têm maior chance de subir 10x que o universo do mesmo mês.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-049"
+     ],
+     "ref": "Cap. XXII"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-109",
+      "ONE-110"
+     ],
+     "ref": "Cap. 15, p. 323 ss | Cap. 15, p. 323 ss; Cap. 20 p. 424"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-040"
+     ],
+     "ref": "Cap. 5, p. 45"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-067",
+      "LYN-068"
+     ],
+     "ref": "Cap. 9, p. 149 | Cap. 9, pp. 150-152"
+    }
+   ],
+   "numeros": [
+    "O'Neil: o grupo industrial explica 37% e o setor 12% do desempenho; 2 de cada 3 vencedoras em grupos fortes; top 20 de 197 subgrupos.",
+    "Phelps: 5 das 7 vencedoras de 1961-71 eram de habitação.",
+    "Lynch (contra): discos rígidos com setor crescendo 52% a.a., 30-35 fabricantes e nenhum lucro."
+   ],
+   "medida": "Retorno de 6 meses até t0 do índice equiponderado do subsetor e ranking entre subsetores; posição da ação no grupo. Como o controle é pareado por setor, testar contra o universo.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 2
+  },
+  {
+   "codigo": "H32",
+   "tema": "Gestão, donos e governança",
+   "titulo": "Administradores e fundador com muitas ações",
+   "enunciado": "Empresas em que conselho e diretoria detêm parcela relevante das ações, ou o fundador ainda comanda, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-020"
+     ],
+     "ref": "Cap. IV; Cap. V; Cap. VI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-056",
+      "MAY-060",
+      "MAY-061"
+     ],
+     "ref": "Cap. 7, p. 33, 54, 83, 85-87, 90 | Cap. 15, p. 181-182 | Cap. 8, p. 93-95"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-039"
+     ],
+     "ref": "Cap. 6, p. 180-185; Cap. 20 p. 425"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-024",
+      "LYN-155"
+     ],
+     "ref": "Cap. 2, pp. 57-59 | Cap. 15, p. 232"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Mayer: gestão e conselho com ao menos 10-20% das ações (Sosnoff); Bezos com 18% da Amazon; conselho da Teledyne com 40%; Wealth Index de 148 donos-gestores +2,7% a.a. por 20 anos.",
+    "O'Neil: 1% a 3% com a gestão nas empresas grandes, mais nas pequenas.",
+    "Phelps: controladores com 53,37% (Globe & Rutgers), 75,91% (Ogden) e 77% (H. K. Porter)."
+   ],
+   "medida": "% das ações com administradores e % do controlador em t0 (FRE itens 12 e 15; DEF 14A). Dummy de fundador como CEO ou presidente do conselho. Faixas: <1%, 1-3%, 3-10%, 10-20%, >20%.",
+   "dados": [
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "média",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H33",
+   "tema": "Gestão, donos e governança",
+   "titulo": "Insiders comprando ações da empresa",
+   "enunciado": "Empresas com compras líquidas de administradores, sobretudo de vários ao mesmo tempo, nos 6 a 12 meses antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-056"
+     ],
+     "ref": "Cap. 7, p. 33, 54, 83, 85-87, 90"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-064",
+      "LYN-090",
+      "LYN-155"
+     ],
+     "ref": "Cap. 8, pp. 142-144 | Cap. 11, p. 175 | Cap. 15, p. 232"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Lynch: em geral os insiders vendem 2,3 ações para cada 1 comprada; após out/1987 foram 4 compradas para 1 vendida; 7 vice-presidentes comprando 1.000 ações valem mais que o presidente comprando 5.000."
+   ],
+   "medida": "Saldo líquido (compras − vendas, em ações e em valor) e nº de administradores compradores em 6 e 12 meses até t0. Fonte ideal: negociações de administradores (CVM Res. 44) e Form 4 (SEC), fora da lista. Proxy: variação anual da participação dos administradores no FRE e no DEF 14A.",
+   "dados": [
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "baixa",
+   "convergencia": 2
+  },
+  {
+   "codigo": "H34",
+   "tema": "Gestão, donos e governança",
+   "titulo": "Número de ações estável ou em queda",
+   "enunciado": "Empresas que não aumentaram, ou reduziram por recompra, o número de ações diluídas nos 2 a 5 anos antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-040"
+     ],
+     "ref": "Cap. XXVII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-018",
+      "MAY-061",
+      "MAY-063",
+      "MAY-064"
+     ],
+     "ref": "Cap. 15, p. 173 | Cap. 8, p. 93-95 | Cap. 11, p. 95-96, 116-119 | Cap. 8, p. 100-101"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-040"
+     ],
+     "ref": "Cap. 6, p. 180-185; Cap. 20 p. 426"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-018"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 13, p. 74-75"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-065",
+      "LYN-066",
+      "LYN-109",
+      "LYN-155"
+     ],
+     "ref": "Cap. 8, pp. 144-145 | Cap. 8, p. 145 | Cap. 12, p. 195 | Cap. 15, p. 232"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Mayer: AutoZone com −75% das ações em ~13 anos; Teledyne −90%; NVR ~−50% em 10 anos; Constellation sem emitir ação desde o IPO de 2007 e 13x; vendas x2 com ações x2 não vale nada; recompra não era comum no estudo de 1962-2014.",
+    "Lynch: recomprar metade das ações dobra o LPA; Crown Cork recomprou todos os anos por 20 anos.",
+    "O'Neil: recompra de 5% a 10% ou mais do capital.",
+    "Fisher: contar conversíveis e warrants como já convertidos."
+   ],
+   "medida": "Variação % das ações diluídas (totais − tesouraria + conversíveis e opções) em 12 meses, 2 e 5 anos até t0. Faixas: >+10% (diluição), 0 a +10%, 0 a −5%, <−5% (recompra). Separar recompra bruta da emissão para remuneração. Ofertas primárias no período.",
+   "dados": [
+    "CVM DFP/ITR",
+    "CVM FRE",
+    "SEC XBRL",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 5
+  },
+  {
+   "codigo": "H35",
+   "tema": "Gestão, donos e governança",
+   "titulo": "Alocação de capital disciplinada e alinhada",
+   "enunciado": "Empresas que reinvestem em aquisições pequenas e ligadas ao negócio, com bônus atrelados ao retorno sobre capital, têm maior chance de subir 10x que o controle.",
+   "tipo": "qualitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-027",
+      "MAY-061",
+      "MAY-064",
+      "MAY-101",
+      "MAY-104"
+     ],
+     "ref": "Cap. 6, p. 79 | Cap. 8, p. 93-95 | Cap. 8, p. 100-101 | Cap. 6, p. 81 | Cap. 8, p. 99"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-072"
+     ],
+     "ref": "Cap. 9, pp. 155-157"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Mayer: Constellation com 30 aquisições em 2013; caixa parado a 2% reduz o ROE de 20% para ~17% e ~15%; AutoZone com incentivos ligados a ROIC, LPA e retorno total.",
+    "Lynch: Melville comprou CVS, Marshall's e Kay-Bee uma de cada vez e virou thirtybagger até 1987."
+   ],
+   "medida": "Nos 5 anos até t0: valor de cada aquisição / valor de mercado e se é do mesmo setor (nota de combinação de negócios); ROIC incremental (ΔNOPAT / Δcapital); caixa / ativo total. Métricas da remuneração variável no FRE item 13 e no DEF 14A (ROIC e retorno total contra EBITDA anual).",
+   "dados": [
+    "CVM DFP/ITR",
+    "CVM FRE",
+    "SEC XBRL",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "baixa",
+   "convergencia": 2
+  },
+  {
+   "codigo": "H36",
+   "tema": "Gestão, donos e governança",
+   "titulo": "Equipe de gestão profunda e estável",
+   "enunciado": "Empresas com diretoria estável, sucessão interna e produtividade do pessoal crescente antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "qualitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-044",
+      "PHE-061"
+     ],
+     "ref": "Cap. I; Cap. XXVII | Cap. XVI"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-012",
+      "FIS-013",
+      "FIS-014",
+      "FIS-049",
+      "FIS-050",
+      "FIS-053"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 7, p. 65-67 | Parte 1, cap. 3, Ponto 8, p. 67-68 | Parte 1, cap. 3, Ponto 9, p. 68-70 | Parte 2 (CISW), 2a dimensão, p. 187-197"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-056"
+     ],
+     "ref": "Cap. 7, p. 33, 54, 83, 85-87, 90"
+    }
+   ],
+   "numeros": [
+    "Fisher: a partir de vendas de US$ 15-40 milhões a empresa precisa de equipe, não de um homem só; Texas Instruments com vendas / folha de 2,25 (1969) e 2,5 (1973); contratar presidente de fora é 'sinal condenatório'.",
+    "Mayer (contra): muitos 100x tinham um dono-gestor visionário no centro (Walton, Jobs, Bezos, Buffett)."
+   ],
+   "medida": "Rotatividade de diretores estatutários e tempo médio no cargo nos 5 anos até t0 (FRE item 12; DEF 14A). Dummy de CEO vindo de fora nos 5 anos. Receita líquida / despesa de pessoal (DVA da DFP) e sua inclinação em 5 anos.",
+   "dados": [
+    "CVM FRE",
+    "CVM DFP/ITR",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "média",
+   "convergencia": 2
+  },
+  {
+   "codigo": "H37",
+   "tema": "Gestão, donos e governança",
+   "titulo": "Despesa administrativa enxuta",
+   "enunciado": "Empresas com despesas gerais e administrativas sobre receita abaixo dos pares antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-062"
+     ],
+     "ref": "Cap. XVI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-102"
+     ],
+     "ref": "Cap. 8, p. 96-97"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-103"
+     ],
+     "ref": "Cap. 12, p. 190"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Lynch: Crown Cork and Seal, de sede despojada, subiu 280x em 30 anos."
+   ],
+   "medida": "Despesas gerais e administrativas / receita: média de 3 exercícios até t0, em percentil do setor, e variação em 5 anos.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H38",
+   "tema": "Vantagem competitiva, produto e setor",
+   "titulo": "Margem bruta alta e estável (fosso)",
+   "enunciado": "Empresas com margem bruta acima da mediana do setor e estável por 5 anos ou mais antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-042"
+     ],
+     "ref": "Cap. XIX; Cap. XXVIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-043",
+      "MAY-044",
+      "MAY-105"
+     ],
+     "ref": "Cap. 12, p. 121-124 | Cap. 12, p. 127-128 | Cap. 15, p. 171-174, 176, 179, 181-183, 187-188"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-045",
+      "FIS-057"
+     ],
+     "ref": "Parte 2 (CISW), 1a dimensão, p. 180-186 | Parte 2 (CISW), 3a dimensão, p. 198-206"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-061"
+     ],
+     "ref": "Cap. 8, pp. 140-142"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Mayer (estudo de Berry, 4.000 empresas, 1990-2004): a margem bruta é a variável que mais resiste à reversão à média; Pepsi ≥57%; MTY 70%.",
+    "Lynch: Boston Globe com mais de 90% da publicidade impressa de Boston (nicho).",
+    "Fisher: com preço de 10 para 12 centavos, o fabricante de lucro 4c ganha +50% e o de lucro 1c +300%."
+   ],
+   "medida": "Margem bruta = (receita − CPV) / receita: média e desvio-padrão em 5 anos até t0; nº de anos acima da mediana do setor. Persistência do ROIC acima da mediana por 10 anos. Excluir bancos e seguradoras (sem CPV).",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H39",
+   "tema": "Vantagem competitiva, produto e setor",
+   "titulo": "Líder do segmento ganhando participação",
+   "enunciado": "Empresas líderes do seu segmento, ou ganhando participação de mercado nos 3 a 5 anos antes da alta, têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-051"
+     ],
+     "ref": "Cap. XVI; Cap. II"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-039"
+     ],
+     "ref": "Cap. 5, p. 46"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-048",
+      "ONE-113"
+     ],
+     "ref": "Cap. 7, p. 186-192 | Cap. 20, p. 424"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-006",
+      "FIS-056"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 1, p. 47-53 | Parte 2 (CISW), 3a dimensão, p. 198-206"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-046"
+     ],
+     "ref": "Cap. 7, p. 118"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "O'Neil: comprar as 2 ou 3 melhores do grupo em lucro, vendas, ROE, margem e produto.",
+    "Fisher: participações de 60%, 25% e 10-15% no mercado farmacêutico.",
+    "Lynch: Marriott crescendo ~20% a.a. num setor de ~2% a.a."
+   ],
+   "medida": "Receita da empresa / receita somada das listadas do mesmo subsetor (proxy de participação) em t0 e variação em 3 a 5 anos. Ranking no subsetor por crescimento do LPA, receita, ROE e margem.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 5
+  },
+  {
+   "codigo": "H40",
+   "tema": "Vantagem competitiva, produto e setor",
+   "titulo": "Pesquisa e novos produtos constantes",
+   "enunciado": "Empresas com P&D sobre receita alto e crescente, mesmo em recessões, nos 5 anos antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-044",
+      "PHE-045",
+      "PHE-047"
+     ],
+     "ref": "Cap. I; Cap. XXVII | Cap. X; Cap. XXVII | Cap. XIX"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-047"
+     ],
+     "ref": "Cap. 5, p. 67-69"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-003",
+      "FIS-007",
+      "FIS-008",
+      "FIS-047"
+     ],
+     "ref": "Parte 1, cap. 1, p. 37-38 | Parte 1, cap. 3, Ponto 2, p. 53 | Parte 1, cap. 3, Ponto 3, p. 54-59 | Parte 2 (CISW), 1a dimensão, p. 180-186"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-052",
+      "LYN-096"
+     ],
+     "ref": "Cap. 8, p. 130 | Cap. 11, p. 178"
+    }
+   ],
+   "numeros": [
+    "Fisher: empresas bem-sucedidas tiravam 10-20% das vendas de produtos novos; a pesquisa leva 7 a 11 anos para chegar ao lucro; o retorno por dólar de pesquisa varia até 2 para 1.",
+    "Mayer: Gillette, com pesquisa e patentes, tinha ~70% do mercado de lâminas.",
+    "Lynch (contra): prefere hotéis e restaurantes a tecnologia, onde um laboratório rival cria algo melhor."
+   ],
+   "medida": "P&D / receita (nota de despesas por natureza; 10-K) e variação em 5 anos até t0; manutenção do P&D em anos de queda da receita. Na B3, muitas empresas não separam P&D: tratar como dado faltante.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "média",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H41",
+   "tema": "Vantagem competitiva, produto e setor",
+   "titulo": "Produto ou mudança nova e relevante",
+   "enunciado": "Empresas com produto, serviço, gestão ou condição de setor nova, que já pesa ao menos 20% da receita ou do crescimento antes da alta, têm maior chance de subir 10x que o controle.",
+   "tipo": "qualitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-043"
+     ],
+     "ref": "Cap. I"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-032",
+      "ONE-114"
+     ],
+     "ref": "Cap. 5, p. 171-179 | Cap. 20, p. 425"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-025"
+     ],
+     "ref": "Parte 1, cap. 5, p. 89-104"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-016",
+      "LYN-039",
+      "LYN-111"
+     ],
+     "ref": "Introdução, pp. 36-38 | Cap. 7, pp. 107-108 | Cap. 13, p. 198"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-055",
+      "MAY-107"
+     ],
+     "ref": "Cap. 15, p. 180-181 | Cap. 15, p. 187-188"
+    }
+   ],
+   "numeros": [
+    "O'Neil: mais de 95% das vencedoras tinham algo novo.",
+    "Lynch: Bufferin era menos de 1,5% da receita da Bristol-Myers; o Lexan vinha de divisão com 6,8% da receita da GE; Hanes fez 6x com o L'eggs.",
+    "Fisher: American Cyanamid com lucro +37% e ação +85%."
+   ],
+   "medida": "Receita do segmento ou linha nova / receita total (nota de segmentos) em t0 e sua participação no crescimento da receita em 2 anos. Dummies: troca de CEO nos 2 anos (FRE item 12); lançamento ou nova planta em fato relevante/8-K.",
+   "dados": [
+    "CVM DFP/ITR",
+    "CVM FRE",
+    "SEC XBRL",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "média",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H42",
+   "tema": "Vantagem competitiva, produto e setor",
+   "titulo": "Receita recorrente e consumo repetido",
+   "enunciado": "Empresas com receita recorrente (assinatura, reposição, consumo) predominante antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "qualitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-050"
+     ],
+     "ref": "Cap. 5, p. 63-65"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-114"
+     ],
+     "ref": "Cap. 20, p. 425"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-057"
+     ],
+     "ref": "Parte 2 (CISW), 3a dimensão, p. 198-206"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-035",
+      "LYN-062"
+     ],
+     "ref": "Cap. 6, pp. 97-98 | Cap. 8, p. 142"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Lynch: SmithKline de US$ 4 (1974) a US$ 72 (1987) com o Tagamet.",
+    "Mayer: Comcast com 1 milhão de assinantes (1986) e 4,3 milhões (1995); 188x até 2014."
+   ],
+   "medida": "Classificação de recorrência por setor e pela nota de receitas (CPC 47 / ASC 606: contratos e assinaturas). Queda máxima anual da receita nos 10 anos até t0 como proxy de estabilidade.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "média",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H43",
+   "tema": "Vantagem competitiva, produto e setor",
+   "titulo": "Mercado grande ainda pouco penetrado",
+   "enunciado": "Empresas com participação pequena num mercado grande ou em expansão no início da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "qualitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-050"
+     ],
+     "ref": "Cap. XXVIII; Cap. XXIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-038",
+      "MAY-039"
+     ],
+     "ref": "Cap. 5, p. 33-34, 55-56, 78-79, 124 | Cap. 5, p. 46"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-114"
+     ],
+     "ref": "Cap. 20, p. 425"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-006"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 1, p. 47-53"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-004"
+     ],
+     "ref": "Introdução à Edição do Milênio, p. 16"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Mayer: comércio eletrônico era 9% do varejo dos EUA em 2014; Dunkin' com 35 lojas e potencial de 8.000.",
+    "Lynch: rede presente em 10% do país tem muito a crescer; em 90%, pouco.",
+    "Phelps: Tampax dobrou as vendas em 6 anos."
+   ],
+   "medida": "Receita da empresa / receita do setor (IBGE PAS/PIA ou Census, fora da lista) em t0. Crescimento da receita agregada das listadas do setor em 10 anos. Para redes: unidades / potencial declarado no FRE ou no 10-K.",
+   "dados": [
+    "CVM DFP/ITR",
+    "CVM FRE",
+    "SEC XBRL",
+    "SEC 10-K/DEF 14A"
+   ],
+   "viabilidade": "baixa",
+   "convergencia": 5
+  },
+  {
+   "codigo": "H44",
+   "tema": "Vantagem competitiva, produto e setor",
+   "titulo": "Crescedora rápida em setor parado",
+   "enunciado": "Empresas que crescem 20% ao ano ou mais num setor que cresce perto do PIB ou menos têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-046",
+      "LYN-060",
+      "LYN-069",
+      "LYN-131",
+      "LYN-153"
+     ],
+     "ref": "Cap. 7, p. 118 | Cap. 8, pp. 139-140 | Cap. 9, p. 152 | Cap. 13, pp. 217-219 | Cap. 15, p. 232"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-049",
+      "PHE-050"
+     ],
+     "ref": "Cap. XXII | Cap. XXVIII; Cap. XXIII"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-109"
+     ],
+     "ref": "Cap. 15, p. 323 ss"
+    }
+   ],
+   "numeros": [
+    "Lynch: hotéis ~2% a.a. e Marriott ~20%; setor funerário ~1% a.a.; Philip Morris de US$ 14 a US$ 90 em 15 anos com consumo de cigarros caindo 2% a.a.",
+    "Phelps (contra): 5 das 7 vencedoras de 1961-71 vinham da onda de casas pré-fabricadas.",
+    "O'Neil (contra): 2 de cada 3 vencedoras estão em grupos fortes."
+   ],
+   "medida": "CAGR da receita agregada das listadas do setor em 5 anos até t0 ≤ crescimento do PIB nominal, e CAGR do LPA da empresa ≥20% no mesmo período. Diferencial em p.p.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 1
+  },
+  {
+   "codigo": "H45",
+   "tema": "Vantagem competitiva, produto e setor",
+   "titulo": "Negócio simples em indústria estável",
+   "enunciado": "Empresas com poucos segmentos e em indústrias de mudança lenta têm maior chance de subir 10x que o controle.",
+   "tipo": "qualitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-041",
+      "MAY-098",
+      "MAY-108"
+     ],
+     "ref": "Cap. 12, p. 125-126 | Cap. 13, p. 146-147 | Cap. 15, p. 175-177"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-068"
+     ],
+     "ref": "Parte 3, cap. 3, p. 252-265"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-020",
+      "LYN-052"
+     ],
+     "ref": "Introdução, p. 41 | Cap. 8, p. 130"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-047"
+     ],
+     "ref": "Cap. XIX"
+    }
+   ],
+   "numeros": [
+    "Mayer: Mauboussin com 68 indústrias e mais de 5.500 empresas; vida média dos ativos de 6,6 anos em TI e 29,4 em utilidades.",
+    "Phelps (contra): as áreas de caça incluem invenções e métodos novos, mais rápidos ou mais baratos."
+   ],
+   "medida": "Nº de segmentos reportáveis em t0 (≤2 = simples). Vida média dos ativos do setor (imobilizado bruto / depreciação anual). Rotatividade das 5 maiores do setor em 10 anos.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "média",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H46",
+   "tema": "Vantagem competitiva, produto e setor",
+   "titulo": "Cíclica comprada no fundo do ciclo",
+   "enunciado": "Empresas de setores cíclicos compradas com margem do setor no fundo do ciclo e estoques setoriais em queda têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-046"
+     ],
+     "ref": "Cap. XIX; Cap. XXVII"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-027"
+     ],
+     "ref": "Cap. 4, p. 161-165"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-038",
+      "LYN-047",
+      "LYN-089",
+      "LYN-144"
+     ],
+     "ref": "Cap. 6, pp. 100-101 | Cap. 7, pp. 119-122 | Cap. 11, p. 175 | Cap. 15, pp. 228-229"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-054"
+     ],
+     "ref": "Cap. 6, p. 78-80"
+    }
+   ],
+   "numeros": [
+    "Lynch: cíclica pode dar 10x ou perder 80-90% conforme o momento; no setor automotivo, altas de 3-4 anos seguem quedas de 3-4 anos; uma fábrica de PVC leva 2-3 anos.",
+    "Phelps: Poseidon fez mais de 100x em um ano após a descoberta de níquel e depois perdeu a maior parte.",
+    "Mayer (contra): Donville não compra empresa que dá prejuízo na baixa do ciclo."
+   ],
+   "medida": "Setores cíclicos por lista fixa. Margem operacional agregada do setor em t0 / média de 10 anos (<1 = fundo). Variação de estoques / receita agregados do setor em 4 trimestres. Preço da commodity (fonte fora da lista).",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "média",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H47",
+   "tema": "Balanço e qualidade contábil",
+   "titulo": "Dívida baixa e de prazo longo",
+   "enunciado": "Empresas com dívida baixa, ou caixa maior que a dívida, e pouca dívida bancária de curto prazo no início da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-067"
+     ],
+     "ref": "Cap. 14, p. 165-168"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-041"
+     ],
+     "ref": "Cap. 6, p. 180-185"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-048"
+     ],
+     "ref": "Parte 2 (CISW), 1a dimensão, p. 180-186"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-045",
+      "LYN-108",
+      "LYN-116",
+      "LYN-117",
+      "LYN-118",
+      "LYN-154"
+     ],
+     "ref": "Cap. 7, p. 119 | Cap. 12, pp. 194-195 | Cap. 13, pp. 201-202 | Cap. 13, p. 202 | Cap. 13, pp. 202-203 | Cap. 15, p. 232"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-021"
+     ],
+     "ref": "Cap. XIX"
+    }
+   ],
+   "numeros": [
+    "Lynch: balanço normal com 75% de patrimônio e 25% de dívida; Ford com 91% e menos de 10%; fraco com 20% e 80%; ADP com o dobro de caixa em relação à dívida.",
+    "Mayer: Graham, com 44% dos ativos financiados por dívida, perdeu 70% em 1929-32.",
+    "Phelps (contra): ação valendo 5% a 10% do valor da empresa sobe 10x a 20x se esse valor dobrar."
+   ],
+   "medida": "No último balanço até t0: dívida de longo prazo / (dívida + PL); dívida líquida / EBITDA; dívida de curto prazo / dívida total; cobertura de juros (EBIT / despesa financeira).",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H48",
+   "tema": "Balanço e qualidade contábil",
+   "titulo": "Lucro que vira caixa",
+   "enunciado": "Empresas com fluxo de caixa operacional igual ou maior que o lucro nos 3 a 5 anos antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-054",
+      "PHE-057"
+     ],
+     "ref": "Cap. X | Cap. XI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-062",
+      "MAY-076",
+      "MAY-095"
+     ],
+     "ref": "Cap. 8, p. 94-96 | Cap. 4, p. 40 | Cap. 13, p. 136-137, 139"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-018",
+      "ONE-025"
+     ],
+     "ref": "Cap. 3, p. 154 | Cap. 4, p. 161-165"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-048"
+     ],
+     "ref": "Parte 2 (CISW), 1a dimensão, p. 180-186"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-128"
+     ],
+     "ref": "Cap. 13, pp. 213-215"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "O'Neil: fluxo de caixa por ação pelo menos 20% acima do LPA.",
+    "Mayer: na Sino-Forest, mais de 95% do lucro bruto de 16 anos nunca entrou no caixa."
+   ],
+   "medida": "FCO acumulado / lucro líquido acumulado em 3 e 5 exercícios até t0 (corte de O'Neil: ≥1,2). Accruals = (lucro − FCO) / ativo médio. Lucro ajustado sem itens não recorrentes (notas explicativas).",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 5
+  },
+  {
+   "codigo": "H49",
+   "tema": "Balanço e qualidade contábil",
+   "titulo": "Capital de giro sob controle",
+   "enunciado": "Empresas com estoques e recebíveis crescendo no ritmo da receita, ou abaixo dele, nos 3 anos antes da alta têm maior chance de subir 10x que o controle.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-055"
+     ],
+     "ref": "Cap. X"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-015",
+      "FIS-048"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 10, p. 70-71 | Parte 2 (CISW), 1a dimensão, p. 180-186"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-129"
+     ],
+     "ref": "Cap. 13, pp. 215-216"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Lynch: vendas +10% com estoques +30% indicam problema; estoque caindo numa empresa deprimida é a primeira evidência de virada.",
+    "Fisher: controle de recebíveis e estoques permite reagir cedo e evitar crises de caixa."
+   ],
+   "medida": "Variação % de estoques e de contas a receber menos variação % da receita, em 12 meses e em 3 anos até t0. Dias de estoque e dias de recebimento: nível e tendência de 3 anos, em percentil do setor.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 3
+  },
+  {
+   "codigo": "H50",
+   "tema": "Ambiente de mercado",
+   "titulo": "Início após queda forte do índice",
+   "enunciado": "Ações que iniciam a janela após queda do índice de 20% ou mais, ou com P/L e P/VPA do índice baixos, têm maior chance de subir 10x que as de outras datas.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-010",
+      "PHE-014"
+     ],
+     "ref": "Cap. II; Cap. XIX | Cap. XXI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-078",
+      "MAY-079"
+     ],
+     "ref": "Cap. 15, p. 187 | Cap. 14, p. 155-157"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-060",
+      "ONE-062"
+     ],
+     "ref": "Cap. 9, p. 199-237 | Cap. 2, p. 151"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-038"
+     ],
+     "ref": "Parte 1, cap. 9, p. 135-161"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-085",
+      "LYN-169"
+     ],
+     "ref": "Cap. 10, p. 172 | Cap. 17, pp. 246-247"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Phelps: Dow com P/VPA 0,5 em 1932 e 2,0 em 1966; ações rendiam o dobro dos títulos em 1932; efeito estimado de 4x.",
+    "Lynch: P/L do mercado de ~8 (1982) para 16 (1987); pico de 20 em 1971.",
+    "O'Neil: maiores ganhos nos 1-2 primeiros anos do mercado de alta; 80-90% das bases nascem em correções.",
+    "Mayer: 187 ações de 100x iniciadas em 1966-82, com o Dow parado."
+   ],
+   "medida": "Por coorte mensal: drawdown do Ibovespa/S&P 500 nos 12 meses até t0; P/L e P/VPA agregados do índice em t0; taxa de vencedoras no universo de cada coorte. Como o controle é pareado por data, o teste é entre coortes. Fator de mercado e taxa livre de risco do NEFIN.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA",
+    "NEFIN",
+    "CVM DFP/ITR"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 5
+  },
+  {
+   "codigo": "H51",
+   "tema": "Ambiente de mercado",
+   "titulo": "Índice em tendência de alta na entrada",
+   "enunciado": "Ações que iniciam a janela com o índice acima da média de 200 dias, após dia de confirmação da retomada, têm maior chance de subir 10x que as de datas em mercado de baixa.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-057",
+      "ONE-058",
+      "ONE-059",
+      "ONE-062"
+     ],
+     "ref": "Cap. 9, p. 199-237 | Cap. 2, p. 151"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-072"
+     ],
+     "ref": "Cap. II; Cap. III; Cap. V; Cap. VI; Cap. XXIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-090"
+     ],
+     "ref": "Cap. 13, p. 130, 141-145, 183, 186"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-024"
+     ],
+     "ref": "Parte 1, cap. 5, p. 89-104"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-031",
+      "LYN-202"
+     ],
+     "ref": "Cap. 5, p. 89 | Epílogo, pp. 287-288"
+    }
+   ],
+   "numeros": [
+    "O'Neil: 3 em 4 ações seguem o mercado; confirmação entre o 4º e o 7º dia, com alta de 1,5-2% em volume maior; 4-5 dias de distribuição em 4-5 semanas sinalizam correção.",
+    "Lynch (contra): Dreyfus foi de US$ 2 a US$ 40 a partir de 1981, único ano de queda do mercado nos anos 80."
+   ],
+   "medida": "Dummy: índice acima da média de 200 pregões em t0. Dias de distribuição (queda >0,2% com volume maior) nas 25 sessões até t0. Idade do mercado de alta em t0.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 1
+  },
+  {
+   "codigo": "H52",
+   "tema": "Ambiente de mercado",
+   "titulo": "Juros longos baixos ou em queda",
+   "enunciado": "Ações que iniciam a janela com juro longo baixo ou em queda têm maior chance de subir 10x, sobretudo as de P/L alto; com inflação alta, as de capital leve se saem melhor.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-092",
+      "PHE-093",
+      "PHE-094"
+     ],
+     "ref": "Cap. XVII | Cap. XXVI; Cap. VII | Cap. VII; Cap. IX; Cap. XXVI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-053"
+     ],
+     "ref": "Cap. 13, p. 151-153"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-061"
+     ],
+     "ref": "Parte 2 (CISW), 4a dimensão, p. 207-224"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-085"
+     ],
+     "ref": "Cap. 10, p. 172"
+    }
+   ],
+   "autores_contra": [],
+   "numeros": [
+    "Phelps: juros de títulos 'prime' ~8,5% em maio/1970 e colapso das ações de crescimento; US$ 1 em 10 anos vale US$ 0,61 a 5% e US$ 0,42 a 9%.",
+    "Mayer: após a inflação, See's ganha 3 por 1 sobre o novo investimento e a empresa pesada em ativos, 1 por 1."
+   ],
+   "medida": "Juro de 10 anos (NTN-B/DI longo; Treasury 10 anos — fontes fora da lista) em t0 e variação em 24 meses; inflação de 12 meses. Interações com P/L relativo e com imobilizado / receita.",
+   "dados": [
+    "NEFIN",
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "viabilidade": "média",
+   "convergencia": 4
+  },
+  {
+   "codigo": "H53",
+   "tema": "Ambiente de mercado",
+   "titulo": "O que comprar pesa mais que quando",
+   "enunciado": "Entre as vencedoras, a maioria ainda faria 10x se comprada na máxima do ano de entrada, e a janela de compra dura anos.",
+   "tipo": "quantitativa",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-072"
+     ],
+     "ref": "Cap. II; Cap. III; Cap. V; Cap. VI; Cap. XXIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-010",
+      "MAY-077"
+     ],
+     "ref": "Cap. 4, p. 38 | Cap. 15, p. 186-187"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-036",
+      "FIS-040"
+     ],
+     "ref": "Parte 1, cap. 8, p. 123-134 | Parte 1, cap. 9, p. 135-161"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-032"
+     ],
+     "ref": "Cap. 5, pp. 89-90"
+    }
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-034",
+      "ONE-070"
+     ],
+     "ref": "Cap. 5, p. 171-179 | Cap. 2, p. 117-118"
+    }
+   ],
+   "numeros": [
+    "Phelps: Sharp & Dohme comprável em 12 anos seguidos e, nas máximas de 6 deles, ainda 100x; Occidental comprada na máxima de 22 de 24 anos fazia mais de 100x.",
+    "Fisher: poupar US$ 50 na ordem custou US$ 46.500 de lucro.",
+    "O'Neil (contra): comprar no máximo 5-10% acima do pivô."
+   ],
+   "medida": "Para cada vencedora: múltiplo realizado se comprada na máxima, na média e na mínima de cada mês entre t0 e t0+12; nº de meses em que a compra ainda daria 10x no mesmo horizonte.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA"
+   ],
+   "viabilidade": "alta",
+   "convergencia": 4
+  }
+ ],
+ "evitar": [
+  {
+   "codigo": "E01",
+   "titulo": "P/L excessivo na compra",
+   "enunciado": "Empresas com P/L muito acima do mercado ou do crescimento no início têm menor chance de subir 10x que o controle.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-008",
+      "PHE-064"
+     ],
+     "ref": "Cap. IX; Cap. XXVIII | Cap. VII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-032",
+      "MAY-037"
+     ],
+     "ref": "Cap. 15, p. 176-177 | Cap. 14, p. 156-157"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-059"
+     ],
+     "ref": "Parte 2 (CISW), 4a dimensão, p. 207-224"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-002",
+      "LYN-084",
+      "LYN-163"
+     ],
+     "ref": "Introdução à Edição do Milênio, pp. 13-14 | Cap. 10, pp. 170-172 | Cap. 16, p. 242"
+    }
+   ],
+   "numeros": [
+    "Phelps: alerta acima de ~4x o P/L do Dow; P/L de 40 que cai para 20 exige lucro 200x para chegar a 100x.",
+    "Lynch: McDonald's com P/L 53 em 1972 caiu de US$ 75 a US$ 25; EDS com P/L 500 caiu de US$ 40 a US$ 3; Polaroid com P/L 50 perdeu 89% em 18 meses; Bristol-Myers a 30x com 15% de crescimento ficou parada uma década.",
+    "Mayer: P/L de 50 exige lucro 100x maior para o 100x.",
+    "Fisher: maior risco em empresas novas com P/L elevado e lucro especulativo."
+   ],
+   "medida": "Em t0: P/L relativo ao índice >4; P/L >40; PEG ≥2.",
+   "dados": [
+    "B3 COTAHIST",
+    "CVM DFP/ITR",
+    "preços EUA",
+    "SEC XBRL"
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-029"
+     ],
+     "ref": "Cap. 4, p. 163-165"
+    }
+   ]
+  },
+  {
+   "codigo": "E02",
+   "titulo": "Ação mais quente do setor quente",
+   "enunciado": "A ação de maior alta recente no setor da moda tem menor chance de subir 10x a partir dali.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-067"
+     ],
+     "ref": "Cap. XXVI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-092",
+      "MAY-094"
+     ],
+     "ref": "Cap. 13, p. 133-136 | Cap. 13, p. 136-141"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-019",
+      "LYN-067",
+      "LYN-068"
+     ],
+     "ref": "Introdução, pp. 38-39 | Cap. 9, p. 149 | Cap. 9, pp. 150-152"
+    }
+   ],
+   "numeros": [
+    "Lynch: Home Shopping Network de US$ 3 a US$ 47 e de volta a US$ 3,50 em 16 meses; carpetes passaram de 5-6 produtores para mais de 200; discos rígidos com setor crescendo 52% a.a. e nenhum lucro.",
+    "Phelps: Brunswick de US$ 70 a US$ 6 em 4 anos."
+   ],
+   "medida": "Top decil de retorno de 12 meses dentro do setor com maior crescimento de receita e maior nº de IPOs nos 24 meses até t0; margem líquida mediana do setor em queda.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA",
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ]
+  },
+  {
+   "codigo": "E03",
+   "titulo": "História grandiosa sem lucro",
+   "enunciado": "Empresas pequenas sem lucro e com receita mínima, vendidas por uma história, têm menor chance de subir 10x e maior chance de falir.",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-093"
+     ],
+     "ref": "Cap. 3, p. 30"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-021"
+     ],
+     "ref": "Cap. 3, p. 154"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-032"
+     ],
+     "ref": "Parte 1, cap. 8, p. 123-134"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-002",
+      "LYN-073",
+      "LYN-074"
+     ],
+     "ref": "Introdução à Edição do Milênio, pp. 13-14 | Cap. 9, pp. 157-158 | Cap. 9, p. 159"
+    }
+   ],
+   "numeros": [
+    "Lynch: KMS de US$ 40 a US$ 2; Smith Labs de US$ 25 a US$ 1; National Health Care de US$ 14 a US$ 0,50.",
+    "Mayer: 9 em 10 ações de tecnologia e biotecnologia com 'histórias fabulosas' faliram.",
+    "Fisher: exigir 2-3 anos de operação e 1 ano de lucro operacional."
+   ],
+   "medida": "LPA ≤0 em 3 ou mais exercícios até t0 e receita abaixo de um piso; comparar taxa de falência e de 10x.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ]
+  },
+  {
+   "codigo": "E04",
+   "titulo": "IPO de empresa nova sem histórico",
+   "enunciado": "IPOs de empresas sem histórico de lucro têm menor chance de subir 10x que o controle.",
+   "autores_apoiam": [
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-032"
+     ],
+     "ref": "Parte 1, cap. 8, p. 123-134"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-075"
+     ],
+     "ref": "Cap. 9, p. 159"
+    }
+   ],
+   "numeros": [
+    "Lynch: ~3 em 4 IPOs de empresas novas foram decepções de longo prazo.",
+    "Fisher: 2-3 anos de operação antes de considerar."
+   ],
+   "medida": "Menos de 12-36 meses de listagem em t0 e lucro operacional ≤0 antes do IPO (prospecto).",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA",
+    "CVM FRE"
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-037"
+     ],
+     "ref": "Cap. 5, p. 171-179"
+    }
+   ]
+  },
+  {
+   "codigo": "E05",
+   "titulo": "O 'próximo X' e as seguidoras",
+   "enunciado": "Empresas vendidas como 'a próxima' de uma vencedora, ou que sobem por simpatia com a líder, têm menor chance de subir 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-049"
+     ],
+     "ref": "Cap. 7, p. 186-192"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-070",
+      "LYN-189"
+     ],
+     "ref": "Cap. 9, pp. 152-153 | Cap. 18, pp. 266-267"
+    }
+   ],
+   "numeros": [
+    "Lynch: imitadores da Circuit City perderam de 59% a 96%; Home Depot fez 25x desde o IPO e Scotty's, a 'próxima', 25-30%."
+   ],
+   "medida": "Retorno das seguidoras do mesmo setor contra o da líder no mesmo período; busca textual por 'o próximo'/'the next' é inviável em escala.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA"
+   ]
+  },
+  {
+   "codigo": "E06",
+   "titulo": "Diworseificação e aquisições fora do ramo",
+   "enunciado": "Empresas que fazem muitas aquisições caras fora do negócio principal têm menor chance de subir 10x que o controle.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-040",
+      "PHE-060"
+     ],
+     "ref": "Cap. XXVII | Cap. XVI"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-071",
+      "LYN-072"
+     ],
+     "ref": "Cap. 9, pp. 153-155 | Cap. 9, pp. 155-157"
+    }
+   ],
+   "numeros": [
+    "Lynch: Mobil +10% desde 1980 contra 2x da Exxon, que recomprou ações; U.S. Industries com 300 aquisições num ano; Genesco com 150 aquisições entre 1956 e 1973.",
+    "Phelps: compra paga em ações de empresa com P/L menor eleva o LPA em 12,8% sem ganho de poder de ganho."
+   ],
+   "medida": "Ativos adquiridos / ativo total em 5 anos até t0; aquisições fora do setor; nº de segmentos crescendo; baixas de goodwill; ROIC após as compras.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ]
+  },
+  {
+   "codigo": "E07",
+   "titulo": "Diluição maciça de acionistas",
+   "enunciado": "Empresas que emitem muitas ações para cobrir perdas ou dívida têm menor chance de subir 10x que o controle.",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-018",
+      "MAY-065"
+     ],
+     "ref": "Cap. 15, p. 173 | Cap. 14, p. 156-157"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-018"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 13, p. 74-75"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-066",
+      "LYN-184"
+     ],
+     "ref": "Cap. 8, p. 145 | Cap. 18, p. 262"
+    }
+   ],
+   "numeros": [
+    "Lynch: Navistar se recuperou, mas o LPA ficou minúsculo; Johns-Manville imprimiu centenas de milhões de ações.",
+    "Mayer: vendas x2 com ações x2 não vale nada."
+   ],
+   "medida": "Aumento do nº de ações acima de 20% em 12-36 meses até t0, em ano de prejuízo ou queda de preço.",
+   "dados": [
+    "CVM DFP/ITR",
+    "CVM FRE",
+    "SEC XBRL",
+    "SEC 10-K/DEF 14A"
+   ]
+  },
+  {
+   "codigo": "E08",
+   "titulo": "Crescimento lento ou empresa gigante madura",
+   "enunciado": "Empresas grandes com lucro crescendo pouco (até ~10% a.a.) e utilities têm menor chance de subir 10x em prazo razoável.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-065"
+     ],
+     "ref": "Cap. VII; Cap. XIX"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-014",
+      "MAY-028"
+     ],
+     "ref": "Cap. 5, p. 44 | Cap. 6, p. 80-81"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-015"
+     ],
+     "ref": "Cap. 3, p. 154"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-042",
+      "LYN-043",
+      "LYN-126"
+     ],
+     "ref": "Cap. 7, pp. 111-112 | Cap. 7, pp. 112, 115-118 | Cap. 13, p. 213"
+    }
+   ],
+   "numeros": [
+    "O'Neil: LPA subindo só 5-10% não sustenta alta forte.",
+    "Mayer: receita ≤5% a.a. 'não vai a lugar nenhum'; utilidades levaram 40 a 52 anos para 100x.",
+    "Lynch: slow growers crescem 2-4% a.a.; stalwarts 10-12%; P&G comprada em 1963 fez 4x em 25 anos; telefônicas com P/L <10 e yield >6% dão 30-50%.",
+    "Phelps: GM, para 100x, precisaria lucrar mais de US$ 200 bilhões."
+   ],
+   "medida": "CAGR do LPA de 5 anos <5% e payout >50%, ou valor de mercado no decil superior em t0; setores regulados.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL",
+    "B3 COTAHIST",
+    "preços EUA"
+   ]
+  },
+  {
+   "codigo": "E09",
+   "titulo": "Crescimento explosivo de 50% a 100%",
+   "enunciado": "Empresas com lucro crescendo 50% a 100% ao ano têm menor chance de manter o ritmo e subir 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-145",
+      "LYN-152"
+     ],
+     "ref": "Cap. 15, p. 229 | Cap. 15, p. 231"
+    }
+   ],
+   "numeros": [
+    "Lynch: desconfia de crescimento acima de 25%; as de 50% estão em setores quentes.",
+    "O'Neil (contra): 3 em 4 vencedoras tinham LPA trimestral acima de 70%.",
+    "Mayer (contra): Monster com lucro +50% a.a. fez 100x em 10 anos."
+   ],
+   "medida": "CAGR do lucro ou da receita >50% a.a. em 3 anos até t0; comparar sobrevivência e taxa de 10x com a faixa de 20-25%.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-016"
+     ],
+     "ref": "Cap. 15, p. 46, 173-174"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-011",
+      "ONE-013"
+     ],
+     "ref": "Cap. 3, p. 153 | Cap. 3, p. 153-154"
+    }
+   ]
+  },
+  {
+   "codigo": "E10",
+   "titulo": "Dependência de um único cliente",
+   "enunciado": "Empresas com 25% a 50% das vendas para um só cliente têm menor chance de subir 10x que o controle.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-063"
+     ],
+     "ref": "Cap. XIV"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-076",
+      "LYN-178"
+     ],
+     "ref": "Cap. 9, p. 160 | Cap. 17, p. 255"
+    }
+   ],
+   "numeros": [
+    "Lynch: 25% a 50% das vendas para um cliente é situação precária; cliente com 50% das vendas desacelerando é sinal de venda."
+   ],
+   "medida": "% da receita do maior cliente (nota de concentração de clientes; FRE; 10-K 'major customers'); corte de 25%.",
+   "dados": [
+    "CVM DFP/ITR",
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ]
+  },
+  {
+   "codigo": "E11",
+   "titulo": "Gestão sem integridade e sinais de fraude",
+   "enunciado": "Empresas com partes relacionadas abusivas, divulgação opaca ou falta de franqueza têm menor chance de subir 10x e maior risco de perda total.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-053"
+     ],
+     "ref": "Cap. XV"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-094",
+      "MAY-096",
+      "MAY-097"
+     ],
+     "ref": "Cap. 13, p. 136-141 | Cap. 13, p. 140-141"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-019",
+      "FIS-020"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 14, p. 75-77 | Parte 1, cap. 3, Ponto 15, p. 77-78"
+    }
+   ],
+   "numeros": [
+    "Mayer: Sino-Forest caiu 89% após o relatório de Block; Paulson perdeu US$ 700 mi.",
+    "Phelps: entre mais de 50.000 ações, fugir 'como da peste' ao menor sinal de prática duvidosa."
+   ],
+   "medida": "Transações com partes relacionadas / receita; ressalvas e ênfases do auditor; republicações; troca de auditor ou de CFO; processos CVM/SEC; remuneração dos executivos / lucro.",
+   "dados": [
+    "CVM DFP/ITR",
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ]
+  },
+  {
+   "codigo": "E12",
+   "titulo": "Lucro sem caixa e contabilidade agressiva",
+   "enunciado": "Empresas cujo lucro não vira caixa, ou depende de escolhas contábeis, têm menor chance de subir 10x que o controle.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-054",
+      "PHE-057",
+      "PHE-089"
+     ],
+     "ref": "Cap. X | Cap. XI | Cap. XXVIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-076",
+      "MAY-095"
+     ],
+     "ref": "Cap. 4, p. 40 | Cap. 13, p. 136-137, 139"
+    }
+   ],
+   "numeros": [
+    "Mayer: mais de 95% do lucro bruto da Sino-Forest em 16 anos nunca virou caixa; gastar US$ 50 para gerar US$ 1 de lucro parece bom no LPA."
+   ],
+   "medida": "FCO acumulado / lucro acumulado em 5 anos até t0 abaixo de 0,5; accruals altos; lucro com muitos não recorrentes.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ]
+  },
+  {
+   "codigo": "E13",
+   "titulo": "Estoques e recebíveis crescendo mais que vendas",
+   "enunciado": "Empresas com estoques ou recebíveis crescendo acima da receita antes da compra têm menor chance de subir 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-055"
+     ],
+     "ref": "Cap. X"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-094"
+     ],
+     "ref": "Cap. 13, p. 136-141"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-129",
+      "LYN-178"
+     ],
+     "ref": "Cap. 13, pp. 215-216 | Cap. 17, p. 255"
+    }
+   ],
+   "numeros": [
+    "Lynch: vendas +10% e estoques +30% indicam problema; estoques crescendo ao dobro das vendas em turnaround é sinal de venda."
+   ],
+   "medida": "Variação % de estoques e de recebíveis menos variação % da receita em 12 meses até t0; dias de estoque e de recebimento em 3 anos.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ]
+  },
+  {
+   "codigo": "E14",
+   "titulo": "Passivos ocultos: arrendamento, pensão, ambiental",
+   "enunciado": "Empresas com dívidas fora do balanço, déficit de pensão ou passivo ambiental relevante têm menor chance de subir 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-056",
+      "PHE-058"
+     ],
+     "ref": "Cap. X"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-130"
+     ],
+     "ref": "Cap. 13, pp. 216-217"
+    }
+   ],
+   "numeros": [
+    "Lynch: Bethlehem Steel com US$ 2,3 bi de ativos de pensão contra US$ 3,8 bi de benefícios (déficit de US$ 1,5 bi).",
+    "Phelps: com retorno caindo de 20% para 5%, a empresa com arrendamento oculto vai de 15% para 0% de ROE."
+   ],
+   "medida": "Déficit atuarial / PL; compromissos de arrendamento (IFRS 16 / ASC 842) / dívida; provisões ambientais e trabalhistas / PL.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ]
+  },
+  {
+   "codigo": "E15",
+   "titulo": "Dívida alta, bancária ou que infla o LPA",
+   "enunciado": "Empresas muito endividadas, sobretudo com dívida bancária curta, têm menor chance de subir 10x e maior chance de quebrar.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-039"
+     ],
+     "ref": "Cap. XXVII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-067"
+     ],
+     "ref": "Cap. 14, p. 165-168"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-021",
+      "LYN-117",
+      "LYN-118",
+      "LYN-122"
+     ],
+     "ref": "Introdução, p. 42 | Cap. 13, p. 202 | Cap. 13, pp. 202-203 | Cap. 13, pp. 207-209"
+    }
+   ],
+   "numeros": [
+    "Lynch: GCA com US$ 114 mi de dívida quase toda bancária e US$ 3 mi de caixa quebrou; Coleco com o brinquedo mais vendido do século foi ao Chapter 11; Penn Central tinha VPA acima de US$ 60 ao falir."
+   ],
+   "medida": "Dívida líquida / EBITDA alta, dívida de curto prazo / dívida total alta e cobertura de juros baixa no último balanço até t0; ROE subindo com ROIC parado.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ]
+  },
+  {
+   "codigo": "E16",
+   "titulo": "Retorno sobre capital e margens em queda",
+   "enunciado": "Empresas que reinvestem com retorno abaixo do custo de capital, ou com margens e ROA caindo por anos, têm menor chance de subir 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-035",
+      "PHE-059",
+      "PHE-060",
+      "PHE-064"
+     ],
+     "ref": "Cap. XXII | Cap. X | Cap. XVI | Cap. VII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-029",
+      "MAY-030"
+     ],
+     "ref": "Cap. 5, p. 68-71 | Cap. 5, p. 69, 71"
+    }
+   ],
+   "numeros": [
+    "Phelps: U.S. Steel com ROIC de 8,0% (1960) a 4,2% (1970); American Can com LPA relativo ao Dow de 57% para 27%.",
+    "Mayer: Gillette com margem líquida de 16,4% (1962) a 5,0% (1977), ROA de 23,8% a 6,7% e P/L de ~20 a ~10."
+   ],
+   "medida": "Inclinação negativa de margem líquida, ROA e ROE em 5 anos até t0; ROIC médio de 5-10 anos abaixo do juro longo com ativo crescendo.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ]
+  },
+  {
+   "codigo": "E17",
+   "titulo": "Comprar só porque caiu muito",
+   "enunciado": "Ações compradas apenas por terem caído muito têm menor chance de subir 10x que as compradas por fundamentos.",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-035",
+      "ONE-099"
+     ],
+     "ref": "Cap. 5, p. 171-179 | Cap. 13, p. 303"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-180",
+      "LYN-181",
+      "LYN-184",
+      "LYN-185"
+     ],
+     "ref": "Cap. 18, pp. 258-260 | Cap. 18, p. 260 | Cap. 18, p. 262 | Cap. 18, pp. 262-263"
+    }
+   ],
+   "numeros": [
+    "Lynch: Polaroid de US$ 143½ a US$ 14⅛ em menos de um ano; a ação costuma 'vibrar' 2-3 anos antes de subir; plataformas de petróleo de 4.520 (1981) para 686.",
+    "O'Neil: Xerox comprada a US$ 34 em 1999 chegou a US$ 6."
+   ],
+   "medida": "Queda desde o pico sem melhora de margem, LPA ou estoques nos 4 trimestres até t0.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA",
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "autores_contra": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-011"
+     ],
+     "ref": "Cap. IV; Cap. XXI; Cap. XI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-073"
+     ],
+     "ref": "Cap. 4, p. 32-34"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-065"
+     ],
+     "ref": "Parte 3, cap. 2, p. 238-251"
+    }
+   ]
+  },
+  {
+   "codigo": "E18",
+   "titulo": "Força relativa fraca e em queda",
+   "enunciado": "Ações com RS abaixo de 70 ou linha de força relativa caindo há meses têm menor chance de subir 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-071"
+     ],
+     "ref": "Cap. XII"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-047",
+      "ONE-051"
+     ],
+     "ref": "Cap. 7, p. 186-192"
+    }
+   ],
+   "numeros": [
+    "O'Neil: evitar RS de 40 a 60 ou abaixo de 70; linha de RS em queda por 7 meses ou mais.",
+    "Phelps: United Fruit em queda relativa persistente de 1950 a 1965."
+   ],
+   "medida": "Percentil de retorno de 12 meses <70 em t0; inclinação negativa da razão preço/índice em 7 meses e em 3 anos.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA"
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-089"
+     ],
+     "ref": "Cap. 5, p. 6, 17, 66, 69-70"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-188"
+     ],
+     "ref": "Cap. 18, pp. 264-266"
+    }
+   ]
+  },
+  {
+   "codigo": "E19",
+   "titulo": "Base de preço defeituosa",
+   "enunciado": "Ações que saem de bases largas e soltas, curtas, de 3º-4º estágio ou com muita oferta acima têm menor chance de subir 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-065",
+      "ONE-066",
+      "ONE-068",
+      "ONE-080",
+      "ONE-081",
+      "ONE-082",
+      "ONE-083"
+     ],
+     "ref": "Cap. 2, p. 113 | Cap. 2, p. 113-116 | Cap. 2, p. 116 | Cap. 2, p. 140 | Cap. 2, p. 146 | Cap. 2, p. 149 | Cap. 11, p. 268"
+    }
+   ],
+   "numeros": [
+    "O'Neil: até 80% das bases de 4º estágio falham; correção acima de 2,5x o índice é suspeita; base mínima de 7-8 semanas; oferta com mais de 2 anos pesa menos."
+   ],
+   "medida": "Mesmo algoritmo da base: profundidade / queda do índice >2,5; duração <7 semanas; nº de bases desde o início da alta ≥3; volume negociado acima do preço nos 24 meses.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA"
+   ]
+  },
+  {
+   "codigo": "E20",
+   "titulo": "Comprar só porque já subiu",
+   "enunciado": "Ações compradas apenas pela alta recente de preço têm menor chance de subir 10x que as compradas por fundamentos.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-066"
+     ],
+     "ref": "Cap. IX; Cap. XXVI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-091"
+     ],
+     "ref": "Cap. 13, p. 130-133"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-190"
+     ],
+     "ref": "Cap. 18, p. 269"
+    }
+   ],
+   "numeros": [
+    "Lynch: Zapata de US$ 35 a US$ 2 enquanto Ethyl foi de US$ 2 a US$ 32.",
+    "Mayer: fundo médio rendeu 13,8% a.a. e o investidor médio 7% (Dalbar)."
+   ],
+   "medida": "Retorno de 6 e 12 meses alto em t0 sem melhora do LPA; comparar com momentum acompanhado de lucro.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA",
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "autores_contra": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-045"
+     ],
+     "ref": "Cap. 7, p. 186-192"
+    }
+   ]
+  },
+  {
+   "codigo": "E21",
+   "titulo": "Ação já descoberta e superpossuída",
+   "enunciado": "Ações com muitos analistas, instituições já dominantes e preço alto têm menor chance de subir 10x a partir dali.",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-056"
+     ],
+     "ref": "Cap. 8, p. 193-198"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-018",
+      "LYN-177",
+      "LYN-200"
+     ],
+     "ref": "Introdução, pp. 39-40 | Cap. 17, p. 254 | Cap. 20, p. 286"
+    }
+   ],
+   "numeros": [
+    "Lynch: Limited a US$ 50 com ~30 analistas caiu a US$ 16; sinal de saída com 40 analistas, 60% institucional e P/L 30 com crescimento de 15-20%."
+   ],
+   "medida": "% institucional >60% e nº de analistas alto em t0 (fontes fora da lista); P/L acima da mediana.",
+   "dados": [
+    "SEC 10-K/DEF 14A",
+    "CVM FRE"
+   ]
+  },
+  {
+   "codigo": "E22",
+   "titulo": "Empresa de um homem só",
+   "enunciado": "Empresas dependentes de um único executivo, com CEO trazido de fora ou chefe muito mais bem pago que os demais, têm menor chance de subir 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-061",
+      "PHE-062"
+     ],
+     "ref": "Cap. XVI"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-050",
+      "FIS-051"
+     ],
+     "ref": "Parte 2 (CISW), 2a dimensão, p. 187-197"
+    }
+   ],
+   "numeros": [
+    "Fisher: remuneração do nº 1 muito acima da dos nºs 2 a 4 é alerta (sem número fixo)."
+   ],
+   "medida": "Razão remuneração do CEO / média dos 2º a 4º executivos (FRE item 13; DEF 14A); acúmulo de cargos de CEO e presidente do conselho; CEO externo nos 5 anos.",
+   "dados": [
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-056"
+     ],
+     "ref": "Cap. 7, p. 33, 54, 83, 85-87, 90"
+    }
+   ]
+  },
+  {
+   "codigo": "E23",
+   "titulo": "Mercado saturado ou venda única",
+   "enunciado": "Empresas perto de saturar o mercado, ou que dependem de vendas únicas de equipamento, têm menor chance de subir 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-050"
+     ],
+     "ref": "Cap. XXVIII; Cap. XXIII"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-136",
+      "LYN-146"
+     ],
+     "ref": "Cap. 14, p. 223 | Cap. 15, pp. 229-230"
+    }
+   ],
+   "numeros": [
+    "Lynch: Sensormatic de US$ 2 a US$ 42½ (1983) e a US$ 5⅛ (1984); Limited em 670 dos 700 maiores shoppings.",
+    "Phelps: mesmo com ROIC alto, a empresa não cresce se já tem capacidade para todo o mercado previsível."
+   ],
+   "medida": "Aberturas líquidas desacelerando; vendas mesmas lojas negativas; receita recorrente baixa; troca de estratégia para aquisições.",
+   "dados": [
+    "CVM DFP/ITR",
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ]
+  },
+  {
+   "codigo": "E24",
+   "titulo": "Commodity com prejuízo no ciclo baixo",
+   "enunciado": "Empresas de commodities que dão prejuízo na baixa do ciclo têm alta de 10x pouco previsível.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-091"
+     ],
+     "ref": "Cap. XVIII; Cap. XIX"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-054",
+      "MAY-055"
+     ],
+     "ref": "Cap. 6, p. 78-80 | Cap. 15, p. 180-181"
+    }
+   ],
+   "numeros": [
+    "Mayer: Donville exclui a maior parte da mineração e boa parte do petróleo e gás.",
+    "Phelps: a categoria de commodities é em grande parte sorte."
+   ],
+   "medida": "Setor de commodities com lucro líquido ≤0 em algum dos 10 anos até t0.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ],
+   "autores_contra": [
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-047"
+     ],
+     "ref": "Cap. 7, pp. 119-122"
+    }
+   ]
+  },
+  {
+   "codigo": "E25",
+   "titulo": "Ações de preço nominal muito baixo",
+   "enunciado": "Ações de poucos centavos ou poucos dólares têm menor chance de subir 10x, segundo O'Neil e Mayer.",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-092"
+     ],
+     "ref": "Cap. 13, p. 133-136"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-036",
+      "ONE-100"
+     ],
+     "ref": "Cap. 5, p. 171-179; Cap. 20 p. 424 | Cap. 13, p. 305"
+    }
+   ],
+   "numeros": [
+    "O'Neil: comprar Nasdaq de US$ 15 a 300 e NYSE de US$ 20 a 300; spread de US$ 0,25 é 5% de uma ação de US$ 5 e 0,5% de uma de US$ 50.",
+    "Phelps (contra): compras de US$ 0,04 a US$ 137,50 na Tabela II; sem indício de vantagem da ação de US$ 1."
+   ],
+   "medida": "Preço por ação em t0 em faixas; spread médio. Na B3, usar liquidez e valor de mercado, não o preço nominal.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA"
+   ],
+   "autores_contra": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-015"
+     ],
+     "ref": "Cap. XIX"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-183"
+     ],
+     "ref": "Cap. 18, pp. 261-262"
+    }
+   ]
+  },
+  {
+   "codigo": "E26",
+   "titulo": "Desdobramentos excessivos",
+   "enunciado": "Empresas que desdobram ações com frequência, ou disparam no anúncio do desdobramento, estão perto do topo.",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-042",
+      "ONE-090"
+     ],
+     "ref": "Cap. 6, p. 180-185 | Cap. 10-11, p. 263-264"
+    }
+   ],
+   "numeros": [
+    "O'Neil: só ~18% das vencedoras desdobraram no ano anterior à alta; vender se a ação sobe 25-50% em 1-2 semanas com o anúncio."
+   ],
+   "medida": "Nº de desdobramentos e bonificações nos 12-24 meses até t0 (eventos de capital).",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA",
+    "CVM DFP/ITR"
+   ]
+  },
+  {
+   "codigo": "E27",
+   "titulo": "Executivos já ricos com a alta",
+   "enunciado": "Empresas cujos executivos já enriqueceram muito com a alta, ou insiders vendendo em volume, têm menor chance de novo 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-059"
+     ],
+     "ref": "Cap. 7, p. 84, 90"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-105"
+     ],
+     "ref": "Cap. 12, p. 191"
+    }
+   ],
+   "numeros": [
+    "Lynch: na Tandon, o executivo de RI valia ~US$ 20 mi após a ação subir 8x; a ação caiu de US$ 35½ a ~US$ 1⅜.",
+    "Mayer: a família Simon vendeu mais de US$ 1 bi enquanto os ETFs compravam."
+   ],
+   "medida": "Valor das ações e opções dos executivos / valor de mercado e sua variação após alta forte (FRE item 12; DEF 14A); vendas líquidas de insiders em 12 meses.",
+   "dados": [
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ]
+  },
+  {
+   "codigo": "E28",
+   "titulo": "Dicas, boatos e discurso otimista",
+   "enunciado": "Compras motivadas por dicas, boatos, nome chamativo ou relatório bonito têm menor chance de achar um 10x.",
+   "autores_apoiam": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-101"
+     ],
+     "ref": "Cap. 13, p. 305"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-034"
+     ],
+     "ref": "Parte 1, cap. 8, p. 123-134"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-019",
+      "LYN-077",
+      "LYN-102"
+     ],
+     "ref": "Introdução, pp. 38-39 | Cap. 9, p. 160 | Cap. 12, p. 188"
+    }
+   ],
+   "numeros": [
+    "Lynch: Winchester Disk Drives comprada por dica caiu de US$ 10 para US$ 5."
+   ],
+   "medida": "Não aplicável a dados públicos em escala; usar só números dos demonstrativos e ignorar o tom do texto.",
+   "dados": [
+    "CVM DFP/ITR",
+    "SEC XBRL"
+   ]
+  },
+  {
+   "codigo": "E29",
+   "titulo": "Negócio que não se entende ou opaco",
+   "enunciado": "Empresas complexas, opacas ou fora do círculo de competência do analista têm menor chance de subir 10x e maior risco de fraude.",
+   "autores_apoiam": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-094",
+      "MAY-096",
+      "MAY-098"
+     ],
+     "ref": "Cap. 13, p. 136-141 | Cap. 13, p. 140-141 | Cap. 13, p. 146-147"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-068"
+     ],
+     "ref": "Parte 3, cap. 3, p. 252-265"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-020"
+     ],
+     "ref": "Introdução, p. 41"
+    }
+   ],
+   "numeros": [
+    "Mayer: 'quanto mais grossa a pasta de pesquisa, pior a ação' (Sosnoff)."
+   ],
+   "medida": "Nº de segmentos e de controladas; país de operação; tamanho das notas explicativas como proxy de opacidade.",
+   "dados": [
+    "CVM DFP/ITR",
+    "CVM FRE",
+    "SEC 10-K/DEF 14A"
+   ]
+  },
+  {
+   "codigo": "E30",
+   "titulo": "Comprar em mercado de baixa ou juros subindo",
+   "enunciado": "Rompimentos em mercado de baixa e ações de crescimento com juros longos subindo têm menor chance de render no curto prazo.",
+   "autores_apoiam": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-093"
+     ],
+     "ref": "Cap. XXVI; Cap. VII"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-062"
+     ],
+     "ref": "Cap. 2, p. 151"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-061"
+     ],
+     "ref": "Parte 2 (CISW), 4a dimensão, p. 207-224"
+    }
+   ],
+   "numeros": [
+    "Phelps: em 1970, com juros em máxima histórica (~8,5%), as ações de crescimento colapsaram.",
+    "O'Neil: em baixa quase todos os rompimentos falham."
+   ],
+   "medida": "Índice abaixo da média de 200 pregões em t0; variação do juro longo nos 12 meses até t0.",
+   "dados": [
+    "B3 COTAHIST",
+    "preços EUA",
+    "NEFIN"
+   ],
+   "autores_contra": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-079"
+     ],
+     "ref": "Cap. 14, p. 155-157"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-031"
+     ],
+     "ref": "Cap. 5, p. 89"
+    }
+   ]
+  }
+ ],
+ "divergencias": [
+  {
+   "tema": "P/L no início da alta",
+   "posicoes": [
+    {
+     "autor": "Phelps",
+     "posicao": "P/L baixo, até o do mercado; nas sete de 1961-71 ia de 2,7x a 12,5x.",
+     "ids": [
+      "PHE-006",
+      "PHE-007"
+     ],
+     "ref": "Cap. XXII | Cap. XXVIII; Cap. XXVII"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "P/L baixo em relação ao crescimento (PEG); La Quinta a P/L 10 crescendo 50%.",
+     "ids": [
+      "LYN-094",
+      "LYN-112"
+     ],
+     "ref": "Cap. 11, pp. 177-178 | Cap. 13, p. 199"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Múltiplo baixo é preferido, mas P/L de 5 é campo errado; não fugir de múltiplo alto.",
+     "ids": [
+      "MAY-032",
+      "MAY-034"
+     ],
+     "ref": "Cap. 15, p. 176-177 | Cap. 5, p. 71-72"
+    },
+    {
+     "autor": "O'Neil",
+     "posicao": "P/L baixo quase não ajuda; vencedoras começaram a 20-50x.",
+     "ids": [
+      "ONE-028",
+      "ONE-029",
+      "ONE-030"
+     ],
+     "ref": "Cap. 4, p. 163-165 | Cap. 4, p. 163-165; Cap. 13 p. 305"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "P/L alto não impede; vale o preço sobre o lucro de anos à frente.",
+     "ids": [
+      "FIS-035",
+      "FIS-064"
+     ],
+     "ref": "Parte 1, cap. 8, p. 123-134 | Parte 3, cap. 1, p. 227-237"
+    }
+   ],
+   "como_o_teste_resolve": "Comparar a distribuição de P/L, P/L relativo e PEG em t0 entre vencedoras e controle, por decil, com e sem controle do crescimento do LPA."
+  },
+  {
+   "tema": "Momento de preço: comprar força ou fraqueza",
+   "posicoes": [
+    {
+     "autor": "O'Neil",
+     "posicao": "Comprar perto de novas máximas, com RS ≥80; nunca na queda.",
+     "ids": [
+      "ONE-033",
+      "ONE-035",
+      "ONE-045"
+     ],
+     "ref": "Cap. 5, p. 171-179 | Cap. 7, p. 186-192"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Comprar quando ninguém quer; comprar o que subiu é 'atirar onde o coelho estava'.",
+     "ids": [
+      "PHE-011",
+      "PHE-066"
+     ],
+     "ref": "Cap. IV; Cap. XXI; Cap. XI | Cap. IX; Cap. XXVI"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Ações abatidas e esquecidas e longas estagnações precederam vários 100x.",
+     "ids": [
+      "MAY-073",
+      "MAY-089"
+     ],
+     "ref": "Cap. 4, p. 32-34 | Cap. 5, p. 6, 17, 66, 69-70"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Não pegar faca caindo; esperar estabilizar; preço subindo não prova acerto.",
+     "ids": [
+      "LYN-181",
+      "LYN-188",
+      "LYN-190"
+     ],
+     "ref": "Cap. 18, p. 260 | Cap. 18, pp. 264-266 | Cap. 18, p. 269"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Preço passado importa pouco; contrariar a multidão com análise certa.",
+     "ids": [
+      "FIS-039",
+      "FIS-065"
+     ],
+     "ref": "Parte 1, cap. 9, p. 135-161 | Parte 3, cap. 2, p. 238-251"
+    }
+   ],
+   "como_o_teste_resolve": "Medir RS de 12 meses, distância da máxima de 52 semanas e drawdown de 3-5 anos em t0, nas vencedoras e no controle, e ver qual extremo concentra vencedoras."
+  },
+  {
+   "tema": "Stop-loss e tolerância a quedas",
+   "posicoes": [
+    {
+     "autor": "O'Neil",
+     "posicao": "Cortar toda perda em 7-8%, sem exceção.",
+     "ids": [
+      "ONE-084",
+      "ONE-098"
+     ],
+     "ref": "Cap. 10-11, p. 239-272 | Cap. 13, p. 302-303"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Stop elimina o 100x; Apple teve duas quedas de 80% e Monster mais de 10 quedas acima de 25%.",
+     "ids": [
+      "MAY-083",
+      "MAY-086"
+     ],
+     "ref": "Cap. 3, p. 24, 77, 191 | Cap. 15, p. 190-192"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Vencedoras tiveram quedas profundas; comprar certo e segurar.",
+     "ids": [
+      "PHE-069",
+      "PHE-074"
+     ],
+     "ref": "Cap. III; Cap. V; Cap. VII; Cap. XXIII | Cap. I; Cap. II; Cap. III; Cap. VI; Cap. XXIII"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Detesta stop de 10%: Taco Bell seria perdida dez vezes.",
+     "ids": [
+      "LYN-167"
+     ],
+     "ref": "Cap. 16, p. 244"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Segurar boas ações nas quedas; cortar cedo só quando a análise estava errada.",
+     "ids": [
+      "FIS-069",
+      "FIS-075"
+     ],
+     "ref": "Parte 3, cap. 3, p. 252-265 | Parte 3, cap. 4, p. 275-278"
+    }
+   ],
+   "como_o_teste_resolve": "Calcular o drawdown máximo das vencedoras entre t0 e o 10x e simular stops de 8%, 25% e 50%: quantas teriam sido vendidas antes."
+  },
+  {
+   "tema": "Horizonte da alta",
+   "posicoes": [
+    {
+     "autor": "O'Neil",
+     "posicao": "Alta mediana de 85 semanas; realizar 20-25% na maioria dos casos.",
+     "ids": [
+      "ONE-004",
+      "ONE-086"
+     ],
+     "ref": "Cap. 1, PDF p. 17-116 | Cap. 10-11, p. 239-272"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Média e mediana de 26 anos até o 100x; as mais rápidas, ~5 anos.",
+     "ids": [
+      "MAY-003",
+      "MAY-084"
+     ],
+     "ref": "Cap. 5, p. 28, 36, 43, 46 | Cap. 15, p. 182-183"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Muitas levaram 25 a 40 anos; 5 fizeram 100x em 10 anos ou menos.",
+     "ids": [
+      "PHE-081"
+     ],
+     "ref": "Cap. IV; Cap. XXIII; Cap. XXVIII"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "A vencedora típica leva 3 a 10 anos; maiores ganhos com 3-4 anos de posse.",
+     "ids": [
+      "LYN-001",
+      "LYN-197"
+     ],
+     "ref": "Introdução à Edição do Milênio, p. 12 | Cap. 20, p. 281"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Dezenas de ações viraram US$ 10.000 em US$ 250.000 em 25 a 50 anos.",
+     "ids": [
+      "FIS-002"
+     ],
+     "ref": "Parte 1, cap. 1, p. 34-43"
+    }
+   ],
+   "como_o_teste_resolve": "Medir o tempo de t0 até 10x (e até 100x) por coorte, com janela móvel, e a fração do ganho que ocorre após o 2º, 5º e 10º ano."
+  },
+  {
+   "tema": "Dividendos",
+   "posicoes": [
+    {
+     "autor": "Phelps",
+     "posicao": "Dividendo é luxo caro: payout de 1/3 adia o 100x de 33 para mais de 48 anos.",
+     "ids": [
+      "PHE-030"
+     ],
+     "ref": "Cap. XXVII; Cap. XXVIII"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Prefere reinvestir, mas dividendos pesaram em vários 100x (Altria).",
+     "ids": [
+      "MAY-068",
+      "MAY-069"
+     ],
+     "ref": "Cap. 15, p. 180 | Cap. 15, p. 171, 181"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Dividendo tem o menor peso na decisão.",
+     "ids": [
+      "FIS-031",
+      "FIS-070"
+     ],
+     "ref": "Parte 1, cap. 7, p. 114-122 | Parte 3, cap. 3, p. 252-265"
+    },
+    {
+     "autor": "O'Neil",
+     "posicao": "Dividendo alto indica empresa que reinveste menos; não escolher por yield.",
+     "ids": [
+      "ONE-030",
+      "ONE-102"
+     ],
+     "ref": "Cap. 4, p. 163-165; Cap. 13 p. 305 | Cap. 13, p. 305-306"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Dividendo sustenta a ação em quedas e evita diworseificação, mas prefere o crescedor agressivo.",
+     "ids": [
+      "LYN-120"
+     ],
+     "ref": "Cap. 13, pp. 204-206"
+    }
+   ],
+   "como_o_teste_resolve": "Comparar payout e dividend yield em t0 entre vencedoras e controle e ver se o efeito muda com o ROE."
+  },
+  {
+   "tema": "Recompras de ações",
+   "posicoes": [
+    {
+     "autor": "Mayer",
+     "posicao": "Aceleram muito o retorno quando reduzem de fato as ações, mas eram incomuns no estudo de 1962-2014.",
+     "ids": [
+      "MAY-063"
+     ],
+     "ref": "Cap. 11, p. 95-96, 116-119"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "É a forma mais simples de recompensar o acionista; sinal de prosperidade.",
+     "ids": [
+      "LYN-065",
+      "LYN-109"
+     ],
+     "ref": "Cap. 8, pp. 144-145 | Cap. 12, p. 195"
+    },
+    {
+     "autor": "O'Neil",
+     "posicao": "Recompra de 5-10% ou mais reduz a oferta de ações.",
+     "ids": [
+      "ONE-040"
+     ],
+     "ref": "Cap. 6, p. 180-185; Cap. 20 p. 426"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "O ponto é não diluir; não trata recompra como motor.",
+     "ids": [
+      "FIS-018"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 13, p. 74-75"
+    }
+   ],
+   "como_o_teste_resolve": "Medir a variação líquida do nº de ações em 2 e 5 anos até t0 e a frequência de recompra relevante nas vencedoras contra o controle."
+  },
+  {
+   "tema": "Investidores institucionais",
+   "posicoes": [
+    {
+     "autor": "O'Neil",
+     "posicao": "É preciso patrocínio institucional crescente, com bons fundos comprando.",
+     "ids": [
+      "ONE-053",
+      "ONE-054"
+     ],
+     "ref": "Cap. 8, p. 193-198"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Quanto menos instituições, melhor; elas acertam só nos últimos 20%.",
+     "ids": [
+      "LYN-024",
+      "LYN-196"
+     ],
+     "ref": "Cap. 2, pp. 57-59 | Cap. 20, pp. 280-281"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Garrett escolheu entre as menores posições de fundos de pensão.",
+     "ids": [
+      "PHE-019"
+     ],
+     "ref": "Cap. I"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Empresas fora de índices e com float pequeno ficam baratas.",
+     "ids": [
+      "MAY-057"
+     ],
+     "ref": "Cap. 7, p. 84"
+    }
+   ],
+   "como_o_teste_resolve": "Testar o nível (% institucional) e a variação (nº de fundos em 4 trimestres) em t0, separadamente; pode haver efeito de nível baixo com variação positiva."
+  },
+  {
+   "tema": "Tamanho da empresa",
+   "posicoes": [
+    {
+     "autor": "Mayer",
+     "posicao": "Preferir menos de US$ 1 bi; mediana de ~US$ 500 mi no início.",
+     "ids": [
+      "MAY-012",
+      "MAY-013"
+     ],
+     "ref": "Cap. 5, p. 45-46 | Cap. 15, p. 181"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Grandes empresas têm movimentos pequenos.",
+     "ids": [
+      "LYN-040"
+     ],
+     "ref": "Cap. 7, p. 109"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Empresa pequena, sem limite numérico.",
+     "ids": [
+      "PHE-017"
+     ],
+     "ref": "Cap. I; Cap. IV; Cap. V"
+    },
+    {
+     "autor": "O'Neil",
+     "posicao": "Poucas ações ajudam, mas qualquer porte serve.",
+     "ids": [
+      "ONE-038"
+     ],
+     "ref": "Cap. 6, p. 180-185"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Vencedoras não precisam ser pequenas nem jovens.",
+     "ids": [
+      "FIS-004",
+      "FIS-022"
+     ],
+     "ref": "Parte 1, cap. 1, p. 42 | Parte 1, cap. 4, p. 79-88"
+    }
+   ],
+   "como_o_teste_resolve": "Como o controle é pareado por tamanho, medir a taxa-base de 10x por faixa de valor de mercado no universo inteiro."
+  },
+  {
+   "tema": "Crescimento do setor",
+   "posicoes": [
+    {
+     "autor": "Lynch",
+     "posicao": "Prefere setor sem crescimento; setores quentes atraem concorrentes.",
+     "ids": [
+      "LYN-060",
+      "LYN-068"
+     ],
+     "ref": "Cap. 8, pp. 139-140 | Cap. 9, pp. 150-152"
+    },
+    {
+     "autor": "O'Neil",
+     "posicao": "Comprar em grupos fortes; o grupo explica 37% do desempenho.",
+     "ids": [
+      "ONE-109",
+      "ONE-110"
+     ],
+     "ref": "Cap. 15, p. 323 ss | Cap. 15, p. 323 ss; Cap. 20 p. 424"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Buscar tendência estrutural e mercado novo sem teto.",
+     "ids": [
+      "PHE-049",
+      "PHE-050"
+     ],
+     "ref": "Cap. XXII | Cap. XXVIII; Cap. XXIII"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Setor não prevê o 100x; preferir indústrias estáveis.",
+     "ids": [
+      "MAY-040",
+      "MAY-041"
+     ],
+     "ref": "Cap. 5, p. 45 | Cap. 12, p. 125-126"
+    }
+   ],
+   "como_o_teste_resolve": "Medir o crescimento da receita do setor e o retorno do setor em t0, e comparar a distribuição setorial das vencedoras com a do universo."
+  },
+  {
+   "tema": "Tecnologia e P&D",
+   "posicoes": [
+    {
+     "autor": "Fisher",
+     "posicao": "Pesquisa e novos produtos são o motor do lucro de longo prazo.",
+     "ids": [
+      "FIS-003",
+      "FIS-008"
+     ],
+     "ref": "Parte 1, cap. 1, p. 37-38 | Parte 1, cap. 3, Ponto 3, p. 54-59"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Gasto em pesquisa é opção valiosa; invenções são área de caça.",
+     "ids": [
+      "PHE-045",
+      "PHE-047"
+     ],
+     "ref": "Cap. X; Cap. XXVII | Cap. XIX"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Inovação protegeu a Gillette, mas invenções e descobertas são imprevisíveis.",
+     "ids": [
+      "MAY-047",
+      "MAY-055"
+     ],
+     "ref": "Cap. 5, p. 67-69 | Cap. 15, p. 180-181"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Prefere usuárias de tecnologia e hotéis a fabricantes de tecnologia.",
+     "ids": [
+      "LYN-034",
+      "LYN-096"
+     ],
+     "ref": "Cap. 6, pp. 96-97 | Cap. 11, p. 178"
+    }
+   ],
+   "como_o_teste_resolve": "Comparar P&D/receita em t0 e a fração de vencedoras em setores de tecnologia contra o universo e o controle."
+  },
+  {
+   "tema": "Alavancagem financeira",
+   "posicoes": [
+    {
+     "autor": "Phelps",
+     "posicao": "Alavancagem de capital é uma das quatro categorias de vencedoras, mas aumenta o risco.",
+     "ids": [
+      "PHE-021",
+      "PHE-038"
+     ],
+     "ref": "Cap. XIX | Cap. XXVII"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Balanço saudável na crise; alguma dívida eleva o ROE de 15% para 20%.",
+     "ids": [
+      "MAY-067",
+      "MAY-068"
+     ],
+     "ref": "Cap. 14, p. 165-168 | Cap. 15, p. 180"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Dívida decide quem sobrevive; empresa sem dívida não quebra.",
+     "ids": [
+      "LYN-117",
+      "LYN-154"
+     ],
+     "ref": "Cap. 13, p. 202 | Cap. 15, p. 232"
+    },
+    {
+     "autor": "O'Neil",
+     "posicao": "Prefere dívida baixa.",
+     "ids": [
+      "ONE-041"
+     ],
+     "ref": "Cap. 6, p. 180-185"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Controles financeiros e caixa evitam crises.",
+     "ids": [
+      "FIS-048"
+     ],
+     "ref": "Parte 2 (CISW), 1a dimensão, p. 180-186"
+    }
+   ],
+   "como_o_teste_resolve": "Medir a taxa de 10x e a taxa de falência por faixa de dívida líquida/EBITDA em t0: o efeito pode ser não linear."
+  },
+  {
+   "tema": "Ritmo de crescimento ideal",
+   "posicoes": [
+    {
+     "autor": "O'Neil",
+     "posicao": "Quanto maior, melhor: 25% é mínimo e 70% é típico no trimestre.",
+     "ids": [
+      "ONE-011",
+      "ONE-013"
+     ],
+     "ref": "Cap. 3, p. 153 | Cap. 3, p. 153-154"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Prefere 20-25% e desconfia de 50-100%.",
+     "ids": [
+      "LYN-145",
+      "LYN-152"
+     ],
+     "ref": "Cap. 15, p. 229 | Cap. 15, p. 231"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Monster fez 100x com lucro +50% a.a.",
+     "ids": [
+      "MAY-016"
+     ],
+     "ref": "Cap. 15, p. 46, 173-174"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "12% a 36% a.a. bastam, conforme o horizonte.",
+     "ids": [
+      "PHE-031"
+     ],
+     "ref": "Cap. XIX; Cap. XXV"
+    }
+   ],
+   "como_o_teste_resolve": "Estimar a probabilidade de 10x por faixa de crescimento do LPA em t0 (<10, 10-20, 20-25, 25-50, >50%) e checar se a curva cai no topo."
+  },
+  {
+   "tema": "Lucro trimestral ou poder de ganho de longo prazo",
+   "posicoes": [
+    {
+     "autor": "O'Neil",
+     "posicao": "O LPA do último trimestre é o elemento mais importante.",
+     "ids": [
+      "ONE-010"
+     ],
+     "ref": "Cap. 3, p. 153"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Medir o poder de ganho por 10 anos, não o preço ou o lucro trimestral.",
+     "ids": [
+      "PHE-087"
+     ],
+     "ref": "Cap. XXIII"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Não se perder no LPA trimestral; um ano pode nem bastar.",
+     "ids": [
+      "MAY-020"
+     ],
+     "ref": "Cap. 15, p. 174"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Avaliar o LPA no próximo pico de ciclo.",
+     "ids": [
+      "FIS-028"
+     ],
+     "ref": "Parte 1, cap. 6, p. 105-113"
+    }
+   ],
+   "como_o_teste_resolve": "Pôr no mesmo modelo o crescimento trimestral e o de 5 anos do LPA e ver qual tem mais poder de previsão."
+  },
+  {
+   "tema": "Macroeconomia e direção do mercado",
+   "posicoes": [
+    {
+     "autor": "O'Neil",
+     "posicao": "3 em 4 ações seguem o mercado; não comprar em baixa.",
+     "ids": [
+      "ONE-057",
+      "ONE-062"
+     ],
+     "ref": "Cap. 9, p. 199-237 | Cap. 2, p. 151"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Juros longos subindo derrubam ações de crescimento.",
+     "ids": [
+      "PHE-093"
+     ],
+     "ref": "Cap. XXVI; Cap. VII"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Ignorar Fed, macro e previsões.",
+     "ids": [
+      "MAY-090"
+     ],
+     "ref": "Cap. 13, p. 130, 141-145, 183, 186"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Previsão econômica é 'alquimia'.",
+     "ids": [
+      "FIS-024"
+     ],
+     "ref": "Parte 1, cap. 5, p. 89-104"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Tenbaggers sobem em recessões; ignorar o ruído macro.",
+     "ids": [
+      "LYN-031",
+      "LYN-172"
+     ],
+     "ref": "Cap. 5, p. 89 | Cap. 17, pp. 249-251"
+    }
+   ],
+   "como_o_teste_resolve": "Usar o regime de mercado e os juros em t0 como variáveis de coorte e ver se mudam a taxa de 10x depois de controlar os fundamentos."
+  },
+  {
+   "tema": "Empresas novas e IPOs",
+   "posicoes": [
+    {
+     "autor": "O'Neil",
+     "posicao": "As vencedoras são em geral novas na bolsa (IPO há 8-10 anos).",
+     "ids": [
+      "ONE-037"
+     ],
+     "ref": "Cap. 5, p. 171-179"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Muitas vencedoras podiam ser compradas na oferta pública.",
+     "ids": [
+      "PHE-026"
+     ],
+     "ref": "Cap. III; Cap. V"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "~3 em 4 IPOs de empresas novas decepcionam.",
+     "ids": [
+      "LYN-075"
+     ],
+     "ref": "Cap. 9, p. 159"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Evitar empresas sem 2-3 anos de operação.",
+     "ids": [
+      "FIS-032"
+     ],
+     "ref": "Parte 1, cap. 8, p. 123-134"
+    }
+   ],
+   "como_o_teste_resolve": "Medir a taxa de 10x por anos desde o IPO em t0, separando IPOs com e sem lucro anterior."
+  },
+  {
+   "tema": "Concentração da carteira",
+   "posicoes": [
+    {
+     "autor": "O'Neil",
+     "posicao": "4 a 5 ações em contas pequenas; 6 a 7 acima de US$ 1 milhão.",
+     "ids": [
+      "ONE-095"
+     ],
+     "ref": "Cap. 12, p. 273-300"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Mais de 20 ações é 'incompetência'; ideal de 10 a 12.",
+     "ids": [
+      "FIS-074"
+     ],
+     "ref": "Parte 3, cap. 4, p. 275-278"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Concentrar (meio Kelly).",
+     "ids": [
+      "MAY-071"
+     ],
+     "ref": "Cap. 10, p. 111-114"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Não comprar um pouco de cada; concentrar.",
+     "ids": [
+      "PHE-082"
+     ],
+     "ref": "Cap. I; Cap. XXIV; Cap. IV; Cap. XXV"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Tantas quanto as boas situações; mais ações aumentam a chance de um tenbagger.",
+     "ids": [
+      "LYN-159",
+      "LYN-160"
+     ],
+     "ref": "Cap. 16, pp. 239-240 | Cap. 16, p. 240"
+    }
+   ],
+   "como_o_teste_resolve": "Simular carteiras de 5, 10, 20 e 50 ações escolhidas pelo modelo e medir a chance de conter ao menos um 10x e o retorno."
+  },
+  {
+   "tema": "Venda por insiders",
+   "posicoes": [
+    {
+     "autor": "Mayer",
+     "posicao": "Insiders vendendo em volume ilustram o inverso da tese.",
+     "ids": [
+      "MAY-059"
+     ],
+     "ref": "Cap. 7, p. 84, 90"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Venda de insider quase nunca significa algo; só compras importam.",
+     "ids": [
+      "LYN-097",
+      "LYN-171"
+     ],
+     "ref": "Cap. 11, pp. 179-180 | Cap. 17, pp. 249-250"
+    }
+   ],
+   "como_o_teste_resolve": "Testar separadamente compras e vendas líquidas de administradores nos 12 meses até t0."
+  },
+  {
+   "tema": "Fundador dominante ou equipe",
+   "posicoes": [
+    {
+     "autor": "Mayer",
+     "posicao": "Dono-gestor visionário é marca de muitos 100x.",
+     "ids": [
+      "MAY-056"
+     ],
+     "ref": "Cap. 7, p. 33, 54, 83, 85-87, 90"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Cuidado com a empresa de um homem só.",
+     "ids": [
+      "PHE-061"
+     ],
+     "ref": "Cap. XVI"
+    },
+    {
+     "autor": "Fisher",
+     "posicao": "Exige equipe e delegação, não um líder só.",
+     "ids": [
+      "FIS-014",
+      "FIS-049"
+     ],
+     "ref": "Parte 1, cap. 3, Ponto 9, p. 68-70 | Parte 2 (CISW), 2a dimensão, p. 187-197"
+    }
+   ],
+   "como_o_teste_resolve": "Cruzar a dummy de fundador no comando com a concentração de cargos e a rotatividade da diretoria."
+  },
+  {
+   "tema": "Preço nominal da ação",
+   "posicoes": [
+    {
+     "autor": "O'Neil",
+     "posicao": "Evitar ações abaixo de US$ 10-15.",
+     "ids": [
+      "ONE-036",
+      "ONE-100"
+     ],
+     "ref": "Cap. 5, p. 171-179; Cap. 20 p. 424 | Cap. 13, p. 305"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Sem indício de que ação barata tenha mais ou menos chance.",
+     "ids": [
+      "PHE-015"
+     ],
+     "ref": "Cap. XIX"
+    },
+    {
+     "autor": "Lynch",
+     "posicao": "Ação de US$ 3 não é mais segura que a de US$ 50.",
+     "ids": [
+      "LYN-183"
+     ],
+     "ref": "Cap. 18, pp. 261-262"
+    }
+   ],
+   "como_o_teste_resolve": "Medir a taxa de 10x por faixa de preço nominal, controlando por valor de mercado e liquidez."
+  },
+  {
+   "tema": "Turnarounds",
+   "posicoes": [
+    {
+     "autor": "Lynch",
+     "posicao": "Os maiores lucros em dólares de Lynch vieram de recuperações.",
+     "ids": [
+      "LYN-048"
+     ],
+     "ref": "Cap. 7, pp. 122-124"
+    },
+    {
+     "autor": "Mayer",
+     "posicao": "Abatidas que voltam ao lucro são boas chances, mas evita quem perde no ciclo.",
+     "ids": [
+      "MAY-054",
+      "MAY-073"
+     ],
+     "ref": "Cap. 6, p. 78-80 | Cap. 4, p. 32-34"
+    },
+    {
+     "autor": "Phelps",
+     "posicao": "Não casar com uma ação para reformá-la.",
+     "ids": [
+      "PHE-068"
+     ],
+     "ref": "Cap. XXIII"
+    },
+    {
+     "autor": "O'Neil",
+     "posicao": "Aceita cíclicas e viradas só com dois trimestres fortes.",
+     "ids": [
+      "ONE-027"
+     ],
+     "ref": "Cap. 4, p. 161-165"
+    }
+   ],
+   "como_o_teste_resolve": "Medir a taxa de 10x e a taxa de falência das empresas que voltam ao lucro após 2 anos de prejuízo."
+  }
+ ],
+ "gestao": [
+  {
+   "titulo": "Comprar certo e segurar",
+   "regra": "Se a compra cumpriu os critérios, não vender por preço. A hora de vender é 'quase nunca'.",
+   "autores": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-074",
+      "PHE-075"
+     ],
+     "ref": "Cap. I; Cap. II; Cap. III; Cap. VI; Cap. XXIII | Cap. III; Cap. XXV"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-082",
+      "MAY-085"
+     ],
+     "ref": "Cap. 3, p. 15-16, 18, 24-25 | Cap. 15, p. 188-191"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-030"
+     ],
+     "ref": "Parte 1, cap. 6, p. 105-113"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-170",
+      "LYN-182"
+     ],
+     "ref": "Cap. 17, pp. 247-249 | Cap. 18, pp. 260-261"
+    }
+   ],
+   "numeros": [
+    "Mayer: lata de café por 10 anos sem mexer.",
+    "Lynch: US$ 10 mil em 5x dão US$ 50 mil; os próximos 5x levam a US$ 250 mil.",
+    "Phelps: Garrett com US$ 133.000 em Haloid (1955-59) e mais de US$ 14 milhões em 1971."
+   ]
+  },
+  {
+   "titulo": "Vender quando a tese piora",
+   "regra": "Vender quando os fundamentos que motivaram a compra se deterioram ou a análise estava errada, não pelo preço.",
+   "autores": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-077",
+      "PHE-078"
+     ],
+     "ref": "Cap. I | Cap. VII; Cap. XXVIII; Cap. XVI"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-085",
+      "MAY-110"
+     ],
+     "ref": "Cap. 15, p. 188-191 | Cap. 2, p. 12-14"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-027",
+      "FIS-028"
+     ],
+     "ref": "Parte 1, cap. 6, p. 105-113"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-165",
+      "LYN-173"
+     ],
+     "ref": "Cap. 16, p. 243 | Cap. 17, p. 251"
+    }
+   ],
+   "numeros": [
+    "Phelps: sair com retorno do capital retido abaixo do que o acionista obteria, ou concorrente corroendo a vantagem.",
+    "Fisher: três razões válidas — erro de análise, empresa deixou de cumprir os 15 pontos, troca por algo muito melhor.",
+    "Lynch: 9 em 10 vendas por história melhor em outra ação."
+   ]
+  },
+  {
+   "titulo": "Stop-loss de 7-8% (só O'Neil)",
+   "regra": "O'Neil corta toda perda em 7-8% do preço de compra e mira perda média de 5-6% (3% em mercado de baixa).",
+   "autores": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-084",
+      "ONE-085",
+      "ONE-098"
+     ],
+     "ref": "Cap. 10-11, p. 239-272 | Cap. 10-11, p. 239-272; 270 | Cap. 13, p. 302-303"
+    }
+   ],
+   "numeros": [
+    "O'Neil: corte em −7% a −8%; perda média de 5-6%; em baixa, corte em 3% e lucro em 15%."
+   ],
+   "observacao": "Conflita com Mayer (MAY-086), Lynch (LYN-167), Phelps (PHE-069) e Fisher (FIS-069). No robô, testar a regra antes de adotar."
+  },
+  {
+   "titulo": "Realizar lucro, salvo arrancada forte",
+   "regra": "O'Neil realiza 20-25% de ganho; se a ação sobe 20% em 1 a 3 semanas após o pivô, segura por pelo menos 8 semanas.",
+   "autores": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-086",
+      "ONE-087"
+     ],
+     "ref": "Cap. 10-11, p. 239-272 | Cap. 10-11, p. 258-259; 271-272"
+    }
+   ],
+   "numeros": [
+    "O'Neil: lucro de 20-25% (até 30%) contra perda de 7-8%, relação ~3 para 1; +20% em 1-3 semanas = manter 8 semanas."
+   ],
+   "observacao": "Conflita com a regra de segurar (Phelps, Mayer, Fisher, Lynch)."
+  },
+  {
+   "titulo": "Aumentar só na alta, nunca na queda",
+   "regra": "Adicionar posição só quando a ação sobe 2-3% acima do pivô, até no máximo 5%, e nunca fazer preço médio para baixo.",
+   "autores": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-088",
+      "ONE-097",
+      "ONE-099"
+     ],
+     "ref": "Cap. 10-11, p. 239-272 | Cap. 12, p. 273-300 | Cap. 13, p. 303"
+    }
+   ],
+   "numeros": [
+    "O'Neil: adicionar a +2-3%; limite de +5% sobre o ponto de compra."
+   ],
+   "observacao": "Phelps (PHE-083) manda comprar mais se cair; Fisher (FIS-026) compra escalonado em anos e crises."
+  },
+  {
+   "titulo": "Sinais técnicos de venda",
+   "regra": "Vender em topo explosivo, com RS abaixo de 70, abaixo da média de 10 semanas por 8-9 semanas, ou com novas máximas em volume cada vez menor.",
+   "autores": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-051",
+      "ONE-089",
+      "ONE-090",
+      "ONE-091",
+      "ONE-092",
+      "ONE-093"
+     ],
+     "ref": "Cap. 7, p. 186-192 | Cap. 10-11, p. 263 | Cap. 10-11, p. 263-264 | Cap. 10-11, p. 264 | Cap. 10-11, p. 268-269 | Cap. 10-11, p. 268"
+    }
+   ],
+   "numeros": [
+    "O'Neil: topo explosivo após ≥18 semanas na 1ª-2ª base; 70-100% acima da média de 200 dias; RS <70; correção normal de 8-15%."
+   ],
+   "observacao": "Lynch (LYN-165) e Fisher (FIS-030) rejeitam vender só pelo preço."
+  },
+  {
+   "titulo": "Concentrar a carteira",
+   "regra": "Manter poucas posições bem estudadas, com peso proporcional ao risco.",
+   "autores": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-082"
+     ],
+     "ref": "Cap. I; Cap. XXIV; Cap. IV; Cap. XXV"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-071"
+     ],
+     "ref": "Cap. 10, p. 111-114"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-095"
+     ],
+     "ref": "Cap. 12, p. 273-300"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-037",
+      "FIS-074"
+     ],
+     "ref": "Parte 1, cap. 9, p. 135-161 | Parte 3, cap. 4, p. 275-278"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-159",
+      "LYN-160"
+     ],
+     "ref": "Cap. 16, pp. 239-240 | Cap. 16, p. 240"
+    }
+   ],
+   "numeros": [
+    "Fisher: ideal de 10-12 ações; Classe A com 5 ações a 20%, Classe B 8-10%, Classe C até 5%.",
+    "O'Neil: 4-5 ações (US$ 20-200 mil); 6-7 acima de US$ 1 milhão.",
+    "Mayer: meio Kelly; Donville até 12,5% numa ação.",
+    "Lynch: 3 a 10 ações em carteira pequena."
+   ]
+  },
+  {
+   "titulo": "Horizonte longo de posse",
+   "regra": "Planejar a posse em anos: o ganho grande costuma vir depois do 3º ano.",
+   "autores": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-081"
+     ],
+     "ref": "Cap. IV; Cap. XXIII; Cap. XXVIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-003",
+      "MAY-084"
+     ],
+     "ref": "Cap. 5, p. 28, 36, 43, 46 | Cap. 15, p. 182-183"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-002",
+      "FIS-043"
+     ],
+     "ref": "Parte 1, cap. 1, p. 34-43 | Parte 1, cap. 11, p. 172-173"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-001",
+      "LYN-188",
+      "LYN-197"
+     ],
+     "ref": "Introdução à Edição do Milênio, p. 12 | Cap. 18, pp. 264-266 | Cap. 20, p. 281"
+    }
+   ],
+   "numeros": [
+    "Mayer: mediana de 26 anos até o 100x; as mais rápidas, ~5 anos.",
+    "Lynch: 3 a 10 anos; maior parte do ganho no 3º ou 4º ano.",
+    "Phelps: 12,2% a.a. por 40 anos ou 26% a.a. por 20 anos para 100x."
+   ]
+  },
+  {
+   "titulo": "Tolerar quedas profundas",
+   "regra": "Não vender vencedora só por queda forte: quase todas tiveram quedas de 50% ou mais no caminho.",
+   "autores": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-069"
+     ],
+     "ref": "Cap. III; Cap. V; Cap. VII; Cap. XXIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-083"
+     ],
+     "ref": "Cap. 3, p. 24, 77, 191"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-069"
+     ],
+     "ref": "Parte 3, cap. 3, p. 252-265"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-167"
+     ],
+     "ref": "Cap. 16, p. 244"
+    }
+   ],
+   "numeros": [
+    "Mayer: Apple com duas quedas de 80%; Netflix −80% em quatro meses; Amazon −80%.",
+    "Fisher: Texas Instruments subiu 15x, caiu 80% e depois passou a máxima anterior.",
+    "Phelps: ADP perdeu 70% em 13 meses; Occidental −84% em 1941."
+   ]
+  },
+  {
+   "titulo": "Regra dos três anos",
+   "regra": "Se em três anos a tese não se confirmou nos números, rever a posição como provável erro.",
+   "autores": [
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-066"
+     ],
+     "ref": "Parte 3, cap. 2, p. 238-251"
+    }
+   ],
+   "numeros": [
+    "Fisher: 3 anos de teste, com exceções."
+   ]
+  },
+  {
+   "titulo": "Venda por categoria (Lynch)",
+   "regra": "Aplicar regra de saída conforme a categoria: slow grower após 30-50%; stalwart após ~40%; fast grower ao fim da expansão; turnaround depois da virada; asset play quando entra o comprador do controle.",
+   "autores": [
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-166",
+      "LYN-174",
+      "LYN-175",
+      "LYN-176",
+      "LYN-177",
+      "LYN-178",
+      "LYN-179"
+     ],
+     "ref": "Cap. 16, p. 243 | Cap. 17, pp. 251-252 | Cap. 17, p. 252 | Cap. 17, pp. 253-254 | Cap. 17, p. 254 | Cap. 17, p. 255 | Cap. 17, pp. 256-257"
+    }
+   ],
+   "numeros": [
+    "Lynch: stalwart vendido após ~40%; fast grower: sinal com 40 analistas, 60% institucional, vendas mesmas lojas −3% e P/L 30 com crescimento de 15-20%; turnaround: dívida voltando a subir após 5 trimestres de queda."
+   ]
+  },
+  {
+   "titulo": "Não vender por motivo alheio ao investimento",
+   "regra": "Não vender porque está 'alta demais', parada, voltou ao preço de compra, ou por impostos e conselhos de terceiros.",
+   "autores": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-076"
+     ],
+     "ref": "Cap. III"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-074"
+     ],
+     "ref": "Cap. 4, p. 32-33"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-030"
+     ],
+     "ref": "Parte 1, cap. 6, p. 105-113"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-171",
+      "LYN-182",
+      "LYN-186"
+     ],
+     "ref": "Cap. 17, pp. 249-250 | Cap. 18, pp. 260-261 | Cap. 18, p. 263"
+    }
+   ],
+   "numeros": [
+    "Phelps: sete motivos não ligados ao investimento, como ação 'alta demais' ou margin call.",
+    "Mayer: Hansen chegou a P/L 50 (2006) com lucro crescendo 150-220%."
+   ]
+  },
+  {
+   "titulo": "Custos e impostos de girar",
+   "regra": "Girar pouco: imposto e corretagem corroem o retorno composto. Trocar só por algo muito melhor.",
+   "autores": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-079",
+      "PHE-084",
+      "PHE-085"
+     ],
+     "ref": "Cap. XXIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-087",
+      "MAY-088"
+     ],
+     "ref": "Cap. 5, p. 43-44 | Cap. 3, p. 18-20"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-029",
+      "FIS-067"
+     ],
+     "ref": "Parte 1, cap. 6, p. 105-113 | Parte 3, cap. 2, p. 238-251"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-158"
+     ],
+     "ref": "Cap. 16, pp. 237-238"
+    }
+   ],
+   "numeros": [
+    "Phelps: com 30% de custos de venda, a substituta precisa subir mais de 105% para empatar com +50% da original.",
+    "Mayer: Smith, que segurou a Berkshire por 18 anos, ficou com 3,4x o que ficou Jones (imposto de 33%).",
+    "Fisher: trocar por crescimento de 20% contra 12% a.a.",
+    "Lynch: custos de 1-2% por operação exigem 16-19% brutos de quem gira uma vez por ano."
+   ],
+   "observacao": "O'Neil (ONE-105) acha erro adiar vendas por imposto."
+  },
+  {
+   "titulo": "Comprar a mercado, sem barganhar centavos",
+   "regra": "Executar a compra a mercado quando a empresa qualifica; ordens com limite fazem perder a vencedora.",
+   "autores": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-083"
+     ],
+     "ref": "Cap. III"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-106"
+     ],
+     "ref": "Cap. 13, p. 307"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-036",
+      "FIS-040"
+     ],
+     "ref": "Parte 1, cap. 8, p. 123-134 | Parte 1, cap. 9, p. 135-161"
+    }
+   ],
+   "numeros": [
+    "Fisher: poupar US$ 50 custou US$ 46.500.",
+    "Phelps: Schering deu 41x na oferta, 54x na mínima de 1952 e 65x em set/1953."
+   ],
+   "observacao": "O'Neil limita a entrada a 5-10% acima do pivô (ONE-034)."
+  },
+  {
+   "titulo": "Exposição ao mercado",
+   "regra": "O'Neil reduz exposição com 4-5 dias de distribuição no índice; Lynch fica sempre investido; Mayer ignora o macro.",
+   "autores": [
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-090"
+     ],
+     "ref": "Cap. 13, p. 130, 141-145, 183, 186"
+    },
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-058",
+      "ONE-061"
+     ],
+     "ref": "Cap. 9, p. 199-237"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-202"
+     ],
+     "ref": "Epílogo, pp. 287-288"
+    }
+   ],
+   "numeros": [
+    "O'Neil: correções de 8-12%; mercados de baixa duram em média 9 meses e perdem ~26%.",
+    "Lynch: em agosto de 1982, com o Dow em ~776, o mercado subiu 38,8 pontos num dia."
+   ],
+   "observacao": "Posições opostas: testar as duas no robô."
+  },
+  {
+   "titulo": "Ignorar o ruído macro e a mídia",
+   "regra": "Não vender boas ações por manchetes, previsões econômicas ou desempenho trimestral.",
+   "autores": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-086"
+     ],
+     "ref": "Cap. XXIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-090"
+     ],
+     "ref": "Cap. 13, p. 130, 141-145, 183, 186"
+    },
+    {
+     "autor": "Fisher",
+     "ids": [
+      "FIS-024"
+     ],
+     "ref": "Parte 1, cap. 5, p. 89-104"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-172",
+      "LYN-193"
+     ],
+     "ref": "Cap. 17, pp. 249-251 | Cap. 20, pp. 276-277"
+    }
+   ],
+   "numeros": [
+    "Mayer: estudo de ~95.000 estimativas com erro médio acima de 40%.",
+    "Lynch: após o embargo da OPEP, −16% em 3 meses e −39% em 12, mas alta no dia."
+   ]
+  },
+  {
+   "titulo": "Monitorar a história periodicamente",
+   "regra": "Escrever a tese, rever os números a cada poucos meses e reclassificar a empresa quando ela muda de fase.",
+   "autores": [
+    {
+     "autor": "Phelps",
+     "ids": [
+      "PHE-088"
+     ],
+     "ref": "Cap. XXVIII"
+    },
+    {
+     "autor": "Mayer",
+     "ids": [
+      "MAY-020"
+     ],
+     "ref": "Cap. 15, p. 174"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-051",
+      "LYN-156",
+      "LYN-201"
+     ],
+     "ref": "Cap. 7, pp. 127-129 | Cap. 15, pp. 232-233 | Cap. 20, p. 286"
+    }
+   ],
+   "numeros": [
+    "Phelps: painel de 6 indicadores por 10 anos, absolutos e relativos ao índice."
+   ]
+  },
+  {
+   "titulo": "Evitar derivativos e venda a descoberto",
+   "regra": "Limitar opções e vendas a descoberto; elas não ajudam a capturar o crescimento das empresas.",
+   "autores": [
+    {
+     "autor": "O'Neil",
+     "ids": [
+      "ONE-096"
+     ],
+     "ref": "Cap. 12, p. 273-300"
+    },
+    {
+     "autor": "Lynch",
+     "ids": [
+      "LYN-191",
+      "LYN-192"
+     ],
+     "ref": "Cap. 19, p. 270 | Cap. 19, p. 275"
+    }
+   ],
+   "numeros": [
+    "O'Neil: opções até 5-10% da carteira; vendas a descoberto até 10-15%.",
+    "Lynch: 80-95% dos amadores perdem em futuros e opções; vendido em Resorts International viu a ação ir de US$ 0,70 a US$ 70."
+   ],
+   "observacao": "Phelps (PHE-024) mostra warrants que renderam 2.320x."
+  }
+ ]
+}
