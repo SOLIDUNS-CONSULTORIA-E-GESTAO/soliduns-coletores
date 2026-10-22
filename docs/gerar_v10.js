@@ -1,4 +1,4 @@
-// Score Exponencial SOLIDUNS — Metodologia v1.0 (registro prévio) — 22/10/2026
+// Score Exponencial SOLIDUNS — Metodologia v1.0.1 (registro prévio) — 22/10/2026
 const fs = require('fs');
 const { Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType,
   HeadingLevel, BorderStyle, LevelFormat, Footer, Header, PageNumber, TabStopType } = require('docx');
@@ -50,7 +50,7 @@ function tabela(cab, linhas, larguras) {
 const espaco = () => new Paragraph({ children: [], spacing: { after: 80 } });
 
 // ------------------------------------------------------------------ conteúdo v0.2 — arquitetura e fundamentação
-const R = t => new Paragraph({ children: runs(t, { size: 19 }), alignment: AlignmentType.JUSTIFIED, spacing: { after: 60, line: 250 }, indent: { left: 360, hanging: 360 } });
+const R = t => new Paragraph({ children: runs(t, { size: 19 }), alignment: AlignmentType.JUSTIFIED, spacing: { after: 40, line: 240 }, indent: { left: 360, hanging: 360 } });
 
 
 const capa = [
@@ -58,7 +58,7 @@ const capa = [
     children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 170, height: 174 } })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: 'SCORE EXPONENCIAL', bold: true, size: 52, color: PRETO, font: FONTE })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: 'Metodologia e registro prévio do teste', size: 26, color: OURO })] }),
-  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0 — aprovada em 22 de outubro de 2026 (citações revistas)', size: 24, color: CINZA })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.1 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Radar de Ações Exponenciais · SOLIDUNS', size: 22, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Brasília, 22 de outubro de 2026', size: 22, color: CINZA })] }),
 ];
@@ -72,6 +72,10 @@ const corpo = [
   N('**Molodovsky no cálculo:** o artigo de Molodovsky, May e Chottiner (1965) vira o subitem **crescimento implícito no preço**, dentro do Pilar 2.', 'numeros'),
   N('**Dados do teste:** cotações da B3 desde 2006 e fatores de risco do NEFIN-USP, ambos públicos e gratuitos.', 'numeros'),
   N('**Critérios para publicar:** aprovados como propostos na versão 0.2 (capítulo 7).', 'numeros'),
+  N('**Risco de crédito e de manipulação viram subitens (v1.0.1):** o EM Score de Altman (2005) e o escore M de Beneish (1999) entram no Pilar 4, sem desconto em pontos.', 'numeros'),
+  H2('Histórico de versões'),
+  B('**v1.0, de 22/10/2026:** registro prévio da metodologia.'),
+  B('**v1.0.1, de 22/10/2026:** o escore Z de Altman (1968), feito só para indústrias, é trocado pelo EM Score de Altman (2005), que vale para todas as empresas não financeiras. Os alertas deixam de tirar pontos e viram subitens do Pilar 4. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
   H2('O que é o registro prévio'),
   P('Tudo neste documento fica **congelado antes do primeiro teste**: pilares, subitens, parâmetros, pesos e critérios.'),
   P('Assim, o teste não pode ser ajustado ao resultado. Qualquer mudança depois do teste gera uma nova versão, e a variação conta como mais uma tentativa no controle de excesso de testes (capítulo 6).'),
@@ -91,7 +95,7 @@ const corpo = [
     ['3. Sinais', 'Calcula os subitens de cada pilar', 'Cada sinal com fundamento publicado'],
     ['4. Tratamento', 'Apara extremos, padroniza e compara dentro do setor', 'Mesma escala para todos os sinais'],
     ['5. Combinação', 'Junta subitens em pilares e pilares no Score', 'Pesos fixados antes do teste'],
-    ['6. Risco e regime', 'Reduz o peso do momentum em mercado turbulento e aplica alertas', 'Proteção contra quedas bruscas do fator'],
+    ['6. Risco e regime', 'Reduz o peso do momentum em mercado turbulento', 'Proteção contra quedas bruscas do fator'],
     ['7. Saída e governança', 'Ranking, versão e acompanhamento', 'Registro de cada versão e de cada teste'],
   ], [2300, 3700, 3000]),
   H2('Camada 1 — Dados no tempo certo'),
@@ -148,6 +152,8 @@ const corpo = [
     ['Beta baixo', 'Carteiras de beta baixo superam as de beta alto ajustado ao risco', 'Frazzini; Pedersen (2014)'],
     ['Liquidez', 'Ações ilíquidas exigem prêmio e são caras de negociar', 'Amihud (2002)'],
     ['Concordância entre pilares', 'Sinais diferentes que apontam juntos dão carteiras mais estáveis', 'Asness; Moskowitz; Pedersen (2013)'],
+    ['Risco de insolvência (EM Score) — novo', 'Ações com alto risco de falência rendem anormalmente menos', 'Altman (1968, 2005); Campbell; Hilscher; Szilagyi (2008)'],
+    ['Indício de manipulação (escore M) — novo', 'Empresas com sinais de lucro inflado tendem a decepcionar', 'Beneish (1999); Sloan (1996)'],
   ], [2700, 4000, 2300]),
 
   H1('4. Crescimento implícito', false),
@@ -205,15 +211,34 @@ const corpo = [
   ...F('w_M = 0,25 · mₜ;   w_F = w_A = w_C = (1 − w_M) / 3',
     'o peso {w_M} do pilar Momentum é {0,25} vezes {mₜ}; os pesos {w_F}, {w_A} e {w_C} dos outros três pilares são iguais e dividem entre si o que sobra, {1} menos {w_M}.',
     'em mercado calmo, os quatro pilares pesam 25% cada; em mercado turbulento, o peso que sai do Momentum vai para os outros três.'),
-  H2('Alertas contábeis'),
-  P('Os alertas tiram pontos da nota final e não formam um pilar:'),
-  B('**Risco de insolvência:** escore Z de Altman (1968) na faixa de perigo tira 5 pontos.'),
-  B('**Indício de manipulação de resultado:** escore M de Beneish (1999) acima de −1,78 tira 5 pontos.'),
-  P('O desconto máximo é de 10 pontos.'),
+  H2('Risco de crédito e de manipulação'),
+  P('Na v1.0.1, os dois indicadores contábeis de alerta passam a ser subitens do Pilar 4. Eles não tiram pontos fixos. Entram padronizados dentro do setor, como todos os outros subitens.'),
+  P('Assim, nenhum número é escolhido por nós. O peso deles vem da mesma regra que vale para o resto do Score.'),
+  H3('EM Score de Altman (2005)'),
+  P('O escore Z original de Altman (1968) foi calibrado só com indústrias americanas. O próprio Altman criou depois uma versão sem o giro do ativo e sem o valor de mercado, testada em indústrias e não indústrias. Para mercados emergentes, ela recebe uma constante.'),
+  ...F('EM = 6,56 · X₁ + 3,26 · X₂ + 6,72 · X₃ + 1,05 · X₄ + 3,25',
+    'o escore {EM} é igual a {6,56} vezes {X₁}, mais {3,26} vezes {X₂}, mais {6,72} vezes {X₃}, mais {1,05} vezes {X₄}, mais a constante {3,25}.',
+    'junta folga de caixa, lucro acumulado, lucro operacional e patrimônio frente às dívidas. Quanto maior a nota, menor o risco de falência.'),
+  P('Os quatro índices são calculados assim:'),
+  B('**X₁:** capital de giro (ativo circulante menos passivo circulante) ÷ ativo total.'),
+  B('**X₂:** lucro acumulado ÷ ativo total. No Brasil, desde 2008 a conta "lucros acumulados" fica zerada no balanço. Por isso o lucro acumulado é a soma das reservas de lucros com os lucros ou prejuízos acumulados, como Altman recomenda adaptar à contabilidade local.'),
+  B('**X₃:** lucro operacional (antes de juros e impostos) dos últimos 12 meses ÷ ativo total.'),
+  B('**X₄:** patrimônio líquido contábil ÷ passivo total.'),
+  P('As faixas de Altman (2005) ficam só como aviso na tela do Radar, sem mudar a nota:'),
+  B('**Zona segura:** 5,85 ou mais, equivalente a rating BBB ou melhor.'),
+  B('**Zona cinzenta:** de 4,15 a 5,85.'),
+  B('**Zona de perigo:** abaixo de 4,15, equivalente a rating B- ou pior. O Radar mostra o aviso "risco de crédito elevado".'),
+  P('Altman descreve outros cinco passos de ajuste (câmbio, setor, posição competitiva, garantias e risco do país). Eles são julgamentos de analista para títulos de dívida e não entram no Score. O próprio Altman diz que o primeiro passo, a nota sozinha, já traz informação útil.'),
+  H3('Escore M de Beneish (1999)'),
+  P('O escore M combina oito índices contábeis, com os pesos publicados por Beneish. Valores altos indicam lucro possivelmente inflado.'),
+  B('**No Score:** entra com o sinal trocado, porque escore M alto é ruim.'),
+  B('**Aviso na tela:** escore M acima de −1,78, o limite do artigo.'),
+  H3('Quem fica de fora'),
+  P('Bancos, seguradoras e demais financeiras não têm nenhum dos dois subitens, porque os modelos não servem para os balanços delas. Para elas, os dois subitens entram com nota zero, a nota da ação típica.'),
   H2('O Score'),
-  ...F('Score = 50 + (50 / 3) · (w_M · z_M + w_F · z_F + w_A · z_A + w_C · z_C) − A',
-    'o {Score} é igual a {50} mais {50} dividido por {3}, vezes a soma das notas dos pilares {z_M}, {z_F}, {z_A} e {z_C}, cada uma multiplicada pelo seu peso; menos os pontos de alerta {A}; o resultado é limitado entre {0} e {100}.',
-    'uma ação na média de todos os pilares fica com 50; cada vantagem consistente sobe a nota, e os alertas a reduzem.'),
+  ...F('Score = 50 + (50 / 3) · (w_M · z_M + w_F · z_F + w_A · z_A + w_C · z_C)',
+    'o {Score} é igual a {50} mais {50} dividido por {3}, vezes a soma das notas dos pilares {z_M}, {z_F}, {z_A} e {z_C}, cada uma multiplicada pelo seu peso; o resultado é limitado entre {0} e {100}.',
+    'uma ação na média de todos os pilares fica com 50; cada vantagem consistente sobe a nota.'),
   P('Com pesos iguais, a soma ponderada é a média das quatro notas, como na versão 0.2 (DeMiguel; Garlappi; Uppal, 2009).'),
 
   H1('6. Teste histórico'),
@@ -247,6 +272,8 @@ const corpo = [
   B('**Sharpe deflacionado:** desconta a sorte esperada pelo número de tentativas (Bailey; López de Prado, 2014).'),
   B('**Probabilidade de sobreajuste:** por validação cruzada combinatória (Bailey et al., 2017; López de Prado, 2018).'),
   B('**Comparação de variações:** teste de realidade de White (2000) ou de Hansen (2005).'),
+  H2('Conferência do EM Score'),
+  P('O relatório do teste mostra, por setor, se o EM Score antecipou recuperação judicial, falência ou cancelamento de registro em 12 e 24 meses. Os eventos vêm dos dados da CVM. É uma conferência do modelo, não um ajuste: se algum setor falhar, a exclusão entra numa versão nova, contada como tentativa.'),
 
   H1('7. Critérios para publicar', false),
   P('O ranking só vai para os assinantes se passar em **todos** os critérios abaixo:'),
@@ -260,7 +287,7 @@ const corpo = [
   P('Enquanto não passar, a tela do Radar mostra "Ranking em calibração".'),
   P('Depois de aprovado, o Score segue acompanhado. Se o coeficiente de informação dos últimos 12 meses ficar negativo, a tela volta para "Ranking em calibração" até a revisão.'),
 
-  H1('8. Próximos passos', false),
+  H1('8. Próximos passos'),
   P('A construção segue esta ordem:'),
   N('**Histórico de cotações:** coletor das cotações da B3 de 2006 até hoje, com ajuste por proventos e desdobramentos.', 'numeros3'),
   N('**Histórico das demonstrações:** DFP e ITR da CVM desde 2011, com a data de entrega de cada documento.', 'numeros3'),
@@ -272,6 +299,7 @@ const corpo = [
   H1('9. Referências', false),
   P('Lista no padrão ABNT (NBR 6023).'),
   R('ALTMAN, E. I. Financial ratios, discriminant analysis and the prediction of corporate bankruptcy. **The Journal of Finance**, v. 23, n. 4, p. 589-609, 1968.'),
+  R('ALTMAN, E. I. An emerging market credit scoring system for corporate bonds. **Emerging Markets Review**, v. 6, n. 4, p. 311-323, 2005.'),
   R('AMIHUD, Y. Illiquidity and stock returns: cross-section and time-series effects. **Journal of Financial Markets**, v. 5, n. 1, p. 31-56, 2002.'),
   R('ANG, A.; HODRICK, R. J.; XING, Y.; ZHANG, X. The cross-section of volatility and expected returns. **The Journal of Finance**, v. 61, n. 1, p. 259-299, 2006.'),
   R('ASNESS, C. S.; FRAZZINI, A.; PEDERSEN, L. H. Quality minus junk. **Review of Accounting Studies**, v. 24, n. 1, p. 34-112, 2019.'),
@@ -325,7 +353,7 @@ const corpo = [
   R('WHITE, H. A reality check for data snooping. **Econometrica**, v. 68, n. 5, p. 1097-1126, 2000.'),
 ];
 const doc = new Document({
-  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0 (registro prévio)',
+  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0.1 (registro prévio)',
   styles: {
     default: { document: { run: { font: FONTE, size: 22, color: '222222' } } },
     paragraphStyles: [
@@ -346,7 +374,7 @@ const doc = new Document({
       headers: { default: new Header({ children: [new Paragraph({ tabStops: [{ type: TabStopType.RIGHT, position: 9000 }],
         border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: OURO, space: 4 } },
         children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 26, height: 27 } }),
-          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0 — registro prévio', size: 17, color: CINZA })] })] }) },
+          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0.1 — registro prévio', size: 17, color: CINZA })] })] }) },
       footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER,
         children: [new TextRun({ text: 'Página ', size: 17, color: CINZA }), new TextRun({ children: [PageNumber.CURRENT], size: 17, color: CINZA }),
           new TextRun({ text: '  ·  Uso interno. Não é recomendação de investimento.', size: 17, color: CINZA })] })] }) },

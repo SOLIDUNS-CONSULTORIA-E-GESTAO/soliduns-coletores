@@ -1,4 +1,4 @@
-# Bibliografia do Score Exponencial — artigos recebidos e conferidos (só referências; os PDFs não ficam no repositório)
+# Bibliografia do Score Exponencial — artigos recebidos (47 de 50 em 22/10; faltam 44, 45 e 46) e conferidos (só referências; os PDFs não ficam no repositório)
 
 ## Da lista principal (número da lista de 22/10/2026)
 - 1  Altman (1968) — amostra: 33 + 33 indústrias (1946-1965); Z < 1,81 falência, Z > 2,99 seguro. DOI 10.1111/j.1540-6261.1968.tb00843.x
@@ -25,6 +25,7 @@
 - 23 Chan; Karceski; Lakonishok (2003). DOI 10.1111/1540-6261.00540
 - 24 Civiletti; Campani; Roquete (2020) — 64 carteiras = 32 pares; as 32 vencedoras superaram as perdedoras, mas só 12 diferenças foram significativas a 10% (7 por retorno, 5 por alfa). DOI 10.15728/bbr.2020.17.5.2
 - 25 Da; Gurun; Warachka (2014). DOI 10.1093/rfs/hhu003
+- 20 Campbell; Hilscher; Szilagyi (2008) — desde 1981, ações com alto risco de falência renderam anormalmente menos. DOI 10.1111/j.1540-6261.2008.01416.x
 - 26 Daniel; Moskowitz (2016) — Momentum crashes (manuscrito aceito). DOI 10.1016/j.jfineco.2015.12.002
 - 27 DeMiguel; Garlappi; Uppal (2009) — 14 modelos em 7 bases: nenhum supera 1/N de forma consistente. DOI 10.1093/rfs/hhm075
 - 28 Fama; MacBeth (1973). DOI 10.1086/260061
@@ -34,9 +35,17 @@
 - 32 Harvey; Liu; Zhu (2016) — limiar t > 3,0. DOI 10.1093/rfs/hhv059
 - 33 Hou; Xue; Zhang (2020) — 65% das 452 anomalias não passam |t| ≥ 1,96; 82% com o limiar de 2,78. DOI 10.1093/rfs/hhy131
 - 34 Jegadeesh; Titman (1993). DOI 10.1111/j.1540-6261.1993.tb04702.x
+- 35 Lee; Swaminathan (2000). DOI 10.1111/0022-1082.00280
+- 36 Lev; Thiagarajan (1993). DOI 10.2307/2491270
+- 37 Loughran; Ritter (1995) — IPOs de 1970-1990 renderam só 5% ao ano nos 5 anos seguintes. DOI 10.1111/j.1540-6261.1995.tb05166.x
+- 38 Loughran; Wellman (2011). DOI 10.1017/S0022109011000445
 - 39 McLean; Pontiff (2016). DOI 10.1111/jofi.12365
+- 40 Mohanram (2005) — GSCORE. DOI 10.1007/s11142-005-1526-4
 - 42 Newey; West (1987). DOI 10.2307/1913610
+- 43 Novy-Marx (2012) — Is momentum really momentum? DOI 10.1016/j.jfineco.2011.05.003
 - 47 Piotroski (2000). DOI 10.2307/2672906
+- 48 Shumway (1997) — retornos de deslistagem por motivos negativos faltam na base e são grandes. DOI 10.1111/j.1540-6261.1997.tb03818.x
+- 49 Sloan (1996). DOI 10.2308/tar-9608042309
 - 50 White (2000). DOI 10.1111/1468-0262.00152
 
 ## Fora da lista, enviados pelo Thiago (22/10/2026)
