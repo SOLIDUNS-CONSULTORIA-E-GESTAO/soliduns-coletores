@@ -1,0 +1,354 @@
+// Score Exponencial SOLIDUNS — Metodologia v1.0 (registro prévio) — 22/10/2026
+const fs = require('fs');
+const { Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType,
+  HeadingLevel, BorderStyle, LevelFormat, Footer, Header, PageNumber, TabStopType } = require('docx');
+
+const OURO = 'C9A227', PRETO = '111111', CINZA = '555555', CLARO = 'F4F1E6';
+const FONTE = 'Calibri';
+const logo = fs.readFileSync('' + __dirname + '/../site/publicar/assets/soliduns-logo-dbbcf92044.png');
+
+// {x} -> "x" em negrito (elemento matemático); **x** -> negrito
+function runs(t, base = {}) {
+  const out = [];
+  t.split(/(\{[^}]+\}|\*\*[^*]+\*\*)/).forEach(p => {
+    if (!p) return;
+    if (p.startsWith('{')) out.push(new TextRun({ text: '"' + p.slice(1, -1) + '"', bold: true, ...base }));
+    else if (p.startsWith('**')) out.push(new TextRun({ text: p.slice(2, -2), bold: true, ...base }));
+    else out.push(new TextRun({ text: p, ...base }));
+  });
+  return out;
+}
+const P = (t, o = {}) => new Paragraph({ children: runs(t), alignment: AlignmentType.JUSTIFIED, spacing: { after: 120, line: 300 }, ...o });
+const H1 = (t, quebra = true) => new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun(t)], keepNext: true, keepLines: true, pageBreakBefore: quebra, spacing: quebra ? undefined : { before: 360 } });
+const H2 = (t, quebra = false) => new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun(t)], keepNext: true, keepLines: true, pageBreakBefore: quebra });
+const H3 = t => new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun(t)], keepNext: true, keepLines: true });
+const B = (t, nivel = 0) => new Paragraph({ numbering: { reference: 'marcas', level: nivel }, children: runs(t), alignment: AlignmentType.JUSTIFIED, spacing: { after: 60, line: 280 } });
+const N = (t, ref = 'numeros') => new Paragraph({ numbering: { reference: ref, level: 0 }, children: runs(t), alignment: AlignmentType.JUSTIFIED, spacing: { after: 60, line: 280 } });
+// fórmula + leitura matemática + frase simples (sempre juntas na mesma página)
+function F(formula, leitura, simples) {
+  return [
+    new Paragraph({ alignment: AlignmentType.CENTER, keepNext: true, keepLines: true, spacing: { before: 120, after: 80 },
+      shading: { type: ShadingType.CLEAR, color: 'auto', fill: CLARO },
+      children: formula.split('\n').map((t, i) => new TextRun({ text: t, font: 'Cambria Math', size: 24, break: i ? 1 : 0 })) }),
+    new Paragraph({ keepNext: true, keepLines: true, alignment: AlignmentType.JUSTIFIED, spacing: { after: 60, line: 276 },
+      children: [new TextRun({ text: 'Leitura: ', bold: true, color: CINZA, size: 20 }), ...runs(leitura, { size: 20, color: CINZA })] }),
+    new Paragraph({ keepLines: true, alignment: AlignmentType.JUSTIFIED, spacing: { after: 160, line: 276 },
+      children: [new TextRun({ text: 'Em linguagem simples: ', bold: true, color: CINZA, size: 20 }), ...runs(simples, { size: 20, color: CINZA, italics: true })] }),
+  ];
+}
+const borda = { style: BorderStyle.SINGLE, size: 4, color: 'BFB8A3' };
+function tabela(cab, linhas, larguras) {
+  const total = larguras.reduce((a, b) => a + b, 0);
+  const cel = (t, i, topo, ultima = false) => new TableCell({ width: { size: larguras[i], type: WidthType.DXA },
+    shading: topo ? { type: ShadingType.CLEAR, color: 'auto', fill: PRETO } : undefined,
+    borders: { top: borda, bottom: borda, left: borda, right: borda }, margins: { top: 60, bottom: 60, left: 100, right: 100 },
+    children: [new Paragraph({ children: runs(String(t), topo ? { bold: true, color: 'FFFFFF', size: 19 } : { size: 19 }) , keepNext: !ultima })] });
+  return new Table({ width: { size: total, type: WidthType.DXA }, columnWidths: larguras,
+    rows: [new TableRow({ tableHeader: true, cantSplit: true, children: cab.map((c, i) => cel(c, i, true)) }),
+      ...linhas.map((l, j) => new TableRow({ cantSplit: true, children: l.map((c, i) => cel(c, i, false, j === linhas.length - 1)) }))] });
+}
+const espaco = () => new Paragraph({ children: [], spacing: { after: 80 } });
+
+// ------------------------------------------------------------------ conteúdo v0.2 — arquitetura e fundamentação
+const R = t => new Paragraph({ children: runs(t, { size: 19 }), alignment: AlignmentType.JUSTIFIED, spacing: { after: 60, line: 250 }, indent: { left: 360, hanging: 360 } });
+
+
+const capa = [
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 1400, after: 400 },
+    children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 170, height: 174 } })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: 'SCORE EXPONENCIAL', bold: true, size: 52, color: PRETO, font: FONTE })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: 'Metodologia e registro prévio do teste', size: 26, color: OURO })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Radar de Ações Exponenciais · SOLIDUNS', size: 22, color: CINZA })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Brasília, 22 de outubro de 2026', size: 22, color: CINZA })] }),
+];
+
+const corpo = [
+  H1('1. Decisões aprovadas'),
+  P('Esta versão fecha a metodologia. As decisões abaixo foram aprovadas pelo Dr. Thiago Viegas em 22/10/2026:'),
+  N('**Pesos iguais:** os quatro pilares começam com 25% cada.', 'numeros'),
+  N('**Pilar 3 redesenhado:** sai "crescimento e aceleração da receita", entra **momento fundamental** (surpresa de lucro e escore de crescimento saudável).', 'numeros'),
+  N('**Proteção do momentum:** o peso do pilar Momentum cai quando a volatilidade do próprio fator sobe.', 'numeros'),
+  N('**Molodovsky no cálculo:** o artigo de Molodovsky, May e Chottiner (1965) vira o subitem **crescimento implícito no preço**, dentro do Pilar 2.', 'numeros'),
+  N('**Dados do teste:** cotações da B3 desde 2006 e fatores de risco do NEFIN-USP, ambos públicos e gratuitos.', 'numeros'),
+  N('**Critérios para publicar:** aprovados como propostos na versão 0.2 (capítulo 7).', 'numeros'),
+  H2('O que é o registro prévio'),
+  P('Tudo neste documento fica **congelado antes do primeiro teste**: pilares, subitens, parâmetros, pesos e critérios.'),
+  P('Assim, o teste não pode ser ajustado ao resultado. Qualquer mudança depois do teste gera uma nova versão, e a variação conta como mais uma tentativa no controle de excesso de testes (capítulo 6).'),
+  H2('O que a literatura ensina'),
+  B('**Os fatores existem, mas encolhem:** anomalias publicadas rendem, em média, 26% menos fora da amostra original e 58% menos depois da publicação (McLean; Pontiff, 2016).'),
+  B('**Muitos fatores não se replicam:** boa parte perde significância com dados atualizados e custos realistas (Hou; Xue; Zhang, 2020; Novy-Marx; Velikov, 2016).'),
+  B('**Combinar fatores ajuda:** valor e momentum têm correlação negativa, e a combinação é mais estável que cada um isolado (Asness; Moskowitz; Pedersen, 2013).'),
+  B('**No Brasil há evidência de momentum e de qualidade:** vencedores superaram perdedores em todas as 64 comparações de 2009 a 2018, com custos (Civiletti; Campani; Roquete, 2020); a qualidade é persistente (Bortoluzzo; Pistili; Bortoluzzo, 2021).'),
+
+  H1('2. Arquitetura'),
+  P('A metodologia tem sete camadas. Cada uma recebe o resultado da anterior e pode ser testada sozinha.'),
+  espaco(),
+  tabela(['Camada', 'O que faz', 'Principal cuidado'], [
+    ['1. Dados no tempo certo', 'Preços, proventos, demonstrações e setor, cada um com a data em que ficou público', 'Nada do futuro; incluir empresas que saíram da bolsa'],
+    ['2. Universo', 'Escolhe quais ações entram no dia', 'Liquidez mínima e uma classe por empresa'],
+    ['3. Sinais', 'Calcula os subitens de cada pilar', 'Cada sinal com fundamento publicado'],
+    ['4. Tratamento', 'Apara extremos, padroniza e compara dentro do setor', 'Mesma escala para todos os sinais'],
+    ['5. Combinação', 'Junta subitens em pilares e pilares no Score', 'Pesos fixados antes do teste'],
+    ['6. Risco e regime', 'Reduz o peso do momentum em mercado turbulento e aplica alertas', 'Proteção contra quedas bruscas do fator'],
+    ['7. Saída e governança', 'Ranking, versão e acompanhamento', 'Registro de cada versão e de cada teste'],
+  ], [2300, 3700, 3000]),
+  H2('Camada 1 — Dados no tempo certo'),
+  B('**Data de publicação:** a demonstração da CVM entra no cálculo só a partir da data de entrega, que consta nos dados abertos.'),
+  B('**Viés de sobrevivência:** o histórico inclui as empresas que deixaram a bolsa. Sem elas, o teste fica otimista.'),
+  B('**Proventos e desdobramentos:** os preços são ajustados por dividendos, juros sobre capital e grupamentos.'),
+  H2('Camada 2 — Universo'),
+  B('**Liquidez:** volume financeiro médio de 63 pregões de pelo menos R$ 1 milhão por dia, e índice de iliquidez de Amihud (2002) fora do décimo pior.'),
+  B('**Histórico mínimo:** 252 pregões, porque o sinal de 12 meses precisa de um ano inteiro.'),
+  B('**Uma classe por empresa:** a mais líquida entre ON, PN e units.'),
+  B('**Setores especiais:** bancos e seguradoras usam indicadores próprios no Pilar 2, porque o balanço deles não tem EBITDA nem dívida líquida no mesmo sentido.'),
+  H2('Camada 4 — Tratamento', true),
+  P('Cada subitem vira uma nota padronizada robusta, calculada dentro do setor. Ela preserva a distância entre as ações e não se deixa levar por valores extremos.'),
+  ...F('zᵢ = (xᵢ − mediana(x)) / (1,4826 · MAD(x))',
+    'a nota padronizada {zᵢ} da ação {i} é igual ao valor {xᵢ} menos a {mediana} de {x} entre as ações do setor, dividido por {1,4826} vezes o desvio absoluto mediano {MAD} de {x}; o resultado é limitado entre {−3} e {3}.',
+    'mostra quantas "unidades de dispersão" a ação está acima ou abaixo da ação típica do seu setor.'),
+  P('A nota de cada pilar é a média das notas dos seus subitens, padronizada de novo pela mesma fórmula. Subitem sem dado entra com nota zero, que é a nota da ação típica.'),
+
+  H1('3. Os quatro pilares', false),
+  P('Cada subitem tem pelo menos uma referência publicada. As letras entre parênteses são as usadas nas fórmulas.'),
+  H2('Pilar 1 — Momentum de preço (M)'),
+  tabela(['Subitem', 'Evidência', 'Referências'], [
+    ['Retorno de 12 meses sem o último mês', 'Vencedores dos últimos 3 a 12 meses continuam vencendo; o último mês reverte', 'Jegadeesh; Titman (1993); Carhart (1997)'],
+    ['Retorno de 7 a 12 meses atrás', 'A parte intermediária do passado explica boa parte do efeito', 'Novy-Marx (2012)'],
+    ['Distância da máxima de 52 semanas', 'Ações perto da máxima do ano tendem a seguir subindo', 'George; Hwang (2004)'],
+    ['Qualidade do caminho', 'Altas feitas de muitos dias pequenos persistem mais que altas de poucos saltos', 'Da; Gurun; Warachka (2014); Gray; Vogel (2016)'],
+    ['Tendência pela média móvel', 'Regras de médias móveis têm poder de previsão', 'Brock; Lakonishok; LeBaron (1992)'],
+    ['Volume', 'O volume indica a fase do ciclo do momentum', 'Lee; Swaminathan (2000)'],
+  ], [2700, 4000, 2300]),
+  H2('Pilar 2 — Qualidade e valor (F)'),
+  tabela(['Subitem', 'Evidência', 'Referências'], [
+    ['Escore de saúde financeira (9 testes)', 'Separa vencedoras de perdedoras entre as ações baratas', 'Piotroski (2000)'],
+    ['Rentabilidade bruta sobre o ativo', 'Prevê retornos tanto quanto o valor, com sinal oposto', 'Novy-Marx (2013)'],
+    ['Qualidade ampla (rentável, crescente, segura)', 'Empresas de qualidade rendem mais ajustado ao risco; no Brasil, a qualidade é persistente', 'Asness; Frazzini; Pedersen (2019); Bortoluzzo et al. (2021)'],
+    ['Lucro que vira caixa', 'Lucros muito apoiados em ajustes contábeis tendem a cair', 'Sloan (1996)'],
+    ['Preço sobre o lucro operacional (EV/EBIT)', 'O múltiplo da empresa inteira prevê retornos melhor que outros múltiplos', 'Loughran; Wellman (2011); Greenblatt (2006); Gray; Carlisle (2012)'],
+    ['Crescimento implícito no preço (novo)', 'Todo preço embute um crescimento futuro; quem exige menos crescimento do que consegue gerar está mais barato', 'Molodovsky; May; Chottiner (1965); Gordon (1962)'],
+  ], [2700, 4000, 2300]),
+  P('O subitem novo tem capítulo próprio (capítulo 4).'),
+  H2('Pilar 3 — Momento fundamental (A)'),
+  P('O crescimento passado se repete pouco (Chan; Karceski; Lakonishok, 2003). Por isso o pilar mede **surpresas e melhoras recentes nos resultados**, que têm evidência de continuidade.'),
+  tabela(['Subitem', 'Evidência', 'Referências'], [
+    ['Surpresa de lucro padronizada', 'O preço continua reagindo por semanas a lucros acima do esperado', 'Bernard; Thomas (1989); Chan; Jegadeesh; Lakonishok (1996)'],
+    ['Melhora do lucro contra o mesmo trimestre do ano anterior', 'O momentum de preço é em boa parte momentum de resultado', 'Novy-Marx (2015)'],
+    ['Escore de crescimento saudável (8 testes)', 'Separa vencedoras de perdedoras entre as ações de crescimento', 'Mohanram (2005)'],
+    ['Alavancagem operacional', 'Sinais de margem e eficiência ajudam a prever lucros', 'Lev; Thiagarajan (1993)'],
+  ], [2700, 4000, 2300]),
+  ...F('SUE = (LPAₜ − LPAₜ₋₄) / dp(LPAₜ − LPAₜ₋₄; 8 trimestres)',
+    'a surpresa padronizada {SUE} é igual ao lucro por ação do trimestre {LPAₜ} menos o lucro por ação do mesmo trimestre do ano anterior {LPAₜ₋₄}, dividido pelo desvio-padrão {dp} dessa diferença nos últimos {8} trimestres.',
+    'mede o quanto o lucro do trimestre surpreendeu, comparado com o tamanho normal das variações daquela empresa.'),
+  H2('Pilar 4 — Risco e confluência (C)'),
+  tabela(['Subitem', 'Evidência', 'Referências'], [
+    ['Baixa volatilidade', 'Ações menos voláteis renderam mais ajustado ao risco do que a teoria previa', 'Ang et al. (2006); Baker; Bradley; Wurgler (2011)'],
+    ['Beta baixo', 'Carteiras de beta baixo superam as de beta alto ajustado ao risco', 'Frazzini; Pedersen (2014)'],
+    ['Liquidez', 'Ações ilíquidas exigem prêmio e são caras de negociar', 'Amihud (2002)'],
+    ['Concordância entre pilares', 'Sinais diferentes que apontam juntos dão carteiras mais estáveis', 'Asness; Moskowitz; Pedersen (2013)'],
+  ], [2700, 4000, 2300]),
+
+  H1('4. Crescimento implícito', false),
+  new Paragraph({ children: [new TextRun({ text: 'Crescimento implícito no preço — o subitem de Molodovsky', size: 24, color: OURO, bold: true })], keepNext: true, spacing: { after: 160 } }),
+  P('Molodovsky, May e Chottiner (1965) mostram que o valor de uma ação é o valor presente de todos os dividendos futuros. Os autores também usam o caminho inverso: partem do preço de hoje e descobrem **quanto crescimento esse preço já exige**.'),
+  P('O Score usa esse caminho inverso. A pergunta do subitem é simples: a empresa consegue entregar o crescimento que o preço já cobra?'),
+  H2('O caminho do lucro em três fases'),
+  P('O artigo projeta o lucro em três fases:'),
+  B('**Fase 1, crescimento constante:** o lucro cresce à taxa {g} por 10 anos.'),
+  B('**Fase 2, transição:** a taxa cai em linha reta por 20 anos, como na simplificação usada pelos autores.'),
+  B('**Fase 3, maturidade:** o lucro passa a acompanhar a inflação esperada {π}.'),
+  P('A fase 3 é a única adaptação ao Brasil. No artigo, o lucro fica parado para sempre. Com a inflação brasileira, lucro parado em reais significa lucro encolhendo em poder de compra.'),
+  ...F('gₛ = g, se s ≤ 10\ngₛ = g − (g − π) · (s − 10) / 20, se 10 < s ≤ 30\ngₛ = π, se s > 30',
+    'a taxa de crescimento {gₛ} no ano {s} é igual a {g} até o ano {10}; entre os anos {10} e {30}, é {g} menos a diferença entre {g} e {π}, vezes {s} menos {10}, dividido por {20}; depois do ano {30}, é igual a {π}.',
+    'o lucro cresce rápido por 10 anos, desacelera aos poucos por 20 anos e depois só acompanha a inflação.'),
+  H2('Do lucro ao dividendo', true),
+  P('O artigo liga o dividendo ao crescimento: quem cresce muito reinveste muito e paga pouco. A mesma ligação aparece em Gordon (1962), pela taxa de crescimento sustentável.'),
+  ...F('Dₛ = Eₛ · (1 − gₛ / R)',
+    'o dividendo {Dₛ} do ano {s} é igual ao lucro {Eₛ} vezes {1} menos a taxa de crescimento {gₛ} dividida pela rentabilidade do patrimônio {R}.',
+    'para crescer, a empresa retém parte do lucro; quanto maior o crescimento, menor a parte que sobra para os acionistas.'),
+  H2('Valor e crescimento implícito'),
+  ...F('V(g) = Σₛ₌₁³⁰ Dₛ / (1 + k)ˢ + [E₃₀ · (1 + π) · (1 − π / R)] / [(k − π) · (1 + k)³⁰]',
+    'o valor {V} em função de {g} é igual à soma, do ano {1} ao ano {30}, dos dividendos {Dₛ} divididos por {1} mais {k} elevado a {s}; mais o valor da fase de maturidade, que é o lucro {E₃₀} vezes {1} mais {π}, vezes {1} menos {π} dividido por {R}, tudo dividido por {k} menos {π} e por {1} mais {k} elevado a {30}.',
+    'soma, trazidos para hoje, todos os dividendos que a empresa pagaria nesse caminho de lucro.'),
+  ...F('V(g*) = P',
+    'o crescimento implícito {g*} é a taxa {g} que faz o valor {V} ficar igual ao preço de mercado {P}.',
+    'é o crescimento anual que o preço de hoje já está cobrando da empresa.'),
+  P('O {g*} é encontrado por bisseção entre −20% e 60% ao ano. Se nem 60% justificam o preço, vale 60%.'),
+  H2('A nota do subitem'),
+  ...F('Folga = R · (1 − p) − g*',
+    'a {Folga} é igual à rentabilidade do patrimônio {R} vezes {1} menos o índice de distribuição de lucros {p}, menos o crescimento implícito {g*}.',
+    'compara o crescimento que a empresa consegue gerar com os próprios recursos com o crescimento que o preço exige. Folga positiva é bom sinal.'),
+  P('A Folga entra no Pilar 2 como os demais subitens, padronizada dentro do setor.'),
+  H2('Parâmetros congelados'),
+  tabela(['Parâmetro', 'Valor no registro prévio'], [
+    ['Lucro normal (E₀)', 'média do lucro por ação dos 3 últimos exercícios, sendo o mais recente os 12 meses até o último trimestre publicado'],
+    ['Rentabilidade do patrimônio (R)', 'média dos 3 últimos exercícios, limitada entre 5% e 40% ao ano'],
+    ['Índice de distribuição (p)', 'média dos 3 últimos exercícios, limitado entre 0 e 1'],
+    ['Inflação esperada (π)', 'mediana do Boletim Focus para o IPCA do ano seguinte, na data'],
+    ['Taxa exigida (k)', 'juro real da NTN-B mais longa, mais π, mais 4 pontos percentuais de prêmio de risco'],
+    ['Lucro normal negativo ou zero', 'subitem sem dado (nota zero)'],
+    ['Bancos e seguradoras', 'mesma fórmula, com R e p do próprio balanço'],
+  ], [3200, 5800]),
+
+  H1('5. Combinação e risco'),
+  H2('Proteção do momentum'),
+  P('O fator momentum tem colapsos raros e fortes, quase sempre na saída de mercados em queda (Daniel; Moskowitz, 2016). No Brasil isso apareceu em 2008 e 2009.'),
+  P('Reduzir a exposição ao fator quando a volatilidade dele sobe melhora o resultado e corta as piores perdas (Barroso; Santa-Clara, 2015).'),
+  ...F('mₜ = mín(1; σ_alvo / σ̂ₜ)',
+    'o multiplicador {mₜ} no mês {t} é o menor valor entre {1} e a volatilidade-alvo {σ_alvo} dividida pela volatilidade realizada {σ̂ₜ} do fator momentum.',
+    'quando o fator momentum fica mais agitado que o normal, o peso dele diminui na mesma proporção; nunca aumenta além do peso cheio.'),
+  B('**Volatilidade realizada (σ̂ₜ):** desvio-padrão dos retornos diários do fator WML do NEFIN nos últimos 126 pregões, anualizado.'),
+  B('**Volatilidade-alvo (σ_alvo):** 12% ao ano, o valor usado por Barroso e Santa-Clara (2015).'),
+  H2('Pesos dos pilares'),
+  ...F('w_M = 0,25 · mₜ;   w_F = w_A = w_C = (1 − w_M) / 3',
+    'o peso {w_M} do pilar Momentum é {0,25} vezes {mₜ}; os pesos {w_F}, {w_A} e {w_C} dos outros três pilares são iguais e dividem entre si o que sobra, {1} menos {w_M}.',
+    'em mercado calmo, os quatro pilares pesam 25% cada; em mercado turbulento, o peso que sai do Momentum vai para os outros três.'),
+  H2('Alertas contábeis'),
+  P('Os alertas tiram pontos da nota final e não formam um pilar:'),
+  B('**Risco de insolvência:** escore Z de Altman (1968) na faixa de perigo tira 5 pontos.'),
+  B('**Indício de manipulação de resultado:** escore M de Beneish (1999) acima de −1,78 tira 5 pontos.'),
+  P('O desconto máximo é de 10 pontos.'),
+  H2('O Score'),
+  ...F('Score = 50 + (50 / 3) · (w_M · z_M + w_F · z_F + w_A · z_A + w_C · z_C) − A',
+    'o {Score} é igual a {50} mais {50} dividido por {3}, vezes a soma das notas dos pilares {z_M}, {z_F}, {z_A} e {z_C}, cada uma multiplicada pelo seu peso; menos os pontos de alerta {A}; o resultado é limitado entre {0} e {100}.',
+    'uma ação na média de todos os pilares fica com 50; cada vantagem consistente sobe a nota, e os alertas a reduzem.'),
+  P('Com pesos iguais, a soma ponderada é a média das quatro notas, como na versão 0.2 (DeMiguel; Garlappi; Uppal, 2009).'),
+
+  H1('6. Teste histórico'),
+  P('O teste histórico é a parte que mais engana quando mal feito. Com tentativas suficientes, sempre aparece uma estratégia que "funcionou" por acaso (Bailey et al., 2014).'),
+  H2('Dados aprovados'),
+  B('**Cotações:** arquivos anuais e diários de cotações históricas da B3 (COTAHIST), desde 2006.'),
+  B('**Demonstrações:** dados abertos da CVM. O histórico trimestral (ITR) começa em 2011.'),
+  B('**Fatores de risco:** mercado, tamanho, valor, momentum, iliquidez e taxa livre de risco, diários, do NEFIN-USP.'),
+  B('**Juros e inflação:** NTN-B (Tesouro Nacional) e Boletim Focus (Banco Central).'),
+  H2('Períodos'),
+  P('As datas de início dependem dos dados:'),
+  B('**Pilar Momentum sozinho:** de 2007 a hoje, porque o sinal de 12 meses precisa de 2006 inteiro.'),
+  B('**Score completo:** de 2013 a hoje. A surpresa de lucro precisa de 8 trimestres, e o histórico da CVM começa em 2011.'),
+  B('**Período guardado:** os últimos 36 meses ficam fora de qualquer escolha e servem só para a conferência final.'),
+  H2('Desenho'),
+  N('**Frequência:** Score recalculado no último pregão de cada mês, só com o que era público na data.', 'numeros2'),
+  N('**Carteiras sobrepostas:** quintis mantidos por 1, 3, 6 e 12 meses, várias abertas ao mesmo tempo (Jegadeesh; Titman, 1993).', 'numeros2'),
+  N('**Custos:** corretagem, emolumentos e o spread de compra e venda, que pesa mais nas ações menos líquidas (Novy-Marx; Velikov, 2016).', 'numeros2'),
+  H2('Medidas'),
+  B('**Regressões em seção transversal:** a média dos coeficientes mensais mostra o poder de previsão (Fama; MacBeth, 1973), com erros corrigidos (Newey; West, 1987).'),
+  B('**Alfa contra os fatores brasileiros:** mostra se o Score acrescenta algo além dos fatores conhecidos (Carhart, 1997).'),
+  ...F('rₚ,ₜ − r_f,ₜ = α + β·MKTₜ + s·SMBₜ + h·HMLₜ + w·WMLₜ + l·IMLₜ + εₜ',
+    'o retorno da carteira {rₚ,ₜ} menos a taxa livre de risco {r_f,ₜ} no mês {t} é igual a {α} mais {β} vezes o fator de mercado {MKTₜ}, mais {s} vezes o fator tamanho {SMBₜ}, mais {h} vezes o fator valor {HMLₜ}, mais {w} vezes o fator momentum {WMLₜ}, mais {l} vezes o fator iliquidez {IMLₜ}, mais o erro {εₜ}.',
+    'separa quanto do ganho vem de fatores já conhecidos e quanto é contribuição própria do Score, que é o alfa.'),
+  ...F('IC = (1 / T) · Σₜ ρₜ(Sᵢ,ₜ ; Retᵢ,ₜ₊₁)',
+    'o coeficiente de informação {IC} é igual a {1} dividido por {T} vezes a soma, em cada mês {t}, da correlação de postos {ρₜ} entre o Score {Sᵢ,ₜ} de cada ação {i} e o retorno {Retᵢ,ₜ₊₁} no período seguinte; {T} é o número de meses.',
+    'mostra se, em média, a ordem do ranking acerta a ordem dos retornos que vieram depois (Grinold; Kahn, 2000).'),
+  H2('Controles contra o excesso de testes'),
+  B('**Contagem de tentativas:** cada variação testada depois deste registro é contada.'),
+  B('**Significância maior:** estatística t mínima de 3, e não 2 (Harvey; Liu; Zhu, 2016).'),
+  B('**Sharpe deflacionado:** desconta a sorte esperada pelo número de tentativas (Bailey; López de Prado, 2014).'),
+  B('**Probabilidade de sobreajuste:** por validação cruzada combinatória (Bailey et al., 2017; López de Prado, 2018).'),
+  B('**Comparação de variações:** teste de realidade de White (2000) ou de Hansen (2005).'),
+
+  H1('7. Critérios para publicar', false),
+  P('O ranking só vai para os assinantes se passar em **todos** os critérios abaixo:'),
+  tabela(['Medida', 'Critério'], [
+    ['Estatística t do Score (Fama-MacBeth)', 'maior ou igual a 3'],
+    ['Alfa do quintil do topo menos o de baixo', 'positivo, com t ≥ 2, contra os 5 fatores do NEFIN'],
+    ['Sharpe deflacionado', 'probabilidade acima de 95%'],
+    ['Probabilidade de sobreajuste', 'abaixo de 20%'],
+    ['Período guardado (36 meses)', 'quintil do topo à frente do Ibovespa depois dos custos'],
+  ], [4500, 4500]),
+  P('Enquanto não passar, a tela do Radar mostra "Ranking em calibração".'),
+  P('Depois de aprovado, o Score segue acompanhado. Se o coeficiente de informação dos últimos 12 meses ficar negativo, a tela volta para "Ranking em calibração" até a revisão.'),
+
+  H1('8. Próximos passos', false),
+  P('A construção segue esta ordem:'),
+  N('**Histórico de cotações:** coletor das cotações da B3 de 2006 até hoje, com ajuste por proventos e desdobramentos.', 'numeros3'),
+  N('**Histórico das demonstrações:** DFP e ITR da CVM desde 2011, com a data de entrega de cada documento.', 'numeros3'),
+  N('**Fatores e juros:** fatores diários do NEFIN, NTN-B e Focus.', 'numeros3'),
+  N('**Motor de cálculo:** as sete camadas, com cada subitem conferido em empresas conhecidas.', 'numeros3'),
+  N('**Teste histórico:** rodado uma vez, conforme este registro, com relatório completo.', 'numeros3'),
+  N('**Decisão:** publicar se passar nos critérios; se não, revisar como nova versão.', 'numeros3'),
+
+  H1('9. Referências', false),
+  P('Lista no padrão ABNT (NBR 6023).'),
+  R('ALTMAN, E. I. Financial ratios, discriminant analysis and the prediction of corporate bankruptcy. **The Journal of Finance**, v. 23, n. 4, p. 589-609, 1968.'),
+  R('AMIHUD, Y. Illiquidity and stock returns: cross-section and time-series effects. **Journal of Financial Markets**, v. 5, n. 1, p. 31-56, 2002.'),
+  R('ANG, A.; HODRICK, R. J.; XING, Y.; ZHANG, X. The cross-section of volatility and expected returns. **The Journal of Finance**, v. 61, n. 1, p. 259-299, 2006.'),
+  R('ASNESS, C. S.; FRAZZINI, A.; PEDERSEN, L. H. Quality minus junk. **Review of Accounting Studies**, v. 24, n. 1, p. 34-112, 2019.'),
+  R('ASNESS, C. S.; MOSKOWITZ, T. J.; PEDERSEN, L. H. Value and momentum everywhere. **The Journal of Finance**, v. 68, n. 3, p. 929-985, 2013.'),
+  R('BAILEY, D. H.; BORWEIN, J. M.; LÓPEZ DE PRADO, M.; ZHU, Q. J. Pseudo-mathematics and financial charlatanism: the effects of backtest overfitting on out-of-sample performance. **Notices of the American Mathematical Society**, v. 61, n. 5, p. 458-471, 2014.'),
+  R('BAILEY, D. H.; BORWEIN, J. M.; LÓPEZ DE PRADO, M.; ZHU, Q. J. The probability of backtest overfitting. **Journal of Computational Finance**, v. 20, n. 4, p. 39-69, 2017.'),
+  R('BAILEY, D. H.; LÓPEZ DE PRADO, M. The deflated Sharpe ratio: correcting for selection bias, backtest overfitting and non-normality. **The Journal of Portfolio Management**, v. 40, n. 5, p. 94-107, 2014.'),
+  R('BAKER, M.; BRADLEY, B.; WURGLER, J. Benchmarks as limits to arbitrage: understanding the low-volatility anomaly. **Financial Analysts Journal**, v. 67, n. 1, p. 40-54, 2011.'),
+  R('BARROSO, P.; SANTA-CLARA, P. Momentum has its moments. **Journal of Financial Economics**, v. 116, n. 1, p. 111-120, 2015.'),
+  R('BENEISH, M. D. The detection of earnings manipulation. **Financial Analysts Journal**, v. 55, n. 5, p. 24-36, 1999.'),
+  R('BERNARD, V. L.; THOMAS, J. K. Post-earnings-announcement drift: delayed price response or risk premium? **Journal of Accounting Research**, v. 27, suplemento, p. 1-36, 1989.'),
+  R('BORTOLUZZO, A. B.; PISTILI, G. N.; BORTOLUZZO, M. M. Analyzing the quality factor for Brazil. **Revista Brasileira de Finanças**, v. 19, n. 3, 2021.'),
+  R('BROCK, W.; LAKONISHOK, J.; LEBARON, B. Simple technical trading rules and the stochastic properties of stock returns. **The Journal of Finance**, v. 47, n. 5, p. 1731-1764, 1992.'),
+  R('CAMPBELL, J. Y.; HILSCHER, J.; SZILAGYI, J. In search of distress risk. **The Journal of Finance**, v. 63, n. 6, p. 2899-2939, 2008.'),
+  R('CARHART, M. M. On persistence in mutual fund performance. **The Journal of Finance**, v. 52, n. 1, p. 57-82, 1997.'),
+  R('CHAN, L. K. C.; JEGADEESH, N.; LAKONISHOK, J. Momentum strategies. **The Journal of Finance**, v. 51, n. 5, p. 1681-1713, 1996.'),
+  R('CHAN, L. K. C.; KARCESKI, J.; LAKONISHOK, J. The level and persistence of growth rates. **The Journal of Finance**, v. 58, n. 2, p. 643-684, 2003.'),
+  R('CIVILETTI, F.; CAMPANI, C. H.; ROQUETE, R. Carteiras igualmente ponderadas e "efeito momentum": uma combinação interessante para investidores não sofisticados? **Brazilian Business Review**, v. 17, n. 5, p. 507-522, 2020.'),
+  R('DA, Z.; GURUN, U. G.; WARACHKA, M. Frog in the pan: continuous information and momentum. **The Review of Financial Studies**, v. 27, n. 7, p. 2171-2218, 2014.'),
+  R('DANIEL, K.; MOSKOWITZ, T. J. Momentum crashes. **Journal of Financial Economics**, v. 122, n. 2, p. 221-247, 2016.'),
+  R('DEMIGUEL, V.; GARLAPPI, L.; UPPAL, R. Optimal versus naive diversification: how inefficient is the 1/N portfolio strategy? **The Review of Financial Studies**, v. 22, n. 5, p. 1915-1953, 2009.'),
+  R('FAMA, E. F.; MACBETH, J. D. Risk, return, and equilibrium: empirical tests. **Journal of Political Economy**, v. 81, n. 3, p. 607-636, 1973.'),
+  R('FRAZZINI, A.; PEDERSEN, L. H. Betting against beta. **Journal of Financial Economics**, v. 111, n. 1, p. 1-25, 2014.'),
+  R('GEORGE, T. J.; HWANG, C.-Y. The 52-week high and momentum investing. **The Journal of Finance**, v. 59, n. 5, p. 2145-2176, 2004.'),
+  R('GORDON, M. J. **The investment, financing, and valuation of the corporation**. Homewood: Richard D. Irwin, 1962.'),
+  R('GRAY, W. R.; CARLISLE, T. E. **Quantitative value**: a practitioner\'s guide to automating intelligent investment and eliminating behavioral errors. Hoboken: Wiley, 2012.'),
+  R('GRAY, W. R.; VOGEL, J. R. **Quantitative momentum**: a practitioner\'s guide to building a momentum-based stock selection system. Hoboken: Wiley, 2016.'),
+  R('GREENBLATT, J. **The little book that beats the market**. Hoboken: Wiley, 2006.'),
+  R('GRINOLD, R. C.; KAHN, R. N. **Active portfolio management**: a quantitative approach for producing superior returns and controlling risk. 2. ed. New York: McGraw-Hill, 2000.'),
+  R('HANSEN, P. R. A test for superior predictive ability. **Journal of Business & Economic Statistics**, v. 23, n. 4, p. 365-380, 2005.'),
+  R('HARVEY, C. R.; LIU, Y.; ZHU, H. … and the cross-section of expected returns. **The Review of Financial Studies**, v. 29, n. 1, p. 5-68, 2016.'),
+  R('HOU, K.; XUE, C.; ZHANG, L. Replicating anomalies. **The Review of Financial Studies**, v. 33, n. 5, p. 2019-2133, 2020.'),
+  R('JEGADEESH, N.; TITMAN, S. Returns to buying winners and selling losers: implications for stock market efficiency. **The Journal of Finance**, v. 48, n. 1, p. 65-91, 1993.'),
+  R('LEE, C. M. C.; SWAMINATHAN, B. Price momentum and trading volume. **The Journal of Finance**, v. 55, n. 5, p. 2017-2069, 2000.'),
+  R('LEV, B.; THIAGARAJAN, S. R. Fundamental information analysis. **Journal of Accounting Research**, v. 31, n. 2, p. 190-215, 1993.'),
+  R('LÓPEZ DE PRADO, M. **Advances in financial machine learning**. Hoboken: Wiley, 2018.'),
+  R('LOUGHRAN, T.; WELLMAN, J. W. New evidence on the relation between the enterprise multiple and average stock returns. **Journal of Financial and Quantitative Analysis**, v. 46, n. 6, p. 1629-1650, 2011.'),
+  R('McLEAN, R. D.; PONTIFF, J. Does academic research destroy stock return predictability? **The Journal of Finance**, v. 71, n. 1, p. 5-32, 2016.'),
+  R('MOHANRAM, P. S. Separating winners from losers among low book-to-market stocks using financial statement analysis. **Review of Accounting Studies**, v. 10, n. 2, p. 133-170, 2005.'),
+  R('MOLODOVSKY, N.; MAY, C.; CHOTTINER, S. Common stock valuation: principles, tables and application. **Financial Analysts Journal**, v. 21, n. 2, p. 104-123, 1965.'),
+  R('NEFIN — CENTRO BRASILEIRO DE PESQUISA EM ECONOMIA FINANCEIRA DA USP. **Fatores de risco** (mercado, tamanho, valor, momentum e iliquidez). São Paulo: USP. Disponível em: https://nefin.com.br/. Acesso em: 22 out. 2026.'),
+  R('NEWEY, W. K.; WEST, K. D. A simple, positive semi-definite, heteroskedasticity and autocorrelation consistent covariance matrix. **Econometrica**, v. 55, n. 3, p. 703-708, 1987.'),
+  R('NOVY-MARX, R. Is momentum really momentum? **Journal of Financial Economics**, v. 103, n. 3, p. 429-453, 2012.'),
+  R('NOVY-MARX, R. The other side of value: the gross profitability premium. **Journal of Financial Economics**, v. 108, n. 1, p. 1-28, 2013.'),
+  R('NOVY-MARX, R. **Fundamentally, momentum is fundamental momentum**. Cambridge: National Bureau of Economic Research, 2015. (NBER Working Paper, 20984).'),
+  R('NOVY-MARX, R.; VELIKOV, M. A taxonomy of anomalies and their trading costs. **The Review of Financial Studies**, v. 29, n. 1, p. 104-147, 2016.'),
+  R('PIOTROSKI, J. D. Value investing: the use of historical financial statement information to separate winners from losers. **Journal of Accounting Research**, v. 38, suplemento, p. 1-41, 2000.'),
+  R('SLOAN, R. G. Do stock prices fully reflect information in accruals and cash flows about future earnings? **The Accounting Review**, v. 71, n. 3, p. 289-315, 1996.'),
+  R('WHITE, H. A reality check for data snooping. **Econometrica**, v. 68, n. 5, p. 1097-1126, 2000.'),
+];
+const doc = new Document({
+  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0 (registro prévio)',
+  styles: {
+    default: { document: { run: { font: FONTE, size: 22, color: '222222' } } },
+    paragraphStyles: [
+      { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true,
+        run: { size: 34, bold: true, color: PRETO, font: FONTE }, paragraph: { spacing: { before: 0, after: 200 }, outlineLevel: 0,
+          border: { bottom: { style: BorderStyle.SINGLE, size: 12, color: OURO, space: 6 } } } },
+      { id: 'Heading2', name: 'Heading 2', basedOn: 'Normal', next: 'Normal', quickFormat: true,
+        run: { size: 26, bold: true, color: OURO, font: FONTE }, paragraph: { spacing: { before: 260, after: 120 }, outlineLevel: 1 } },
+      { id: 'Heading3', name: 'Heading 3', basedOn: 'Normal', next: 'Normal', quickFormat: true,
+        run: { size: 22, bold: true, color: PRETO, font: FONTE }, paragraph: { spacing: { before: 200, after: 60 }, outlineLevel: 2 } },
+    ] },
+  numbering: { config: ['numeros', 'numeros2', 'numeros3'].map(r => ({ reference: r, levels: [{ level: 0, format: LevelFormat.DECIMAL, text: '%1.', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 540, hanging: 300 } } } }] }))
+    .concat([{ reference: 'marcas', levels: [{ level: 0, format: LevelFormat.BULLET, text: '•', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 540, hanging: 270 } } } },
+      { level: 1, format: LevelFormat.BULLET, text: '–', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 900, hanging: 270 } } } }] }]) },
+  sections: [
+    { properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 1300, bottom: 1300, left: 1450, right: 1450 } } }, children: capa },
+    { properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 1300, bottom: 1300, left: 1450, right: 1450 } } },
+      headers: { default: new Header({ children: [new Paragraph({ tabStops: [{ type: TabStopType.RIGHT, position: 9000 }],
+        border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: OURO, space: 4 } },
+        children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 26, height: 27 } }),
+          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0 — registro prévio', size: 17, color: CINZA })] })] }) },
+      footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: 'Página ', size: 17, color: CINZA }), new TextRun({ children: [PageNumber.CURRENT], size: 17, color: CINZA }),
+          new TextRun({ text: '  ·  Uso interno. Não é recomendação de investimento.', size: 17, color: CINZA })] })] }) },
+      children: corpo },
+  ],
+});
+const saida = process.argv[2] || 'Score_Exponencial_metodologia_v1.0.docx';
+Packer.toBuffer(doc).then(b => { fs.writeFileSync(saida, b); console.log('ok', b.length); });
