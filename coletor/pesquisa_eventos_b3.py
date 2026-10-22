@@ -1,6 +1,6 @@
 """
 SOLIDUNS — BASE DE PESQUISA: PROVENTOS E EVENTOS SOCIETÁRIOS DA B3 (Score Exponencial v1.0.2, camada 1, etapa 2)
-v1.1 (22/10/2026)
+v1.2 (22/10/2026)
 
 Fonte OFICIAL e gratuita: páginas de empresas listadas da B3 (sistemaswebb3-listados), as mesmas consultas do site
 da B3, sem chave. Testado em 22/10/2026 (workflow "Diagnóstico eventos B3"):
@@ -12,6 +12,7 @@ da B3, sem chave. Testado em 22/10/2026 (workflow "Diagnóstico eventos B3"):
 Os emissores vêm dos ISIN da base de cotações (letras 3 a 6 do ISIN: BRPETRACNPR6 -> PETR), o que liga também os
 códigos antigos de 3 letras (até 1997). A resposta da B3 vem como texto JSON dentro de JSON: é lida duas vezes.
 
+v1.2: o cadastro guarda o código CVM de cada emissor (liga a B3 às demonstrações da CVM).
 Saída (--saida): proventos_b3.csv.gz, eventos_acoes_b3.csv.gz e emissores_b3.csv.gz (com o que não foi encontrado).
 Uso: python coletor/pesquisa_eventos_b3.py --cotacoes dados_b3 --saida dados_eventos
 """
@@ -116,7 +117,8 @@ def main():
                 pg += 1
                 time.sleep(0.4)
             time.sleep(0.3)
-        cad.append({"emissor": em, "nome_pregao": nome, "codigos": " ".join(sorted(emissores[em])), "proventos": qtd,
+        cad.append({"emissor": em, "nome_pregao": nome, "codigo_cvm": (s.get("codeCVM") or "").strip(),
+                    "razao_social": (s.get("companyName") or "").strip(), "codigos": " ".join(sorted(emissores[em])), "proventos": qtd,
                     "eventos_acoes": sum(1 for x in acoes if x["emissor"] == em), "situacao": "ok" if nome else "sem cadastro na B3"})
         if n % 100 == 0:
             cc.log(f"  {n}/{len(lista)} emissores; {len(prov)} proventos")
