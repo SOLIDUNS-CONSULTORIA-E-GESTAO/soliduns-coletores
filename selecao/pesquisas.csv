@@ -1,0 +1,11 @@
+data_divulgacao;instituto;amostra;pct_D;pct_E;base;fonte
+2026-09-11;Datafolha;;44;46;totais;O Povo, 12/09/2026
+2026-09-15;CNT/MDA;2002;40;47.3;totais;Money Times, 15/09/2026
+2026-10-01;Datafolha;;45;48;totais;Jornal do Brasil, 01/10/2026
+2026-10-03;Datafolha;;46;47;totais;Diário do Nordeste, 03/10/2026
+2026-10-03;PoderData;4000;50;50;validos;Tribuna PR, 03/10/2026
+2026-10-04;Resultado 1º turno (TSE);6000;47.03;45.16;validos;Portal de Prefeitura, 05/10/2026
+2026-10-08;Datafolha;;52;48;validos;Correio da Manhã, 15/10/2026 (rodada anterior)
+2026-10-14;Quaest;2154;46;44;totais;Forbes, 16/10/2026
+2026-10-15;Datafolha;2520;51;49;validos;Money Times, 15/10/2026
+2026-10-20;Real Time Big Data;;52;48;validos;Metrópoles, 20/10/2026

@@ -1,0 +1,68 @@
+# =====================================================================
+# SOLIDUNS — Robô de Seleção de Carteira (risco Brasil e risco político)
+# Parâmetros do método. Cada item indica a fórmula do compêndio.
+# Valores com "coletar: sim" são buscados na internet a cada execução;
+# o número escrito aqui só é usado se a coleta falhar.
+# =====================================================================
+
+data_referencia: null          # null = hoje. Para testes: "2026-10-22"
+
+eleicao:
+  candidato_D: "Flávio Bolsonaro"   # cenário D (direita)
+  candidato_E: "Lula"               # cenário E (esquerda)
+  sigma_v: 0.03                     # (4.2) erro total das pesquisas, em fração dos votos válidos
+  janela_pesquisas_dias: 7          # (4.1) pesquisas consideradas na média
+  amostra_padrao: 2000              # quando a pesquisa não informa a amostra
+  resultado: null                   # após a apuração: "D" ou "E" (fixa p_D = 1 ou 0)
+
+risco_brasil:
+  cds_5a_pb: 110                    # CDS Brasil 5 anos, pontos-base (leitura de 09/10/2026)
+  cds_data: "2026-10-09"
+  y10: 13.0                         # (3.2) taxa prefixada ~10 anos, % a.a. (coletar: sim — Tesouro Direto)
+  m: 1.5                            # (3.1) razão de volatilidades (coletar: sim — Damodaran)
+  erp_maduro: 4.5                   # (3.3) prêmio de mercado maduro, % (coletar: sim — Damodaran)
+  kappa: 2.0                        # (3.5) repasse do CDS aos juros longos
+  kappa_curto: 1.5                  # repasse do CDS à Selic média esperada (crescimento setorial)
+  delta_pb: null                    # (4.4)/(4.8) prêmio político; null = estimar (CDS histórico ou bolsa)
+  delta_minimo_pb: 20
+  delta_maximo_pb: 300
+
+macro:                              # (5.1) base = mediana Focus do próximo ano (coletar: sim)
+  ipca: 4.3
+  pib: 1.3
+  selic_media: 12.0
+  # Deslocamentos subjetivos por cenário (padrão: zero = só o efeito de juros medido no mercado)
+  ajuste_cenario:
+    D: {ipca: 0.0, pib: 0.0}
+    E: {ipca: 0.0, pib: 0.0}
+
+valor:
+  payout_minimo: 0.25               # dividendo mínimo legal
+  spread_minimo: 0.03               # (8.2) K_e − g de pelo menos 3 p.p.
+  peso_choque_empirico: 0.5         # (10.3) peso do choque empírico (4.7) contra o fundamental (10.2)
+
+escore:
+  winsor: [0.025, 0.975]            # (9.1)
+  regime: "eleitoral"               # "eleitoral" ou "normal" (Tabela 7)
+  pesos:
+    eleitoral: {retorno_esperado: 0.25, pior_caso: 0.20, crescimento: 0.20, governanca: 0.20, margem: 0.15}
+    normal:    {retorno_esperado: 0.35, pior_caso: 0.05, crescimento: 0.20, governanca: 0.20, margem: 0.20}
+
+governanca:                         # (6.1) Tabela 5
+  pesos: {segmento: 0.30, tag_along: 0.15, conselho: 0.15, free_float: 0.10, controle: 0.15, historico: 0.15}
+  anos_historico: 5
+
+site:                               # página "Carteira SOLIDUNS" (Mercado financeiro › Ações)
+  publicar_automaticamente: false   # false = cada execução entra como prévia; o administrador publica na página
+
+carteira:
+  modo: "condicional"               # "neutro", "cenarios" ou "condicional" (seção 10.5)
+  n_acoes: 15
+  peso_minimo: 0.03
+  peso_maximo: 0.10
+  setor_maximo: 0.25
+  estatais_maximo: 0.20
+  perda_maxima_cenario: 0.10        # (10.4) L
+  gamma_tolerancia: 0.02            # modo neutro: |Γ_c − γ da bolsa| máximo
+  volume_minimo_rs: 20000000        # 10.1 liquidez: média diária de 3 meses
+  janela_beta_anos: 2

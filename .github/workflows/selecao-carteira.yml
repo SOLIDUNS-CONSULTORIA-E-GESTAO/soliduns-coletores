@@ -1,0 +1,77 @@
+# SOLIDUNS — Robô de Seleção de Carteira (risco Brasil e risco político)
+# Roda de segunda a sexta às 20h17 de Brasília (23h17 UTC), depois que a B3
+# publica as cotações do dia, e também pode ser disparado à mão em:
+# Actions -> "Seleção de carteira" -> Run workflow (escolhendo modo e resultado).
+# Grava no Supabase (tabelas da migration 182, como prévia) e deixa o
+# relatório em Excel para download na própria execução (seção "Artifacts").
+name: Seleção de carteira
+
+on:
+  schedule:
+    - cron: "17 23 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "Modo da carteira"
+        type: choice
+        options: [padrao-do-arquivo, condicional, cenarios, neutro]
+        default: padrao-do-arquivo
+      resultado:
+        description: "Resultado da eleição (só depois da apuração)"
+        type: choice
+        options: [nenhum, D, E]
+        default: nenhum
+      regime:
+        description: "Pesos do escore"
+        type: choice
+        options: [padrao-do-arquivo, eleitoral, normal]
+        default: padrao-do-arquivo
+
+permissions:
+  contents: read
+
+jobs:
+  selecao:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v5
+
+      - name: Preparar o Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: pip install -r selecao/requirements.txt
+
+      - name: Recuperar arquivos já baixados (CVM, B3)
+        uses: actions/cache@v4
+        with:
+          path: selecao/cache
+          key: selecao-cache-${{ github.run_id }}
+          restore-keys: selecao-cache-
+
+      - name: Rodar o robô e gravar no Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          MODO: ${{ inputs.modo }}
+          RESULTADO: ${{ inputs.resultado }}
+          REGIME: ${{ inputs.regime }}
+        run: |
+          ARGS="--gravar"
+          if [ -n "$MODO" ] && [ "$MODO" != "padrao-do-arquivo" ]; then ARGS="$ARGS --modo $MODO"; fi
+          if [ "$RESULTADO" = "D" ] || [ "$RESULTADO" = "E" ]; then ARGS="$ARGS --resultado $RESULTADO"; fi
+          if [ -n "$REGIME" ] && [ "$REGIME" != "padrao-do-arquivo" ]; then ARGS="$ARGS --regime $REGIME"; fi
+          cd selecao && python robo_selecao.py $ARGS
+
+      - name: Guardar o relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-selecao
+          path: selecao/resultados/
+          retention-days: 30
+          if-no-files-found: ignore
