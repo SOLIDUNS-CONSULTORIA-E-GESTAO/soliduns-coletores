@@ -1,0 +1,37 @@
+# SOLIDUNS — BASE DE PESQUISA DO SCORE EXPONENCIAL: demonstrações da CVM no tempo certo (camada 1). 22/10/2026.
+# Fonte oficial e gratuita (dados.cvm.gov.br). Não grava no Supabase: publica na Release "pesquisa-cvm".
+# Só roda à mão: Actions › Pesquisa - CVM › Run workflow (anos: ex. 2010-2026).
+name: Pesquisa - CVM
+
+on:
+  workflow_dispatch:
+    inputs:
+      anos:
+        description: "Anos (ex.: 2010-2026)"
+        required: true
+        default: "2010-2026"
+
+permissions:
+  contents: write
+
+jobs:
+  cvm:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r coletor/requirements.txt
+      - name: Baixar e ler os arquivos da CVM
+        run: python coletor/pesquisa_cvm.py --anos "${{ github.event.inputs.anos }}" --saida dados_cvm
+      - name: Publicar na Release pesquisa-cvm
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view pesquisa-cvm >/dev/null 2>&1 || \
+            gh release create pesquisa-cvm --title "Pesquisa — demonstrações da CVM no tempo certo" \
+              --notes "Base de pesquisa do Score Exponencial: DFP e ITR (todas as versões, com data de entrega), composição do capital, FCA e cadastro. Gerado pelo workflow 'Pesquisa - CVM'."
+          gh release upload pesquisa-cvm dados_cvm/* --clobber
+          echo "Arquivos publicados: $(ls dados_cvm | wc -l); tamanho: $(du -sh dados_cvm | cut -f1)" >> "$GITHUB_STEP_SUMMARY"
