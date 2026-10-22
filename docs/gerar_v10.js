@@ -1,4 +1,4 @@
-// Score Exponencial SOLIDUNS — Metodologia v1.0.1 (registro prévio) — 22/10/2026
+// Score Exponencial SOLIDUNS — Metodologia v1.0.2 (registro prévio) — 22/10/2026
 const fs = require('fs');
 const { Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType,
   HeadingLevel, BorderStyle, LevelFormat, Footer, Header, PageNumber, TabStopType } = require('docx');
@@ -58,7 +58,7 @@ const capa = [
     children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 170, height: 174 } })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: 'SCORE EXPONENCIAL', bold: true, size: 52, color: PRETO, font: FONTE })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: 'Metodologia e registro prévio do teste', size: 26, color: OURO })] }),
-  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.1 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.2 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Radar de Ações Exponenciais · SOLIDUNS', size: 22, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Brasília, 22 de outubro de 2026', size: 22, color: CINZA })] }),
 ];
@@ -73,13 +73,15 @@ const corpo = [
   N('**Dados do teste:** cotações da B3 desde 2006 e fatores de risco do NEFIN-USP, ambos públicos e gratuitos.', 'numeros'),
   N('**Critérios para publicar:** aprovados como propostos na versão 0.2 (capítulo 7).', 'numeros'),
   N('**Risco de crédito e de manipulação viram subitens (v1.0.1):** o EM Score de Altman (2005) e o escore M de Beneish (1999) entram no Pilar 4, sem desconto em pontos.', 'numeros'),
+  N('**Faixa de manutenção na carteira do Radar (v1.0.2):** a ação entra ao chegar aos 20% melhores do Score e só sai ao cair abaixo dos 40% melhores.', 'numeros'),
   H2('Histórico de versões'),
   B('**v1.0, de 22/10/2026:** registro prévio da metodologia.'),
   B('**v1.0.1, de 22/10/2026:** o escore Z de Altman (1968), feito só para indústrias, é trocado pelo EM Score de Altman (2005), que vale para todas as empresas não financeiras. Os alertas deixam de tirar pontos e viram subitens do Pilar 4. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
+  B('**v1.0.2, de 22/10/2026:** a carteira do Radar passa a ter faixa de manutenção, para reduzir o giro e os custos (Novy-Marx; Velikov, 2016). A nota de cada ação não muda. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
   H2('O que é o registro prévio'),
   P('Tudo neste documento fica **congelado antes do primeiro teste**: pilares, subitens, parâmetros, pesos e critérios.'),
   P('Assim, o teste não pode ser ajustado ao resultado. Qualquer mudança depois do teste gera uma nova versão, e a variação conta como mais uma tentativa no controle de excesso de testes (capítulo 6).'),
-  H2('O que a literatura ensina'),
+  H2('O que a literatura ensina', true),
   B('**Os fatores existem, mas encolhem:** anomalias publicadas rendem, em média, 26% menos fora da amostra original e 58% menos depois da publicação (McLean; Pontiff, 2016).'),
   B('**Muitos fatores não se replicam:** boa parte perde significância com dados atualizados e custos realistas (Hou; Xue; Zhang, 2020; Novy-Marx; Velikov, 2016).'),
   B('**Combinar fatores ajuda:** valor e momentum têm correlação negativa, e a combinação é mais estável que cada um isolado (Asness; Moskowitz; Pedersen, 2013).'),
@@ -257,6 +259,7 @@ const corpo = [
   N('**Frequência:** Score recalculado no último pregão de cada mês, só com o que era público na data.', 'numeros2'),
   N('**Carteiras sobrepostas:** quintis mantidos por 1, 3, 6 e 12 meses, várias abertas ao mesmo tempo (Jegadeesh; Titman, 1993).', 'numeros2'),
   N('**Custos:** corretagem, emolumentos e o spread de compra e venda, que pesa mais nas ações menos líquidas (Novy-Marx; Velikov, 2016).', 'numeros2'),
+  N('**Carteira do Radar:** além dos quintis, o teste acompanha a carteira com faixa de manutenção (capítulo 7), depois dos custos, com o giro mensal informado.', 'numeros2'),
   H2('Medidas'),
   B('**Regressões em seção transversal:** a média dos coeficientes mensais mostra o poder de previsão (Fama; MacBeth, 1973), com erros corrigidos (Newey; West, 1987).'),
   B('**Alfa contra os fatores brasileiros:** mostra se o Score acrescenta algo além dos fatores conhecidos (Carhart, 1997).'),
@@ -285,9 +288,16 @@ const corpo = [
     ['Período guardado (36 meses)', 'quintil do topo à frente do Ibovespa depois dos custos'],
   ], [4500, 4500]),
   P('Enquanto não passar, a tela do Radar mostra "Ranking em calibração".'),
+  H2('Carteira do Radar: faixa de manutenção', true),
+  P('Novy-Marx e Velikov (2016) mostram que estratégias que trocam mais de 50% da carteira por mês costumam perder o ganho para os custos. A técnica mais eficaz para reduzir esse custo é exigir mais para entrar do que para ficar.'),
+  P('Na carteira do Radar, a regra é esta:'),
+  B('**Entrada:** a ação entra quando chega aos 20% melhores do Score do mês.'),
+  B('**Permanência:** a ação fica enquanto estiver entre os 40% melhores.'),
+  B('**Saída:** a ação sai quando cai abaixo dos 40% melhores.'),
+  P('Assim, uma ação que oscila perto da linha de corte não entra e sai todo mês. A nota de cada ação não muda; só a regra da carteira.'),
   P('Depois de aprovado, o Score segue acompanhado. Se o coeficiente de informação dos últimos 12 meses ficar negativo, a tela volta para "Ranking em calibração" até a revisão.'),
 
-  H1('8. Próximos passos'),
+  H1('8. Próximos passos', false),
   P('A construção segue esta ordem:'),
   N('**Histórico de cotações:** coletor das cotações da B3 de 2006 até hoje, com ajuste por proventos e desdobramentos.', 'numeros3'),
   N('**Histórico das demonstrações:** DFP e ITR da CVM desde 2011, com a data de entrega de cada documento.', 'numeros3'),
@@ -353,7 +363,7 @@ const corpo = [
   R('WHITE, H. A reality check for data snooping. **Econometrica**, v. 68, n. 5, p. 1097-1126, 2000.'),
 ];
 const doc = new Document({
-  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0.1 (registro prévio)',
+  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0.2 (registro prévio)',
   styles: {
     default: { document: { run: { font: FONTE, size: 22, color: '222222' } } },
     paragraphStyles: [
@@ -374,7 +384,7 @@ const doc = new Document({
       headers: { default: new Header({ children: [new Paragraph({ tabStops: [{ type: TabStopType.RIGHT, position: 9000 }],
         border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: OURO, space: 4 } },
         children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 26, height: 27 } }),
-          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0.1 — registro prévio', size: 17, color: CINZA })] })] }) },
+          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0.2 — registro prévio', size: 17, color: CINZA })] })] }) },
       footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER,
         children: [new TextRun({ text: 'Página ', size: 17, color: CINZA }), new TextRun({ children: [PageNumber.CURRENT], size: 17, color: CINZA }),
           new TextRun({ text: '  ·  Uso interno. Não é recomendação de investimento.', size: 17, color: CINZA })] })] }) },
