@@ -1,4 +1,4 @@
-// Score Exponencial SOLIDUNS — Metodologia v1.0.2 (registro prévio) — 22/10/2026
+// Score Exponencial SOLIDUNS — Metodologia v1.0.3 (registro prévio) — 22/10/2026
 const fs = require('fs');
 const { Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType,
   HeadingLevel, BorderStyle, LevelFormat, Footer, Header, PageNumber, TabStopType } = require('docx');
@@ -58,7 +58,7 @@ const capa = [
     children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 170, height: 174 } })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: 'SCORE EXPONENCIAL', bold: true, size: 52, color: PRETO, font: FONTE })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: 'Metodologia e registro prévio do teste', size: 26, color: OURO })] }),
-  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.2 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.3 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Radar de Ações Exponenciais · SOLIDUNS', size: 22, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Brasília, 22 de outubro de 2026', size: 22, color: CINZA })] }),
 ];
@@ -74,14 +74,16 @@ const corpo = [
   N('**Critérios para publicar:** aprovados como propostos na versão 0.2 (capítulo 7).', 'numeros'),
   N('**Risco de crédito e de manipulação viram subitens (v1.0.1):** o EM Score de Altman (2005) e o escore M de Beneish (1999) entram no Pilar 4, sem desconto em pontos.', 'numeros'),
   N('**Faixa de manutenção na carteira do Radar (v1.0.2):** a ação entra ao chegar aos 20% melhores do Score e só sai ao cair abaixo dos 40% melhores.', 'numeros'),
+  N('**Saltos de preço sem evento (v1.0.3):** salto de 3 vezes ou mais num pregão, sem evento informado, vira evento não informado se o novo patamar se mantém; se não se mantém, o pregão é descartado como erro de dado.', 'numeros'),
   H2('Histórico de versões'),
   B('**v1.0, de 22/10/2026:** registro prévio da metodologia.'),
   B('**v1.0.1, de 22/10/2026:** o escore Z de Altman (1968), feito só para indústrias, é trocado pelo EM Score de Altman (2005), que vale para todas as empresas não financeiras. Os alertas deixam de tirar pontos e viram subitens do Pilar 4. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
   B('**v1.0.2, de 22/10/2026:** a carteira do Radar passa a ter faixa de manutenção, para reduzir o giro e os custos (Novy-Marx; Velikov, 2016). A nota de cada ação não muda. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
-  H2('O que é o registro prévio'),
+  B('**v1.0.3, de 22/10/2026:** regra de tratamento dos saltos de preço sem evento informado (camada 1). Ela evita que grupamentos antigos, que a B3 não registra, criem falsas altas. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
+  H2('O que é o registro prévio', true),
   P('Tudo neste documento fica **congelado antes do primeiro teste**: pilares, subitens, parâmetros, pesos e critérios.'),
   P('Assim, o teste não pode ser ajustado ao resultado. Qualquer mudança depois do teste gera uma nova versão, e a variação conta como mais uma tentativa no controle de excesso de testes (capítulo 6).'),
-  H2('O que a literatura ensina', true),
+  H2('O que a literatura ensina'),
   B('**Os fatores existem, mas encolhem:** anomalias publicadas rendem, em média, 26% menos fora da amostra original e 58% menos depois da publicação (McLean; Pontiff, 2016).'),
   B('**Muitos fatores não se replicam:** boa parte perde significância com dados atualizados e custos realistas (Hou; Xue; Zhang, 2020; Novy-Marx; Velikov, 2016).'),
   B('**Combinar fatores ajuda:** valor e momentum têm correlação negativa, e a combinação é mais estável que cada um isolado (Asness; Moskowitz; Pedersen, 2013).'),
@@ -103,13 +105,17 @@ const corpo = [
   H2('Camada 1 — Dados no tempo certo'),
   B('**Data de publicação:** a demonstração da CVM entra no cálculo só a partir da data de entrega, que consta nos dados abertos.'),
   B('**Viés de sobrevivência:** o histórico inclui as empresas que deixaram a bolsa. Sem elas, o teste fica otimista.'),
-  B('**Proventos e desdobramentos:** os preços são ajustados por dividendos, juros sobre capital e grupamentos.'),
-  H2('Camada 2 — Universo'),
+  B('**Proventos e desdobramentos:** os preços são ajustados por dividendos, juros sobre capital, desdobramentos e grupamentos. Os eventos vêm da B3 e são conferidos pelo salto real de preço.'),
+  B('**Saltos sem evento:** um salto de 3 vezes ou mais num pregão (ou queda a menos de 1/3), sem evento informado pela B3 nem razão exata de desdobramento, é tratado assim:'),
+  B('**Patamar mantido:** se o preço fica no novo nível nos pregões seguintes, o salto é tratado como evento não informado, com retorno zero naquele dia.', 1),
+  B('**Pico de um dia:** se o preço volta ao nível anterior, o pregão é descartado como erro de dado.', 1),
+  B('**Por quê:** grupamentos antigos, dos anos 1990 e 2000, nem sempre estão registrados na B3. Sem a regra, eles criariam falsas altas exponenciais. A regra é conservadora: pode apagar uma alta real de 3 vezes num único dia, que é raríssima.'),
+  H2('Camada 2 — Universo', true),
   B('**Liquidez:** volume financeiro médio de 63 pregões de pelo menos R$ 1 milhão por dia, e índice de iliquidez de Amihud (2002) fora do décimo pior.'),
   B('**Histórico mínimo:** 252 pregões, porque o sinal de 12 meses precisa de um ano inteiro.'),
   B('**Uma classe por empresa:** a mais líquida entre ON, PN e units.'),
   B('**Setores especiais:** bancos e seguradoras usam indicadores próprios no Pilar 2, porque o balanço deles não tem EBITDA nem dívida líquida no mesmo sentido.'),
-  H2('Camada 4 — Tratamento', true),
+  H2('Camada 4 — Tratamento'),
   P('Cada subitem vira uma nota padronizada robusta, calculada dentro do setor. Ela preserva a distância entre as ações e não se deixa levar por valores extremos.'),
   ...F('zᵢ = (xᵢ − mediana(x)) / (1,4826 · MAD(x))',
     'a nota padronizada {zᵢ} da ação {i} é igual ao valor {xᵢ} menos a {mediana} de {x} entre as ações do setor, dividido por {1,4826} vezes o desvio absoluto mediano {MAD} de {x}; o resultado é limitado entre {−3} e {3}.',
@@ -363,7 +369,7 @@ const corpo = [
   R('WHITE, H. A reality check for data snooping. **Econometrica**, v. 68, n. 5, p. 1097-1126, 2000.'),
 ];
 const doc = new Document({
-  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0.2 (registro prévio)',
+  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0.3 (registro prévio)',
   styles: {
     default: { document: { run: { font: FONTE, size: 22, color: '222222' } } },
     paragraphStyles: [
@@ -384,7 +390,7 @@ const doc = new Document({
       headers: { default: new Header({ children: [new Paragraph({ tabStops: [{ type: TabStopType.RIGHT, position: 9000 }],
         border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: OURO, space: 4 } },
         children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 26, height: 27 } }),
-          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0.2 — registro prévio', size: 17, color: CINZA })] })] }) },
+          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0.3 — registro prévio', size: 17, color: CINZA })] })] }) },
       footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER,
         children: [new TextRun({ text: 'Página ', size: 17, color: CINZA }), new TextRun({ children: [PageNumber.CURRENT], size: 17, color: CINZA }),
           new TextRun({ text: '  ·  Uso interno. Não é recomendação de investimento.', size: 17, color: CINZA })] })] }) },
