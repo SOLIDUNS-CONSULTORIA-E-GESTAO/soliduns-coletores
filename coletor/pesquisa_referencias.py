@@ -239,7 +239,11 @@ def main():
         ap.add_argument(a, required=True)
     a = ap.parse_args()
     os.makedirs(a.saida, exist_ok=True)
-    ibovespa(a.saida)
+    try:
+        ibovespa(a.saida)
+    except Exception:
+        import traceback
+        print("::notice title=Ibovespa erro::" + traceback.format_exc().replace("\n", " | ")[-900:], flush=True)
     nefin(a.saida)
     tesouro(a.saida)
     focus(a.saida)

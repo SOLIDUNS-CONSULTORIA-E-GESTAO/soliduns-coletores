@@ -10,14 +10,14 @@ conferida com dois placebos, que não usam o Score:
 Passos (cada um descrito no protocolo):
   1. retorno de cada ação de um fim de mês ao seguinte, pelo índice de retorno total; ação que sai da bolsa rende
      até o último pregão e, no resto do mês, a taxa livre de risco do NEFIN;
-  2. custo de cada negociação = corretagem + emolumentos da B3 + meio spread estimado (Abdi; Ranaldo, 2017);
+  2. custo de cada negociação = corretagem + emolumentos da B3 + meio spread pela faixa de liquidez da ação;
   3. carteiras: quintis por pesos iguais, mantidas por 1, 3, 6 e 12 meses (Jegadeesh; Titman, 1993), e a carteira
      do Radar com faixa de manutenção (entra no topo 20%, sai abaixo do topo 40%);
   4. medidas: Fama-MacBeth com Newey-West, coeficiente de informação, alfa contra os 5 fatores do NEFIN, Sharpe
      deflacionado, probabilidade de sobreajuste (CSCV), teste SPA de Hansen e o período guardado contra o Ibovespa;
   5. conferência do EM Score contra recuperações judiciais e falências do cadastro da CVM.
 
-Uso: python coletor/score_teste.py --motor S --ajustada A --cotacoes B --referencias R --cvm C --modo aleatorio
+Uso: python coletor/score_teste.py --motor S --ajustada A --referencias R --cvm C --modo aleatorio [--fator-custo 2]
 """
 import argparse
 import glob
@@ -35,8 +35,7 @@ GUARDADO = 36                 # meses finais guardados para a conferência final
 INICIO_MOMENTUM = "2007-01"   # Pilar Momentum sozinho (descritivo)
 CORRETAGEM = 0.0005           # por lado
 EMOLUMENTOS = 0.0003          # por lado (negociação + liquidação da B3)
-SPREAD_MAX = 0.10
-JANELA_SPREAD = 63
+FAIXAS_SPREAD = [(100e6, 0.0005), (20e6, 0.0015), (5e6, 0.0030), (0, 0.0050)]   # (volume diário mínimo, meio spread)
 HOLDINGS = (1, 3, 6, 12)
 SINAIS = {"Score": "score", "Momentum": "z_M", "Qualidade e valor": "z_F", "Momento fundamental": "z_A", "Risco e confluência": "z_C"}
 BLOCOS_CSCV = 16
@@ -82,37 +81,12 @@ def retornos_mensais(d, rf_dia, meses):
     return out
 
 
-def spreads(pasta_cot, diario, meses, desde_ano=2006):
-    """Meio spread por papel e mês (Abdi; Ranaldo, 2017), com os 63 pregões até o fim do mês."""
-    partes = []
-    for f in sorted(glob.glob(os.path.join(pasta_cot, "cotahist_*.csv.gz"))):
-        ano = int(os.path.basename(f)[9:13])
-        if ano < desde_ano:
-            continue
-        partes.append(pd.read_csv(f, usecols=["ticker", "data", "maxima", "minima", "fechamento"]))
-    c = pd.concat(partes, ignore_index=True)
-    c["data"] = pd.to_datetime(c["data"])
-    c = c.merge(diario[["papel", "ticker", "data"]], on=["ticker", "data"], how="inner")
-    c = c[(c.maxima > 0) & (c.minima > 0) & (c.fechamento > 0)].sort_values(["papel", "data"])
-    c["cl"] = np.log(c.fechamento)
-    c["eta"] = (np.log(c.maxima) + np.log(c.minima)) / 2
-    out = {}
-    fim = {m: np.datetime64(pd.Period(m, "M").end_time.normalize()) for m in meses}
-    for papel, g in c.groupby("papel", sort=False):
-        datas = g["data"].to_numpy()
-        cl, eta = g["cl"].to_numpy(), g["eta"].to_numpy()
-        prod = (cl[:-1] - eta[:-1]) * (cl[:-1] - eta[1:])           # (c_t − η_t)(c_t − η_{t+1})
-        for m, t in fim.items():
-            j = np.searchsorted(datas, t, side="right") - 1
-            if j < 2:
-                continue
-            a = max(0, j - JANELA_SPREAD + 1)
-            v = prod[a:j]
-            if len(v) < 20:
-                continue
-            s2 = 4 * np.mean(v)
-            out[(m, papel)] = min(SPREAD_MAX, math.sqrt(max(s2, 0.0)))
-    return out
+def meio_spread(vol):
+    """Meio spread por faixa de volume financeiro médio diário (63 pregões) no mês de formação."""
+    for lim, v in FAIXAS_SPREAD:
+        if vol >= lim:
+            return v
+    return FAIXAS_SPREAD[-1][1]
 
 
 # ------------------------------------------------------------------------------------------- carteiras
@@ -255,10 +229,11 @@ def spa_hansen(D, B=BOOT, q=1 / BLOCO_MEDIO, semente=SEMENTE):
 # ------------------------------------------------------------------------------------------- principal
 def main():
     ap = argparse.ArgumentParser()
-    for x in ("--motor", "--ajustada", "--cotacoes", "--referencias", "--cvm"):
+    for x in ("--motor", "--ajustada", "--referencias", "--cvm"):
         ap.add_argument(x, required=True)
     ap.add_argument("--modo", choices=["aleatorio", "oraculo", "real"], required=True)
     ap.add_argument("--saida", default=None)
+    ap.add_argument("--fator-custo", type=float, default=1.0, help="sensibilidade: multiplica todos os custos")
     a = ap.parse_args()
     saida = a.saida or a.motor
     os.makedirs(saida, exist_ok=True)
@@ -271,12 +246,9 @@ def main():
     rf_dia = pd.Series(nef_d.Risk_Free.values, index=pd.to_datetime(nef_d.Date))
     ret = retornos_mensais(d, rf_dia, meses_todos)
     print(f"Retornos mensais: {len(ret)}", flush=True)
-    spr = spreads(a.cotacoes, d, meses_todos)
-    print(f"Spreads: {len(spr)}", flush=True)
-    custo = {k: CORRETAGEM + EMOLUMENTOS + s / 2 for k, s in spr.items()}
-    med_custo = np.median(list(custo.values()))
-    for k in ret:
-        custo.setdefault(k, med_custo)
+    uni = pd.read_csv(os.path.join(a.motor, "universo_mensal.csv.gz"), usecols=["mes", "papel", "vol_medio_63"])
+    custo = {(m, p): a.fator_custo * (CORRETAGEM + EMOLUMENTOS + meio_spread(v)) for m, p, v in zip(uni.mes, uni.papel, uni.vol_medio_63)}
+    med_custo = a.fator_custo * (CORRETAGEM + EMOLUMENTOS + FAIXAS_SPREAD[-1][1])       # papel fora do universo: a faixa mais cara
     sc["ret"] = [ret.get((m, p), np.nan) for m, p in zip(sc.mes, sc.papel)]
     sc = sc[sc.ret.notna()].copy()
 
@@ -295,9 +267,9 @@ def main():
     nef = pd.read_csv(os.path.join(a.referencias, "nefin_factors_monthly.csv.gz"))
     nef["mes_ret"] = [f"{y:04d}-{m:02d}" for y, m in zip(nef.year, nef.month)]
     nef = nef.set_index("mes_ret")
-    ibov = pd.read_csv(os.path.join(a.referencias, "ibovespa.csv.gz"))
+    ibov = pd.read_csv(os.path.join(a.referencias, "ibovespa.csv.gz")).dropna(subset=["bova11_aj"])
     ibov["data"] = pd.to_datetime(ibov.data)
-    ibm = ibov.set_index("data").ibovespa.resample("ME").last()
+    ibm = ibov.set_index("data").bova11_aj.resample("ME").last()
     ibm.index = ibm.index.to_period("M").astype(str)
     ibov_ret = ibm.pct_change()                                  # retorno do mês (índice no fim do mês)
 
@@ -350,7 +322,7 @@ def main():
     s = radar.loc[principal]
     L.append(f"| Radar (faixa 20%/40%) | {s.bruto.mean():.2%} | {s.custo.mean():.2%} | {s.liquido.mean():.2%} | {s.giro.mean():.0%} |")
     ib = ibov_ret.reindex([mes_ret[m] for m in principal])
-    L.append(f"| Ibovespa | {ib.mean():.2%} | — | {ib.mean():.2%} | — |")
+    L.append(f"| Ibovespa (BOVA11) | {ib.mean():.2%} | — | {ib.mean():.2%} | — |")
 
     # 3. alfa do quintil do topo menos o de baixo (K = 1, bruto) contra 5 fatores
     ls = (series[("Score", 1, 5)].bruto - series[("Score", 1, 1)].bruto).loc[principal]
@@ -401,10 +373,13 @@ def main():
     L.append(f"\n**Conclusão: {'PASSOU EM TODOS' if all(c[1] for c in crit) else 'NÃO PASSOU'}**")
 
     # 7. conferência do EM Score (só no modo real tem sentido; nos placebos mostra a contagem de eventos)
-    L.append("\n## 7. Conferência do EM Score (recuperação judicial e falência, cadastro da CVM)\n")
-    L += conferencia_em(a, sc)
+    if a.modo == "real":
+        L.append("\n## 7. Conferência do EM Score (recuperação judicial e falência, cadastro da CVM)\n")
+        L += conferencia_em(a, sc)
 
     nome = {"aleatorio": "placebo_aleatorio", "oraculo": "placebo_oraculo", "real": "teste_score"}[a.modo]
+    if a.fator_custo != 1:
+        nome += f"_custo{a.fator_custo:g}x"
     with open(os.path.join(saida, f"{nome}.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(L) + "\n")
     pd.DataFrame({"radar_liquido": radar.liquido, "q5_liquido": series[("Score", 1, 5)].liquido,
