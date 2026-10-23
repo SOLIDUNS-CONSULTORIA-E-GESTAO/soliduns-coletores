@@ -28,9 +28,9 @@ jobs:
           def b64(d): return base64.b64encode(json.dumps(d, separators=(",", ":")).encode()).decode()
           base = "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/"
           urls = {
-            "anual": base + "GetYearlyReport/" + b64({"index": "IBOV", "language": "pt-br", "year": "2020"}),
-            "anual2": base + "GetYearlyReport/" + b64({"language": "pt-br", "index": "IBOV", "year": "2020"}),
-            "dia": base + "GetDownloadPortfolioDay/" + b64({"index": "IBOV", "language": "pt-br"}),
+            "sgs7": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.7/dados/ultimos/5?formato=json",
+            "sgs7_2008": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.7/dados?formato=json&dataInicial=01/01/2008&dataFinal=10/01/2008",
+            "anual3": base + "GetYearlyReport/" + b64({"index": "IBOV", "language": "pt-br", "year": 2020}),
           }
           for nome, u in urls.items():
               t0 = time.time()
