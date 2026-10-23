@@ -14,8 +14,8 @@ Fontes oficiais e gratuitas:
       (a) código CVM informado pela B3 no cadastro do emissor;
       (b) código de negociação no FCA da CVM (CNPJ → CD_CVM);
       (c) nome: razão social da B3 igual à razão social no cadastro da CVM (sem acentos, pontuação e "S.A.").
-  v1.2: Ibovespa diário (fechamento oficial da B3, relatório anual do índice), de 2005 em diante — referência do
-  período guardado do teste histórico. O Ibovespa é índice de retorno total (proventos reinvestidos).
+  v1.2: Ibovespa — série 7 do SGS do Banco Central (até set/2019) e o fundo de índice BOVA11 (COTAHIST, desde
+  2008), referência do teste histórico. O Ibovespa é índice de retorno total (proventos reinvestidos).
   v1.1: código CVM de emissor estrangeiro (80000 em diante, ex.: JBS N.V. depois da mudança para Nova York) não
   serve para o histórico do papel brasileiro: nesse caso, o FCA (b) vem antes.
 Uso: python coletor/pesquisa_referencias.py --eventos dados_eventos --cvm dados_cvm --ajustada dados_ajustados --saida dados_ref
@@ -32,6 +32,7 @@ import unicodedata
 import urllib.parse
 from collections import defaultdict
 
+import numpy as np
 import pandas as pd
 import requests
 
@@ -131,52 +132,52 @@ def focus(saida):
     resumo(f"Focus IPCA: {len(df)} linhas; IPCA do ano seguinte: {len(prox)} datas, de {prox.data.min()} a {prox.data.max()}")
 
 
-URL_IDX = "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetYearlyReport/"
-
-
 def ibovespa(saida):
-    import base64
+    """Ibovespa: série 7 do SGS do Banco Central (até set/2019) e o fundo de índice BOVA11 (COTAHIST da B3, desde
+    2008), que acompanha o Ibovespa. O BOVA11 é a referência do teste (dá para comprar); o SGS confere."""
     import datetime as dt
-    import json
-    linhas = []
-    for ano in range(2005, dt.date.today().year + 1):
-        tok = base64.b64encode(json.dumps({"index": "IBOV", "language": "pt-br", "year": str(ano)}, separators=(",", ":")).encode()).decode()
-        r = None
-        for verificar in (True, False):
-            try:
-                r = requests.get(URL_IDX + tok, headers=UA, timeout=60, verify=verificar)
-                break
-            except requests.exceptions.SSLError:
-                continue
-            except requests.RequestException:
-                r = None
-                break
-        if r is None or r.status_code != 200:
-            resumo(f"Ibovespa {ano}: não baixou ({r.status_code if r is not None else 'erro'})")
+    import io
+    import sys
+    import zipfile
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import coletar_cotahist as cc
+    sgs = []
+    for ini in range(2005, 2020, 5):
+        url = (f"https://api.bcb.gov.br/dados/serie/bcdata.sgs.7/dados?formato=json&dataInicial=01/01/{ini}"
+               f"&dataFinal=31/12/{ini + 4}")
+        r = baixar(url)
+        for x in (r.json() if r else []):
+            d, m, a = x["data"].split("/")
+            sgs.append((f"{a}-{m}-{d}", float(x["valor"])))
+    bova = []
+    for ano in range(2008, dt.date.today().year + 1):
+        conteudo = cc.baixar(cc.URL_ANUAL.format(ano=ano), f"COTAHIST_A{ano}.ZIP")
+        if not conteudo:
             continue
-        d = r.json()
-        while isinstance(d, str):
-            d = json.loads(d)
-        if ano == 2005:
-            print(f"::notice title=Ibovespa amostra::{json.dumps(d)[:600]}", flush=True)
-        for x in d.get("results") or []:
-            dia = int(x.get("day") or 0)
-            for m in range(1, 13):
-                v = x.get(f"rateValue{m}")
-                if v in (None, "", "0", "0,00") or not dia:
-                    continue
-                try:
-                    val = float(str(v).replace(".", "").replace(",", "."))
-                    linhas.append((dt.date(ano, m, dia).isoformat(), val))
-                except ValueError:
-                    pass
-        time.sleep(0.5)
-    if not linhas:
-        resumo("Ibovespa: sem dados")
-        return
-    df = pd.DataFrame(sorted(linhas), columns=["data", "ibovespa"])
+        with zipfile.ZipFile(io.BytesIO(conteudo)) as z:
+            with z.open(z.namelist()[0]) as f:
+                for l in io.TextIOWrapper(f, encoding="latin-1"):
+                    if l[0:2] == "01" and l[12:24].strip() == "BOVA11" and l[24:27] == "010":
+                        fat = int(l[210:217] or 1) or 1
+                        bova.append((f"{l[2:6]}-{l[6:8]}-{l[8:10]}", int(l[108:121]) / 100 / fat))
+    s1 = pd.DataFrame(sgs, columns=["data", "ibov_sgs"]).drop_duplicates("data")
+    s2 = pd.DataFrame(bova, columns=["data", "bova11"]).drop_duplicates("data")
+    df = s2.merge(s1, on="data", how="outer").sort_values("data")
+    # desdobramento ou grupamento do BOVA11: salto de mais de 30% num pregão vira ajuste (o índice não salta assim)
+    f = df.dropna(subset=["bova11"]).copy()
+    r = f.bova11 / f.bova11.shift(1)
+    ajuste = np.ones(len(f))
+    for i in np.where((r > 1.3) | (r < 0.77))[0]:
+        ajuste[:i] *= r.iloc[i]
+        print(f"::notice title=BOVA11 salto::{f.data.iloc[i]} razão {r.iloc[i]:.4f}", flush=True)
+    f["bova11_aj"] = f.bova11 * ajuste
+    df = df.merge(f[["data", "bova11_aj"]], on="data", how="left")
     gz(os.path.join(saida, "ibovespa.csv.gz"), df.to_csv(index=False))
-    resumo(f"Ibovespa: {len(df)} pregões, de {df.data.iloc[0]} ({df.ibovespa.iloc[0]:.0f}) a {df.data.iloc[-1]} ({df.ibovespa.iloc[-1]:.0f})")
+    m = df.assign(mes=df.data.str[:7]).groupby("mes")[["ibov_sgs", "bova11_aj"]].last().pct_change()
+    m = m[(m.index >= "2009-01") & (m.index <= "2019-08")].dropna()
+    print(f"::notice title=Ibovespa::SGS {len(s1)} pregões até {s1.data.max()}; BOVA11 {len(s2)} pregões de {s2.data.min()} "
+          f"a {s2.data.max()}; retornos mensais 2009-2019: correlação {m.corr().iloc[0, 1]:.4f}, diferença média "
+          f"{(m.bova11_aj - m.ibov_sgs).mean():.4%} ao mês", flush=True)
 
 
 def normal(s):
