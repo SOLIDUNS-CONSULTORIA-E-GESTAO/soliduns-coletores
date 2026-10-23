@@ -1,0 +1,35 @@
+# SOLIDUNS — SONDAGEM DAS FONTES GRATUITAS DE OPÇÕES DA B3 (23/10/2026). Não grava no Supabase: publica os
+# arquivos na Release de rascunho "pesquisa-opcoes-b3". Só roda à mão.
+name: Pesquisa - opções B3
+
+on:
+  workflow_dispatch:
+    inputs:
+      data:
+        description: "Pregão (AAAA-MM-DD)"
+        required: true
+        default: "2026-10-22"
+
+permissions:
+  contents: write
+
+jobs:
+  sonda:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Instalar dependencias
+        run: pip install requests
+      - name: Sondar as fontes
+        run: python coletor/pesquisa_opcoes_b3.py --data "${{ github.event.inputs.data }}" --saida sonda
+      - name: Publicar na Release pesquisa-opcoes-b3
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view pesquisa-opcoes-b3 >/dev/null 2>&1 || \
+            gh release create pesquisa-opcoes-b3 --draft --title "Pesquisa — opções da B3" --notes "Sondagem das fontes gratuitas de opções."
+          ls sonda && gh release upload pesquisa-opcoes-b3 sonda/* --clobber
