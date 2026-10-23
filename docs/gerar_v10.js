@@ -1,4 +1,5 @@
-// Score Exponencial SOLIDUNS — Metodologia v1.0.5 (registro prévio) — 22/10/2026
+// Score Exponencial SOLIDUNS — Metodologia v1.0.5 (registro prévio) — 22/10/2026; revisão editorial de 23/10/2026: fórmulas em LaTeX
+// Gerar: node gerar_v10.js Score_Exponencial_metodologia_v1.0.5.docx && python3 latex_omml.py Score_Exponencial_metodologia_v1.0.5.docx
 const fs = require('fs');
 const { Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType,
   HeadingLevel, BorderStyle, LevelFormat, Footer, Header, PageNumber, TabStopType } = require('docx');
@@ -7,12 +8,20 @@ const OURO = 'C9A227', PRETO = '111111', CINZA = '555555', CLARO = 'F4F1E6';
 const FONTE = 'Calibri';
 const logo = fs.readFileSync('' + __dirname + '/../site/publicar/assets/soliduns-logo-dbbcf92044.png');
 
-// {x} -> "x" em negrito (elemento matemático); **x** -> negrito
+// {x} -> "x" em negrito (texto); «x» -> "x" em negrito, em notação matemática (LaTeX); ‹x› -> fórmula no texto (LaTeX);
+// **x** -> negrito. As fórmulas saem como marcadores @@EQn@@ e viram equações do Word em latex_omml.py.
+const EQ = [];
+const eq = (latex, modo) => { EQ.push({ latex, modo }); return '@@EQ' + (EQ.length - 1) + '@@'; };
 function runs(t, base = {}) {
   const out = [];
-  t.split(/(\{[^}]+\}|\*\*[^*]+\*\*)/).forEach(p => {
+  t.split(/(«[^»]+»|‹[^›]+›|\{[^}]+\}|\*\*[^*]+\*\*)/).forEach(p => {
     if (!p) return;
-    if (p.startsWith('{')) out.push(new TextRun({ text: '"' + p.slice(1, -1) + '"', bold: true, ...base }));
+    if (p.startsWith('«')) {
+      out.push(new TextRun({ text: '"', bold: true, ...base }));
+      out.push(new TextRun({ text: eq(p.slice(1, -1), 'inline'), bold: true, ...base }));
+      out.push(new TextRun({ text: '"', bold: true, ...base }));
+    } else if (p.startsWith('‹')) out.push(new TextRun({ text: eq(p.slice(1, -1), 'inline'), ...base }));
+    else if (p.startsWith('{')) out.push(new TextRun({ text: '"' + p.slice(1, -1) + '"', bold: true, ...base }));
     else if (p.startsWith('**')) out.push(new TextRun({ text: p.slice(2, -2), bold: true, ...base }));
     else out.push(new TextRun({ text: p, ...base }));
   });
@@ -29,7 +38,7 @@ function F(formula, leitura, simples) {
   return [
     new Paragraph({ alignment: AlignmentType.CENTER, keepNext: true, keepLines: true, spacing: { before: 120, after: 80 },
       shading: { type: ShadingType.CLEAR, color: 'auto', fill: CLARO },
-      children: formula.split('\n').map((t, i) => new TextRun({ text: t, font: 'Cambria Math', size: 24, break: i ? 1 : 0 })) }),
+      children: [new TextRun({ text: eq(formula, 'destaque'), size: 24 })] }),
     new Paragraph({ keepNext: true, keepLines: true, alignment: AlignmentType.JUSTIFIED, spacing: { after: 60, line: 276 },
       children: [new TextRun({ text: 'Leitura: ', bold: true, color: CINZA, size: 20 }), ...runs(leitura, { size: 20, color: CINZA })] }),
     new Paragraph({ keepLines: true, alignment: AlignmentType.JUSTIFIED, spacing: { after: 160, line: 276 },
@@ -58,7 +67,7 @@ const capa = [
     children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 170, height: 174 } })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: 'SCORE EXPONENCIAL', bold: true, size: 52, color: PRETO, font: FONTE })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: 'Metodologia e registro prévio do teste', size: 26, color: OURO })] }),
-  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.5 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.5 — aprovada em 22/10/2026 · revisão editorial de 23/10/2026', size: 24, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Radar de Ações Exponenciais · SOLIDUNS', size: 22, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Brasília, 22 de outubro de 2026', size: 22, color: CINZA })] }),
 ];
@@ -82,8 +91,9 @@ const corpo = [
   B('**v1.0.1, de 22/10/2026:** o escore Z de Altman (1968), feito só para indústrias, é trocado pelo EM Score de Altman (2005), que vale para todas as empresas não financeiras. Os alertas deixam de tirar pontos e viram subitens do Pilar 4. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
   B('**v1.0.2, de 22/10/2026:** a carteira do Radar passa a ter faixa de manutenção, para reduzir o giro e os custos (Novy-Marx; Velikov, 2016). A nota de cada ação não muda. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
   B('**v1.0.3, de 22/10/2026:** regra de tratamento dos saltos de preço sem evento informado (camada 1). Ela evita que grupamentos antigos, que a B3 não registra, criem falsas altas. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
-  B('**v1.0.4, de 22/10/2026:** especificação operacional dos 22 subitens. No crescimento implícito, o dividendo das fases 1 e 2 passa a usar a distribuição observada da empresa: com D = E · (1 − g/R), o crescimento implícito ia ao teto de 60% em 55% dos casos, porque a rentabilidade ficava abaixo da taxa exigida. Também ficam fixados a concordância entre pilares, o escore de Mohanram com 6 testes, a origem da quantidade de ações e os dados mínimos. As mudanças foram feitas antes de qualquer teste de desempenho e não contam como tentativa.'),
+  B('**v1.0.4, de 22/10/2026:** especificação operacional dos 22 subitens. No crescimento implícito, o dividendo das fases 1 e 2 passa a usar a distribuição observada da empresa: com ‹D = E\\,(1 - g/R)›, o crescimento implícito ia ao teto de 60% em 55% dos casos, porque a rentabilidade ficava abaixo da taxa exigida. Também ficam fixados a concordância entre pilares, o escore de Mohanram com 6 testes, a origem da quantidade de ações e os dados mínimos. As mudanças foram feitas antes de qualquer teste de desempenho e não contam como tentativa.'),
   B('**v1.0.5, de 22/10/2026:** protocolo do teste histórico e a regra do setor pequeno (menos de 5 ações com dado: nota contra todas as ações do mês). A máquina do teste foi conferida só com placebos, sem usar o Score. Aprovado antes da rodada única.'),
+  B('**Revisão editorial de 23/10/2026:** as fórmulas passam a ser escritas em notação matemática (LaTeX), como equações do Word. O conteúdo não muda e não conta como tentativa.'),
   H2('O que é o registro prévio'),
   P('Tudo neste documento fica **congelado antes do primeiro teste**: pilares, subitens, parâmetros, pesos e critérios.'),
   P('Assim, o teste não pode ser ajustado ao resultado. Qualquer mudança depois do teste gera uma nova versão, e a variação conta como mais uma tentativa no controle de excesso de testes (capítulo 6).'),
@@ -121,8 +131,8 @@ const corpo = [
   B('**Setores especiais:** bancos e seguradoras usam indicadores próprios no Pilar 2, porque o balanço deles não tem EBITDA nem dívida líquida no mesmo sentido.'),
   H2('Camada 4 — Tratamento'),
   P('Cada subitem vira uma nota padronizada robusta, calculada dentro do setor. Ela preserva a distância entre as ações e não se deixa levar por valores extremos.'),
-  ...F('zᵢ = (xᵢ − mediana(x)) / (1,4826 · MAD(x))',
-    'a nota padronizada {zᵢ} da ação {i} é igual ao valor {xᵢ} menos a {mediana} de {x} entre as ações do setor, dividido por {1,4826} vezes o desvio absoluto mediano {MAD} de {x}; o resultado é limitado entre {−3} e {3}.',
+  ...F('z_i = \\frac{x_i - \\operatorname{mediana}(x)}{1{,}4826 \\cdot \\operatorname{MAD}(x)}',
+    'a nota padronizada «z_i» da ação «i» é igual ao valor «x_i» menos a mediana de «x» entre as ações do setor. O resultado é dividido por «1{,}4826» vezes o desvio absoluto mediano «\\operatorname{MAD}» de «x». A nota fica limitada entre «-3» e «3».',
     'mostra quantas "unidades de dispersão" a ação está acima ou abaixo da ação típica do seu setor.'),
   P('A nota de cada pilar é a média das notas dos seus subitens, padronizada de novo pela mesma fórmula. Subitem sem dado entra com nota zero, que é a nota da ação típica.'),
 
@@ -155,8 +165,8 @@ const corpo = [
     ['Escore de crescimento saudável (8 testes)', 'Separa vencedoras de perdedoras entre as ações de crescimento', 'Mohanram (2005)'],
     ['Alavancagem operacional', 'Sinais de margem e eficiência ajudam a prever lucros', 'Lev; Thiagarajan (1993)'],
   ], [2700, 4000, 2300]),
-  ...F('SUE = (LPAₜ − LPAₜ₋₄) / dp(LPAₜ − LPAₜ₋₄; 8 trimestres)',
-    'a surpresa padronizada {SUE} é igual ao lucro por ação do trimestre {LPAₜ} menos o lucro por ação do mesmo trimestre do ano anterior {LPAₜ₋₄}, dividido pelo desvio-padrão {dp} dessa diferença nos últimos {8} trimestres.',
+  ...F('\\mathrm{SUE}_t = \\frac{\\mathrm{LPA}_t - \\mathrm{LPA}_{t-4}}{\\operatorname{dp}\\left(\\mathrm{LPA}_t - \\mathrm{LPA}_{t-4}\\right)_{8\\ \\text{trimestres}}}',
+    'a surpresa padronizada «\\mathrm{SUE}_t» é o lucro por ação do trimestre «\\mathrm{LPA}_t» menos o do mesmo trimestre do ano anterior «\\mathrm{LPA}_{t-4}». A diferença é dividida pelo desvio-padrão «\\operatorname{dp}» dessa mesma diferença nos últimos «8» trimestres.',
     'mede o quanto o lucro do trimestre surpreendeu, comparado com o tamanho normal das variações daquela empresa.'),
   H2('Pilar 4 — Risco e confluência (C)'),
   tabela(['Subitem', 'Evidência', 'Referências'], [
@@ -174,40 +184,40 @@ const corpo = [
   P('O Score usa esse caminho inverso. A pergunta do subitem é simples: a empresa consegue entregar o crescimento que o preço já cobra?'),
   H2('O caminho do lucro em três fases'),
   P('O artigo projeta o lucro em três fases:'),
-  B('**Fase 1, crescimento constante:** o lucro cresce à taxa {g} por 10 anos.'),
+  B('**Fase 1, crescimento constante:** o lucro cresce à taxa «g» por 10 anos.'),
   B('**Fase 2, transição:** a taxa cai em linha reta por 20 anos, como na simplificação usada pelos autores.'),
-  B('**Fase 3, maturidade:** o lucro passa a acompanhar a inflação esperada {π}.'),
+  B('**Fase 3, maturidade:** o lucro passa a acompanhar a inflação esperada «\\pi».'),
   P('A fase 3 é a única adaptação ao Brasil. No artigo, o lucro fica parado para sempre. Com a inflação brasileira, lucro parado em reais significa lucro encolhendo em poder de compra.'),
-  ...F('gₛ = g, se s ≤ 10\ngₛ = g − (g − π) · (s − 10) / 20, se 10 < s ≤ 30\ngₛ = π, se s > 30',
-    'a taxa de crescimento {gₛ} no ano {s} é igual a {g} até o ano {10}; entre os anos {10} e {30}, é {g} menos a diferença entre {g} e {π}, vezes {s} menos {10}, dividido por {20}; depois do ano {30}, é igual a {π}.',
+  ...F('g_s = \\begin{cases} g, & s \\le 10 \\\\ g - (g - \\pi)\\,\\dfrac{s - 10}{20}, & 10 < s \\le 30 \\\\ \\pi, & s > 30 \\end{cases}',
+    'a taxa de crescimento «g_s» no ano «s» é igual a «g» até o ano «10». Entre os anos «10» e «30», ela cai em linha reta de «g» até «\\pi». Depois do ano «30», é igual à inflação esperada «\\pi».',
     'o lucro cresce rápido por 10 anos, desacelera aos poucos por 20 anos e depois só acompanha a inflação.'),
   H2('Do lucro ao dividendo', true),
-  P('O artigo liga o dividendo ao crescimento: quem cresce muito reinveste muito e paga pouco, D = E · (1 − g/R).'),
-  P('No Brasil, essa ligação falha quando a rentabilidade {R} fica abaixo da taxa exigida {k}. Aí crescer destrói valor. Nenhum crescimento justifica o preço, e o crescimento implícito vai para o teto. Isso aconteceu em 55% dos casos.'),
+  P('O artigo liga o dividendo ao crescimento: quem cresce muito reinveste muito e paga pouco: ‹D = E\\,(1 - g/R)›.'),
+  P('No Brasil, essa ligação falha quando a rentabilidade «R» fica abaixo da taxa exigida «k». Aí crescer destrói valor. Nenhum crescimento justifica o preço, e o crescimento implícito vai para o teto. Isso aconteceu em 55% dos casos.'),
   P('Por isso, na v1.0.4, as fases 1 e 2 usam a distribuição observada da própria empresa. A ligação do artigo fica na fase 3, a de maturidade.'),
-  ...F('Dₛ = p · Eₛ, se s ≤ 30',
-    'o dividendo {Dₛ} do ano {s}, até o ano {30}, é igual ao índice de distribuição {p} vezes o lucro {Eₛ}.',
+  ...F('D_s = p \\cdot E_s, \\qquad s \\le 30',
+    'o dividendo «D_s» do ano «s», até o ano «30», é igual ao índice de distribuição «p» vezes o lucro «E_s».',
     'nos primeiros 30 anos, a empresa mantém a parte do lucro que já distribui hoje.'),
   H2('Valor e crescimento implícito'),
-  ...F('V(g) = Σₛ₌₁³⁰ Dₛ / (1 + k)ˢ + [E₃₀ · (1 + π) · (1 − π / R)] / [(k − π) · (1 + k)³⁰]',
-    'o valor {V} em função de {g} é igual à soma, do ano {1} ao ano {30}, dos dividendos {Dₛ} divididos por {1} mais {k} elevado a {s}; mais o valor da fase de maturidade, que é o lucro {E₃₀} vezes {1} mais {π}, vezes {1} menos {π} dividido por {R}, tudo dividido por {k} menos {π} e por {1} mais {k} elevado a {30}.',
-    'soma, trazidos para hoje, todos os dividendos que a empresa pagaria nesse caminho de lucro; na fase 3, o dividendo segue a regra do artigo, com crescimento {π}.'),
-  ...F('V(g*) = P',
-    'o crescimento implícito {g*} é a taxa {g} que faz o valor {V} ficar igual ao preço de mercado {P}.',
+  ...F('V(g) = \\sum_{s=1}^{30} \\frac{D_s}{(1+k)^s} + \\frac{E_{30}\\,(1+\\pi)\\left(1 - \\frac{\\pi}{R}\\right)}{(k-\\pi)\\,(1+k)^{30}}',
+    'o valor «V(g)» é a soma, do ano «s=1» ao ano «s=30», dos dividendos «D_s» trazidos a valor presente pela taxa «k». A essa soma se junta o valor da fase de maturidade: o lucro «E_{30}» corrigido pela inflação «\\pi», vezes a parte distribuída «1-\\pi/R», dividido por «k-\\pi» e trazido a valor presente por «(1+k)^{30}».',
+    'soma, trazidos para hoje, todos os dividendos que a empresa pagaria nesse caminho de lucro; na fase 3, o dividendo segue a regra do artigo, com crescimento ‹\\pi›.'),
+  ...F('V(g^{*}) = P',
+    'o crescimento implícito «g^{*}» é a taxa «g» que faz o valor «V» ficar igual ao preço de mercado «P».',
     'é o crescimento anual que o preço de hoje já está cobrando da empresa.'),
-  P('O {g*} é encontrado por bisseção entre −20% e 60% ao ano. Se nem 60% justificam o preço, vale 60%.'),
+  P('O «g^{*}» é encontrado por bisseção entre −20% e 60% ao ano. Se nem 60% justificam o preço, vale 60%.'),
   H2('A nota do subitem'),
-  ...F('Folga = R · (1 − p) − g*',
-    'a {Folga} é igual à rentabilidade do patrimônio {R} vezes {1} menos o índice de distribuição de lucros {p}, menos o crescimento implícito {g*}.',
+  ...F('\\text{Folga} = R\\,(1 - p) - g^{*}',
+    'a Folga é a rentabilidade do patrimônio «R» vezes «1» menos o índice de distribuição «p», menos o crescimento implícito «g^{*}».',
     'compara o crescimento que a empresa consegue gerar com os próprios recursos com o crescimento que o preço exige. Folga positiva é bom sinal.'),
   P('A Folga entra no Pilar 2 como os demais subitens, padronizada dentro do setor.'),
   H2('Parâmetros congelados'),
   tabela(['Parâmetro', 'Valor no registro prévio'], [
-    ['Lucro normal (E₀)', 'média do lucro da controladora dos 3 últimos períodos de 12 meses, o mais recente até o último trimestre publicado; o preço P é o valor de mercado'],
-    ['Rentabilidade do patrimônio (R)', 'média dos 3 últimos exercícios, limitada entre 5% e 40% ao ano'],
-    ['Índice de distribuição (p)', 'dividendos e juros sobre capital pagos ÷ lucro da controladora, somados nos mesmos 3 períodos, limitado entre 0 e 1'],
-    ['Inflação esperada (π)', 'mediana do Boletim Focus para o IPCA do ano seguinte, na data'],
-    ['Taxa exigida (k)', 'juro real da NTN-B mais longa, mais π, mais 4 pontos percentuais de prêmio de risco'],
+    ['Lucro normal (‹E_0›)', 'média do lucro da controladora dos 3 últimos períodos de 12 meses, o mais recente até o último trimestre publicado; o preço ‹P› é o valor de mercado'],
+    ['Rentabilidade do patrimônio (‹R›)', 'média dos 3 últimos exercícios, limitada entre 5% e 40% ao ano'],
+    ['Índice de distribuição (‹p›)', 'dividendos e juros sobre capital pagos ÷ lucro da controladora, somados nos mesmos 3 períodos, limitado entre 0 e 1'],
+    ['Inflação esperada (‹\\pi›)', 'mediana do Boletim Focus para o IPCA do ano seguinte, na data'],
+    ['Taxa exigida (‹k›)', 'juro real da NTN-B mais longa, mais ‹\\pi›, mais 4 pontos percentuais de prêmio de risco'],
     ['Lucro normal negativo ou zero', 'subitem sem dado (nota zero)'],
     ['Bancos e seguradoras', 'mesma fórmula, com R e p do próprio balanço'],
   ], [3200, 5800]),
@@ -216,28 +226,28 @@ const corpo = [
   H2('Proteção do momentum'),
   P('O fator momentum tem colapsos raros e fortes, quase sempre na saída de mercados em queda (Daniel; Moskowitz, 2016). No Brasil isso apareceu em 2008 e 2009.'),
   P('Reduzir a exposição ao fator quando a volatilidade dele sobe melhora o resultado e corta as piores perdas (Barroso; Santa-Clara, 2015).'),
-  ...F('mₜ = mín(1; σ_alvo / σ̂ₜ)',
-    'o multiplicador {mₜ} no mês {t} é o menor valor entre {1} e a volatilidade-alvo {σ_alvo} dividida pela volatilidade realizada {σ̂ₜ} do fator momentum.',
+  ...F('m_t = \\min\\left(1;\\ \\frac{\\sigma_{\\text{alvo}}}{\\hat{\\sigma}_t}\\right)',
+    'o multiplicador «m_t» no mês «t» é o menor valor entre «1» e a volatilidade-alvo «\\sigma_{\\text{alvo}}» dividida pela volatilidade realizada «\\hat{\\sigma}_t» do fator momentum.',
     'quando o fator momentum fica mais agitado que o normal, o peso dele diminui na mesma proporção; nunca aumenta além do peso cheio.'),
-  B('**Volatilidade realizada (σ̂ₜ):** desvio-padrão dos retornos diários do fator WML do NEFIN nos últimos 126 pregões, anualizado.'),
-  B('**Volatilidade-alvo (σ_alvo):** 12% ao ano, o valor usado por Barroso e Santa-Clara (2015).'),
+  B('**Volatilidade realizada** ‹\\hat{\\sigma}_t›**:** desvio-padrão dos retornos diários do fator WML do NEFIN nos últimos 126 pregões, anualizado.'),
+  B('**Volatilidade-alvo** ‹\\sigma_{\\text{alvo}}›**:** 12% ao ano, o valor usado por Barroso e Santa-Clara (2015).'),
   H2('Pesos dos pilares'),
-  ...F('w_M = 0,25 · mₜ;   w_F = w_A = w_C = (1 − w_M) / 3',
-    'o peso {w_M} do pilar Momentum é {0,25} vezes {mₜ}; os pesos {w_F}, {w_A} e {w_C} dos outros três pilares são iguais e dividem entre si o que sobra, {1} menos {w_M}.',
+  ...F('w_M = 0{,}25\\, m_t; \\qquad w_F = w_A = w_C = \\frac{1 - w_M}{3}',
+    'o peso «w_M» do pilar Momentum é «0{,}25» vezes «m_t». Os pesos «w_F», «w_A» e «w_C» dos outros três pilares são iguais e dividem entre si o que sobra, «1-w_M».',
     'em mercado calmo, os quatro pilares pesam 25% cada; em mercado turbulento, o peso que sai do Momentum vai para os outros três.'),
   H2('Risco de crédito e de manipulação'),
   P('Na v1.0.1, os dois indicadores contábeis de alerta passam a ser subitens do Pilar 4. Eles não tiram pontos fixos. Entram padronizados dentro do setor, como todos os outros subitens.'),
   P('Assim, nenhum número é escolhido por nós. O peso deles vem da mesma regra que vale para o resto do Score.'),
   H3('EM Score de Altman (2005)'),
   P('O escore Z original de Altman (1968) foi calibrado só com indústrias americanas. O próprio Altman criou depois uma versão sem o giro do ativo e sem o valor de mercado, testada em indústrias e não indústrias. Para mercados emergentes, ela recebe uma constante.'),
-  ...F('EM = 6,56 · X₁ + 3,26 · X₂ + 6,72 · X₃ + 1,05 · X₄ + 3,25',
-    'o escore {EM} é igual a {6,56} vezes {X₁}, mais {3,26} vezes {X₂}, mais {6,72} vezes {X₃}, mais {1,05} vezes {X₄}, mais a constante {3,25}.',
+  ...F('\\mathrm{EM} = 6{,}56\\,X_1 + 3{,}26\\,X_2 + 6{,}72\\,X_3 + 1{,}05\\,X_4 + 3{,}25',
+    'o escore «\\mathrm{EM}» é a soma ponderada dos quatro índices «X_1» a «X_4», com os pesos «6{,}56», «3{,}26», «6{,}72» e «1{,}05», mais a constante «3{,}25».',
     'junta folga de caixa, lucro acumulado, lucro operacional e patrimônio frente às dívidas. Quanto maior a nota, menor o risco de falência.'),
   P('Os quatro índices são calculados assim:'),
-  B('**X₁:** capital de giro (ativo circulante menos passivo circulante) ÷ ativo total.'),
-  B('**X₂:** lucro acumulado ÷ ativo total. No Brasil, desde 2008 a conta "lucros acumulados" fica zerada no balanço. Por isso o lucro acumulado é a soma das reservas de lucros com os lucros ou prejuízos acumulados, como Altman recomenda adaptar à contabilidade local.'),
-  B('**X₃:** lucro operacional (antes de juros e impostos) dos últimos 12 meses ÷ ativo total.'),
-  B('**X₄:** patrimônio líquido contábil ÷ passivo total.'),
+  B('‹X_1›**:** capital de giro (ativo circulante menos passivo circulante) ÷ ativo total.'),
+  B('‹X_2›**:** lucro acumulado ÷ ativo total. No Brasil, desde 2008 a conta "lucros acumulados" fica zerada no balanço. Por isso o lucro acumulado é a soma das reservas de lucros com os lucros ou prejuízos acumulados, como Altman recomenda adaptar à contabilidade local.'),
+  B('‹X_3›**:** lucro operacional (antes de juros e impostos) dos últimos 12 meses ÷ ativo total.'),
+  B('‹X_4›**:** patrimônio líquido contábil ÷ passivo total.'),
   P('As faixas de Altman (2005) ficam só como aviso na tela do Radar, sem mudar a nota:'),
   B('**Zona segura:** 5,85 ou mais, equivalente a rating BBB ou melhor.'),
   B('**Zona cinzenta:** de 4,15 a 5,85.'),
@@ -250,8 +260,8 @@ const corpo = [
   H3('Quem fica de fora'),
   P('Bancos, seguradoras e demais financeiras não têm nenhum dos dois subitens, porque os modelos não servem para os balanços delas. Para elas, os dois subitens entram com nota zero, a nota da ação típica.'),
   H2('O Score'),
-  ...F('Score = 50 + (50 / 3) · (w_M · z_M + w_F · z_F + w_A · z_A + w_C · z_C)',
-    'o {Score} é igual a {50} mais {50} dividido por {3}, vezes a soma das notas dos pilares {z_M}, {z_F}, {z_A} e {z_C}, cada uma multiplicada pelo seu peso; o resultado é limitado entre {0} e {100}.',
+  ...F('\\text{Score} = 50 + \\frac{50}{3}\\left(w_M\\, z_M + w_F\\, z_F + w_A\\, z_A + w_C\\, z_C\\right)',
+    'o Score é «50» mais «50/3» vezes a soma das notas dos pilares «z_M», «z_F», «z_A» e «z_C», cada uma multiplicada pelo seu peso. O resultado fica limitado entre «0» e «100».',
     'uma ação na média de todos os pilares fica com 50; cada vantagem consistente sobe a nota.'),
   P('Com pesos iguais, a soma ponderada é a média das quatro notas, como na versão 0.2 (DeMiguel; Garlappi; Uppal, 2009).'),
 
@@ -275,11 +285,11 @@ const corpo = [
   H2('Medidas'),
   B('**Regressões em seção transversal:** a média dos coeficientes mensais mostra o poder de previsão (Fama; MacBeth, 1973), com erros corrigidos (Newey; West, 1987).'),
   B('**Alfa contra os fatores brasileiros:** mostra se o Score acrescenta algo além dos fatores conhecidos (Carhart, 1997).'),
-  ...F('rₚ,ₜ − r_f,ₜ = α + β·MKTₜ + s·SMBₜ + h·HMLₜ + w·WMLₜ + l·IMLₜ + εₜ',
-    'o retorno da carteira {rₚ,ₜ} menos a taxa livre de risco {r_f,ₜ} no mês {t} é igual a {α} mais {β} vezes o fator de mercado {MKTₜ}, mais {s} vezes o fator tamanho {SMBₜ}, mais {h} vezes o fator valor {HMLₜ}, mais {w} vezes o fator momentum {WMLₜ}, mais {l} vezes o fator iliquidez {IMLₜ}, mais o erro {εₜ}.',
+  ...F('r_{p,t} - r_{f,t} = \\alpha + \\beta\\,\\mathrm{MKT}_t + s\\,\\mathrm{SMB}_t + h\\,\\mathrm{HML}_t + w\\,\\mathrm{WML}_t + l\\,\\mathrm{IML}_t + \\varepsilon_t',
+    'o retorno da carteira «r_{p,t}» menos a taxa livre de risco «r_{f,t}» no mês «t» é igual ao alfa «\\alpha» mais a soma das cargas nos cinco fatores do NEFIN: mercado «\\mathrm{MKT}_t», tamanho «\\mathrm{SMB}_t», valor «\\mathrm{HML}_t», momentum «\\mathrm{WML}_t» e iliquidez «\\mathrm{IML}_t». O termo «\\varepsilon_t» é o erro.',
     'separa quanto do ganho vem de fatores já conhecidos e quanto é contribuição própria do Score, que é o alfa.'),
-  ...F('IC = (1 / T) · Σₜ ρₜ(Sᵢ,ₜ ; Retᵢ,ₜ₊₁)',
-    'o coeficiente de informação {IC} é igual a {1} dividido por {T} vezes a soma, em cada mês {t}, da correlação de postos {ρₜ} entre o Score {Sᵢ,ₜ} de cada ação {i} e o retorno {Retᵢ,ₜ₊₁} no período seguinte; {T} é o número de meses.',
+  ...F('\\mathrm{IC} = \\frac{1}{T} \\sum_{t=1}^{T} \\rho_t\\left(S_{i,t};\\ \\mathrm{Ret}_{i,t+1}\\right)',
+    'o coeficiente de informação «\\mathrm{IC}» é a média, nos «T» meses, da correlação de postos «\\rho_t» entre o Score «S_{i,t}» de cada ação «i» e o retorno «\\mathrm{Ret}_{i,t+1}» no período seguinte.',
     'mostra se, em média, a ordem do ranking acerta a ordem dos retornos que vieram depois (Grinold; Kahn, 2000).'),
   H2('Controles contra o excesso de testes'),
   B('**Contagem de tentativas:** cada variação testada depois deste registro é contada.'),
@@ -294,7 +304,7 @@ const corpo = [
   P('O ranking só vai para os assinantes se passar em **todos** os critérios abaixo:'),
   tabela(['Medida', 'Critério'], [
     ['Estatística t do Score (Fama-MacBeth)', 'maior ou igual a 3'],
-    ['Alfa do quintil do topo menos o de baixo', 'positivo, com t ≥ 2, contra os 5 fatores do NEFIN'],
+    ['Alfa do quintil do topo menos o de baixo', 'positivo, com ‹t \\ge 2›, contra os 5 fatores do NEFIN'],
     ['Sharpe deflacionado', 'probabilidade acima de 95%'],
     ['Probabilidade de sobreajuste', 'abaixo de 20%'],
     ['Período guardado (36 meses)', 'quintil do topo à frente do Ibovespa depois dos custos'],
@@ -404,4 +414,4 @@ const doc = new Document({
   ],
 });
 const saida = process.argv[2] || 'Score_Exponencial_metodologia_v1.0.docx';
-Packer.toBuffer(doc).then(b => { fs.writeFileSync(saida, b); console.log('ok', b.length); });
+Packer.toBuffer(doc).then(b => { fs.writeFileSync(saida, b); fs.writeFileSync(saida.replace(/\.docx$/, '.eq.json'), JSON.stringify(EQ)); console.log('ok', b.length, 'fórmulas', EQ.length); });
