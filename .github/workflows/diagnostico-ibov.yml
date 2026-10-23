@@ -31,7 +31,8 @@ jobs:
               for cab in ({"User-Agent": "SOLIDUNS-pesquisa/1.0"}, cc.CAB_B3):
                   try:
                       r = requests.get(u, headers=cab, timeout=60, verify=False)
-                      t = r.text[:400].replace("\n", " ").replace("::", ": ")
+                      import re as _re
+                      t = _re.sub(r"[^A-Za-z0-9 ,.:{}\[\]_-]", " ", r.text[:300])
                       print(f"::notice title={nome} {r.status_code} {len(r.text)}::{t}", flush=True)
                   except Exception as e:
                       print(f"::notice title={nome} erro::{type(e).__name__} {str(e)[:300]}".replace("\n", " "), flush=True)
