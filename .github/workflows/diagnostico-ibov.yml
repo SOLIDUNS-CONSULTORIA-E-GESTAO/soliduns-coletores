@@ -1,13 +1,17 @@
 # SOLIDUNS — diagnóstico (só leitura): consulta do histórico do Ibovespa na B3. 23/10/2026.
+# Guarda as respostas na Release em rascunho "pesquisa-diagnostico".
 name: Diagnóstico Ibovespa
 
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   diag:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -16,24 +20,31 @@ jobs:
       - run: pip install requests
       - name: Testar consultas
         run: |
+          mkdir -p diag
           python - <<'PY'
-          import base64, json, requests, sys
+          import base64, json, requests, sys, time
           sys.path.insert(0, "coletor")
           import coletar_cotahist as cc
           def b64(d): return base64.b64encode(json.dumps(d, separators=(",", ":")).encode()).decode()
+          base = "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/"
           urls = {
-            "anual": "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetYearlyReport/" + b64({"index": "IBOV", "language": "pt-br", "year": "2020"}),
-            "anual_en": "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetYearlyReport/" + b64({"index": "IBOV", "language": "en-us", "year": "2020"}),
-            "dia": "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetDownloadPortfolioDay/" + b64({"index": "IBOV", "language": "pt-br"}),
-            "estat": "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetPortfolioDay/" + b64({"index": "IBOV", "language": "pt-br"}),
+            "anual": base + "GetYearlyReport/" + b64({"index": "IBOV", "language": "pt-br", "year": "2020"}),
+            "anual2": base + "GetYearlyReport/" + b64({"language": "pt-br", "index": "IBOV", "year": "2020"}),
+            "dia": base + "GetDownloadPortfolioDay/" + b64({"index": "IBOV", "language": "pt-br"}),
           }
           for nome, u in urls.items():
-              for cab in ({"User-Agent": "SOLIDUNS-pesquisa/1.0"}, cc.CAB_B3):
-                  try:
-                      r = requests.get(u, headers=cab, timeout=60, verify=False)
-                      import re as _re
-                      t = _re.sub(r"[^A-Za-z0-9 ,.:{}\[\]_-]", " ", r.text[:300])
-                      print(f"::notice title={nome} {r.status_code} {len(r.text)}::{t}", flush=True)
-                  except Exception as e:
-                      print(f"::notice title={nome} erro::{type(e).__name__} {str(e)[:300]}".replace("\n", " "), flush=True)
+              t0 = time.time()
+              try:
+                  r = requests.get(u, headers=cc.CAB_B3, timeout=40, verify=False)
+                  txt = f"{r.status_code}\n{u}\n{r.text[:20000]}"
+              except Exception as e:
+                  txt = f"erro {type(e).__name__} {e}\n{u}"
+              open(f"diag/{nome}.txt", "w").write(txt)
+              print(nome, round(time.time() - t0, 1), txt[:200], flush=True)
           PY
+      - name: Publicar
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view pesquisa-diagnostico >/dev/null 2>&1 || gh release create pesquisa-diagnostico --draft --title "Diagnóstico" --notes "uso interno"
+          gh release upload pesquisa-diagnostico diag/* --clobber
