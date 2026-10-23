@@ -6,6 +6,7 @@ d = pd.read_parquet(f'{T}/ohlc.parquet').sort_values('data')
 out = {}
 for tk in TK:
     x = d[d.ticker == tk].set_index('data')[['abe', 'max', 'min', 'fech', 'volume']].copy()
+    if len(x) < 130 or x.index[-1] < d.data.max(): continue
     c, h, l = x.fech, x['max'], x['min']
     for n in (9, 21, 50, 200): x[f'mme{n}'] = c.ewm(span=n, adjust=False).mean()
     x['mm200'] = c.rolling(200).mean()
@@ -36,7 +37,7 @@ for tk in TK:
                    fib={str(k): float(v) for k, v in fib.items()}, ext={str(k): (float(v) if v else None) for k, v in ext.items()},
                    pivo=float(P), r1=float(2 * P - ult5['min'].min()), s1=float(2 * P - ult5['max'].max()),
                    r2=float(P + ult5['max'].max() - ult5['min'].min()), s2=float(P - (ult5['max'].max() - ult5['min'].min())),
-                   ret_5d=float(c.iloc[-1] / c.iloc[-6] - 1), ret_21d=float(c.iloc[-1] / c.iloc[-22] - 1), ret_ano=float(c.iloc[-1] / c[c.index < '2026-01-01'].iloc[-1] - 1),
+                   ret_5d=float(c.iloc[-1] / c.iloc[-6] - 1), ret_21d=float(c.iloc[-1] / c.iloc[-22] - 1), ret_ano=(float(c.iloc[-1] / c[c.index < '2026-01-01'].iloc[-1] - 1) if (c.index < '2026-01-01').any() else None),
                    ret_0510=float(c.loc[DIA] / c[c.index < DIA].iloc[-1] - 1) if pd.Timestamp(DIA) in c.index else None)
 json.dump(out, open(f'{T}/tecnica.json', 'w'), indent=1, default=float)
 for k, v in out.items():
