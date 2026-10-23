@@ -1,0 +1,39 @@
+# SOLIDUNS — BASE DE PESQUISA DO SCORE EXPONENCIAL: fatores do NEFIN, NTN-B, Focus e ligação B3 → CVM. 22/10/2026.
+# Lê as Releases (rascunho) pesquisa-b3-eventos, pesquisa-cvm e pesquisa-b3-ajustada; publica "pesquisa-referencias"
+# (rascunho, fora do acesso público). Só roda à mão: Actions › Pesquisa - referências › Run workflow.
+name: Pesquisa - referências
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ref:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r coletor/requirements.txt
+      - name: Baixar as bases (rascunho)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p dados_eventos dados_cvm dados_ajustados
+          gh release download pesquisa-b3-eventos -D dados_eventos -p "emissores_b3.csv.gz"
+          gh release download pesquisa-cvm -D dados_cvm -p "cvm_*_entregas.csv.gz" -p "cvm_fca_*" -p "cvm_cadastro.csv.gz"
+          gh release download pesquisa-b3-ajustada -D dados_ajustados -p "papeis.csv.gz"
+      - name: Séries de referência e ligação
+        run: python coletor/pesquisa_referencias.py --eventos dados_eventos --cvm dados_cvm --ajustada dados_ajustados --saida dados_ref
+      - name: Publicar na Release pesquisa-referencias (rascunho)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view pesquisa-referencias >/dev/null 2>&1 || \
+            gh release create pesquisa-referencias --draft --title "Pesquisa — séries de referência (NEFIN, NTN-B, Focus) e ligação B3 → CVM" \
+              --notes "Base de pesquisa do Score Exponencial. Uso interno; NEFIN citado conforme pedido pela fonte."
+          gh release upload pesquisa-referencias dados_ref/* --clobber
