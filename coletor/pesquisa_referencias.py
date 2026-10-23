@@ -1,6 +1,6 @@
 """
 SOLIDUNS — BASE DE PESQUISA: SÉRIES DE REFERÊNCIA E LIGAÇÃO B3 ↔ CVM (Score Exponencial v1.0.3, camada 1)
-v1.1 (22/10/2026)
+v1.2 (23/10/2026)
 
 Fontes oficiais e gratuitas:
   - NEFIN-USP (nefin.com.br/data/risk-factors): fatores de risco brasileiros diários e mensais (mercado, tamanho,
@@ -14,6 +14,8 @@ Fontes oficiais e gratuitas:
       (a) código CVM informado pela B3 no cadastro do emissor;
       (b) código de negociação no FCA da CVM (CNPJ → CD_CVM);
       (c) nome: razão social da B3 igual à razão social no cadastro da CVM (sem acentos, pontuação e "S.A.").
+  v1.2: Ibovespa diário (fechamento oficial da B3, relatório anual do índice), de 2005 em diante — referência do
+  período guardado do teste histórico. O Ibovespa é índice de retorno total (proventos reinvestidos).
   v1.1: código CVM de emissor estrangeiro (80000 em diante, ex.: JBS N.V. depois da mudança para Nova York) não
   serve para o histórico do papel brasileiro: nesse caso, o FCA (b) vem antes.
 Uso: python coletor/pesquisa_referencias.py --eventos dados_eventos --cvm dados_cvm --ajustada dados_ajustados --saida dados_ref
@@ -129,6 +131,54 @@ def focus(saida):
     resumo(f"Focus IPCA: {len(df)} linhas; IPCA do ano seguinte: {len(prox)} datas, de {prox.data.min()} a {prox.data.max()}")
 
 
+URL_IDX = "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetYearlyReport/"
+
+
+def ibovespa(saida):
+    import base64
+    import datetime as dt
+    import json
+    linhas = []
+    for ano in range(2005, dt.date.today().year + 1):
+        tok = base64.b64encode(json.dumps({"index": "IBOV", "language": "pt-br", "year": str(ano)}, separators=(",", ":")).encode()).decode()
+        r = None
+        for verificar in (True, False):
+            try:
+                r = requests.get(URL_IDX + tok, headers=UA, timeout=60, verify=verificar)
+                break
+            except requests.exceptions.SSLError:
+                continue
+            except requests.RequestException:
+                r = None
+                break
+        if r is None or r.status_code != 200:
+            resumo(f"Ibovespa {ano}: não baixou ({r.status_code if r is not None else 'erro'})")
+            continue
+        d = r.json()
+        while isinstance(d, str):
+            d = json.loads(d)
+        if ano == 2005:
+            print(f"::notice title=Ibovespa amostra::{json.dumps(d)[:600]}", flush=True)
+        for x in d.get("results") or []:
+            dia = int(x.get("day") or 0)
+            for m in range(1, 13):
+                v = x.get(f"rateValue{m}")
+                if v in (None, "", "0", "0,00") or not dia:
+                    continue
+                try:
+                    val = float(str(v).replace(".", "").replace(",", "."))
+                    linhas.append((dt.date(ano, m, dia).isoformat(), val))
+                except ValueError:
+                    pass
+        time.sleep(0.5)
+    if not linhas:
+        resumo("Ibovespa: sem dados")
+        return
+    df = pd.DataFrame(sorted(linhas), columns=["data", "ibovespa"])
+    gz(os.path.join(saida, "ibovespa.csv.gz"), df.to_csv(index=False))
+    resumo(f"Ibovespa: {len(df)} pregões, de {df.data.iloc[0]} ({df.ibovespa.iloc[0]:.0f}) a {df.data.iloc[-1]} ({df.ibovespa.iloc[-1]:.0f})")
+
+
 def normal(s):
     s = unicodedata.normalize("NFKD", str(s or "")).encode("ascii", "ignore").decode().upper()
     s = re.sub(r"\b(S\.?\s?A\.?|S/A|CIA\.?|COMPANHIA|EM RECUPERACAO JUDICIAL|EM LIQUIDACAO)\b", " ", s)
@@ -188,6 +238,7 @@ def main():
         ap.add_argument(a, required=True)
     a = ap.parse_args()
     os.makedirs(a.saida, exist_ok=True)
+    ibovespa(a.saida)
     nefin(a.saida)
     tesouro(a.saida)
     focus(a.saida)
