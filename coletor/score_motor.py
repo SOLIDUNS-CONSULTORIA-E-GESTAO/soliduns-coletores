@@ -1,6 +1,6 @@
 """
 SOLIDUNS — SCORE EXPONENCIAL: MOTOR DE CÁLCULO (metodologia v1.0.3) — etapa 1: universo mensal e Pilar 1 (Momentum)
-v1.0 (22/10/2026)
+v1.1 (22/10/2026) — setores abreviados no cadastro da CVM ("Máqs.", "Const. Civil") deixam de cair em "Outros"
 
 Lê as bases de pesquisa (Releases em rascunho): pesquisa-b3-ajustada (diário e papéis), pesquisa-referencias
 (ligação B3 → CVM) e pesquisa-cvm (cadastro: setor). Calcula, no ÚLTIMO PREGÃO DE CADA MÊS, só com dados até
@@ -47,9 +47,9 @@ SETORES = {
     "Utilidade pública": ["ENERGIA ELETRICA", "SANEAMENTO"],
     "Petróleo, gás e mineração": ["PETROLEO E GAS", "EXTRACAO MINERAL"],
     "Materiais básicos": ["METALURGIA", "PAPEL E CELULOSE", "PETROQUIMICOS", "EMBALAGENS", "REFLORESTAMENTO", "QUIMIC"],
-    "Bens industriais": ["MAQUINAS", "OUTRAS ATIVIDADES INDUSTRIAIS"],
+    "Bens industriais": ["MAQUINAS", "MAQS.", "OUTRAS ATIVIDADES INDUSTRIAIS"],
     "Transporte e logística": ["TRANSPORTE"],
-    "Construção e imóveis": ["CONSTRUCAO"],
+    "Construção e imóveis": ["CONSTRUCAO", "CONST. CIVIL"],
     "Consumo cíclico": ["COMERCIO", "TEXTIL", "HOSPEDAGEM", "BRINQUEDOS", "EDUCACAO", "GRAFICAS"],
     "Consumo não cíclico": ["ALIMENTOS", "BEBIDAS", "AGRICULTURA", "PESCA"],
     "Saúde": ["SERVICOS MEDICOS", "FARMACEUTICO"],

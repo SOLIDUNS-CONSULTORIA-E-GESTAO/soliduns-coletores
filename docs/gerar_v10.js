@@ -1,4 +1,4 @@
-// Score Exponencial SOLIDUNS — Metodologia v1.0.3 (registro prévio) — 22/10/2026
+// Score Exponencial SOLIDUNS — Metodologia v1.0.4 (registro prévio) — 22/10/2026
 const fs = require('fs');
 const { Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType,
   HeadingLevel, BorderStyle, LevelFormat, Footer, Header, PageNumber, TabStopType } = require('docx');
@@ -58,7 +58,7 @@ const capa = [
     children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 170, height: 174 } })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: 'SCORE EXPONENCIAL', bold: true, size: 52, color: PRETO, font: FONTE })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: 'Metodologia e registro prévio do teste', size: 26, color: OURO })] }),
-  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.3 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.4 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Radar de Ações Exponenciais · SOLIDUNS', size: 22, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Brasília, 22 de outubro de 2026', size: 22, color: CINZA })] }),
 ];
@@ -75,11 +75,13 @@ const corpo = [
   N('**Risco de crédito e de manipulação viram subitens (v1.0.1):** o EM Score de Altman (2005) e o escore M de Beneish (1999) entram no Pilar 4, sem desconto em pontos.', 'numeros'),
   N('**Faixa de manutenção na carteira do Radar (v1.0.2):** a ação entra ao chegar aos 20% melhores do Score e só sai ao cair abaixo dos 40% melhores.', 'numeros'),
   N('**Saltos de preço sem evento (v1.0.3):** salto de 3 vezes ou mais num pregão, sem evento informado, vira evento não informado se o novo patamar se mantém; se não se mantém, o pregão é descartado como erro de dado.', 'numeros'),
+  N('**Especificação operacional (v1.0.4):** a fórmula exata dos 22 subitens, com as contas da CVM usadas, faz parte deste registro (documento "Especificação operacional dos 22 subitens", versão 1.0.4). No crescimento implícito, a distribuição de lucros das fases 1 e 2 passa a ser a observada na empresa (capítulo 4).', 'numeros'),
   H2('Histórico de versões'),
   B('**v1.0, de 22/10/2026:** registro prévio da metodologia.'),
   B('**v1.0.1, de 22/10/2026:** o escore Z de Altman (1968), feito só para indústrias, é trocado pelo EM Score de Altman (2005), que vale para todas as empresas não financeiras. Os alertas deixam de tirar pontos e viram subitens do Pilar 4. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
   B('**v1.0.2, de 22/10/2026:** a carteira do Radar passa a ter faixa de manutenção, para reduzir o giro e os custos (Novy-Marx; Velikov, 2016). A nota de cada ação não muda. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
   B('**v1.0.3, de 22/10/2026:** regra de tratamento dos saltos de preço sem evento informado (camada 1). Ela evita que grupamentos antigos, que a B3 não registra, criem falsas altas. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
+  B('**v1.0.4, de 22/10/2026:** especificação operacional dos 22 subitens. No crescimento implícito, o dividendo das fases 1 e 2 passa a usar a distribuição observada da empresa: com D = E · (1 − g/R), o crescimento implícito ia ao teto de 60% em 55% dos casos, porque a rentabilidade ficava abaixo da taxa exigida. Também ficam fixados a concordância entre pilares, o escore de Mohanram com 6 testes, a origem da quantidade de ações e os dados mínimos. As mudanças foram feitas antes de qualquer teste de desempenho e não contam como tentativa.'),
   H2('O que é o registro prévio', true),
   P('Tudo neste documento fica **congelado antes do primeiro teste**: pilares, subitens, parâmetros, pesos e critérios.'),
   P('Assim, o teste não pode ser ajustado ao resultado. Qualquer mudança depois do teste gera uma nova versão, e a variação conta como mais uma tentativa no controle de excesso de testes (capítulo 6).'),
@@ -178,14 +180,16 @@ const corpo = [
     'a taxa de crescimento {gₛ} no ano {s} é igual a {g} até o ano {10}; entre os anos {10} e {30}, é {g} menos a diferença entre {g} e {π}, vezes {s} menos {10}, dividido por {20}; depois do ano {30}, é igual a {π}.',
     'o lucro cresce rápido por 10 anos, desacelera aos poucos por 20 anos e depois só acompanha a inflação.'),
   H2('Do lucro ao dividendo', true),
-  P('O artigo liga o dividendo ao crescimento: quem cresce muito reinveste muito e paga pouco. A mesma ligação aparece em Gordon (1962), pela taxa de crescimento sustentável.'),
-  ...F('Dₛ = Eₛ · (1 − gₛ / R)',
-    'o dividendo {Dₛ} do ano {s} é igual ao lucro {Eₛ} vezes {1} menos a taxa de crescimento {gₛ} dividida pela rentabilidade do patrimônio {R}.',
-    'para crescer, a empresa retém parte do lucro; quanto maior o crescimento, menor a parte que sobra para os acionistas.'),
+  P('O artigo liga o dividendo ao crescimento: quem cresce muito reinveste muito e paga pouco, D = E · (1 − g/R).'),
+  P('No Brasil, essa ligação falha quando a rentabilidade {R} fica abaixo da taxa exigida {k}. Aí crescer destrói valor. Nenhum crescimento justifica o preço, e o crescimento implícito vai para o teto. Isso aconteceu em 55% dos casos.'),
+  P('Por isso, na v1.0.4, as fases 1 e 2 usam a distribuição observada da própria empresa. A ligação do artigo fica na fase 3, a de maturidade.'),
+  ...F('Dₛ = p · Eₛ, se s ≤ 30',
+    'o dividendo {Dₛ} do ano {s}, até o ano {30}, é igual ao índice de distribuição {p} vezes o lucro {Eₛ}.',
+    'nos primeiros 30 anos, a empresa mantém a parte do lucro que já distribui hoje.'),
   H2('Valor e crescimento implícito'),
   ...F('V(g) = Σₛ₌₁³⁰ Dₛ / (1 + k)ˢ + [E₃₀ · (1 + π) · (1 − π / R)] / [(k − π) · (1 + k)³⁰]',
     'o valor {V} em função de {g} é igual à soma, do ano {1} ao ano {30}, dos dividendos {Dₛ} divididos por {1} mais {k} elevado a {s}; mais o valor da fase de maturidade, que é o lucro {E₃₀} vezes {1} mais {π}, vezes {1} menos {π} dividido por {R}, tudo dividido por {k} menos {π} e por {1} mais {k} elevado a {30}.',
-    'soma, trazidos para hoje, todos os dividendos que a empresa pagaria nesse caminho de lucro.'),
+    'soma, trazidos para hoje, todos os dividendos que a empresa pagaria nesse caminho de lucro; na fase 3, o dividendo segue a regra do artigo, com crescimento {π}.'),
   ...F('V(g*) = P',
     'o crescimento implícito {g*} é a taxa {g} que faz o valor {V} ficar igual ao preço de mercado {P}.',
     'é o crescimento anual que o preço de hoje já está cobrando da empresa.'),
@@ -197,9 +201,9 @@ const corpo = [
   P('A Folga entra no Pilar 2 como os demais subitens, padronizada dentro do setor.'),
   H2('Parâmetros congelados'),
   tabela(['Parâmetro', 'Valor no registro prévio'], [
-    ['Lucro normal (E₀)', 'média do lucro por ação dos 3 últimos exercícios, sendo o mais recente os 12 meses até o último trimestre publicado'],
+    ['Lucro normal (E₀)', 'média do lucro da controladora dos 3 últimos períodos de 12 meses, o mais recente até o último trimestre publicado; o preço P é o valor de mercado'],
     ['Rentabilidade do patrimônio (R)', 'média dos 3 últimos exercícios, limitada entre 5% e 40% ao ano'],
-    ['Índice de distribuição (p)', 'média dos 3 últimos exercícios, limitado entre 0 e 1'],
+    ['Índice de distribuição (p)', 'dividendos e juros sobre capital pagos ÷ lucro da controladora, somados nos mesmos 3 períodos, limitado entre 0 e 1'],
     ['Inflação esperada (π)', 'mediana do Boletim Focus para o IPCA do ano seguinte, na data'],
     ['Taxa exigida (k)', 'juro real da NTN-B mais longa, mais π, mais 4 pontos percentuais de prêmio de risco'],
     ['Lucro normal negativo ou zero', 'subitem sem dado (nota zero)'],
@@ -369,7 +373,7 @@ const corpo = [
   R('WHITE, H. A reality check for data snooping. **Econometrica**, v. 68, n. 5, p. 1097-1126, 2000.'),
 ];
 const doc = new Document({
-  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0.3 (registro prévio)',
+  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0.4 (registro prévio)',
   styles: {
     default: { document: { run: { font: FONTE, size: 22, color: '222222' } } },
     paragraphStyles: [
@@ -390,7 +394,7 @@ const doc = new Document({
       headers: { default: new Header({ children: [new Paragraph({ tabStops: [{ type: TabStopType.RIGHT, position: 9000 }],
         border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: OURO, space: 4 } },
         children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 26, height: 27 } }),
-          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0.3 — registro prévio', size: 17, color: CINZA })] })] }) },
+          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0.4 — registro prévio', size: 17, color: CINZA })] })] }) },
       footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER,
         children: [new TextRun({ text: 'Página ', size: 17, color: CINZA }), new TextRun({ children: [PageNumber.CURRENT], size: 17, color: CINZA }),
           new TextRun({ text: '  ·  Uso interno. Não é recomendação de investimento.', size: 17, color: CINZA })] })] }) },

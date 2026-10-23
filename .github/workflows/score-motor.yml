@@ -1,5 +1,5 @@
-# SOLIDUNS — SCORE EXPONENCIAL: motor de cálculo (metodologia v1.0.3). 22/10/2026.
-# Etapa 1: universo e Pilar 1 (preço). Etapa 2: subitens com balanço da CVM e de risco.
+# SOLIDUNS — SCORE EXPONENCIAL: motor de cálculo (metodologia v1.0.4). 22/10/2026.
+# Etapa 1: universo e Pilar 1 (preço). Etapa 2: subitens com balanço da CVM e de risco. Etapa 3: notas e Score.
 # Lê as bases de pesquisa (Releases em rascunho) e publica os resultados na Release "pesquisa-score" (rascunho).
 # Só roda à mão: Actions › Score - motor › Run workflow.
 name: Score - motor
@@ -35,6 +35,8 @@ jobs:
         run: python coletor/score_motor.py --ajustada aj --referencias ref --cvm cvm --saida score && cat score/conferencia_etapa1.md >> "$GITHUB_STEP_SUMMARY"
       - name: Etapa 2 — subitens com balanço e de risco
         run: python coletor/score_fundamentos.py --ajustada aj --referencias ref --cvm cvm --motor score && cat score/conferencia_etapa2.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Etapa 3 — notas, pilares e Score mensal
+        run: python coletor/score_combinacao.py --motor score --referencias ref && cat score/conferencia_etapa3.md >> "$GITHUB_STEP_SUMMARY"
       - name: Publicar na Release pesquisa-score (rascunho)
         env:
           GH_TOKEN: ${{ github.token }}

@@ -1,8 +1,9 @@
-// Score Exponencial SOLIDUNS — Especificação operacional dos subitens (proposta v1.0.4) — 22/10/2026
+// Score Exponencial SOLIDUNS — Especificação operacional dos subitens v1.0.4 — 22/10/2026
 const fs = require('fs');
 const { Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType,
   HeadingLevel, BorderStyle, LevelFormat, Footer, Header, PageNumber, TabStopType } = require('docx');
 
+const QUE = new Set(fs.existsSync(__dirname + '/score_v104_quebras.json') ? JSON.parse(fs.readFileSync(__dirname + '/score_v104_quebras.json', 'utf8')) : []);
 const OURO = 'C9A227', PRETO = '111111', CINZA = '555555', CLARO = 'F4F1E6';
 const FONTE = 'Calibri';
 const logo = fs.readFileSync('' + __dirname + '/../site/publicar/assets/soliduns-logo-dbbcf92044.png');
@@ -19,9 +20,9 @@ function runs(t, base = {}) {
   return out;
 }
 const P = (t, o = {}) => new Paragraph({ children: runs(t), alignment: AlignmentType.JUSTIFIED, spacing: { after: 120, line: 300 }, ...o });
-const H1 = (t, quebra = true) => new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun(t)], keepNext: true, keepLines: true, pageBreakBefore: quebra, spacing: quebra ? undefined : { before: 360 } });
-const H2 = (t, quebra = false) => new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun(t)], keepNext: true, keepLines: true, pageBreakBefore: quebra });
-const H3 = t => new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun(t)], keepNext: true, keepLines: true });
+const H1 = (t, quebra = true) => new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun(t)], keepNext: true, keepLines: true, pageBreakBefore: quebra || QUE.has(t), spacing: quebra ? undefined : { before: 360 } });
+const H2 = (t, quebra = false) => new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun(t)], keepNext: true, keepLines: true, pageBreakBefore: quebra || QUE.has(t) });
+const H3 = t => new Paragraph({ heading: HeadingLevel.HEADING_3, children: [new TextRun(t)], keepNext: true, keepLines: true, pageBreakBefore: QUE.has(t) });
 const B = (t, nivel = 0) => new Paragraph({ numbering: { reference: 'marcas', level: nivel }, children: runs(t), alignment: AlignmentType.JUSTIFIED, spacing: { after: 60, line: 280 } });
 const N = (t, ref = 'numeros') => new Paragraph({ numbering: { reference: ref, level: 0 }, children: runs(t), alignment: AlignmentType.JUSTIFIED, spacing: { after: 60, line: 280 } });
 // fórmula + leitura matemática + frase simples (sempre juntas na mesma página)
@@ -37,12 +38,12 @@ function F(formula, leitura, simples) {
   ];
 }
 const borda = { style: BorderStyle.SINGLE, size: 4, color: 'BFB8A3' };
-function tabela(cab, linhas, larguras) {
+function tabela(cab, linhas, larguras, junta = true) {
   const total = larguras.reduce((a, b) => a + b, 0);
   const cel = (t, i, topo, ultima = false) => new TableCell({ width: { size: larguras[i], type: WidthType.DXA },
     shading: topo ? { type: ShadingType.CLEAR, color: 'auto', fill: PRETO } : undefined,
     borders: { top: borda, bottom: borda, left: borda, right: borda }, margins: { top: 60, bottom: 60, left: 100, right: 100 },
-    children: [new Paragraph({ children: runs(String(t), topo ? { bold: true, color: 'FFFFFF', size: 19 } : { size: 19 }) , keepNext: !ultima })] });
+    children: [new Paragraph({ children: runs(String(t), topo ? { bold: true, color: 'FFFFFF', size: 19 } : { size: 19 }) , keepNext: topo || (junta && !ultima) })] });
   return new Table({ width: { size: total, type: WidthType.DXA }, columnWidths: larguras,
     rows: [new TableRow({ tableHeader: true, cantSplit: true, children: cab.map((c, i) => cel(c, i, true)) }),
       ...linhas.map((l, j) => new TableRow({ cantSplit: true, children: l.map((c, i) => cel(c, i, false, j === linhas.length - 1)) }))] });
@@ -61,7 +62,7 @@ const capa = [
     children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 170, height: 174 } })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: 'SCORE EXPONENCIAL', bold: true, size: 52, color: PRETO, font: FONTE })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: 'Especificação operacional dos 22 subitens', size: 26, color: OURO })] }),
-  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Proposta de versão 1.0.4 — para aprovação', size: 24, color: CINZA })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.4 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Radar de Ações Exponenciais · SOLIDUNS', size: 22, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Brasília, 22 de outubro de 2026', size: 22, color: CINZA })] }),
 ];
@@ -70,13 +71,13 @@ const c = [];
 // ------------------------------------------------------------------ 1
 c.push(H1('1. O que este documento fixa', false));
 c.push(P('A metodologia v1.0.3 diz **o que** cada subitem mede e de onde vem. Este documento diz **como** cada um é calculado: a fórmula exata, as contas da CVM usadas e o que fazer quando falta dado.'));
-c.push(P('Tudo aqui fica congelado antes do primeiro teste. Depois de aprovado, vira a versão 1.0.4. Nenhum teste de desempenho foi rodado: as conferências abaixo só verificam se as contas estão certas.'));
-c.push(H2('Decisões para aprovar'));
-c.push(P('Quase tudo é detalhe de cálculo, sem escolha de mérito. Oito pontos pedem a sua decisão:'));
-c.push(N('**Crescimento implícito (Molodovsky) — variante B.** Na fórmula registrada, o dividendo cai quando o crescimento sobe: D = E · (1 − g/R). Em ' + pc(D.molo.r_menor_k) + ' dos casos a rentabilidade R fica abaixo da taxa exigida k. Aí crescer destrói valor, e o crescimento implícito vai para o teto de 60% em ' + pc(D.molo.teto_a) + ' dos casos: o subitem perde a capacidade de separar as ações. Proposta: nas fases 1 e 2, usar a distribuição observada da empresa, D = p · E. No teto, ficam só ' + pc(D.molo.teto_b) + ' dos casos.', 'numeros'));
+c.push(P('Tudo aqui fica congelado antes do primeiro teste. Este documento faz parte da metodologia v1.0.4. Nenhum teste de desempenho foi rodado: as conferências abaixo só verificam se as contas estão certas.'));
+c.push(H2('Decisões aprovadas em 22/10/2026'));
+c.push(P('Quase tudo é detalhe de cálculo, sem escolha de mérito. Oito pontos foram decididos pelo Dr. Thiago Viegas:'));
+c.push(N('**Crescimento implícito (Molodovsky) — variante B.** Na fórmula registrada, o dividendo cai quando o crescimento sobe: D = E · (1 − g/R). Em ' + pc(D.molo.r_menor_k) + ' dos casos a rentabilidade R fica abaixo da taxa exigida k. Aí crescer destrói valor, e o crescimento implícito vai para o teto de 60% em ' + pc(D.molo.teto_a) + ' dos casos: o subitem perde a capacidade de separar as ações. Decisão: nas fases 1 e 2, usar a distribuição observada da empresa, D = p · E. No teto, ficam só ' + pc(D.molo.teto_b) + ' dos casos.', 'numeros'));
 c.push(N('**Concordância entre pilares:** número de pilares, entre Momentum, Qualidade e valor e Momento fundamental, com nota positiva (0 a 3).', 'numeros'));
 c.push(N('**Escore de Mohanram com 6 dos 8 testes:** a CVM não traz gasto com pesquisa e desenvolvimento nem com propaganda.', 'numeros'));
-c.push(N('**Reapresentações:** os dados abertos da CVM guardam só a última versão de cada documento. Proposta: manter a regra registrada, em que a versão guardada só vale a partir da própria entrega. Aceitar a versão nova desde a primeira entrega aumentaria a cobertura em só ' + br(D.reap.ganho_pp, 1) + ' ponto percentual e traria risco de usar números corrigidos antes da hora (como nos casos de fraude).', 'numeros'));
+c.push(N('**Reapresentações:** os dados abertos da CVM guardam só a última versão de cada documento. Decisão: manter a regra registrada, em que a versão guardada só vale a partir da própria entrega. Aceitar a versão nova desde a primeira entrega aumentaria a cobertura em só ' + br(D.reap.ganho_pp, 1) + ' ponto percentual e traria risco de usar números corrigidos antes da hora (como nos casos de fraude).', 'numeros'));
 c.push(N('**Quantidade de ações:** de 2020 em diante, a composição do capital das DFP e ITR; antes, o capital integralizado do Formulário de Referência (FRE). ' + D.escala + ' empresas declaram a composição em milhares de ações, sem avisar; a escala é conferida pelo FRE.', 'numeros'));
 c.push(N('**Dados mínimos:** balanço com até 15 meses; surpresa de lucro com pelo menos 4 das 8 diferenças; Piotroski com pelo menos 7 dos 9 testes; Mohanram com pelo menos 4 dos 6.', 'numeros'));
 c.push(N('**Lucro do trimestre pela coluna do trimestre:** a DRE do ITR traz o trimestre e o acumulado do ano. O motor usa a coluna do trimestre, porque há erros no acumulado nos dados abertos (exemplo real: Magazine Luiza, 3º trimestre de 2023, acumulado zerado).', 'numeros'));
@@ -137,11 +138,10 @@ c.push(...F('Cam = sinal(r₁₂₋₁) · (%altas − %quedas)', 'a qualidade d
 c.push(H3('5. Tendência pela média móvel'));
 c.push(...F('MM = A(t) / média[A, últimos 200 pregões] − 1', 'a tendência {MM} é o preço ajustado de hoje dividido pela média dos últimos {200} pregões negociados, menos {1}.', 'positivo quando a ação está acima da sua média de 200 pregões.'));
 c.push(H3('6. Volume (giro)'));
-c.push(...F('Giro = [Σ Vol(últimos 252 pregões) / 252] / VM(t);   subitem = −Giro', 'o {Giro} é o volume financeiro médio diário de todas as classes da empresa nos últimos {252} pregões, dividido pelo valor de mercado {VM}; o subitem usa o sinal trocado.', 'entre ações parecidas, as menos negociadas tendem a estar no começo do ciclo do momentum.'));
-c.push(B('**Dado:** de 2010 em diante (quantidade de ações da CVM).'));
+c.push(...F('Giro = [Σ Vol(últimos 252 pregões) / 252] / VM(t);   subitem = −Giro', 'o {Giro} é o volume financeiro médio diário de todas as classes da empresa nos últimos {252} pregões, dividido pelo valor de mercado {VM}; o subitem usa o sinal trocado.', 'entre ações parecidas, as menos negociadas tendem a estar no começo do ciclo do momentum. Há dado de 2010 em diante.'));
 
 // ------------------------------------------------------------------ 4 Pilar 2
-c.push(H1('4. Pilar 2 — Qualidade e valor'));
+c.push(H1('4. Pilar 2 — Qualidade e valor', false));
 c.push(P('Índices com "−12" usam os 12 meses ou o balanço de um ano antes, na mesma fotografia.'));
 c.push(H3('7. Escore de Piotroski (9 testes)'));
 c.push(...F('F = Σ Fₙ  (n = 1 a 9);  com 7 ou 8 testes disponíveis: F = soma · 9 / n', 'o escore {F} é a soma dos 9 testes {Fₙ}, cada um valendo {1} ou {0}; se só {7} ou {8} testes têm dado, a soma é reescalada para {9}.', 'nove perguntas de sim ou não sobre lucro, caixa, dívida e eficiência.'));
@@ -164,7 +164,7 @@ c.push(...F('Acc = (LL₁₂ₘ − CFO₁₂ₘ) / média[AT, AT(−12)];   sub
 c.push(H3('11. Lucro operacional sobre o valor da firma'));
 c.push(...F('EBIT/EV = EBIT₁₂ₘ / EV  (EV > 0)', 'o rendimento operacional é o {EBIT} de 12 meses dividido pelo valor da firma {EV}.', 'é o inverso do múltiplo EV/EBIT: quanto maior, mais barata a empresa.'));
 c.push(H3('12. Crescimento implícito no preço (Folga) — variante B'));
-c.push(...F('Dₛ = p · Eₛ, se s ≤ 30;   fase 3: E₃₀ · (1 + π) · (1 − π / R) / (k − π)', 'na proposta, o dividendo {Dₛ} das fases 1 e 2 é a distribuição observada {p} vezes o lucro {Eₛ}; a fase 3 não muda.', 'o preço é comparado com o caminho de lucro, sem supor que a empresa mude a sua política de dividendos.'));
+c.push(...F('Dₛ = p · Eₛ, se s ≤ 30;   fase 3: E₃₀ · (1 + π) · (1 − π / R) / (k − π)', 'o dividendo {Dₛ} das fases 1 e 2 é a distribuição observada {p} vezes o lucro {Eₛ}; a fase 3 não muda.', 'o preço é comparado com o caminho de lucro, sem supor que a empresa mude a sua política de dividendos.'));
 c.push(...F('V(g*) = VM / E₀;   Folga = R · (1 − p) − g*', 'o crescimento implícito {g*} faz o valor {V} igualar o valor de mercado {VM} dividido pelo lucro normal {E₀}; a {Folga} é o crescimento sustentável {R(1 − p)} menos {g*}.', 'positivo quando a empresa consegue crescer, com os próprios recursos, mais do que o preço exige.'));
 c.push(tabela(['Parâmetro', 'Cálculo'], [
   ['E₀ (lucro normal)', 'média de Lc₁₂ₘ hoje, um ano antes e dois anos antes'],
@@ -175,7 +175,7 @@ c.push(tabela(['Parâmetro', 'Cálculo'], [
 ], [2400, 6600]));
 
 // ------------------------------------------------------------------ 5 Pilar 3
-c.push(H1('5. Pilar 3 — Momento fundamental'));
+c.push(H1('5. Pilar 3 — Momento fundamental', false));
 c.push(P('{Lq} é o lucro trimestral atribuído à controladora.'));
 c.push(H3('13. Surpresa de lucro padronizada'));
 c.push(...F('SUE = ΔLq(t) / dp[ΔLq(t), …, ΔLq(t − 7)];   ΔLq(t) = Lq(t) − Lq(t − 4)', 'a surpresa {SUE} é a variação do lucro do trimestre contra o mesmo trimestre do ano anterior {ΔLq}, dividida pelo desvio-padrão {dp} dessa variação nos últimos {8} trimestres (pelo menos {4}).', 'mede se o lucro surpreendeu, comparado com o tamanho normal das variações da empresa.'));
@@ -195,14 +195,14 @@ c.push(H3('16. Alavancagem operacional (Lev; Thiagarajan)'));
 c.push(...F('LT = −{[SGA₁₂ₘ / SGA₁₂ₘ(−12) − 1] − [Rec₁₂ₘ / Rec₁₂ₘ(−12) − 1]}', 'o sinal {LT} é menos a diferença entre o crescimento das despesas de vendas, gerais e administrativas {SGA} e o crescimento da receita {Rec}.', 'despesas crescendo mais que as vendas é mau sinal.'));
 
 // ------------------------------------------------------------------ 6 Pilar 4
-c.push(H1('6. Pilar 4 — Risco e confluência'));
+c.push(H1('6. Pilar 4 — Risco e confluência', false));
 c.push(H3('17. Baixa volatilidade'));
 c.push(...F('σ = dp[r(t − 251), …, r(t)] · raiz(252);   subitem = −σ', 'a volatilidade {σ} é o desvio-padrão dos retornos diários {r} dos últimos {252} pregões (pelo menos {150}), anualizado; o subitem usa o sinal trocado.', 'ações que oscilam menos ganham nota maior.'));
 c.push(H3('18. Beta baixo'));
 c.push(...F('β = cov(rᵢ − r_f, R_m − r_f) / var(R_m − r_f);   subitem = −β', 'o {β} é a covariância entre o retorno da ação acima da taxa livre {rᵢ − r_f} e o retorno do mercado acima da taxa livre {R_m − r_f} do NEFIN, dividida pela variância deste, em {252} pregões (pelo menos {150}).', 'mede quanto a ação amplia os movimentos do mercado.'));
 c.push(H3('19. Liquidez (Amihud)'));
 c.push(...F('ILLIQ = média[|r| / Vol (R$ milhões)], 63 pregões;   subitem = −ILLIQ', 'a iliquidez {ILLIQ} é a média do retorno absoluto {|r|} dividido pelo volume financeiro {Vol} em milhões de reais, nos últimos {63} pregões.', 'quanto o preço anda para cada milhão negociado.'));
-c.push(H3('20. Concordância entre pilares (proposta)'));
+c.push(H3('20. Concordância entre pilares'));
 c.push(...F('Conc = nº de pilares com nota positiva entre z_M, z_F e z_A', 'a concordância {Conc} conta quantas das notas dos pilares Momentum {z_M}, Qualidade e valor {z_F} e Momento fundamental {z_A} são maiores que zero; vai de {0} a {3}.', 'premia a ação em que os sinais apontam juntos para cima.'));
 c.push(H3('21. Risco de insolvência (EM Score)'));
 c.push(...F('EM = 6,56 · X₁ + 3,26 · X₂ + 6,72 · X₃ + 1,05 · X₄ + 3,25', 'como na v1.0.1, com {X₁} = (AC − PC) / AT; {X₂} = (RL + LA) / AT; {X₃} = EBIT₁₂ₘ / AT; {X₄} = PL / (PC + PNC).', 'quanto maior, menor o risco de falência.'));
@@ -235,15 +235,15 @@ c.push(P('Cada número abaixo foi calculado duas vezes: pelo motor e por um cál
 c.push(H2('Contra o que as empresas divulgaram'));
 c.push(tabela(['Empresa', 'Número divulgado', 'Motor'], D.publicados, [2200, 4300, 2500]));
 c.push(H2('Motor contra o cálculo separado'));
-c.push(tabela(['Ação', 'Item', 'Cálculo separado', 'Motor'], D.conferencia, [1100, 3900, 2000, 2000]));
+c.push(tabela(['Ação', 'Item', 'Cálculo separado', 'Motor'], D.conferencia, [1100, 3900, 2000, 2000], false));
 c.push(P('Todas as diferenças são zero (até a última casa).'));
 c.push(B('**Piotroski, conferido teste a teste:** os 8 testes contábeis dão 3 (Petrobras), 6 (WEG) e 8 (Magazine Luiza). O teste 7, sem emissão de ações, vale 1, 1 e 0: o Magazine Luiza aumentou o capital em R$ 1,25 bi em 2024. Total: 4, 7 e 8, iguais ao motor.'));
-c.push(H2('Crescimento implícito: cálculo separado', true));
+c.push(H2('Crescimento implícito: cálculo separado'));
 c.push(tabela(['Mês', 'Ação', 'VM / E₀', 'R', 'p', 'k', 'g* fórmula A', 'g* variante B'], D.molo.linhas, [900, 900, 1000, 900, 900, 900, 1250, 1250]));
 c.push(P('A Petrobras de junho de 2019 mostra o problema da fórmula registrada: R limitado a 5% e abaixo de k, e o g* vai ao teto de 60%. Na variante B, o g* fica em ' + D.molo.petr2019_b + '.'));
 
 // ------------------------------------------------------------------ 9 cobertura
-c.push(H1('9. Cobertura'));
+c.push(H1('9. Cobertura', false));
 c.push(P('Percentual das ações elegíveis com o subitem, em dezembro de cada ano. As financeiras ficam sem os subitens que não se aplicam a elas.'));
 c.push(tabela(['Ano', 'Ações', 'Piotroski', 'GP/A', 'EBIT/EV', 'Folga B', 'SUE', 'Mohanram', 'EM', 'Escore M', 'Giro'], D.cobertura,
   [700, 700, 900, 800, 900, 900, 700, 1000, 700, 900, 700]));
@@ -255,11 +255,9 @@ c.push(B('**Tesouraria antes de 2020:** o FRE não traz a posição em tesourari
 c.push(B('**Risco sacado:** algumas varejistas classificam o pagamento a fornecedores por convênio como financiamento, o que infla o caixa operacional (exemplo: Magazine Luiza 2024). A nota padronizada, limitada a ±3, reduz o efeito.'));
 c.push(B('**Arrendamentos:** a dívida do EV e da segurança usa só empréstimos e financiamentos; arrendamentos (IFRS 16) ficam de fora.'));
 
-c.push(H1('10. Próximo passo', false));
-c.push(P('Com a aprovação, este documento vira a versão 1.0.4 da metodologia. Depois vem a etapa 3 do motor: padronização no setor, notas dos pilares e Score mensal de 2007 a hoje, ainda sem o teste de desempenho.'));
 
 const doc = new Document({
-  creator: 'SOLIDUNS', title: 'Score Exponencial — especificação operacional (proposta v1.0.4)',
+  creator: 'SOLIDUNS', title: 'Score Exponencial — especificação operacional v1.0.4',
   styles: {
     default: { document: { run: { font: FONTE, size: 22, color: '222222' } } },
     paragraphStyles: [
@@ -280,7 +278,7 @@ const doc = new Document({
       headers: { default: new Header({ children: [new Paragraph({ tabStops: [{ type: TabStopType.RIGHT, position: 9000 }],
         border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: OURO, space: 4 } },
         children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 26, height: 27 } }),
-          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tEspecificação operacional — proposta v1.0.4', size: 17, color: CINZA })] })] }) },
+          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tEspecificação operacional v1.0.4', size: 17, color: CINZA })] })] }) },
       footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER,
         children: [new TextRun({ text: 'Página ', size: 17, color: CINZA }), new TextRun({ children: [PageNumber.CURRENT], size: 17, color: CINZA }),
           new TextRun({ text: '  ·  Uso interno. Não é recomendação de investimento.', size: 17, color: CINZA })] })] }) },
