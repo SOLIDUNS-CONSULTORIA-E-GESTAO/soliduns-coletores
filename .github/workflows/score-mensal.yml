@@ -1,0 +1,51 @@
+# SOLIDUNS — SCORE EXPONENCIAL: ATUALIZAÇÃO MENSAL DO RADAR (metodologia v1.0.5). 23/10/2026.
+# Todo dia 2, às 6h17 de Brasília: atualiza as bases (cotações do ano, proventos e eventos, ajuste, CVM dos 2 últimos
+# anos, referências), roda o motor e grava no Supabase o ranking do mês que fechou, com publicado = false
+# ("Ranking em calibração" para o assinante; prévia e acompanhamento ao vivo para o administrador).
+# Não envia nada ao Telegram. Também roda à mão: Actions › Score - mensal › Run workflow.
+name: Score - mensal
+
+on:
+  schedule:
+    - cron: "17 9 2 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency: { group: score-mensal, cancel-in-progress: false }
+
+jobs:
+  mensal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v5
+      - name: Atualizar bases e gravar o ranking
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          ANO=$(TZ=America/Sao_Paulo date +%Y); MES=$(TZ=America/Sao_Paulo date +%m)
+          if [ "$MES" = "01" ]; then ANOS_B3="$((ANO-1))-$ANO"; else ANOS_B3="$ANO"; fi
+          rodar () {   # dispara um workflow, espera terminar e para tudo se ele falhar
+            W="$1"; shift
+            ANTES=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            gh workflow run "$W" --ref main "$@"
+            for i in $(seq 1 30); do
+              sleep 10
+              ID=$(gh run list --workflow "$W" --limit 5 --json databaseId,createdAt --jq "[.[] | select(.createdAt >= \"$ANTES\")][0].databaseId // empty")
+              [ -n "$ID" ] && break
+            done
+            [ -n "$ID" ] || { echo "ERRO: não achei a execução de $W"; exit 1; }
+            echo "$W: execução $ID"
+            gh run watch "$ID" --interval 60 --exit-status > /dev/null || { echo "ERRO: $W falhou (execução $ID)"; exit 1; }
+            echo "::notice title=$W::ok (execução $ID)"
+          }
+          rodar pesquisa-historico-b3.yml -f anos="$ANOS_B3"
+          rodar pesquisa-eventos-b3.yml -f limite=0
+          rodar pesquisa-ajuste-b3.yml
+          rodar pesquisa-cvm.yml -f anos="$((ANO-1))-$ANO" -f so_fre=false
+          rodar pesquisa-referencias.yml
+          rodar score-motor.yml -f gravar=true

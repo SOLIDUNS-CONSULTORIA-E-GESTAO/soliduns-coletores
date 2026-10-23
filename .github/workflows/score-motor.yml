@@ -1,11 +1,16 @@
-# SOLIDUNS — SCORE EXPONENCIAL: motor de cálculo (metodologia v1.0.4). 22/10/2026.
+# SOLIDUNS — SCORE EXPONENCIAL: motor de cálculo (metodologia v1.0.5). 22/10/2026.
 # Etapa 1: universo e Pilar 1 (preço). Etapa 2: subitens com balanço da CVM e de risco. Etapa 3: notas e Score.
 # Lê as bases de pesquisa (Releases em rascunho) e publica os resultados na Release "pesquisa-score" (rascunho).
-# Só roda à mão: Actions › Score - motor › Run workflow.
+# Roda à mão (Actions › Score - motor) ou pelo "Score - mensal", que liga "gravar".
 name: Score - motor
 
 on:
   workflow_dispatch:
+    inputs:
+      gravar:
+        description: "Gravar o ranking do último mês fechado no Supabase (publicado = false: Ranking em calibração)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -19,15 +24,16 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - run: pip install -r coletor/requirements.txt
+      - run: pip install -r coletor/requirements.txt scipy
       - name: Baixar as bases (rascunho)
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p aj ref cvm
+          mkdir -p aj ref cvm ev
+          gh release download pesquisa-b3-eventos -D ev -p "emissores_b3.csv.gz"
           gh release download pesquisa-b3-ajustada -D aj -p "diario_*.csv.gz" -p "papeis.csv.gz"
           gh release download pesquisa-referencias -D ref -p "ligacao_b3_cvm.csv.gz" -p "nefin_factors.csv.gz" \
-            -p "ntnb_mais_longa.csv.gz" -p "focus_ipca_ano_seguinte.csv.gz"
+            -p "ntnb_mais_longa.csv.gz" -p "focus_ipca_ano_seguinte.csv.gz" -p "ibovespa.csv.gz"
           gh release download pesquisa-cvm -D cvm -p "cvm_cadastro.csv.gz" -p "cvm_dfp_*" -p "cvm_itr_*" \
             -p "cvm_fre_*_indice.csv.gz" -p "cvm_fre_*_capital_social.csv.gz"
           du -sh aj ref cvm
@@ -37,6 +43,12 @@ jobs:
         run: python coletor/score_fundamentos.py --ajustada aj --referencias ref --cvm cvm --motor score && cat score/conferencia_etapa2.md >> "$GITHUB_STEP_SUMMARY"
       - name: Etapa 3 — notas, pilares e Score mensal
         run: python coletor/score_combinacao.py --motor score --referencias ref && cat score/conferencia_etapa3.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Gravar o ranking no Supabase (sem publicar; nada vai ao Telegram)
+        if: ${{ github.event.inputs.gravar == 'true' }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python coletor/score_publicar.py --motor score --ajustada aj --referencias ref --cvm cvm --eventos ev --gravar
       - name: Publicar na Release pesquisa-score (rascunho)
         env:
           GH_TOKEN: ${{ github.token }}
