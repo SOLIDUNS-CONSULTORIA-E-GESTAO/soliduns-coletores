@@ -457,7 +457,19 @@ def ler_tickers(conteudo_zip):
         if c_fim and str(r[c_fim] or "").strip() not in ("", "nan"):
             continue
         mapa[r[c_cnpj]].add(cod)
+    # v8.3 (23/10/2026): companhias cujo FCA não traz o código de negociação (campo vazio). Sem isto, BTG Pactual,
+    # CSN e CSN Mineração ficavam fora de fundamentos_br e do robô de seleção. Conferido no cadastro da CVM e na B3.
+    for cnpj, cods in TICKERS_SEM_CODIGO_NO_FCA.items():
+        if not mapa.get(cnpj):
+            mapa[cnpj] |= cods
     return mapa
+
+
+TICKERS_SEM_CODIGO_NO_FCA = {
+    "30.306.294/0001-45": {"BPAC11"},     # Banco BTG Pactual (units)
+    "33.042.730/0001-04": {"CSNA3"},      # Cia Siderúrgica Nacional
+    "08.902.291/0001-15": {"CMIN3"},      # CSN Mineração
+}
 
 
 def classe_do_ticker(t):
@@ -484,7 +496,14 @@ def ler_cadastro(conteudo):
         out[r[c_cnpj]] = {"setor": txt(r[c_setor]) if c_setor else "",
                           "nome": txt(r[c_nome]) if c_nome else "",
                           "social": txt(r[c_social]) if c_social else ""}
+    # v8.3 (23/10/2026): nome comercial desatualizado no cadastro da CVM (o BTG ainda aparece como "Banco UBS Pactual")
+    for cnpj, nome in NOMES_CORRIGIDOS.items():
+        if cnpj in out:
+            out[cnpj]["nome"] = nome
     return out
+
+
+NOMES_CORRIGIDOS = {"30.306.294/0001-45": "BTG PACTUAL"}
 
 
 # ------------------------------------------------------------------ núcleo

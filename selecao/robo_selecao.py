@@ -16,6 +16,7 @@ Uso (a partir da pasta 'selecao'):
   python robo_selecao.py --fundamentos x.json  -> fundamentos já gerados (coletar_cvm.py --saida)
   python robo_selecao.py --saida pasta/        -> onde gravar o relatório (padrão: resultados/)
   python robo_selecao.py --gravar              -> também grava no Supabase da plataforma
+  python robo_selecao.py --sem-alvos           -> não calcula o Alvos SOLIDUNS (entrada, stop e alvos da B3)
 
 Dados públicos: CVM, B3 (COTAHIST), Banco Central, Tesouro Direto e Damodaran.
 O CDS de 5 anos é informado em parametros.yaml (dado pago).
@@ -28,6 +29,7 @@ import sys
 AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, AQUI)
 
+from soliduns_selecao import alvos as ALV          # noqa: E402
 from soliduns_selecao import carteira as CART      # noqa: E402
 from soliduns_selecao import gravar as GRAV         # noqa: E402
 from soliduns_selecao import pipeline as PIPE       # noqa: E402
@@ -44,6 +46,7 @@ def main():
     ap.add_argument("--fundamentos", help="JSON gerado por coletar_cvm.py --saida")
     ap.add_argument("--cache", default=os.path.join(AQUI, "cache"))
     ap.add_argument("--saida", default=os.path.join(AQUI, "resultados"))
+    ap.add_argument("--sem-alvos", action="store_true", help="não calcula o Alvos SOLIDUNS")
     ap.add_argument("--gravar", action="store_true",
                     help="grava no Supabase (SUPABASE_URL e SUPABASE_SERVICE_KEY no ambiente)")
     a = ap.parse_args()
@@ -83,6 +86,16 @@ def main():
         for df in [ranking] + [c[0] for c in carteiras]:
             df["grupo_nome"] = df["grupo"].map(nomes_grupo)
         gravado = GRAV.gravar(ctx, cfg, ranking, carteiras)
+    alvos = None
+    if (cfg.get("alvos") or {}).get("ativo") and not a.sem_alvos:
+        try:
+            alvos = ALV.calcular(tab, ctx, cfg, st)
+            alvos.drop(columns=["serie"]).to_excel(os.path.join(a.saida, nome + "_alvos.xlsx"), index=False)
+            if a.gravar:
+                GRAV.gravar_alvos(ctx, cfg, alvos)
+        except Exception as e:      # o Alvos nunca derruba a carteira
+            from soliduns_selecao.util import aviso
+            aviso(f"Alvos SOLIDUNS não calculado: {e}")
     REL.gerar(os.path.join(a.saida, nome + ".xlsx"), ctx, cfg, ranking, carteiras, nomes_grupo)
     REL.gerar_json(os.path.join(a.saida, nome + ".json"), ctx, carteiras, ranking)
     if a.gravar and not gravado:

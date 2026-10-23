@@ -116,9 +116,11 @@ def cotahist(anos, pasta):
             cod = l[12:24].strip()
             if tpmerc != "010" or (bdi not in ("02", "14") and cod != "BOVA11"):
                 continue
-            reg.append((l[2:10], cod, int(l[108:121]) / 100, int(l[170:188]) / 100, int(l[210:217] or 1)))
-        df = pd.DataFrame(reg, columns=["data", "ticker", "fech", "volume", "fator"])
-        df["fech"] = df["fech"] / df["fator"].clip(lower=1)
+            reg.append((l[2:10], cod, int(l[108:121]) / 100, int(l[170:188]) / 100, int(l[210:217] or 1),
+                        int(l[56:69]) / 100, int(l[69:82]) / 100, int(l[82:95]) / 100))
+        df = pd.DataFrame(reg, columns=["data", "ticker", "fech", "volume", "fator", "abe", "max", "min"])
+        for c in ("fech", "abe", "max", "min"):          # máxima e mínima: usadas pelo Alvos SOLIDUNS
+            df[c] = df[c] / df["fator"].clip(lower=1)
         partes.append(df.drop(columns="fator"))
         log(f"COTAHIST {ano}: {len(df)} registros")
     if not partes:

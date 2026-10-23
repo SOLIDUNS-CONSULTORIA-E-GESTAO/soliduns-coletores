@@ -152,3 +152,19 @@ mesma coluna em `fundamentos_br`.
 
 Dados públicos: CVM (ODbL), B3, Banco Central, Tesouro Transparente, Damodaran (NYU Stern).
 Material metodológico. **Não constitui recomendação de investimento.**
+
+## Alvos SOLIDUNS (entrada, stop e preço-alvo de todas as ações da B3)
+
+Roda junto com o robô, no mesmo agendamento (`--sem-alvos` desliga). Módulo `soliduns_selecao/alvos.py`;
+parâmetros em `parametros.yaml › alvos`; grava nas tabelas da migration `supabase/migrations/186_alvos_soliduns.sql`;
+página do site em Mercado financeiro › Ações › Alvos SOLIDUNS (v171).
+
+- **Universo:** uma classe por empresa, a mais líquida, com volume médio de pelo menos R$ 2 milhões por dia.
+- **Indicadores:** médias móveis de 9, 21, 50 e 200 dias, IFR, MACD, Bollinger, estocástico, ADX, ATR, volume,
+  pivô semanal e Fibonacci. Desdobramentos e grupamentos são ajustados antes do cálculo.
+- **Reação à eleição:** a do próprio robô para as ações elegíveis; para as demais, a mesma conta pelo grupo setorial.
+- **Níveis:** entrada ideal, entrada máxima, stop, alvo 1, alvo 2 do cenário D e alvo 2 técnico.
+- **Alertas** (não mudam a conta): setor fora das listas, ação retirada, prejuízo, patrimônio negativo,
+  recuperação judicial, dívida alta, ganho/risco abaixo de 1, cotação abaixo de R$ 1, preço abaixo da MME 200.
+- O robô grava como prévia; o administrador publica pela própria página.
+

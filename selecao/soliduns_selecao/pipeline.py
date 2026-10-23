@@ -341,5 +341,7 @@ def montar_tabela(base, cfg, st, pasta_cache, fundamentos_json=None):
 
     contexto = {"hoje": hoje, "p": p, "p_mistura": p_mist, "v": v, "delta": delta, "cds0": cds0,
                 "cds_D": cds_d, "cds_E": cds_e, "gamma_m": gamma_m, "selic": selic, "ke_m": ke_m, "pesquisas": pesq,
-                "dp": dp, "excluidas": pd.DataFrame(excl, columns=["cnpj", "empresa", "motivo"])}
+                "dp": dp, "excluidas": pd.DataFrame(excl, columns=["cnpj", "empresa", "motivo"]),
+                # usados pelo Alvos SOLIDUNS (alvos.py), que cobre também as ações fora do universo elegível
+                "cot": cot, "fund": fund, "lambda_media": media, "eps": eps, "grupo_pol": grupo_pol}
     return tab, contexto

@@ -107,3 +107,74 @@ def gravar(ctx, cfg, ranking, carteiras):
     except requests.RequestException as e:
         aviso(f"Supabase indisponível ({e}); o relatório em Excel continua valendo")
         return False
+
+
+# ----------------------------------------------------------------- Alvos SOLIDUNS (SQL 186)
+DICA_SQL_ALVOS = " Rode a migration supabase/migrations/186_alvos_soliduns.sql no SQL Editor do Supabase."
+COL_ALVOS = ["posicao", "ticker", "empresa", "setor", "grupo", "preco", "volume_medio", "ent_ideal", "ent_max", "stop",
+             "alvo1", "alvo2_d", "alvo2_n", "preco_e", "ganho1", "ganho_d", "ganho_d_atual", "ganho_n", "perda", "rr_d",
+             "rr_n", "choque_d", "choque_e", "origem_choque", "alertas", "limpa", "ifr", "adx", "di_mais", "di_menos",
+             "macd", "sinal", "estoc_k", "estoc_d", "atr", "mme9", "mme21", "mme50", "mme200", "bb_inf", "bb_sup",
+             "vol_rel", "ret_5d", "ret_21d", "ret_ano", "s2", "s1", "pivo", "r1", "r2", "min252", "max252", "serie"]
+
+
+def gravar_alvos(ctx, cfg, alvos):
+    url, cab = _cabecalho()
+    if not url:
+        aviso("SUPABASE_URL/SUPABASE_SERVICE_KEY não definidos: Alvos SOLIDUNS não gravado no Supabase")
+        return False
+    if alvos is None or alvos.empty:
+        aviso("Alvos SOLIDUNS sem ações: nada gravado")
+        return False
+    ca = cfg.get("alvos") or {}
+    agora = dt.datetime.now(dt.timezone.utc).isoformat()
+    data_ref = max(pd_data(s[-1][0]) for s in alvos["serie"] if s)
+    execucao = {
+        "data_referencia": data_ref, "resultado": cfg["eleicao"].get("resultado") or "", "executado_em": agora,
+        "p_d": _limpo(ctx["p"]), "cds_pb": _limpo(ctx["cds0"] * 1e4), "cds_d_pb": _limpo(ctx["cds_D"] * 1e4),
+        "cds_e_pb": _limpo(ctx["cds_E"] * 1e4), "n_acoes": int(len(alvos)),
+        "parametros": {"candidato_d": cfg["eleicao"].get("candidato_D") or "D",
+                       "candidato_e": cfg["eleicao"].get("candidato_E") or "E",
+                       "volume_minimo_rs": ca.get("volume_minimo_rs", 2e6),
+                       "ganho_destaque": ca.get("ganho_destaque", 0.20),
+                       "grupos_alerta": sorted(set(ca.get("grupos_alerta") or []) |
+                                               set((cfg.get("universo") or {}).get("grupos_excluidos") or [])),
+                       "acoes_retiradas": ca.get("acoes_retiradas") or []},
+        "avisos": list(AVISOS),
+    }
+    if ca.get("publicar_automaticamente"):
+        execucao.update(publicado=True, publicado_em=agora, publicado_por="robô (publicação automática)")
+    try:
+        r = requests.post(f"{url}/rest/v1/alvos_execucoes?on_conflict=data_referencia,resultado", json=execucao,
+                          timeout=60, headers=dict(cab, Prefer="resolution=merge-duplicates,return=representation"))
+        if r.status_code >= 300:
+            dica = DICA_SQL_ALVOS if r.status_code in (400, 404) else ""
+            aviso(f"Supabase recusou o Alvos SOLIDUNS ({r.status_code} {r.text[:200]}).{dica}")
+            return False
+        exec_id = r.json()[0]["id"]
+        requests.delete(f"{url}/rest/v1/alvos_acoes?execucao_id=eq.{exec_id}", headers=cab, timeout=60)
+        linhas = []
+        for rec in alvos.to_dict("records"):
+            linha = {"execucao_id": exec_id}
+            for c in COL_ALVOS:
+                v = rec.get(c)
+                v = v if c in ("serie", "alertas") else _limpo(v)
+                if isinstance(v, float):
+                    v = round(v, 6)
+                linha[c] = v
+            linhas.append(linha)
+        for i in range(0, len(linhas), 100):
+            r = requests.post(f"{url}/rest/v1/alvos_acoes", json=json.loads(json.dumps(linhas[i:i + 100], default=_limpo)),
+                              timeout=120, headers=dict(cab, Prefer="return=minimal"))
+            if r.status_code >= 300:
+                aviso(f"alvos_acoes não gravada ({r.status_code} {r.text[:200]}).{DICA_SQL_ALVOS}")
+                return False
+        log(f"Supabase: Alvos SOLIDUNS gravado (execução {exec_id}, {len(linhas)} ações)")
+        return True
+    except requests.RequestException as e:
+        aviso(f"Supabase indisponível para o Alvos SOLIDUNS ({e})")
+        return False
+
+
+def pd_data(s):
+    return str(s)[:10]

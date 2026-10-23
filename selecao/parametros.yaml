@@ -73,3 +73,15 @@ carteira:
   gamma_tolerancia: 0.02            # modo neutro: |Γ_c − γ da bolsa| máximo
   volume_minimo_rs: 20000000        # 10.1 liquidez: média diária de 3 meses
   janela_beta_anos: 2
+
+alvos:                              # Alvos SOLIDUNS (SQL 186): entrada, stop e alvos de todas as ações líquidas da B3
+  ativo: true                       # roda junto com o robô, todo dia útil
+  volume_minimo_rs: 2000000         # volume médio diário mínimo (63 pregões)
+  ganho_destaque: 0.20              # ganho até o alvo 2 destacado em verde na página
+  pregoes_grafico: 160              # pregões no gráfico de cada ação
+  # Setores fora das listas (decisão de gestão de 22/10/2026): aparecem com alerta, não são escondidos.
+  # Varejo e construção civil entram também por universo.grupos_excluidos.
+  grupos_alerta: [transporte, saude_educacao]
+  acoes_retiradas: [TTEN3, SOJA3, SLCE3, ORVR3]   # retiradas do ranking em 22/10/2026 (alertas de dívida, lucro ou dividendos)
+  publicar_automaticamente: false   # o robô grava como prévia; o administrador publica pela página
+
