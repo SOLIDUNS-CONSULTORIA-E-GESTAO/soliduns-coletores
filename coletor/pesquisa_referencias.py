@@ -25,6 +25,7 @@ import os
 import re
 import time
 import unicodedata
+import urllib.parse
 from collections import defaultdict
 
 import pandas as pd
@@ -104,8 +105,10 @@ def focus(saida):
     linhas, skip = [], 0
     filtro = "Indicador eq 'IPCA' and baseCalculo eq 0"
     while True:
-        r = baixar(URL_FOCUS, params={"$filter": filtro, "$select": "Data,DataReferencia,Mediana,numeroRespondentes",
-                                      "$orderby": "Data", "$top": 10000, "$skip": skip, "$format": "json"})
+        q = urllib.parse.quote                                      # o Olinda não aceita "+" no lugar de espaço
+        url = (f"{URL_FOCUS}?$filter={q(filtro)}&$select=Data,DataReferencia,Mediana,numeroRespondentes"
+               f"&$orderby=Data&$top=10000&$skip={skip}&$format=json")
+        r = baixar(url)
         if not r:
             break
         v = r.json().get("value", [])
