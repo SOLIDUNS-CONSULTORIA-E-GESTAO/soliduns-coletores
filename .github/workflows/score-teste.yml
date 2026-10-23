@@ -1,0 +1,51 @@
+# SOLIDUNS — SCORE EXPONENCIAL: teste histórico (protocolo v1.0.5). 23/10/2026.
+# Modos "aleatorio" e "oraculo": placebos que conferem a máquina do teste (não usam o Score).
+# Modo "real": RODADA ÚNICA do teste do Score, só depois do protocolo aprovado.
+# Lê as Releases em rascunho e publica o relatório na Release "pesquisa-teste" (rascunho).
+name: Score - teste
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "aleatorio, oraculo ou real (rodada única)"
+        required: true
+        default: "aleatorio"
+
+permissions:
+  contents: write
+
+jobs:
+  teste:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r coletor/requirements.txt scipy
+      - name: Baixar as bases (rascunho)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p aj ref cvm score
+          gh release download pesquisa-b3-ajustada -D aj -p "diario_*.csv.gz"
+          gh release download pesquisa-referencias -D ref -p "nefin_factors.csv.gz" -p "nefin_factors_monthly.csv.gz" -p "ibovespa.csv.gz"
+          gh release download pesquisa-cvm -D cvm -p "cvm_cadastro.csv.gz"
+          gh release download pesquisa-score -D score -p "score_mensal.csv.gz" -p "universo_mensal.csv.gz" -p "fundamentos_mensal.csv.gz"
+      - name: Teste
+        run: |
+          python coletor/score_teste.py --motor score --ajustada aj --referencias ref --cvm cvm --modo "${{ github.event.inputs.modo }}" --saida resultado
+          if [ "${{ github.event.inputs.modo }}" = "real" ]; then
+            python coletor/score_teste.py --motor score --ajustada aj --referencias ref --cvm cvm --modo real --saida resultado --fator-custo 2
+          fi
+          echo "commit do código: $GITHUB_SHA" > resultado/commit_${{ github.event.inputs.modo }}.txt
+          cat resultado/*.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Publicar na Release pesquisa-teste (rascunho)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view pesquisa-teste >/dev/null 2>&1 || \
+            gh release create pesquisa-teste --draft --title "Pesquisa — teste histórico do Score Exponencial" --notes "Uso interno."
+          gh release upload pesquisa-teste resultado/* --clobber
