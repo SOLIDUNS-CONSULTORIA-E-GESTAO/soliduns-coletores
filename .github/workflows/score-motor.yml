@@ -1,0 +1,39 @@
+# SOLIDUNS — SCORE EXPONENCIAL: motor de cálculo (metodologia v1.0.3). 22/10/2026.
+# Lê as bases de pesquisa (Releases em rascunho) e publica os resultados na Release "pesquisa-score" (rascunho).
+# Só roda à mão: Actions › Score - motor › Run workflow.
+name: Score - motor
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  motor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r coletor/requirements.txt
+      - name: Baixar as bases (rascunho)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p aj ref cvm
+          gh release download pesquisa-b3-ajustada -D aj -p "diario_*.csv.gz" -p "papeis.csv.gz"
+          gh release download pesquisa-referencias -D ref -p "ligacao_b3_cvm.csv.gz"
+          gh release download pesquisa-cvm -D cvm -p "cvm_cadastro.csv.gz"
+      - name: Etapa 1 — universo e Pilar 1
+        run: python coletor/score_motor.py --ajustada aj --referencias ref --cvm cvm --saida score && cat score/conferencia_etapa1.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Publicar na Release pesquisa-score (rascunho)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view pesquisa-score >/dev/null 2>&1 || \
+            gh release create pesquisa-score --draft --title "Pesquisa — Score Exponencial (motor de cálculo)" \
+              --notes "Resultados do motor do Score Exponencial (metodologia v1.0.3). Uso interno."
+          gh release upload pesquisa-score score/* --clobber
