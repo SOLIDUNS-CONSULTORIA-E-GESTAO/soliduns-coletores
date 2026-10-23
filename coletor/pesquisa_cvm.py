@@ -1,6 +1,6 @@
 """
 SOLIDUNS — BASE DE PESQUISA: DEMONSTRAÇÕES FINANCEIRAS DA CVM NO TEMPO CERTO (Score Exponencial v1.0.3, camada 1)
-v1.0 (22/10/2026)
+v1.1 (22/10/2026)
 
 Fonte OFICIAL e gratuita: Portal de Dados Abertos da CVM (dados.cvm.gov.br), a mesma do coletor coletar_cvm.py.
   - DFP (anuais) de 2010 a hoje e ITR (trimestrais) de 2011 a hoje: TODAS as versões de cada documento, com a
@@ -12,6 +12,10 @@ Fonte OFICIAL e gratuita: Portal de Dados Abertos da CVM (dados.cvm.gov.br), a m
 Contas guardadas (para não estourar o tamanho): Balanço até o 3º nível (ex.: 2.03.04 reservas de lucros), DRE e DFC
 até o 4º nível (ex.: 3.99.01.01 lucro por ação; 6.01.01.02 depreciação). Só o exercício atual (ORDEM_EXERC = ÚLTIMO).
 Valores em reais (a escala "MIL" é convertida; o lucro por ação, contas 3.99, já vem em reais por ação).
+
+v1.1: Formulário de Referência (FRE), 2010 em diante: quantidade de ações do capital social, com a data de entrega.
+A composição do capital das DFP/ITR só existe nos dados abertos de 2020 em diante; antes disso, a quantidade de
+ações vem do FRE. Opção --so-fre baixa só o FRE (sem refazer DFP e ITR).
 
 NÃO grava no Supabase: publica arquivos na Release "pesquisa-cvm" pelo workflow "Pesquisa - CVM".
 Uso: python coletor/pesquisa_cvm.py --anos 2010-2026 --saida dados_cvm
@@ -136,6 +140,28 @@ def fca(ano, saida):
     return len(df)
 
 
+def fre(ano, saida):
+    conteudo = baixar(f"{BASE}/DOC/FRE/DADOS/fre_cia_aberta_{ano}.zip")
+    if not conteudo:
+        resumo(f"FRE {ano}: arquivo não encontrado")
+        return
+    z = zipfile.ZipFile(io.BytesIO(conteudo))
+    nomes = z.namelist()
+    if ano in (2010, 2015, 2025):
+        print(f"::notice title=FRE {ano} arquivos::{' '.join(sorted(nomes))}", flush=True)
+    guardados = []
+    for n in nomes:
+        base = os.path.basename(n).lower()
+        if re.search(rf"fre_cia_aberta_{ano}\.csv$", base) or "capital_social" in base or "tesouraria" in base:
+            df = ler_csv(z, n)
+            curto = base.replace("fre_cia_aberta_", "").replace(f"_{ano}.csv", "").replace(f"{ano}.csv", "indice")
+            gravar(df, os.path.join(saida, f"cvm_fre_{ano}_{curto}.csv.gz"))
+            guardados.append(f"{curto} ({len(df)} linhas)")
+            if ano == 2015:
+                print(f"::notice title=FRE {curto} colunas::{' | '.join(df.columns)}", flush=True)
+    resumo(f"FRE {ano}: " + ", ".join(guardados))
+
+
 def anos_de(txt):
     a, b = (txt.split("-") + [txt])[:2]
     return list(range(int(a), int(b) + 1))
@@ -145,8 +171,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--anos", required=True)
     ap.add_argument("--saida", required=True)
+    ap.add_argument("--so-fre", action="store_true")
     a = ap.parse_args()
     os.makedirs(a.saida, exist_ok=True)
+    for ano in anos_de(a.anos):
+        fre(ano, a.saida)
+    if a.so_fre:
+        conteudo = baixar(f"{BASE}/DOC/DFP/DADOS/dfp_cia_aberta_2015.zip")
+        if conteudo:
+            print(f"::notice title=DFP 2015 arquivos::{' '.join(sorted(zipfile.ZipFile(io.BytesIO(conteudo)).namelist()))}", flush=True)
+        return
     resumo("| Documento | Entregas (todas as versões) | Reapresentações | Empresas | Linhas de contas |\n|---|---|---|---|---|")
     for ano in anos_de(a.anos):
         for doc in ("DFP", "ITR"):
