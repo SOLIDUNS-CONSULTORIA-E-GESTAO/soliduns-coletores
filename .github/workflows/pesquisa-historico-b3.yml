@@ -33,7 +33,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view pesquisa-b3-cotahist >/dev/null 2>&1 || \
-            gh release create pesquisa-b3-cotahist --title "Pesquisa — cotações históricas da B3 (COTAHIST)" \
+            gh release create pesquisa-b3-cotahist --draft --title "Pesquisa — cotações históricas da B3 (COTAHIST)" \
               --notes "Base de pesquisa do Score Exponencial: um arquivo por ano, preços originais da B3 (sem ajuste). Gerado pelo workflow 'Pesquisa - histórico B3'."
           gh release upload pesquisa-b3-cotahist dados_b3/*.csv.gz --clobber
           echo "Arquivos publicados: $(ls dados_b3 | wc -l)" >> "$GITHUB_STEP_SUMMARY"

@@ -33,6 +33,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view pesquisa-b3-ajustada >/dev/null 2>&1 || \
-            gh release create pesquisa-b3-ajustada --title "Pesquisa — cotações ajustadas e retorno total (B3)" \
+            gh release create pesquisa-b3-ajustada --draft --title "Pesquisa — cotações ajustadas e retorno total (B3)" \
               --notes "Base de pesquisa do Score Exponencial: preços ajustados por eventos em ações e índice de retorno total com proventos reinvestidos. Ver auditoria.md."
           gh release upload pesquisa-b3-ajustada dados_ajustados/* --clobber

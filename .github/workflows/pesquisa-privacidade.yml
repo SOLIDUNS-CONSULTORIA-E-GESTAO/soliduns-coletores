@@ -1,0 +1,20 @@
+# SOLIDUNS — BASES DE PESQUISA FORA DO ACESSO PÚBLICO. 22/10/2026.
+# O repositório é público, e as Releases publicadas também. As bases de pesquisa (cotações e proventos da B3, dados
+# da CVM, fatores do NEFIN) ficam como RASCUNHO (draft): só quem tem acesso de escrita ao repositório vê e baixa.
+# Motivo: as políticas de dados de mercado da B3 restringem a redistribuição pública das cotações.
+# Roda à mão: Actions › Pesquisa - privacidade › Run workflow.
+name: Pesquisa - privacidade
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  rascunho:
+    runs-on: ubuntu-24.04
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          for id in $(gh api "repos/$REPO/releases?per_page=100" --jq '.[] | select(.tag_name|startswith("pesquisa-")) | .id'); do
+            gh api -X PATCH "repos/$REPO/releases/$id" -F draft=true --jq '"\(.tag_name): rascunho = \(.draft)"' | tee -a "$GITHUB_STEP_SUMMARY"
+          done

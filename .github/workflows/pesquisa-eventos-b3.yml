@@ -35,6 +35,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view pesquisa-b3-eventos >/dev/null 2>&1 || \
-            gh release create pesquisa-b3-eventos --title "Pesquisa — proventos e eventos societários da B3" \
+            gh release create pesquisa-b3-eventos --draft --title "Pesquisa — proventos e eventos societários da B3" \
               --notes "Base de pesquisa do Score Exponencial: proventos em dinheiro, eventos em ações e cadastro de emissores (B3). Gerado pelo workflow 'Pesquisa - eventos B3'."
           gh release upload pesquisa-b3-eventos dados_eventos/*.csv.gz --clobber
