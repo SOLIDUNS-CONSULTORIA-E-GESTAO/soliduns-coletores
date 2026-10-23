@@ -1,0 +1,36 @@
+# SOLIDUNS — diagnóstico (só leitura): consulta do histórico do Ibovespa na B3. 23/10/2026.
+name: Diagnóstico Ibovespa
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diag:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Testar consultas
+        run: |
+          python - <<'PY'
+          import base64, json, requests, sys
+          sys.path.insert(0, "coletor")
+          import coletar_cotahist as cc
+          def b64(d): return base64.b64encode(json.dumps(d, separators=(",", ":")).encode()).decode()
+          urls = {
+            "anual": "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetYearlyReport/" + b64({"index": "IBOV", "language": "pt-br", "year": "2020"}),
+            "anual_en": "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetYearlyReport/" + b64({"index": "IBOV", "language": "en-us", "year": "2020"}),
+            "estat": "https://sistemaswebb3-listados.b3.com.br/indexStatisticsProxy/IndexCall/GetPortfolioDay/" + b64({"index": "IBOV", "language": "pt-br"}),
+          }
+          for nome, u in urls.items():
+              for cab in ({"User-Agent": "SOLIDUNS-pesquisa/1.0"}, cc.CAB_B3):
+                  try:
+                      r = requests.get(u, headers=cab, timeout=60, verify=False)
+                      print(f"::notice title={nome} {r.status_code}::{r.text[:500]}")
+                  except Exception as e:
+                      print(f"::notice title={nome} erro::{type(e).__name__} {e}"[:500])
+          PY
