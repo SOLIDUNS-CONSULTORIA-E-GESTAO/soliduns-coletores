@@ -1,0 +1,39 @@
+# SOLIDUNS — MERCADO: OPÇÕES DE AÇÕES DA B3 (calls e puts) — v1.0 (23/10/2026)
+# Fontes oficiais e gratuitas: Séries Históricas da B3 (COTAHIST), cadastro de instrumentos e posições em aberto
+# (arquivos públicos da B3) e Selic do Banco Central. Calcula volatilidade implícita e delta (Black-Scholes) e grava
+# em opcoes_br_hist (SQL 187). Todo dia útil às 22h47 (Brasília) busca os pregões que faltam; guarda ~6 meses.
+# CARGA DO PASSADO (uma vez): Actions -> "Mercado - opções B3" -> Run workflow -> desde: 2026-04-22
+# Repositório PÚBLICO: nenhuma chave aqui (só os Secrets do GitHub).
+name: Mercado - opções B3
+
+on:
+  schedule:
+    - cron: "47 1 * * 2-6"      # 22h47 em Brasília, segunda a sexta
+  workflow_dispatch:
+    inputs:
+      desde:
+        description: "Carga do passado a partir de (AAAA-MM-DD). Vazio = só os pregões que faltam."
+        required: false
+        default: ""
+
+jobs:
+  opcoes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install requests
+
+      - name: Ler as opcoes da B3
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          DESDE: ${{ github.event.inputs.desde }}
+        run: |
+          if [ -n "$DESDE" ]; then python coletor/coletar_opcoes_b3.py --desde "$DESDE"; else python coletor/coletar_opcoes_b3.py; fi

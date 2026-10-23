@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<!-- v172 (23/10/2026): aba Opções no Mercado financeiro — Opções do dia e Calculadora (SQL 187) -->
 <!-- v171 (23/10/2026): Alvos SOLIDUNS em Mercado financeiro › Ações (SQL 186) -->
 <!-- v170 (23/10/2026): Mercado americano com o mesmo layout e a escolha da data do pregão (SQL 185) -->
 <!-- v169 (23/10/2026): Cotações de fechamento com escolha da data do pregão (SQL 184) -->
@@ -1946,7 +1947,7 @@
         <p><span class="breadcrumb-link" data-painel="investimentos-escolha">Investimentos</span> — Mercado financeiro</p>
       </div>
 
-      <!-- BARRA Internacional | Ações | FIIs | Fundos | Outros | Revisão de carteira -->
+      <!-- BARRA Internacional | Ações | Opções | FIIs | Fundos | Outros | Revisão de carteira -->
       <nav class="mf-barra" id="mf-barra">
         <div class="mf-item-wrap" data-mercado="br">
           <button type="button" class="mf-item active" data-menu="acoes" id="mf-item-acoes">Ações</button>
@@ -1963,6 +1964,18 @@
             <a href="#" class="mf-link" data-acao="ipos">Próximos IPOs</a>
             <a href="#" class="mf-link" data-acao="agenda-resultados">Agenda de resultados</a>
             <a href="#" class="mf-link" data-acao="agenda-dividendos">Agenda de dividendos</a>
+          </div>
+        </div>
+
+        <!-- v172: aba Opções (mercado brasileiro) — calls e puts da B3 -->
+        <div class="mf-item-wrap" data-mercado="br">
+          <button type="button" class="mf-item" data-menu="opcoes" id="mf-item-opcoes">Opções</button>
+          <div class="mf-dropdown" id="mf-dd-opcoes">
+            <a href="#" class="mf-link" data-acao="opcoes-do-dia">Opções do dia</a>
+            <a href="#" class="mf-link" data-acao="opcoes-grade">Grade de opções <span class="op-embreve">EM BREVE</span></a>
+            <a href="#" class="mf-link" data-acao="opcoes-simulador">Simulador de estratégias <span class="op-embreve">EM BREVE</span></a>
+            <a href="#" class="mf-link" data-acao="opcoes-calculadora">Calculadora de opções</a>
+            <a href="#" class="mf-link" data-acao="opcoes-tudo-sobre">Tudo sobre opções <span class="op-embreve">EM BREVE</span></a>
           </div>
         </div>
 
@@ -6236,6 +6249,9 @@ async function relEmpresaComHistV115(ticker){
 
 <!-- v171 (23/10/2026): Alvos SOLIDUNS — entrada, stop e preço-alvo das ações da B3 (SQL 186); fonte em site/fontes/ -->
 <script src="/assets/sol-cf6963e789.js" charset="utf-8"></script>
+
+<!-- v172 (23/10/2026): aba Opções — Opções do dia e Calculadora de opções (SQL 187); fonte em site/fontes/ -->
+<script src="/assets/sol-b63713326f.js" charset="utf-8"></script>
 <!-- v165: os 41 blocos de referência (API/SDK, sem uso pelo código) estão em /assets/referencias-7a6b496c0f.html -->
 </body>
 </html>
