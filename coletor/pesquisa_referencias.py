@@ -147,6 +147,8 @@ def ibovespa(saida):
                f"&dataFinal=31/12/{ini + 4}")
         r = baixar(url)
         for x in (r.json() if r else []):
+            if x.get("valor") in (None, ""):
+                continue
             d, m, a = x["data"].split("/")
             sgs.append((f"{a}-{m}-{d}", float(x["valor"])))
     bova = []
