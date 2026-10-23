@@ -1,4 +1,4 @@
-// Score Exponencial SOLIDUNS — Metodologia v1.0.4 (registro prévio) — 22/10/2026
+// Score Exponencial SOLIDUNS — Metodologia v1.0.5 (registro prévio) — 22/10/2026
 const fs = require('fs');
 const { Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType,
   HeadingLevel, BorderStyle, LevelFormat, Footer, Header, PageNumber, TabStopType } = require('docx');
@@ -58,7 +58,7 @@ const capa = [
     children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 170, height: 174 } })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: 'SCORE EXPONENCIAL', bold: true, size: 52, color: PRETO, font: FONTE })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: 'Metodologia e registro prévio do teste', size: 26, color: OURO })] }),
-  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.4 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.5 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Radar de Ações Exponenciais · SOLIDUNS', size: 22, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Brasília, 22 de outubro de 2026', size: 22, color: CINZA })] }),
 ];
@@ -76,13 +76,15 @@ const corpo = [
   N('**Faixa de manutenção na carteira do Radar (v1.0.2):** a ação entra ao chegar aos 20% melhores do Score e só sai ao cair abaixo dos 40% melhores.', 'numeros'),
   N('**Saltos de preço sem evento (v1.0.3):** salto de 3 vezes ou mais num pregão, sem evento informado, vira evento não informado se o novo patamar se mantém; se não se mantém, o pregão é descartado como erro de dado.', 'numeros'),
   N('**Especificação operacional (v1.0.4):** a fórmula exata dos 22 subitens, com as contas da CVM usadas, faz parte deste registro (documento "Especificação operacional dos 22 subitens", versão 1.0.4). No crescimento implícito, a distribuição de lucros das fases 1 e 2 passa a ser a observada na empresa (capítulo 4).', 'numeros'),
+  N('**Protocolo do teste (v1.0.5):** períodos, custos por faixa de liquidez, carteiras, Ibovespa pelo BOVA11, base do Sharpe deflacionado e família de 21 carteiras ficam fixados no documento "Protocolo do teste histórico", versão 1.0.5, antes da rodada única.', 'numeros'),
   H2('Histórico de versões'),
   B('**v1.0, de 22/10/2026:** registro prévio da metodologia.'),
   B('**v1.0.1, de 22/10/2026:** o escore Z de Altman (1968), feito só para indústrias, é trocado pelo EM Score de Altman (2005), que vale para todas as empresas não financeiras. Os alertas deixam de tirar pontos e viram subitens do Pilar 4. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
   B('**v1.0.2, de 22/10/2026:** a carteira do Radar passa a ter faixa de manutenção, para reduzir o giro e os custos (Novy-Marx; Velikov, 2016). A nota de cada ação não muda. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
   B('**v1.0.3, de 22/10/2026:** regra de tratamento dos saltos de preço sem evento informado (camada 1). Ela evita que grupamentos antigos, que a B3 não registra, criem falsas altas. A mudança foi feita antes de qualquer teste e não conta como tentativa.'),
   B('**v1.0.4, de 22/10/2026:** especificação operacional dos 22 subitens. No crescimento implícito, o dividendo das fases 1 e 2 passa a usar a distribuição observada da empresa: com D = E · (1 − g/R), o crescimento implícito ia ao teto de 60% em 55% dos casos, porque a rentabilidade ficava abaixo da taxa exigida. Também ficam fixados a concordância entre pilares, o escore de Mohanram com 6 testes, a origem da quantidade de ações e os dados mínimos. As mudanças foram feitas antes de qualquer teste de desempenho e não contam como tentativa.'),
-  H2('O que é o registro prévio', true),
+  B('**v1.0.5, de 22/10/2026:** protocolo do teste histórico e a regra do setor pequeno (menos de 5 ações com dado: nota contra todas as ações do mês). A máquina do teste foi conferida só com placebos, sem usar o Score. Aprovado antes da rodada única.'),
+  H2('O que é o registro prévio'),
   P('Tudo neste documento fica **congelado antes do primeiro teste**: pilares, subitens, parâmetros, pesos e critérios.'),
   P('Assim, o teste não pode ser ajustado ao resultado. Qualquer mudança depois do teste gera uma nova versão, e a variação conta como mais uma tentativa no controle de excesso de testes (capítulo 6).'),
   H2('O que a literatura ensina'),
@@ -373,7 +375,7 @@ const corpo = [
   R('WHITE, H. A reality check for data snooping. **Econometrica**, v. 68, n. 5, p. 1097-1126, 2000.'),
 ];
 const doc = new Document({
-  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0.4 (registro prévio)',
+  creator: 'SOLIDUNS', title: 'Score Exponencial — metodologia v1.0.5 (registro prévio)',
   styles: {
     default: { document: { run: { font: FONTE, size: 22, color: '222222' } } },
     paragraphStyles: [
@@ -394,7 +396,7 @@ const doc = new Document({
       headers: { default: new Header({ children: [new Paragraph({ tabStops: [{ type: TabStopType.RIGHT, position: 9000 }],
         border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: OURO, space: 4 } },
         children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 26, height: 27 } }),
-          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0.4 — registro prévio', size: 17, color: CINZA })] })] }) },
+          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tMetodologia v1.0.5 — registro prévio', size: 17, color: CINZA })] })] }) },
       footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER,
         children: [new TextRun({ text: 'Página ', size: 17, color: CINZA }), new TextRun({ children: [PageNumber.CURRENT], size: 17, color: CINZA }),
           new TextRun({ text: '  ·  Uso interno. Não é recomendação de investimento.', size: 17, color: CINZA })] })] }) },

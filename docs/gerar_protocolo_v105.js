@@ -1,4 +1,4 @@
-// Score Exponencial SOLIDUNS — Protocolo do teste histórico (proposta v1.0.5) — 23/10/2026
+// Score Exponencial SOLIDUNS — Protocolo do teste histórico v1.0.5 — 23/10/2026
 const fs = require('fs');
 const { Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType,
   HeadingLevel, BorderStyle, LevelFormat, Footer, Header, PageNumber, TabStopType } = require('docx');
@@ -59,7 +59,7 @@ const capa = [
     children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 170, height: 174 } })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: 'SCORE EXPONENCIAL', bold: true, size: 52, color: PRETO, font: FONTE })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: 'Protocolo do teste histórico', size: 26, color: OURO })] }),
-  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Proposta de versão 1.0.5 — para aprovação', size: 24, color: CINZA })] }),
+  new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Versão 1.0.5 — aprovada em 22 de outubro de 2026', size: 24, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Radar de Ações Exponenciais · SOLIDUNS', size: 22, color: CINZA })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Brasília, 23 de outubro de 2026', size: 22, color: CINZA })] }),
 ];
@@ -69,7 +69,7 @@ c.push(H1('1. O que este documento fixa', false));
 c.push(P('O teste histórico do Score roda **uma única vez**. Por isso, cada detalhe do cálculo precisa estar decidido antes da rodada.'));
 c.push(P('Este protocolo completa o capítulo 6 da metodologia. Ele fixa os períodos, os custos, as carteiras e as fórmulas das medidas.'));
 c.push(P('**Nenhum resultado do Score foi calculado.** A máquina do teste foi conferida só com dois placebos, que não usam o Score (capítulo 7).'));
-c.push(H2('Decisões para aprovar'));
+c.push(H2('Decisões aprovadas em 22/10/2026'));
 c.push(N('**Setor pequeno (etapa 3 do motor):** quando um setor tem menos de 5 ações com dado num subitem, a nota é calculada contra todas as ações do mês.', 'numeros'));
 c.push(N('**Períodos:** período principal com carteiras formadas de jan/2013 a jul/2023 (retornos de fev/2013 a ago/2023, 127 meses); período guardado com os 36 meses seguintes (retornos de set/2023 a ago/2026).', 'numeros'));
 c.push(N('**Ação que sai da bolsa:** rende até o último pregão; no resto do mês, rende a taxa livre de risco.', 'numeros'));
@@ -174,7 +174,7 @@ c.push(B('**Sharpe deflacionado exigente:** como as 21 carteiras diferem por con
 c.push(B('**Conferência do EM Score já vista:** numa rodada de depuração, a conferência do EM Score rodou com os dados reais. Doze meses antes de recuperações judiciais e falências, 6 de 7 empresas estavam na zona de perigo. Ela não usa o Score nem os retornos e não muda nenhuma regra.'));
 
 const doc = new Document({
-  creator: 'SOLIDUNS', title: 'Score Exponencial — protocolo do teste histórico (proposta v1.0.5)',
+  creator: 'SOLIDUNS', title: 'Score Exponencial — protocolo do teste histórico v1.0.5',
   styles: {
     default: { document: { run: { font: FONTE, size: 22, color: '222222' } } },
     paragraphStyles: [
@@ -195,7 +195,7 @@ const doc = new Document({
       headers: { default: new Header({ children: [new Paragraph({ tabStops: [{ type: TabStopType.RIGHT, position: 9000 }],
         border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: OURO, space: 4 } },
         children: [new ImageRun({ data: logo, type: 'png', transformation: { width: 26, height: 27 } }),
-          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tProtocolo do teste — proposta v1.0.5', size: 17, color: CINZA })] })] }) },
+          new TextRun({ text: '   SOLIDUNS · Score Exponencial', size: 17, color: CINZA }), new TextRun({ text: '\tProtocolo do teste v1.0.5', size: 17, color: CINZA })] })] }) },
       footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER,
         children: [new TextRun({ text: 'Página ', size: 17, color: CINZA }), new TextRun({ children: [PageNumber.CURRENT], size: 17, color: CINZA }),
           new TextRun({ text: '  ·  Uso interno. Não é recomendação de investimento.', size: 17, color: CINZA })] })] }) },
