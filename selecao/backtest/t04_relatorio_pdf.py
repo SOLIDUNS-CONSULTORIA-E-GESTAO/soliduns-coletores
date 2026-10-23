@@ -22,8 +22,8 @@ ESC, OURO, CINZA, LINHA, CLARO, VERDE, VERM = (colors.HexColor(h) for h in ('#0F
 W, H = A4
 tec = json.load(open(f'{T}/tecnica.json')); niv = json.load(open(f'{T}/niveis.json')); alt = pd.read_pickle(f'{T}/altas_dia.pkl')
 ohlc = pd.read_parquet(f'{T}/ohlc.parquet')
-NOME = {'CXSE3': 'Caixa Seguridade', 'BBSE3': 'BB Seguridade', 'BBAS3': 'Banco do Brasil', 'BPAC11': 'BTG Pactual', 'POMO4': 'Marcopolo'}
-ORDEM = ['CXSE3', 'BBSE3', 'BBAS3', 'BPAC11', 'POMO4']
+NOME = {'CXSE3': 'Caixa Seguridade', 'BBSE3': 'BB Seguridade', 'BBAS3': 'Banco do Brasil', 'BPAC11': 'BTG Pactual', 'POMO4': 'Marcopolo', 'B3SA3': 'B3'}
+ORDEM = ['CXSE3', 'BBSE3', 'BBAS3', 'BPAC11', 'B3SA3', 'POMO4']
 br = lambda v, d=2: f'{v:,.{d}f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
 pc = lambda v, d=1: f'{v * 100:+.{d}f}%'.replace('.', ',')
 
@@ -94,7 +94,7 @@ def grafico(tk):
 
 pD, dcds = niv['pD'], niv['dcds_pb']
 st = []
-st += [Paragraph('Preço de entrada e preço-alvo de cinco ações', H1),
+st += [Paragraph('Preço de entrada e preço-alvo de seis ações', H1),
        Paragraph('Cenário de vitória de Flávio Bolsonaro no 2º turno · cotações até o fechamento de 21/10/2026', SUB)]
 st += [Paragraph('Premissa do cenário', H2),
        Paragraph(f'A análise supõe a vitória de Flávio Bolsonaro no domingo, 25/10. As pesquisas mais recentes dão a ele cerca de {br(niv["v"] * 100, 1)}% dos votos válidos. '
@@ -116,7 +116,8 @@ st += [Paragraph('Quadro-resumo', H2),
               linhas, [26 * mm, 16 * mm, 17 * mm, 17 * mm, 15 * mm, 15 * mm, 15 * mm, 17 * mm, 16 * mm, 14 * mm][:10], num_cols=range(1, 10)),
        Paragraph('Ganho e perda medidos a partir da entrada ideal. Ganho/risco acima de 1,5 indica boa assimetria; abaixo de 1, o risco supera o ganho esperado.', NT)]
 st += [Paragraph('Leitura geral', H2),
-       b('<b>BTG Pactual e Banco do Brasil</b> têm a melhor relação ganho/risco no cenário. Bancos são os mais sensíveis à queda do risco-país e dos juros longos, e foram os que mais reagiram ao 1º turno.'),
+       b('<b>BTG Pactual, Banco do Brasil e B3</b> têm a melhor relação ganho/risco no cenário. Bancos e a bolsa são os mais sensíveis à queda do risco-país e dos juros longos, e foram os que mais reagiram ao 1º turno.'),
+       b('<b>B3 e BTG</b> estão esticadas depois da alta de outubro. Para as duas, a entrada indicada é num recuo, não no preço atual.'),
        b('<b>Marcopolo</b> tem ganho moderado. Ela ainda está abaixo da média de 200 dias, numa tendência de baixa de longo prazo, mas tem os melhores fundamentos do grupo.'),
        b('<b>Caixa Seguridade e BB Seguridade</b> têm pouco a ganhar com a eleição. Seguradoras lucram com juros altos, porque aplicam as reservas técnicas. No 1º turno subiram só 1%. São ações de qualidade e defensivas, não de aposta eleitoral.'),
        b('<b>Movimento de 22/10:</b> BB Seguridade subiu 2,05% (para cerca de R$ 43,33) e já passou do alvo 1. Banco do Brasil caiu 0,75% (cerca de R$ 23,92) e Marcopolo subiu 1,50% (cerca de R$ 4,75). Confira o preço do dia antes de executar.')]
@@ -145,6 +146,13 @@ LEIT = {
             '<b>05/10:</b> subiu 22,5%, a maior reação entre as cinco ações. O topo foi de R$ 84,59.',
             '<b>Alvos:</b> o alvo 1 fica abaixo do topo de 05/10. O alvo 2 (R$ 94,34) é a extensão de 127% de Fibonacci do movimento de junho a outubro.',
             '<b>Conclusão:</b> melhor ganho/risco do grupo (2,2), mas com volatilidade alta. Entrada em recuo para R$ 77,40 e stop largo, abaixo de R$ 69,50.'],
+ 'B3SA3': ['<b>Tendência:</b> de alta forte. ADX em 50, com DI+ em 44 e DI− em 11. O preço está acima de todas as médias e subiu 29% em 21 pregões e 69% no ano.',
+           '<b>Momento:</b> IFR em 72 e estocástico em 88, em sobrecompra. O preço está 11% acima da média de 21 dias (R$ 21,20). O risco de correção é alto.',
+           '<b>05/10:</b> subiu 22,6% e marcou a máxima histórica, R$ 24,28. Desde então se mantém perto do topo, sem devolver a alta.',
+           '<b>Volume:</b> 21% acima da média nos últimos 5 pregões.',
+           '<b>Por que reage ao cenário:</b> a B3 ganha com o volume de negócios. Juros menores e risco-país em queda trazem mais investidor para a bolsa, mais emissões de ações e mais negociação.',
+           '<b>Alvos:</b> o alvo 1 é a máxima histórica (R$ 24,28). O alvo 2 (R$ 27,05) é a extensão de 127% de Fibonacci do movimento de agosto a outubro.',
+           '<b>Conclusão:</b> boa relação ganho/risco (1,8), mas a entrada certa é num recuo para perto de R$ 22,34 (média de 9 dias e suporte do pivô). O stop é largo, em R$ 19,77.'],
  'POMO4': ['<b>Tendência:</b> de baixa no longo prazo. O preço (R$ 4,68) está bem abaixo da média de 200 dias (R$ 5,57) e caiu 22% no ano.',
            '<b>Recuperação:</b> desde a mínima de R$ 4,03 (28/09), o preço voltou para cima das médias de 21 e 50 dias. Subiu 8% em 05/10.',
            '<b>Momento:</b> MACD levemente acima da linha de sinal, IFR em 53 e ADX em 24. A recuperação é inicial.',
@@ -189,7 +197,7 @@ st += [Paragraph('Maiores altas do pregão de 05/10/2026', H1),
        Spacer(1, 3 * mm), Paragraph('O que o pregão de 05/10 mostra', H2),
        b('<b>Os maiores ganhos vieram dos setores mais sensíveis a juros domésticos:</b> varejo, construção civil, locadoras e concessões. São os que mais se beneficiam de juros longos menores e de risco-país em queda.'),
        b('<b>B3 e BTG Pactual</b> subiram mais de 22%. Bolsa e banco de investimento ganham diretamente com mais negócios no mercado de capitais.'),
-       b(f'<b>Entre as cinco ações analisadas:</b> BTG {pc(tec["BPAC11"]["ret_0510"])}, Banco do Brasil {pc(tec["BBAS3"]["ret_0510"])}, Marcopolo {pc(tec["POMO4"]["ret_0510"])}, '
+       b(f'<b>Entre as seis ações analisadas:</b> B3 {pc(tec["B3SA3"]["ret_0510"])}, BTG {pc(tec["BPAC11"]["ret_0510"])}, Banco do Brasil {pc(tec["BBAS3"]["ret_0510"])}, Marcopolo {pc(tec["POMO4"]["ret_0510"])}, '
          f'BB Seguridade {pc(tec["BBSE3"]["ret_0510"])} e Caixa Seguridade {pc(tec["CXSE3"]["ret_0510"])}.'),
        b('<b>Atenção:</b> varejo e construção civil estão fora do método por decisão de gestão. Se o cenário se confirmar, devem estar entre os que mais sobem, mas não entram na carteira.')]
 st += [Spacer(1, 2 * mm), Paragraph('Riscos e cuidados', H2),

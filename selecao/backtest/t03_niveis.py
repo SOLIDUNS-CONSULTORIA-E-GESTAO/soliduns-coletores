@@ -8,7 +8,7 @@ tec = json.load(open(f'{T}/tecnica.json'))
 KAPPA, KAPPA_C, M = 2.0, 1.5, 1.5
 SET = {'bancos': dict(lam=1.30, eta=1.0), 'seguradoras': dict(lam=1.10, eta=-0.3), 'industria': dict(lam=0.90, eta=0.6)}
 BASE = {'CXSE3': ('seguradoras', 0.1903, 0.0568), 'BBSE3': ('seguradoras', 0.1846, 0.0568), 'BBAS3': ('bancos', 0.2098, 0.0776),
-        'BPAC11': ('bancos', 0.2188, 0.0776), 'POMO4': ('industria', 0.1967, 0.0772)}   # grupo, K_e, g do setor (robô, 01/10/2026)
+        'BPAC11': ('bancos', 0.2188, 0.0776), 'POMO4': ('industria', 0.1967, 0.0772), 'B3SA3': ('bancos', 0.2176, 0.0776)}   # grupo, K_e, g do setor (robô, 01/10/2026)
 # probabilidade de vitória da direita pelas pesquisas recentes (votos válidos), (4.1)-(4.2)
 v = np.mean([0.51, 0.52, 46 / 90])          # Datafolha 15/10, Real Time Big Data 20/10, Quaest 14/10 (válidos)
 pD = float(norm.cdf((v - 0.5) / 0.03))
