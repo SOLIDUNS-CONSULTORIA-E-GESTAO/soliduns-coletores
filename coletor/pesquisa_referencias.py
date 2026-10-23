@@ -1,6 +1,6 @@
 """
 SOLIDUNS — BASE DE PESQUISA: SÉRIES DE REFERÊNCIA E LIGAÇÃO B3 ↔ CVM (Score Exponencial v1.0.3, camada 1)
-v1.0 (22/10/2026)
+v1.1 (22/10/2026)
 
 Fontes oficiais e gratuitas:
   - NEFIN-USP (nefin.com.br/data/risk-factors): fatores de risco brasileiros diários e mensais (mercado, tamanho,
@@ -14,6 +14,8 @@ Fontes oficiais e gratuitas:
       (a) código CVM informado pela B3 no cadastro do emissor;
       (b) código de negociação no FCA da CVM (CNPJ → CD_CVM);
       (c) nome: razão social da B3 igual à razão social no cadastro da CVM (sem acentos, pontuação e "S.A.").
+  v1.1: código CVM de emissor estrangeiro (80000 em diante, ex.: JBS N.V. depois da mudança para Nova York) não
+  serve para o histórico do papel brasileiro: nesse caso, o FCA (b) vem antes.
 Uso: python coletor/pesquisa_referencias.py --eventos dados_eventos --cvm dados_cvm --ajustada dados_ajustados --saida dados_ref
 """
 import argparse
@@ -156,13 +158,16 @@ def ligacao(eventos, cvm, ajustada, saida):
     out, metodo = [], defaultdict(int)
     for p in papeis.itertuples():
         cd, m = "", ""
-        if em_cvm.get(p.emissor) in com_doc:
+        estrangeiro = em_cvm.get(p.emissor, "").isdigit() and int(em_cvm[p.emissor]) >= 80000
+        if em_cvm.get(p.emissor) in com_doc and not estrangeiro:
             cd, m = em_cvm[p.emissor], "codigo_cvm_b3"
         if not cd:
             for t in p.tickers.split():
                 if tk2cvm.get(t) in com_doc:
                     cd, m = tk2cvm[t], "fca_codigo_negociacao"
                     break
+        if not cd and estrangeiro and em_cvm[p.emissor] in com_doc:
+            cd, m = em_cvm[p.emissor], "codigo_cvm_b3"
         if not cd and em_nome.get(p.emissor):
             cands = nome2cvm.get(normal(em_nome[p.emissor]), set()) & com_doc
             if len(cands) == 1:

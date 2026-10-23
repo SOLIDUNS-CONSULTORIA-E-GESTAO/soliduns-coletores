@@ -1,4 +1,5 @@
 # SOLIDUNS — SCORE EXPONENCIAL: motor de cálculo (metodologia v1.0.3). 22/10/2026.
+# Etapa 1: universo e Pilar 1 (preço). Etapa 2: subitens com balanço da CVM e de risco.
 # Lê as bases de pesquisa (Releases em rascunho) e publica os resultados na Release "pesquisa-score" (rascunho).
 # Só roda à mão: Actions › Score - motor › Run workflow.
 name: Score - motor
@@ -12,7 +13,7 @@ permissions:
 jobs:
   motor:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -25,10 +26,15 @@ jobs:
         run: |
           mkdir -p aj ref cvm
           gh release download pesquisa-b3-ajustada -D aj -p "diario_*.csv.gz" -p "papeis.csv.gz"
-          gh release download pesquisa-referencias -D ref -p "ligacao_b3_cvm.csv.gz"
-          gh release download pesquisa-cvm -D cvm -p "cvm_cadastro.csv.gz"
+          gh release download pesquisa-referencias -D ref -p "ligacao_b3_cvm.csv.gz" -p "nefin_factors.csv.gz" \
+            -p "ntnb_mais_longa.csv.gz" -p "focus_ipca_ano_seguinte.csv.gz"
+          gh release download pesquisa-cvm -D cvm -p "cvm_cadastro.csv.gz" -p "cvm_dfp_*" -p "cvm_itr_*" \
+            -p "cvm_fre_*_indice.csv.gz" -p "cvm_fre_*_capital_social.csv.gz"
+          du -sh aj ref cvm
       - name: Etapa 1 — universo e Pilar 1
         run: python coletor/score_motor.py --ajustada aj --referencias ref --cvm cvm --saida score && cat score/conferencia_etapa1.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Etapa 2 — subitens com balanço e de risco
+        run: python coletor/score_fundamentos.py --ajustada aj --referencias ref --cvm cvm --motor score && cat score/conferencia_etapa2.md >> "$GITHUB_STEP_SUMMARY"
       - name: Publicar na Release pesquisa-score (rascunho)
         env:
           GH_TOKEN: ${{ github.token }}
