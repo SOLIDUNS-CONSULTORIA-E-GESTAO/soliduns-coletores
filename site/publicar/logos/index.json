@@ -1,0 +1,82 @@
+{
+ "caixa": {
+  "arquivo": "caixa.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "tjba": {
+  "arquivo": "tjba.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "tjes": {
+  "arquivo": "tjes.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "tjma": {
+  "arquivo": "tjma.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "tjpa": {
+  "arquivo": "tjpa.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "tjrj": {
+  "arquivo": "tjrj.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "tjro": {
+  "arquivo": "tjro.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "tjse": {
+  "arquivo": "tjse.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "tjsp": {
+  "arquivo": "tjsp.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "tjto": {
+  "arquivo": "tjto.png",
+  "cor": "#161611",
+  "fundo": "transparente"
+ },
+ "trf1": {
+  "arquivo": "trf1.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "trf2": {
+  "arquivo": "trf2.png",
+  "cor": "#161611",
+  "fundo": "transparente"
+ },
+ "trf5": {
+  "arquivo": "trf5.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "trt14": {
+  "arquivo": "trt14.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "trt16": {
+  "arquivo": "trt16.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ },
+ "tse": {
+  "arquivo": "tse.png",
+  "cor": "#ffffff",
+  "fundo": "claro"
+ }
+}

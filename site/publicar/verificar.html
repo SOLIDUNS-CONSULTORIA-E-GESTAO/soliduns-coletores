@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verificar certificado — SOLIDUNS</title>
+<meta name="description" content="Confira a autenticidade de um certificado de conclusão emitido pela SOLIDUNS.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="logo-soliduns.png">
+<style>
+  :root{--gold:#EEC617; --bg:#000; --panel:#0e0e0e; --line:#2a2a2a; --text:#f2f2f2; --soft:#a8a8a8;}
+  *{box-sizing:border-box;}
+  html,body{margin:0; background:var(--bg); color:var(--text); font-family:'Helvetica Neue',Arial,sans-serif;}
+  .topo{display:flex; align-items:center; gap:12px; padding:16px 24px; border-bottom:1px solid var(--line);}
+  .topo img{height:34px;}
+  .topo a{color:var(--text); text-decoration:none; font-weight:700; letter-spacing:.08em;}
+  main{max-width:640px; margin:48px auto; padding:0 20px;}
+  h1{font-family:Georgia,'Times New Roman',serif; font-size:28px; margin:0 0 6px;}
+  p.sub{color:var(--soft); margin:0 0 24px; line-height:1.5;}
+  form{display:flex; gap:10px; flex-wrap:wrap;}
+  input{flex:1; min-width:220px; background:var(--panel); border:1px solid var(--line); color:var(--text); padding:12px 14px; border-radius:6px;
+        font-family:'IBM Plex Mono',Consolas,monospace; font-size:16px; letter-spacing:.06em; text-transform:uppercase;}
+  input:focus{outline:none; border-color:var(--gold);}
+  button{background:var(--gold); color:#000; border:0; border-radius:6px; padding:12px 20px; font-weight:700; cursor:pointer;}
+  .res{margin-top:28px; border:1px solid var(--line); border-radius:8px; padding:22px 24px; background:var(--panel);}
+  .res.ok{border-color:#3ecb99;} .res.nao{border-color:#e2793f;}
+  .selo{font-weight:700; font-size:15px;} .ok .selo{color:#3ecb99;} .nao .selo{color:#e2793f;}
+  dl{margin:16px 0 0; display:grid; grid-template-columns:150px 1fr; gap:8px 14px; font-size:14px;}
+  dt{color:var(--soft);} dd{margin:0;}
+  .nota{color:var(--soft); font-size:12px; line-height:1.5; margin-top:28px;}
+</style>
+<style id="v107-justificado">
+/* ===== v107 — PADRONIZAÇÃO TIPOGRÁFICA: TEXTO JUSTIFICADO (patch107lei) =====
+   Camada de prioridade mínima: só vale onde o site não definiu alinhamento próprio. */
+@layer v107-justificado {
+  body{text-align:justify; text-justify:inter-word; -webkit-hyphens:auto; hyphens:auto;
+       hyphenate-limit-chars:6 3 2; overflow-wrap:break-word;}
+  :where(h1,h2,h3,h4,h5,h6,td,label,nav,code,pre,kbd,[class*="badge"],[class*="selo"],[class*="chip"],[class*="pill"],[class*="etiqueta"],[class*="tag"],[class*="kpi"],header,.page-head,[class*="breadcrumb"],[class*="nome"],[class*="sigla"],[class*="entidade"],[class*="label"],[class*="titulo"],[class*="title"]){text-align:var(--v107-alin, start);}
+  :where(h1,h2,h3,h4,h5,h6,td,label,nav,code,pre,kbd,[class*="badge"],[class*="selo"],[class*="chip"],[class*="pill"],[class*="etiqueta"],[class*="tag"],[class*="kpi"],header,.page-head,[class*="breadcrumb"],[class*="nome"],[class*="sigla"],[class*="entidade"],[class*="label"],[class*="titulo"],[class*="title"],th,caption,button,input,select,textarea,option,[role="button"],.btn){-webkit-hyphens:manual; hyphens:manual;}
+  @media (max-width:640px){
+    body{word-spacing:normal; letter-spacing:normal;}
+    :where(p, li, dd, blockquote){overflow-wrap:anywhere;}
+  }
+}
+</style>
+
+</head>
+<body>
+<header class="topo"><img src="logo-soliduns.png" alt=""><a href="https://soliduns.com.br">SOLIDUNS</a></header>
+<main>
+  <h1>Verificar certificado</h1>
+  <p class="sub">Digite o código impresso no certificado (ex.: SOL-CPA-7K3M-9Q2X) para conferir se ele foi emitido pela SOLIDUNS.</p>
+  <form id="f"><input id="c" placeholder="SOL-XXX-XXXX-XXXX" autocomplete="off" spellcheck="false" maxlength="24"><button type="submit">Verificar</button></form>
+  <div id="r"></div>
+  <p class="nota">Os certificados da SOLIDUNS atestam a conclusão de cursos preparatórios e não substituem as certificações profissionais emitidas pelas entidades certificadoras. Dúvidas: <a href="mailto:contato@soliduns.com.br" style="color:var(--gold)">contato@soliduns.com.br</a>.</p>
+</main>
+<script>
+(function(){
+  var URL_API = 'https://evcsniicnrlrtzpdmeza.supabase.co/rest/v1/rpc/verificar_certificado';
+  var CHAVE = 'sb_publishable_ueRLfhNKU3NH1716UGqtow_NdAB7KNR';
+  var campo = document.getElementById('c'), saida = document.getElementById('r');
+  function esc(t){ return String(t == null ? '' : t).replace(/[&<>"']/g, function(x){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]; }); }
+  function data(iso){ try{ return new Date(iso).toLocaleDateString('pt-BR', {day:'numeric', month:'long', year:'numeric', timeZone:'America/Sao_Paulo'}); }catch(e){ return ''; } }
+  function verificar(cod){
+    cod = String(cod || '').trim().toUpperCase();
+    if(!/^SOL-[A-Z0-9]{2,6}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(cod)){
+      saida.innerHTML = '<div class="res nao"><div class="selo">Código em formato inválido</div><p class="sub" style="margin:8px 0 0">Confira o código impresso no certificado (formato SOL-XXX-XXXX-XXXX).</p></div>';
+      return;
+    }
+    saida.innerHTML = '<div class="res"><div class="selo">Consultando…</div></div>';
+    fetch(URL_API, {method:'POST', headers:{'apikey':CHAVE, 'Content-Type':'application/json', 'Accept':'application/json'}, body: JSON.stringify({p_codigo: cod})})
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(j){
+        if(!j || !j.encontrado){
+          saida.innerHTML = '<div class="res nao"><div class="selo">&#10007; Certificado não encontrado</div><p class="sub" style="margin:8px 0 0">Nenhum certificado da SOLIDUNS tem o código <strong>' + esc(cod) + '</strong>.</p></div>';
+          return;
+        }
+        var valido = !!j.valido;
+        saida.innerHTML = '<div class="res ' + (valido ? 'ok' : 'nao') + '"><div class="selo">' + (valido ? '&#10003; Certificado autêntico e válido' : '&#10007; Certificado REVOGADO' + (j.revogado_em ? ' em ' + esc(data(j.revogado_em)) : '')) + '</div>'
+          + '<dl><dt>Código</dt><dd>' + esc(j.codigo) + '</dd>'
+          + '<dt>Nome</dt><dd>' + esc(j.nome) + '</dd>'
+          + '<dt>Curso</dt><dd>Curso Preparatório SOLIDUNS — ' + esc(j.certificacao || j.curso) + (j.entidade ? ' (' + esc(j.entidade) + ')' : '') + '</dd>'
+          + '<dt>Emitido em</dt><dd>' + esc(data(j.emitido_em)) + '</dd></dl></div>';
+      })
+      .catch(function(){ saida.innerHTML = '<div class="res nao"><div class="selo">Não foi possível consultar agora</div><p class="sub" style="margin:8px 0 0">Tente de novo em instantes.</p></div>'; });
+  }
+  document.getElementById('f').addEventListener('submit', function(ev){ ev.preventDefault(); verificar(campo.value); });
+  var p = new URLSearchParams(location.search).get('c');
+  if(p){ campo.value = p; verificar(p); }
+})();
+</script>
+</body>
+</html>

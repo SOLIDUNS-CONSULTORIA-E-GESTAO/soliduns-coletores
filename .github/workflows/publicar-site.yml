@@ -30,6 +30,11 @@ jobs:
         run: |
           test -f site/publicar/index.html || { echo "ERRO: falta site/publicar/index.html"; exit 1; }
           test -f site/publicar/noticias/index.html || { echo "ERRO: falta site/publicar/noticias/index.html"; exit 1; }
+          # v175: arquivos que já sumiram do site numa publicação (só existiam no Netlify) — a publicação para se faltar algum
+          for f in avaliacao.html privacidade.html termos.html verificar.html robots.txt sitemap.xml manifest.webmanifest sw.js \
+                   logos/index.json vendor/lightweight-charts-4.2.3.standalone.production.js; do
+            test -f "site/publicar/$f" || { echo "ERRO: falta site/publicar/$f (o site ficaria sem essa parte)"; exit 1; }
+          done
           echo "Arquivos no pacote: $(find site/publicar -type f | wc -l)"
       - name: Achar o site no Netlify
         env:
