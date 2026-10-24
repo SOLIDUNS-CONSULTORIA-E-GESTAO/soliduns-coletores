@@ -1,0 +1,54 @@
+# SOLIDUNS — RECUPERAR ARQUIVOS QUE ESTÃO SÓ NO NETLIFY (23/10/2026). Só leitura no Netlify: lista as publicações
+# antigas do site e, na mais recente que tinha avaliacao.html, baixa os arquivos que não existem em site/publicar/.
+# Publica numa Release de rascunho "recuperacao-netlify". Não publica nada no site. Só roda à mão.
+name: Pesquisa - arquivos do Netlify
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  recuperar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - name: Procurar nas publicações antigas
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          set -e
+          A="Authorization: Bearer $NETLIFY_AUTH_TOKEN"
+          SID=$(echo -n "$NETLIFY_SITE_ID" | tr -d '[:space:]')
+          curl -sf -H "$A" "https://api.netlify.com/api/v1/sites?per_page=100&filter=all" -o sites.json
+          ID=$(jq -r --arg s "$SID" '[.[] | select(.id == $s or .site_id == $s or .name == $s)][0].id // empty' sites.json)
+          [ -n "$ID" ] || ID=$(jq -r '[.[] | select((.custom_domain // "") == "soliduns.com.br" or ((.domain_aliases // []) | index("soliduns.com.br")))][0].id // empty' sites.json)
+          mkdir -p rec
+          curl -sf -H "$A" "https://api.netlify.com/api/v1/sites/$ID/deploys?per_page=100" -o deploys.json
+          echo "::notice::publicações listadas: $(jq length deploys.json)"
+          ( cd site/publicar && find . -type f | sed 's|^\.||' | sort ) > repo.txt
+          ACHOU=""
+          for D in $(jq -r '.[] | select(.state == "ready") | .id' deploys.json); do
+            curl -sf -H "$A" "https://api.netlify.com/api/v1/deploys/$D/files?per_page=2000" -o files.json || continue
+            if jq -e '.[] | select(.id == "/avaliacao.html")' files.json >/dev/null; then ACHOU=$D; break; fi
+          done
+          [ -n "$ACHOU" ] || { echo "::error::nenhuma publicação com avaliacao.html"; exit 1; }
+          QUANDO=$(jq -r --arg d "$ACHOU" '.[] | select(.id == $d) | "\(.created_at) \(.title // "") \(.deploy_ssl_url)"' deploys.json)
+          echo "::notice::publicação com avaliacao.html: $QUANDO"
+          URL=$(jq -r --arg d "$ACHOU" '.[] | select(.id == $d) | .deploy_ssl_url' deploys.json)
+          jq -r '.[].id' files.json | sort > netlify.txt
+          comm -23 netlify.txt repo.txt > faltam.txt
+          echo "::notice::arquivos dessa publicação que não estão no repositório: $(wc -l < faltam.txt) — $(head -c 900 faltam.txt | tr '\n' ' ')"
+          while read -r F; do mkdir -p "rec/arquivos$(dirname "$F")"; curl -sf "$URL$F" -o "rec/arquivos$F" || echo "falhou $F"; done < faltam.txt
+          cp faltam.txt rec/
+          jq '[.[] | {id, created_at, title, state}] | .[0:40]' deploys.json > rec/publicacoes.json
+          (cd rec && tar czf ../recuperados.tgz .)
+      - name: Publicar na Release recuperacao-netlify
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view recuperacao-netlify >/dev/null 2>&1 || gh release create recuperacao-netlify --draft --title "Recuperação de arquivos do Netlify" --notes "Arquivos que existiam só no Netlify."
+          gh release upload recuperacao-netlify recuperados.tgz --clobber
