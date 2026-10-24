@@ -10,7 +10,9 @@ let falhas = 0;
 const ok = (c, n, d) => { console.log((c ? 'OK  ' : 'FALHOU ') + n + (c || d === undefined ? '' : '  -> ' + JSON.stringify(d).slice(0, 300))); if (!c) falhas++; };
 
 const SETORES = ['Construção civil e incorporação', 'Varejo e consumo discricionário', 'Saúde e educação privadas', 'Bancos e serviços financeiros', 'Energia elétrica', 'Petróleo e gás', 'Mineração e siderurgia'];
+// ALVOS_JSON=arquivo usa uma lista real (cópia feita pelo workflow "Pesquisa - lista do Alvos"); sem ela, usa a lista simulada.
 function dados() {
+  if (process.env.ALVOS_JSON) return JSON.parse(fs.readFileSync(process.env.ALVOS_JSON, 'utf8'));
   const acoes = [['AZEV3', 'AZEVEDO & TRAVASSOS', 13.57, 11.41, 13.71, 5.51, 15.52, 17.07], ['LJQQ3', 'LOJAS QUERO-QUERO S.A.', 3.00, 2.61, 3.03, 1.812, 3.25, 3.25],
                  ['MGLU3', 'MAGAZINE LUIZA SA', 12.78, 11.35, 12.91, 8.09, 13.93, 13.93], ['DASA3', 'DIAGNOSTICOS DA AMERICA SA', 5.04, 4.73, 5.09, 3.49, 5.72, 5.79]];
   for (let i = 4; i < 155; i++) { const p = 5 + (i * 7.3) % 60; acoes.push(['TST' + String(i).padStart(2, '0') + '3', 'EMPRESA TESTE ' + i + ' S.A.', p, p * 0.93, p * 1.01, p * 0.8, p * 1.05, p * (1.02 + (i % 9) / 100)]); }
@@ -59,23 +61,24 @@ async function abrir(browser, opc) {
     return d && { imp: window.__impressoes, capa: !!d.querySelector('.rp-capa .rp-logo'), tit: d.querySelector('.rp-titulo').textContent, linhas: d.querySelectorAll('.alp-tabela tbody tr').length,
       tela: document.querySelectorAll('#al-corpo tr.al-linha').length, prim: [...d.querySelectorAll('.alp-tabela tbody tr')].slice(0, 2).map(t => t.cells[1].textContent),
       primTela: [...document.querySelectorAll('#al-corpo tr.al-linha')].slice(0, 2).map(t => t.dataset.alTk), previa: /PRÉVIA/.test(d.querySelector('.rp-sub').textContent),
-      ler: !!d.querySelector('.alp-ler li'), alertaTexto: /prejuízo nos últimos 12 meses/.test(d.textContent), doc: document.title }; });
+      ler: !!d.querySelector('.alp-ler li'), alertaTexto: (() => { const x = (_al.dados.acoes || []).find(a => (a.alertas || []).length); return !x || d.textContent.indexOf(x.alertas[0]) >= 0; })(), doc: document.title }; });
   ok(r1 && r1.imp === 1, 'o clique abre a janela de imprimir / salvar PDF', r1);
   ok(r1 && r1.capa && r1.tit === 'ALVOS SOLIDUNS' && r1.previa, 'capa SOLIDUNS com logo, título e o aviso de prévia (administrador)', r1);
   ok(r1 && r1.linhas === r1.tela && r1.linhas === 155 && JSON.stringify(r1.prim) === JSON.stringify(r1.primTela), 'PDF com as mesmas 155 ações e a mesma ordem da tela', r1);
   ok(r1 && r1.ler && r1.alertaTexto, 'PDF traz "Como ler os alvos" e os alertas por extenso', r1);
-  ok(r1 && r1.doc === 'Alvos SOLIDUNS 22-10-2026', 'nome do arquivo sugerido: "Alvos SOLIDUNS 22-10-2026"', r1 && r1.doc);
+  ok(r1 && /^Alvos SOLIDUNS \d\d-\d\d-\d{4}$/.test(r1.doc), 'nome do arquivo sugerido: "Alvos SOLIDUNS dd-mm-aaaa" (data do pregão)', r1 && r1.doc);
   await s.page.pdf({ path: path.join(OUT, 'v178_alvos_exemplo.pdf'), preferCSSPageSize: true, printBackground: true });
   ok(fs.statSync(path.join(OUT, 'v178_alvos_exemplo.pdf')).size > 20000, 'PDF gerado (arquivo de exemplo na pasta das capturas)');
   await s.page.evaluate(() => window.dispatchEvent(new Event('afterprint'))); await s.page.waitForTimeout(200);
-  ok(await s.page.evaluate(() => !document.getElementById('rel-impressao') && document.title !== 'Alvos SOLIDUNS 22-10-2026'), 'depois de imprimir a página volta ao normal');
+  ok(await s.page.evaluate(() => !document.getElementById('rel-impressao') && !/^Alvos SOLIDUNS \d/.test(document.title)), 'depois de imprimir a página volta ao normal');
   // filtros: setor + esconder alertas + ordem por ação
-  await s.page.selectOption('#al-setor', 'Energia elétrica'); await s.page.check('#al-limpas'); await s.page.waitForTimeout(300);
+  const SETOR = await s.page.evaluate(() => { const c = {}; _al.dados.acoes.filter(a => a.limpa).forEach(a => c[a.setor] = (c[a.setor] || 0) + 1); return Object.keys(c).sort((a, b) => c[b] - c[a])[0]; });
+  await s.page.selectOption('#al-setor', SETOR); await s.page.check('#al-limpas'); await s.page.waitForTimeout(300);
   ok(await s.page.evaluate(() => !!document.getElementById('al-imprimir')), 'botão continua lá depois de mudar os filtros');
   await s.page.click('#al-imprimir'); await s.page.waitForTimeout(600);
   const r2 = await s.page.evaluate(() => { const d = document.getElementById('rel-impressao');
     return { linhas: d.querySelectorAll('.alp-tabela tbody tr').length, tela: document.querySelectorAll('#al-corpo tr.al-linha').length, filtros: d.querySelector('.alp-filtros').textContent }; });
-  ok(r2.linhas === r2.tela && r2.linhas > 0 && r2.linhas < 155 && /setor: Energia elétrica/.test(r2.filtros) && /alertas: escondidas/.test(r2.filtros), 'PDF segue os filtros da tela e diz quais foram usados', r2);
+  ok(r2.linhas === r2.tela && r2.linhas > 0 && r2.linhas < 155 && r2.filtros.indexOf('setor: ' + SETOR) >= 0 && /alertas: escondidas/.test(r2.filtros), 'PDF segue os filtros da tela e diz quais foram usados', r2);
   ok(s.erros.length === 0, 'sem erros de JavaScript (computador)', s.erros);
   await s.ctx.close();
 
