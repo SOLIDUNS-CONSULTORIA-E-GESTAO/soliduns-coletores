@@ -42,7 +42,16 @@ jobs:
           jq -r '.[].id' files.json | sort > netlify.txt
           comm -23 netlify.txt repo.txt > faltam.txt
           echo "::notice::arquivos dessa publicação que não estão no repositório: $(wc -l < faltam.txt) — $(head -c 900 faltam.txt | tr '\n' ' ')"
-          while read -r F; do mkdir -p "rec/arquivos$(dirname "$F")"; curl -sf "$URL$F" -o "rec/arquivos$F" || echo "falhou $F"; done < faltam.txt
+          OKS=0; RUINS=""
+          while read -r F; do
+            mkdir -p "rec/arquivos$(dirname "$F")"
+            C=$(curl -s -L -o "rec/arquivos$F" -w "%{http_code}" "$URL$F")
+            if [ "$C" != "200" ]; then
+              C=$(curl -s -L -H "$A" -H "Accept: application/vnd.bitballoon.v1.raw" -o "rec/arquivos$F" -w "%{http_code}" "https://api.netlify.com/api/v1/deploys/$ACHOU/files$F")
+            fi
+            if [ "$C" = "200" ]; then OKS=$((OKS+1)); else RUINS="$RUINS $F:$C"; rm -f "rec/arquivos$F"; fi
+          done < faltam.txt
+          echo "::notice::baixados $OKS; falharam:$RUINS"
           cp faltam.txt rec/
           jq '[.[] | {id, created_at, title, state}] | .[0:40]' deploys.json > rec/publicacoes.json
           (cd rec && tar czf ../recuperados.tgz .)
