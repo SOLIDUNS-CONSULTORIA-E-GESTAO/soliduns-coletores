@@ -1,0 +1,29 @@
+# SOLIDUNS — CONFERIR SE O BANCO DA AVALIAÇÃO DE IMÓVEIS (aval_*) EXISTE (23/10/2026). Só leitura. Só roda à mão.
+name: Pesquisa - banco da Avaliação
+
+on:
+  workflow_dispatch:
+
+jobs:
+  conferir:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Conferir tabelas, funções e pasta de arquivos
+        env:
+          U: ${{ secrets.SUPABASE_URL }}
+          K: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          H1="apikey: $K"; H2="Authorization: Bearer $K"
+          for t in aval_perfis aval_avaliacoes aval_mercado aval_parametros aval_auditoria vm_editores planos; do
+            C=$(curl -s -o r.json -w "%{http_code}" -H "$H1" -H "$H2" -H "Prefer: count=exact" -I "$U/rest/v1/$t?select=*&limit=1")
+            echo "::notice::tabela $t: HTTP $C"
+          done
+          for f in aval_pode aval_pastas_orfas tem_area esta_aprovado eh_admin; do
+            C=$(curl -s -o r.json -w "%{http_code}" -X POST -H "$H1" -H "$H2" -H "Content-Type: application/json" -d '{}' "$U/rest/v1/rpc/$f")
+            echo "::notice::função $f: HTTP $C $(head -c 160 r.json)"
+          done
+          C=$(curl -s -o r.json -w "%{http_code}" -H "$H1" -H "$H2" "$U/storage/v1/bucket/aval-anexos")
+          echo "::notice::pasta aval-anexos: HTTP $C $(head -c 200 r.json)"
+          C=$(curl -s -o r.json -w "%{http_code}" -H "$H1" -H "$H2" "$U/rest/v1/planos?select=slug,areas,libera_tudo&limit=20")
+          echo "::notice::planos: $(head -c 700 r.json)"
