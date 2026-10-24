@@ -1,0 +1,387 @@
+[
+ [
+  "Áreas existentes abrem sem erro novo (logado)",
+  true,
+  "[]"
+ ],
+ [
+  "Módulo não é carregado nas outras áreas",
+  true,
+  ""
+ ],
+ [
+  "Botão Sair da plataforma funciona sem o módulo aberto",
+  true,
+  ""
+ ],
+ [
+  "Plataforma entra com a sessão da perita",
+  true,
+  "#/investimentos"
+ ],
+ [
+  "Card \"Avaliação de imóveis\" no hub de Investimentos",
+  true,
+  ""
+ ],
+ [
+  "Card sem selo de plano para quem tem a área",
+  true,
+  ""
+ ],
+ [
+  "Quadro não carrega antes de abrir o painel",
+  true,
+  ""
+ ],
+ [
+  "Endereço vira #/avaliacao-imoveis",
+  true,
+  "#/avaliacao-imoveis"
+ ],
+ [
+  "Título da aba",
+  true,
+  "Avaliação de imóveis · Soliduns"
+ ],
+ [
+  "Módulo abre no painel, sem tela de login própria",
+  true,
+  "painel"
+ ],
+ [
+  "Módulo usa a sessão da plataforma",
+  true,
+  ""
+ ],
+ [
+  "Sem acesso livre de administrador no módulo",
+  true,
+  ""
+ ],
+ [
+  "Exemplos criados no primeiro acesso",
+  true,
+  "6"
+ ],
+ [
+  "Gravação no banco da plataforma (aval_avaliacoes)",
+  true,
+  ""
+ ],
+ [
+  "Perfil do perito criado com nome e e-mail da plataforma",
+  true,
+  "[{'nome': 'Ana Souza Perita', 'email': 'ana@perita.com'}]"
+ ],
+ [
+  "Visual da plataforma (fundo preto, dourado)",
+  true,
+  ""
+ ],
+ [
+  "Sem rolagem lateral dentro do quadro",
+  true,
+  "0"
+ ],
+ [
+  "Quadro ocupa a tela",
+  true,
+  "690"
+ ],
+ [
+  "Nova avaliação criada no módulo",
+  true,
+  ""
+ ],
+ [
+  "Fotos enviadas para a pasta aval-anexos do perito",
+  true,
+  "['5ac4971e-4edf-4425-b411-91bac0ea0f68/av_szr2yds3xi/fx_90ps6hs5pi', '5ac4971e-4edf-4425-b411-91bac0ea0f68/av_szr2yds3xi/fx_fuxkqvs5qy']"
+ ],
+ [
+  "Perfil do perito sem formulário de senha (é da plataforma)",
+  true,
+  ""
+ ],
+ [
+  "Registro profissional salvo no banco",
+  true,
+  ""
+ ],
+ [
+  "Botão \"Abrir Minha conta\" abre a conta da plataforma",
+  true,
+  ""
+ ],
+ [
+  "Depois de fechar Minha conta, o módulo continua na tela",
+  true,
+  "[True, 'none', 'block']"
+ ],
+ [
+  "Laudo em Word baixado de dentro da plataforma",
+  true,
+  ""
+ ],
+ [
+  "Auditoria de rotas do módulo aprovada",
+  true,
+  "[]"
+ ],
+ [
+  "Apelido #/laudos leva ao módulo",
+  true,
+  "#/avaliacao-imoveis"
+ ],
+ [
+  "avaliacao.html aberto sozinho volta para a plataforma",
+  true,
+  "http://localhost:8766/#/avaliacao-imoveis"
+ ],
+ [
+  "Módulo reabre após recarregar a página",
+  true,
+  "painel"
+ ],
+ [
+  "Sair da plataforma encerra a sessão",
+  true,
+  ""
+ ],
+ [
+  "Sair limpa as avaliações guardadas no aparelho",
+  true,
+  "['soliduns-aval-modulo-v1-u-5ac4971e-4edf-4425-b411-91bac0ea0f68', 'soliduns-empresas-base', 'soliduns-imoveis-base', 'soliduns-leiloes-base-v2']"
+ ],
+ [
+  "Sair apaga as fotos guardadas no aparelho",
+  true,
+  "0"
+ ],
+ [
+  "Quadro do módulo fechado",
+  true,
+  ""
+ ],
+ [
+  "Outro perito abre o módulo no mesmo navegador",
+  true,
+  ""
+ ],
+ [
+  "Não vê nada da perita anterior",
+  true,
+  ""
+ ],
+ [
+  "Banco nega as avaliações da perita para outro perito",
+  true,
+  "0"
+ ],
+ [
+  "Arquivos da perita negados para outro perito",
+  true,
+  "negado"
+ ],
+ [
+  "Plano sem a área: o módulo fecha e explica",
+  true,
+  "sem-acesso"
+ ],
+ [
+  "Card com selo \"Planos pagos\" para quem não tem a área",
+  true,
+  ""
+ ],
+ [
+  "Sem a área: tela de plano da plataforma, módulo não carrega",
+  true,
+  ""
+ ],
+ [
+  "Servidor também recusa quem não tem a área",
+  true,
+  "False"
+ ],
+ [
+  "Administrador do sistema abre o módulo (sem a área no plano)",
+  true,
+  "admin"
+ ],
+ [
+  "Administrador vê os peritos",
+  true,
+  ""
+ ],
+ [
+  "Sem plano/bloqueio no módulo (ficam na Equipe da plataforma)",
+  true,
+  ""
+ ],
+ [
+  "Administrador vê a área da perita (suporte)",
+  true,
+  ""
+ ],
+ [
+  "Cópia de segurança (.zip) do administrador com dados e fotos da nuvem",
+  true,
+  "(13, 2, ['dados.json', 'LEIA-ME.txt', 'anexos/AV-2026-014/fx_90ps6hs5pi_foto1.jpg', 'anexos/AV-2026-014/fx_fuxkqvs5qy_foto2.jpg'])"
+ ],
+ [
+  "Leilão abre o módulo com avaliação já preenchida (módulo ainda fechado)",
+  true,
+  "{'t': 'Apartamento — SQS 308 Bloco C, Brasília/DF', 'tip': 'Apartamento', 'seg': 'urbano', 'mat': '45.678 — 1º RI/DF', 'ar': '96.5', 'proc': '0701234-55.2026.8.07.0001', 'o': {'tipo': 'leilao', 'ref': 'caixa-123', 'url': 'https://exemplo.gov.br/edital.pdf', 'uf': 'DF', 'cidade': 'Brasília', 'bairro'"
+ ],
+ [
+  "Origem do leilão registrada (edital e lance) e campo desconhecido ignorado",
+  true,
+  "{'tipo': 'leilao', 'ref': 'caixa-123', 'url': 'https://exemplo.gov.br/edital.pdf', 'uf': 'DF', 'cidade': 'Brasília', 'bairro': 'Asa Sul', 'endereco': 'SQS 308 Bloco C', 'valorEdital': 850000, 'lance': 520000, 'em': 1792806673209}"
+ ],
+ [
+  "Aviso de origem na fase F1",
+  true,
+  ""
+ ],
+ [
+  "Avaliação do leilão gravada no banco",
+  true,
+  ""
+ ],
+ [
+  "Segundo pedido com o módulo aberto: imóvel rural",
+  true,
+  "{'n': 9, 'seg': 'rural', 'tip': 'Imóvel rural', 'ref': 'tj-77'}"
+ ],
+ [
+  "Pedido de quem não tem a área: tela de plano, nada criado",
+  true,
+  ""
+ ],
+ [
+  "Privacidade e Termos citam o módulo (fotos com GPS, responsabilidade do profissional)",
+  true,
+  ""
+ ],
+ [
+  "C1: banco recusa id com código escondido",
+  true,
+  "400"
+ ],
+ [
+  "C1: avaliação maliciosa de teste gravada pelo perito (id válido)",
+  true,
+  "201"
+ ],
+ [
+  "C1: nenhum código injetado roda nas telas do administrador",
+  true,
+  "(None, None)"
+ ],
+ [
+  "C1: ids inválidos dentro da avaliação são trocados ao carregar",
+  true,
+  "['fx_4310y6t8gf', 'dc_ok1', 'fx_l3nwo5t8gf', 'fx_bbl4ybt8gf']"
+ ],
+ [
+  "Cópia do administrador leva o banco de mercado e os parâmetros de todos os peritos",
+  true,
+  "(1, 1, 1, 1)"
+ ],
+ [
+  "M4: toda a trilha da perita tem o e-mail e o papel carimbados pelo servidor",
+  true,
+  "[{'usuario': 'ana@perita.com', 'papel': 'perito'}, {'usuario': 'ana@perita.com', 'papel': 'perito'}, {'usuario': 'ana@perita.com', 'papel': 'perito'}]"
+ ],
+ [
+  "M5: foto da conta que será excluída está no Storage",
+  true,
+  ""
+ ],
+ [
+  "A-N1: arquivo de conta excluída enviado há menos de 24 h não é apontado",
+  true,
+  "[]"
+ ],
+ [
+  "A-N1: antes de apagar, o módulo pede confirmação com a contagem",
+  true,
+  "4 horas, e o módulo mostra a contagem antes de apagar.\n\nProcurando arquivos de contas excluídas…\nLimpar arquivos de contas excluídas\n✕\n\nForam encontradas 1 pasta(s) de contas que não existem mais, com 1 arquivo(s). Eles serão apagados do armazenamento. Não há como desfazer.\n\nCancelar\nApagar arquivos"
+ ],
+ [
+  "M-N5: caminho de arquivo fora da pasta da própria avaliação é descartado",
+  true,
+  "[[None, 'u1/avX1/fx_2', None], True]"
+ ],
+ [
+  "M5: \"Limpar arquivos de contas excluídas\" apaga só as fotos da conta excluída",
+  true,
+  "({'pastas': 1, 'arquivos': 1}, 2)"
+ ],
+ [
+  "A1: sem internet a alteração fica guardada no aparelho",
+  true,
+  ""
+ ],
+ [
+  "A1: ao reabrir com internet, o trabalho feito sem sinal sobe antes de baixar",
+  true,
+  "{'t': 'Vistoria sem sinal', 'n': 1}"
+ ],
+ [
+  "A1: a foto tirada sem sinal chegou ao Storage",
+  true,
+  ""
+ ],
+ [
+  "M3: edição do aparelho 2 não apaga a foto enviada pelo aparelho 1",
+  true,
+  "{'p': 'Editado no aparelho 2', 't': 'Vistoria sem sinal', 'n': 2}"
+ ],
+ [
+  "M3: o aparelho 2 avisa que combinou as alterações",
+  true,
+  ""
+ ],
+ [
+  "M2: duplo clique em Sair ainda limpa o módulo e sai",
+  true,
+  "(['soliduns-aval-modulo-v1-u-5ac4971e-4edf-4425-b411-91bac0ea0f68', 'soliduns-aval-modulo-v1-u-5ac4971e-4edf-4425-b411-91bac0ea0f68-nuvem-h'], [['soliduns-aval-modulo-v1-u-5ac4971e-4edf-4425-b411-91bac0ea0f68', False]])"
+ ],
+ [
+  "M1: Sair pelo aviso de CPF também passa pelo módulo",
+  true,
+  ""
+ ],
+ [
+  "Arquivo que não é PDF, Word ou imagem é recusado",
+  true,
+  ""
+ ],
+ [
+  "Storage recusa página HTML enviada direto pela API",
+  true,
+  "400"
+ ],
+ [
+  "Apagar meus dados: avaliações, mercado, perfil e arquivos do perito saem do servidor",
+  true,
+  "{'a': 0, 'p': 0, 'm': 0}"
+ ],
+ [
+  "Apagar meus dados: tela de confirmação",
+  true,
+  ""
+ ],
+ [
+  "Sem erros inesperados no servidor",
+  true,
+  "[['rest-erro', 'POST', 'aval_avaliacoes', 'new row for relation \"aval_avaliacoes\" violates check constraint \"aval_avaliacoes_id_ok\"']]"
+ ],
+ [
+  "Sem erros de JavaScript do módulo",
+  true,
+  "[]"
+ ]
+]

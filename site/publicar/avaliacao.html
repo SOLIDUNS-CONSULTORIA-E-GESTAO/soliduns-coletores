@@ -784,11 +784,16 @@ function calcComparativo(a){
   if(rural){const nd=num(d.na);fs=[Number.isFinite(nd)&&nd>0&&Number.isFinite(naA)?naA/nd:1]}
   else fs=P.fatores.map(f=>{const v=num(d.f?.[f.k]);return Number.isFinite(v)?v:1});
   const conj=1+fs.reduce((s,x)=>s+(x-1),0);
-  const fora=conj<.4||conj>2.5;
-  return {d,valido,vu,fo,fs,conj,fora,vh:valido&&!fora?vu*fo*conj:NaN,motivo:!valido?"R03 — falta fonte, data, preço ou área":fora?"R05 — fatores fora de 0,40–2,50":""}});
+  const foraConj=conj<.4||conj>2.5,foraInd=!rural&&fs.some(x=>x<.5||x>2),fora=foraConj||foraInd;
+  return {d,valido,vu,fo,fs,conj,fora,vh:valido&&!fora?vu*fo*conj:NaN,motivo:!valido?"R03 — falta fonte, data, preço ou área":foraInd?"B.2.2 — fator isolado fora de 0,50–2,00":foraConj?"R05 — conjunto de fatores fora de 0,40–2,50":""}});
  let ativos=rows.filter(r=>Number.isFinite(r.vh)&&!r.d.vetado);
  rows.forEach(r=>{if(r.d.vetado&&!r.motivo)r.motivo="Vetado pelo perito"});
- for(let it=0;it<20&&ativos.length>2;it++){const m=mean(ativos.map(r=>r.vh));const fora=ativos.filter(r=>Math.abs(r.vh-m)>P.saneamento*m);if(!fora.length)break;fora.forEach(r=>r.motivo=`Saneamento ±${nf(P.saneamento*100,0)}%`);ativos=ativos.filter(r=>!fora.includes(r))}
+ /* NBR 14653-2, B.3: retira um dado por vez, começando pelo mais distante da média; admite a reintrodução */
+ const san=[];for(let it=0;it<300;it++){const m=mean(ativos.map(r=>r.vh));let pior=null,dmax=-1;for(const r of ativos){const dd=Math.abs(r.vh-m);if(dd>dmax){dmax=dd;pior=r}}
+  if(ativos.length>2&&pior&&dmax>P.saneamento*m){san.push(pior);ativos=ativos.filter(r=>r!==pior);continue}
+  let volta=null,dv=Infinity;for(const r of san){const dd=Math.abs(r.vh-m);if(dd<=P.saneamento*m&&dd<dv){dv=dd;volta=r}}
+  if(volta){san.splice(san.indexOf(volta),1);ativos.push(volta);continue}break}
+ san.forEach(r=>r.motivo=`Saneamento ±${nf(P.saneamento*100,0)}% (B.3)`);ativos=rows.filter(r=>ativos.includes(r));
  const v=ativos.map(r=>r.vh),n=v.length;
  const m=n?mean(v):NaN,s=sd(v),t=t80(n-1);
  const ic=n>=2?[m-t*s/Math.sqrt(n),m+t*s/Math.sqrt(n)]:[NaN,NaN];
@@ -886,11 +891,17 @@ function diagInf(vars,rows,x0,mod){const {ty,tx,m}=mod;const n=rows.length,k=var
  const vu=back(pred);const ic=pair(back(pred-t*m.s*Math.sqrt(q)),back(pred+t*m.s*Math.sqrt(q)));const ip=pair(back(pred-t*m.s*Math.sqrt(1+q)),back(pred+t*m.s*Math.sqrt(1+q)));
  const ext=vars.map((v,j)=>{if(v.tipo==="dic")return null;const col=rows.map(r=>r.x[j]);const mn=Math.min(...col),mx=Math.max(...col);const x=x0[j];if(x>=mn&&x<=mx)return null;
   const cA=x<=2*mx&&x>=mn/2;const x0b=[...x0];x0b[j]=x>mx?mx:mn;const vb=back([1,...x0b.map((vv,jj)=>TX[tx[jj]].f(vv))].reduce((s,vv,jj)=>s+vv*m.b[jj],0));return {v,x,mn,mx,cA,dv:Math.abs(vu-vb)/vb}}).filter(Boolean);
- let i4=3,extOk=true;if(ext.length){if(ext.every(e=>e.cA&&e.dv<=.20))i4=ext.length===1&&ext[0].dv<=.15?2:1;else{i4=0;extOk=false}}
+ const vAt=xx=>back([1,...xx.map((vv,jj)=>TX[tx[jj]].f(vv))].reduce((s,vv,jj)=>s+vv*m.b[jj],0));
+ let dvSim=0;if(ext.length>1){const xs=[...x0];ext.forEach(e=>{const j=vars.indexOf(e.v);xs[j]=e.x>e.mx?e.mx:e.mn});const vs=vAt(xs);dvSim=Math.abs(vu-vs)/vs}
+ /* NBR 14653-2, Tabela 1, item 4: grau II só uma variável (15%); grau I cada variável e todas ao mesmo tempo (20%) */
+ let i4=3,extOk=true;if(ext.length){if(ext.every(e=>e.cA&&e.dv<=.20)&&dvSim<=.20)i4=ext.length===1&&ext[0].dv<=.15?2:1;else{i4=0;extOk=false}}
+ const elast=vars.map((v,j)=>{if(v.tipo==="dic"||!x0[j])return null;const xs=[...x0];xs[j]=x0[j]*1.01;const v1=vAt(xs);return (v1-vu)/vu/.01});
+ const corr=[];for(let j1=0;j1<k;j1++)for(let j2=j1+1;j2<k;j2++){const c1=X.map(r=>r[j1+1]),c2=X.map(r=>r[j2+1]);const m1=mean(c1),m2=mean(c2);let sxy=0,sx=0,sy=0;c1.forEach((u,i)=>{sxy+=(u-m1)*(c2[i]-m2);sx+=(u-m1)**2;sy+=(c2[i]-m2)**2});const rr=sx&&sy?sxy/Math.sqrt(sx*sy):0;corr.push({a:vars[j1],b:vars[j2],r:rr})}
+ const corrMax=corr.reduce((mx,c)=>Math.max(mx,Math.abs(c.r)),0);
  const micro=vars.map((v,j)=>{if(v.tipo!=="dic")return {v,ok:true};const c1=rows.filter(r=>r.x[j]===1).length,c0=n-c1;const min=n<=30?3:n<=100?Math.ceil(.1*n):10;return {v,ok:Math.min(c0,c1)>=min,c0,c1,min}});
  const amp=(ic[1]-ic[0])/vu;
  return {X,h,zr,cook,norm:{p1:within(1),p164:within(1.64),p196:within(1.96),D,ksCrit,ok:D<=ksCrit},bp:{LM,p:pbp,ok:!(pbp<.05)},dw,vif,vifMax:Math.max(...vif),
-  vu,ic,ip,amp,ext,i4,extOk,micro,microOk:n>=3*(k+1)&&micro.every(x=>x.ok),x0,
+  vu,ic,ip,amp,ext,dvSim,i4,extOk,elast,corr,corrMax,micro,microOk:n>=3*(k+1)&&micro.every(x=>x.ok),x0,
   outliers:rows.map((r,i)=>({r,z:zr[i],cook:cook[i]})).filter(o=>Math.abs(o.z)>2||o.cook>4/n)}}
 
 /* ---------- método involutivo ---------- */
@@ -922,10 +933,22 @@ function calcRenda(a){const r=a.renda||{};const g=k=>num(r[k]);const P=k=>(g(k)|
  const sens=[-.01,-.005,.005,.01].map(dl=>{const Vs=modo==="fcd"?fcd(dl,dl).V:(cap+dl>0?RLA/(cap+dl):NaN);return {l:(dl>0?"+":"−")+nf(Math.abs(dl)*100,1)+" p.p. na taxa",V:Vs,d:(Vs-V)/V}});
  return {RB,efetiva,desp,RLA,cap,Vd,N,anos:F.anos,VR:F.VR,VRd:F.VRd,Vf:F.V,V,modo,sens,ok:Number.isFinite(V)&&V>0}}
 
-/* ---------- fundamentação dos novos métodos ---------- */
-const INV_IT=["Nível de detalhamento do projeto hipotético","Preço de venda das unidades","Estimativa dos custos de produção","Prazos","Taxas","Modelo (fluxo de caixa dinâmico)","Análise setorial e diagnóstico de mercado","Cenários (três cenários)","Análise de sensibilidade"];
+/* ---------- fundamentação: tabelas da NBR 14653-2:2011 e da NBR 14653-4:2002 ---------- */
+const INV_IT=["Nível de detalhamento do projeto hipotético","Preço de venda das unidades do projeto hipotético","Estimativa dos custos de produção","Prazos","Taxas","Modelo","Análise setorial e diagnóstico de mercado","Cenários","Análises de sensibilidade do modelo"];
 const INV_AUTO={5:3,7:3};
-const REN_IT=["Estimativa das receitas","Estimativa das despesas","Taxa de capitalização ou de desconto","Modelo","Cenários","Análise de sensibilidade"];
+const INV_OBRIG=[1,5,6,7]; /* itens 2, 6, 7 e 8 (Tabela 9) */
+const REN_IT=["Análise operacional do empreendimento","Análise das séries históricas (só empreendimento em operação)","Análise setorial e diagnóstico de mercado","Taxas de desconto","Escolha do modelo","Estrutura básica do fluxo de caixa","Cenários fundamentados","Análise de sensibilidade","Análise de risco"];
+const REN_NA=1; /* item 7.5.1.2: só para empreendimento em operação */
+const QC_IT=["Estimativa do custo direto","BDI","Depreciação física"];
+/* enquadramento genérico: pontos mínimos e itens obrigatórios no próprio grau (os demais, um grau abaixo) */
+function enquadra(pts,vals,obrig,min){const ob=vals.filter((_,i)=>obrig.includes(i)),ou=vals.filter((_,i)=>!obrig.includes(i));
+ if(pts>=min[0]&&ob.every(x=>x>=3)&&ou.every(x=>x>=2))return 3;if(pts>=min[1]&&ob.every(x=>x>=2)&&ou.every(x=>x>=1))return 2;if(pts>=min[2]&&vals.every(x=>x>=1))return 1;return 0}
+/* exigências adicionais do grau III (9.2.1.1 e 9.2.2.1): endereços completos dos dados e valor igual à estimativa central */
+function faltasGrauIII(a,est,dados){const f=[];if(!dados.length||dados.some(d=>String(d.endereco||"").trim().length<5))f.push("endereço completo de todos os dados utilizados");
+ const va=num(a.resultado?.adotado);if(Number.isFinite(va)&&est.central&&Math.abs(va-est.central)/est.central>.001)f.push("valor adotado igual à estimativa de tendência central");return f}
+function capIII(grau,faltas,obs){if(grau===3&&faltas.length)return {grau:2,obs:obs+" O grau III exige também: "+faltas.join("; ")+". Por isso o enquadramento ficou no grau II."};return {grau,obs}}
+function grauQC(e){const v=[1,2,3].map(i=>num(e["qc"+i]));if(!v.every(x=>x>=1))return null;const pts=v.reduce((s,x)=>s+x,0);
+ return enquadra(pts,v,[0],[7,5,3])===3?3:(pts>=5&&v[0]>=2&&v[1]>=2&&v[2]>=1)?2:(pts>=3)?1:0}
 function fundNovos(a,est){const e=a.espec||{};
  if(est.tipo==="inferencia"){const r=est.inf;const i1=num(e.i1)||(a.vistoria.validada?2:1),i3=num(e.i3)||2;
   if(!r.ok)return {itens:[["Modelo de regressão ainda não disponível",0]],pontos:0,grau:0,obs:r.motivo,auto:[0]};
@@ -933,12 +956,18 @@ function fundNovos(a,est){const e=a.espec||{};
   const i5=pm<=.10?3:pm<=.20?2:pm<=.30?1:0,i6=pf<=.01?3:pf<=.02?2:pf<=.05?1:0;
   const itens=[["Caracterização do imóvel avaliando",i1],[`Quantidade de dados (n = ${n}; 3(k+1) = ${3*(k+1)}, 4(k+1) = ${4*(k+1)}, 6(k+1) = ${6*(k+1)})`,i2],["Identificação dos dados de mercado",i3],
    [`Extrapolação (${r.ext.length?r.ext.length+" variável fora da amostra":"não há"})`,r.i4],[`Significância dos regressores (maior p = ${pct(pm,1)})`,i5],[`Significância do modelo, teste F (p = ${pf<1e-4?"< 0,01%":pct(pf,2)})`,i6]];
-  const pts=itens.reduce((s,i)=>s+i[1],0),ob=[i2,r.i4,i5,i6],ot=[i1,i3];let grau=0;
-  if(pts>=16&&ob.every(x=>x===3)&&ot.every(x=>x>=2))grau=3;else if(pts>=10&&ob.every(x=>x>=2)&&ot.every(x=>x>=1))grau=2;else if(pts>=6&&itens.every(i=>i[1]>=1))grau=1;
-  return {itens,pontos:pts,grau,obs:"Tabelas 1 e 2 da NBR 14653-2 (regressão linear). Itens 2, 4, 5 e 6 são obrigatórios no grau pretendido.",auto:[1,3,4,5]}}
- const IT=est.tipo==="involutivo"?INV_IT:REN_IT,pre=est.tipo==="involutivo"?"inv":"ren",AUTO=est.tipo==="involutivo"?INV_AUTO:{};
- const itens=IT.map((t,i)=>[t,AUTO[i]||num(e[pre+i])||1]);const grau=Math.min(...itens.map(i=>i[1]));
- return {itens,pontos:itens.reduce((s,i)=>s+i[1],0),grau,obs:(est.tipo==="involutivo"?"Itens da tabela de fundamentação do método involutivo (NBR 14653-2)":"Itens de fundamentação da capitalização da renda (NBR 14653-2 e 14653-4)")+"; enquadramento pelo menor item. Pontuação mínima a confirmar no texto oficial.",auto:Object.keys(AUTO).map(Number)}}
+  const vals=itens.map(i=>i[1]),pts=vals.reduce((s,x)=>s+x,0);
+  const g=capIII(enquadra(pts,vals,[1,3,4,5],[16,10,6]),faltasGrauIII(a,est,r.rows.map(x=>x.d)),"Tabelas 1 e 2 da NBR 14653-2:2011 (regressão linear). Itens 2, 4, 5 e 6 são obrigatórios no grau pretendido.");
+  return {itens,pontos:pts,grau:g.grau,obs:g.obs,auto:[1,3,4,5]}}
+ if(est.tipo==="involutivo"){const itens=INV_IT.map((t,i)=>[t,INV_AUTO[i]||num(e["inv"+i])||1]);const vals=itens.map(i=>i[1]),pts=vals.reduce((s,x)=>s+x,0);
+  return {itens,pontos:pts,grau:enquadra(pts,vals,INV_OBRIG,[22,13,9]),obs:"Tabelas 8 e 9 da NBR 14653-2:2011 (método involutivo): 22, 13 e 9 pontos; itens 2, 6, 7 e 8 obrigatórios no grau pretendido. Modelo dinâmico e três cenários são calculados pela plataforma.",auto:Object.keys(INV_AUTO).map(Number)}}
+ /* capitalização da renda: Tabelas 4 e 5 da NBR 14653-4:2002 (identificação de valor) */
+ const naSeries=!a.renda?.emOperacao;
+ const itens=REN_IT.map((t,i)=>[t,i===REN_NA&&naSeries?null:(num(e["ren"+i])||1)]);
+ const vals=itens.map(i=>i[1]).filter(x=>x!=null),pts=vals.reduce((s,x)=>s+x,0);
+ const abaixo3=vals.filter(x=>x<3).length,em1=vals.filter(x=>x===1).length,abaixo2=vals.filter(x=>x<2).length;
+ const grau=pts>=22&&abaixo3<=3&&em1<=1?3:pts>=13&&abaixo2<=4?2:pts>=7&&vals.length>=7?1:0;
+ return {itens:itens.map(i=>[i[0],i[1]==null?"n/a":i[1]]),pontos:pts,grau,obs:"Tabelas 4 e 5 da NBR 14653-4:2002 (identificação de valor): grau III com 22 pontos ou mais, no máximo 3 itens abaixo do grau III e só 1 no grau I; grau II com 13 a 21 pontos e no máximo 4 itens abaixo do grau II; grau I com 7 a 12 pontos e ao menos 7 itens atendidos."+(naSeries?" A análise das séries históricas não se aplica: o imóvel não é empreendimento em operação.":"")+" A NBR 14653-2 (8.2.3) remete à Parte 4 para o método da renda.",auto:[]}}
 
 /* ---------- telas ---------- */
 function fInf(a,est){const r=est.inf;const cfg=a.inf||{};const TXo={auto:"Automática",x:"x",ln:"ln(x)",inv:"1/x",sq:"x²",sqrt:"√x"};
@@ -959,7 +988,8 @@ function fInf(a,est){const r=est.inf;const cfg=a.inf||{};const TXo={auto:"Autom�
  ${r.modeloPerdido?`<div class="badmsg">O modelo escolhido antes deixou de ser válido com os dados atuais. A plataforma passou a usar o melhor modelo válido.</div>`:""}
  <div class="field"><label for="inf-modelo">Modelo</label><select class="inp" id="inf-modelo" data-bind="inf.modelo"><option value="">Melhor modelo (automático)</option>${r.models.map(md=>`<option value="${esc(md.key)}" ${cfg.modelo===md.key?"selected":""}>${esc(TY[md.ty].l)} · ${md.tx.map((t,j)=>txLabel(t,r.vars[j].k)).join(", ")} · R²aj ${nf(md.m.r2a,3)} · maior p ${pct(md.pmax,1)}</option>`).join("")}</select></div>
  <div class="formula" style="white-space:normal">${esc(r.eq)}</div>
- <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Regressor</th><th>Transformação</th><th class="num">Coeficiente</th><th class="num">t</th><th class="num">p-valor (bicaudal)</th><th>Sinal</th></tr></thead><tbody>${coef.map(c=>`<tr><td>${esc(c[0])}</td><td class="mono">${esc(c[1])}</td><td class="num">${nf(c[2],6)}</td><td class="num">${nf(c[3],3)}</td><td class="num">${c[4]<1e-4?"&lt; 0,01%":pct(c[4],2)}</td><td>${c[5]?ch(true,"Coerente",""):"—"}</td></tr>`).join("")}</tbody></table></div>
+ <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Regressor</th><th>Transformação</th><th class="num">Coeficiente</th><th class="num">t</th><th class="num">p-valor (bicaudal)</th><th>Sinal</th><th class="num" title="Variação percentual do valor unitário para 1% de variação da variável, no ponto de estimação">Elasticidade</th></tr></thead><tbody>${coef.map((c,ci)=>`<tr><td>${esc(c[0])}</td><td class="mono">${esc(c[1])}</td><td class="num">${nf(c[2],6)}</td><td class="num">${nf(c[3],3)}</td><td class="num">${c[4]<1e-4?"&lt; 0,01%":pct(c[4],2)}</td><td>${c[5]?ch(true,"Coerente",""):"—"}</td><td class="num">${ci>0&&r.elast[ci-1]!=null?nf(r.elast[ci-1],3)+"%":"—"}</td></tr>`).join("")}</tbody></table></div>
+ <p class="hint" style="margin:0">Elasticidade no ponto de estimação: quanto varia o valor unitário, em %, para 1% de variação da variável (9.2.1.1 b da NBR 14653-2).</p>
  <div class="stats"><div><span>Dados (n)</span><b>${r.n}</b></div><div><span>Variáveis (k)</span><b>${r.k}</b></div><div><span>R²</span><b>${nf(m.r2,4)}</b></div><div><span>R² ajustado</span><b>${nf(m.r2a,4)}</b></div>
   <div><span>F calculado</span><b>${nf(m.F,2)}</b></div><div><span>p do teste F</span><b>${m.pf<1e-6?"&lt; 0,0001%":pct(m.pf,4)}</b></div><div><span>Desvio-padrão do modelo</span><b>${nf(m.s,5)}</b></div><div><span>Durbin–Watson</span><b>${nf(r.dw,3)}</b></div></div></div>
  <div class="sect"><h3>Pressupostos <span class="mono small muted">item 11.2</span></h3>
@@ -968,16 +998,25 @@ function fInf(a,est){const r=est.inf;const cfg=a.inf||{};const TXo={auto:"Autom�
   <tr><td>Kolmogorov–Smirnov (Lilliefors)</td><td class="mono">D = ${nf(r.norm.D,4)}</td><td class="small">crítico 5% = ${nf(r.norm.ksCrit,4)}</td><td>${ch(r.norm.ok,"Não rejeita","Rejeita")}</td></tr>
   <tr><td>Homocedasticidade (Breusch–Pagan)</td><td class="mono">LM = ${nf(r.bp.LM,3)} · p = ${pct(r.bp.p,1)}</td><td class="small">p ≥ 5%</td><td>${ch(r.bp.ok,"Homocedástico","Heterocedástico")}</td></tr>
   <tr><td>Multicolinearidade</td><td class="mono">VIF máximo = ${nf(r.vifMax,2)}</td><td class="small">VIF ≤ 10</td><td>${ch(r.vifMax<=10,"Aceitável","Revisar")}</td></tr>
+  <tr><td>Correlação entre variáveis independentes</td><td class="small">${r.corr.length?r.corr.filter(c=>Math.abs(c.r)>.8).map(c=>`${esc(c.a.nome)} × ${esc(c.b.nome)}: ${nf(c.r,2)}`).join("<br>")||"maior |r| = "+nf(r.corrMax,2):"Uma variável só"}</td><td class="small">atenção acima de 0,80 (A.2.1.5.2)</td><td>${r.corrMax>.8?'<span class="chip warn">Verificar coerência do avaliando</span>':ch(true,"Sem correlação alta","")}</td></tr>
   <tr><td>Micronumerosidade</td><td class="mono">n = ${r.n}; 3(k+1) = ${3*(r.k+1)}${r.micro.filter(x=>x.c0!=null).map(x=>` · ${esc(x.v.nome)}: ${x.c1}/${x.c0}`).join("")}</td><td class="small">n ≥ 3(k+1); dicotômicas ≥ ${r.micro.find(x=>x.min)?.min??3} por grupo</td><td>${ch(r.microOk,"Atende","Não atende")}</td></tr>
-  <tr><td>Extrapolação do avaliando</td><td class="small">${r.ext.length?r.ext.map(e=>`${esc(e.v.nome)}: ${nf(e.x,2)} fora de ${nf(e.mn,2)}–${nf(e.mx,2)} · variação ${pct(e.dv,1)}`).join("<br>"):"Dentro do intervalo amostral"}</td><td class="small">item 11.3</td><td>${ch(r.extOk,r.ext.length?"Nas condições":"Sem extrapolação","Fora das condições (R08)")}</td></tr>
+  <tr><td>Extrapolação do avaliando</td><td class="small">${r.ext.length?r.ext.map(e=>`${esc(e.v.nome)}: ${nf(e.x,2)} fora de ${nf(e.mn,2)}–${nf(e.mx,2)} · variação ${pct(e.dv,1)}`).join("<br>"):"Dentro do intervalo amostral"}</td><td class="small">Tabela 1, item 4</td><td>${ch(r.extOk,r.ext.length?"Nas condições":"Sem extrapolação","Fora das condições (R08)")}</td></tr>
   <tr><td>Pontos influentes</td><td class="small">${r.outliers.length?r.outliers.map(o=>`${esc(o.r.d.ref)} (z = ${nf(o.z,2)}; Cook = ${nf(o.cook,3)})`).join(", "):"Nenhum"}</td><td class="small">|z| ≤ 2 e Cook ≤ 4/n</td><td>${r.outliers.length?'<span class="chip warn">Investigar</span>':ch(true,"Sem pontos","")}</td></tr>
  </tbody></table></div>
- ${residPlot(r)}</div>
+ ${residPlot(r)}${obsEstPlot(r)}</div>
  <div class="sect"><h3>Estimativa <span class="mono small muted">ALG-6U.9</span></h3>
  <div class="stats"><div><span>Valor unitário central</span><b>${brl(r.vu)}/m²</b></div><div><span>IC80% unitário</span><b>${nf(r.ic[0],2)} a ${nf(r.ic[1],2)}</b></div><div><span>Intervalo de predição</span><b>${nf(r.ip[0],2)} a ${nf(r.ip[1],2)}</b></div><div><span>Amplitude do IC80%</span><b>${pct(r.amp)}</b></div></div>
  <div class="formula">Valor = Vu × área = ${nf(r.vu,2)} × ${nf(est.area,2)} m² = <b>${brl(est.central)}</b>${r.escolhido.ty==="ln"?" · retransformação de ln(Vu) pela mediana":""}</div></div>
  <div class="sect">${fC(a,"calc.validado","Aprovo o modelo de regressão, as transformações e o tratamento dos dados (ALG-6U.10)")}</div>`;
  return html}
+/* 8.2.1.4.1 da NBR 14653-2: preços observados (abscissa) × valores estimados pelo modelo (ordenada) */
+function obsEst(r){const back=TY[r.escolhido.ty].g;return r.rows.map((row,i)=>({ref:row.d.ref,o:row.vu,e:back(r.escolhido.m.yh[i])}))}
+function obsEstPlot(r){const W=620,H=300,L=64,R=12,T=12,B=34;const P=obsEst(r);const all=P.flatMap(p=>[p.o,p.e]).filter(Number.isFinite);if(!all.length)return "";const v0=Math.min(...all)*.95,v1=Math.max(...all)*1.05;
+ const sx=v=>L+(v-v0)/(v1-v0)*(W-L-R),sy=v=>H-B-(v-v0)/(v1-v0)*(H-T-B);
+ const ticks=[0,.25,.5,.75,1].map(f=>v0+f*(v1-v0));
+ const grid=ticks.map(v=>`<line x1="${L}" x2="${W-R}" y1="${sy(v)}" y2="${sy(v)}" stroke="var(--line)"/><text x="${L-6}" y="${sy(v)+4}" text-anchor="end" font-size="10" fill="var(--muted)">${nf(v,0)}</text><text x="${sx(v)}" y="${H-B+14}" text-anchor="middle" font-size="10" fill="var(--muted)">${nf(v,0)}</text>`).join("");
+ const pts=P.map(p=>`<circle cx="${sx(p.o).toFixed(1)}" cy="${sy(p.e).toFixed(1)}" r="4" fill="var(--accent)" stroke="var(--surface)"><title>${esc(p.ref)}: observado ${nf(p.o,2)} · estimado ${nf(p.e,2)}</title></circle>`).join("");
+ return `<div class="tbl-wrap" style="background:var(--raised);border-radius:6px;margin-top:10px"><svg viewBox="0 0 ${W} ${H}" width="100%" style="min-width:420px;display:block" role="img" aria-label="Preços observados em função dos valores estimados pelo modelo">${grid}<line x1="${sx(v0)}" y1="${sy(v0)}" x2="${sx(v1)}" y2="${sy(v1)}" stroke="var(--warn)" stroke-dasharray="5 4"/>${pts}<text x="${(L+W-R)/2}" y="${H-4}" text-anchor="middle" font-size="11" fill="var(--muted)">Preço observado (R$/m², abscissa) · valor estimado (ordenada) · bissetriz tracejada</text></svg></div>`}
 function residPlot(r){const W=620,H=210,L=44,R=12,T=12,B=30;const yh=r.escolhido.m.yh,z=r.zr;const x0=Math.min(...yh),x1=Math.max(...yh);const sx=v=>L+(v-x0)/((x1-x0)||1)*(W-L-R),sy=v=>T+(3-Math.max(-3,Math.min(3,v)))/6*(H-T-B);
  const grid=[-2,-1,0,1,2].map(v=>`<line x1="${L}" x2="${W-R}" y1="${sy(v)}" y2="${sy(v)}" stroke="var(--line)" ${Math.abs(v)===2?'stroke-dasharray="4 4" stroke="var(--warn)"':""}/><text x="${L-6}" y="${sy(v)+4}" text-anchor="end" font-size="10" fill="var(--muted)">${v}</text>`).join("");
  const pts=yh.map((v,i)=>`<circle cx="${sx(v).toFixed(1)}" cy="${sy(z[i]).toFixed(1)}" r="4" fill="${Math.abs(z[i])>2?"var(--bad)":"var(--accent)"}" stroke="var(--surface)"><title>${esc(r.rows[i].d.ref)}: z = ${nf(z[i],2)}</title></circle>`).join("");
@@ -1050,17 +1089,31 @@ function estimativa(a){
  const c=calcComparativo(a);
  if(a.segmento==="rural"){const area=areaAdotada(a)||0;const bt=benfTotal(a);const central=c.m*area+bt;return {central,tipo:"rural",ic:[c.ic[0]*area+bt,c.ic[1]*area+bt],amp:c.amp,c,area,bt}}
  const area=areaAdotada(a)||0;return {central:c.m*area,tipo:"comparativo",ic:[c.ic[0]*area,c.ic[1]*area],amp:c.amp,c,area}}
+function intervaloAdmissivel(a,est){const P=DB.params;if(!TIPOS_IC.includes(est.tipo)||!Number.isFinite(est.ic?.[0])||!est.central)return null;
+ const c=est.central,lo=c*(1-P.arbitrio),hi=c*(1+P.arbitrio),va=num(a.resultado?.adotado);
+ const arb=Number.isFinite(va)&&Math.abs(va-c)/c>.001;const base=arb?[va-(c-est.ic[0]),va+(est.ic[1]-c)]:est.ic;
+ return {arbitrado:arb,lo:Math.max(base[0],lo),hi:Math.min(base[1],hi)}}
 function grauPrecisao(amp){if(!Number.isFinite(amp))return null;return amp<=.30?3:amp<=.40?2:amp<=.50?1:0}
 function fundamentacao(a){
- const est=estimativa(a);if(["inferencia","involutivo","renda"].includes(est.tipo))return fundNovos(a,est);if(est.tipo==="evolutivo"){const e=a.espec||{};const it=[["Estimativa do valor do terreno",num(e.ev1)||1],["Estimativa dos custos de reedição",num(e.ev2)||1],["Fator de comercialização",num(e.ev3)||1]];const min=Math.min(...it.map(i=>i[1]));return {itens:it,pontos:it.reduce((s,i)=>s+i[1],0),grau:min,obs:"Pontuação mínima da Tabela 8 a confirmar no texto oficial; grau limitado pelo menor item.",auto:[]}}
+ const est=estimativa(a);if(["inferencia","involutivo","renda"].includes(est.tipo))return fundNovos(a,est);if(est.tipo==="evolutivo"){const e=a.espec||{};const ev=calcEvolutivo(a);const tot=ev.VT+ev.CB;const shT=tot>0?ev.VT/tot:NaN,shB=tot>0?ev.CB/tot:NaN;
+  const qc=grauQC(e);const g1=num(e.ev1)||1,g2=qc||num(e.ev2)||1,g3=num(e.ev3)||1;
+  /* 9.5.2.1: terreno ou benfeitorias abaixo de 15% do total podem receber 2 pontos */
+  const p1=shT<.15?Math.max(g1,2):g1,p2=shB<.15?Math.max(g2,2):g2;
+  const it=[["Estimativa do valor do terreno"+(shT<.15?" (9.5.2.1: menos de 15% do total)":""),p1],["Estimativa dos custos de reedição"+(qc?" (Tabela 6: grau "+ROM(qc)+")":"")+(shB<.15?" (9.5.2.1: menos de 15% do total)":""),p2],["Fator de comercialização",g3]];
+  const vals=it.map(i=>i[1]),pts=vals.reduce((s,x)=>s+x,0);
+  return {itens:it,pontos:pts,grau:enquadra(pts,vals,[0,1],[8,5,3]),obs:"Tabelas 10 e 11 da NBR 14653-2:2011 (método evolutivo): 8, 5 e 3 pontos; itens 1 e 2 obrigatórios no grau pretendido."+(qc?" O item 2 vem da Tabela 7 (quantificação de custo).":""),auto:qc?[1]:[]}}
  const c=est.c;const e=a.espec||{};
  const i2=c.n>=12?3:c.n>=5?2:c.n>=3?1:0;
- const i4=!Number.isFinite(c.conjMin)?0:(c.conjMin>=.8&&c.conjMax<=1.25?3:c.conjMin>=.5&&c.conjMax<=2?2:1);
+ const dentro=(lo,hi)=>c.conjMin>=lo&&c.conjMax<=hi;
+ /* Tabela 3, item 4 (nota a: com menos de 5 dados, só 0,80 a 1,25) */
+ const i4=!Number.isFinite(c.conjMin)?0:dentro(.8,1.25)?3:c.n<5?0:dentro(.5,2)?2:dentro(.4,2.5)?1:0;
  const i1=num(e.i1)||(a.vistoria.validada?2:1),i3=num(e.i3)||2;
  const itens=[["Caracterização do imóvel avaliando",i1],["Quantidade mínima de dados ("+c.n+")",i2],["Identificação dos dados de mercado",i3],["Intervalo de ajuste dos fatores ("+nf(c.conjMin,2)+"–"+nf(c.conjMax,2)+")",i4]];
  const pts=itens.reduce((s,i)=>s+i[1],0);let grau=0;
  if(pts>=10&&i2===3&&i4===3&&i1>=2&&i3>=2)grau=3;else if(pts>=6&&i2>=2&&i4>=2&&i1>=1&&i3>=1)grau=2;else if(pts>=4&&itens.every(i=>i[1]>=1))grau=1;
- return {itens,pontos:pts,grau,obs:"Tabelas 3 e 4 da NBR 14653-2 (tratamento por fatores).",auto:[1,3]}}
+ if(est.tipo==="rural")return {itens,pontos:pts,grau,obs:"Enquadramento provisório pelos critérios do tratamento por fatores. A tabela de pontuação da NBR 14653-3 está em conferência com a edição vigente da norma.",auto:[1,3]};
+ const g=capIII(grau,faltasGrauIII(a,est,c.ativos.map(r=>r.d)),"Tabelas 3 e 4 da NBR 14653-2:2011 (tratamento por fatores). Itens 2 e 4 são obrigatórios no grau pretendido.");
+ return {itens,pontos:pts,grau:g.grau,obs:g.obs,auto:[1,3]}}
 const ROM=g=>["—","I","II","III"][g]??"—";
 
 /* ---------------- gates (travas do compêndio) ---------------- */
@@ -1083,13 +1136,13 @@ function gates(a){
  if(est.tipo==="inferencia"){const r=est.inf;
   add(6,"R06","Micronumerosidade: n ≥ 3(k+1) e grupos das dicotômicas",r.ok?r.microOk:r.n>=3*(r.k+1)&&r.k>0,r.ok?"Amplie a amostra ou reduza as variáveis.":r.motivo);
   add(6,"R07","Modelo com sinais coerentes e significância mínima",r.ok,r.ok?"":r.motivo);
-  add(6,"R08","Extrapolação nas condições da norma",r.ok&&r.extOk,"O avaliando está fora das condições de extrapolação do item 11.3.")}
+  add(6,"R08","Extrapolação nas condições da norma",r.ok&&r.extOk,"O avaliando está fora das condições de extrapolação da Tabela 1 (item 4) da NBR 14653-2.")}
  if(est.tipo==="involutivo")add(6,"ALG-6U.12","VGV, custos, prazos e taxa informados (valor positivo)",est.inv.ok,"Preencha o projeto hipotético e revise as premissas.");
  if(est.tipo==="renda")add(6,"ALG-6U.13","Receitas, despesas e taxa informadas",est.ren.ok,"Informe o aluguel e a taxa do modelo adotado.");
- if(est.tipo==="comparativo"||est.tipo==="rural")add(6,"R05","Fatores no intervalo 0,40–2,50",c&&c.rows.filter(r=>r.fora).length===0,"Há dado com fator conjunto fora do limite; ele foi excluído.");
+ if(est.tipo==="comparativo"||est.tipo==="rural")add(6,"R05","Fatores: cada um de 0,50 a 2,00 e o conjunto de 0,40 a 2,50",c&&c.rows.filter(r=>r.fora).length===0,"Há dado com fator fora do limite (B.2.2 ou Tabela 3 da NBR 14653-2); ele foi excluído.");
  add(6,"ALG-6.V","Cálculo validado pelo perito",a.calc?.validado&&Number.isFinite(est.central),"Valide premissas e resultados do cálculo.");
  const gp=grauPrecisao(est.amp),fu=fundamentacao(a);
- if(TIPOS_IC.includes(est.tipo))add(7,"R09","Amplitude do IC80% ≤ 50% ("+pct(est.amp)+")",gp!=null&&gp>=1,"Amplie ou depure a amostra.");
+ if(TIPOS_IC.includes(est.tipo))add(7,"R09","Amplitude do IC80% ≤ 50% ("+pct(est.amp)+") ou justificada",gp!=null&&(gp>=1||String(a.espec?.justPrecisao||"").trim().length>=20),"Acima de 50% não há grau de precisão: amplie a amostra ou justifique com o diagnóstico de mercado (nota da Tabela 5).");
  add(7,"R12","Grau de fundamentação ≥ exigido ("+ROM(fu.grau)+" / "+ROM(num(a.grauMin)||1)+")",fu.grau>=(num(a.grauMin)||1),"Melhore a identificação dos dados ou amplie a amostra.");
  const vc=num(a.espec?.verificacao);const dc=Number.isFinite(vc)&&est.central?Math.abs(vc-est.central)/est.central:NaN;
  add(7,"ALG-7.3","Conciliação entre métodos"+(Number.isFinite(dc)?" ("+pct(dc)+")":""),!Number.isFinite(dc)||dc<=P.tolConc||a.espec?.concJust,"Divergência acima de "+pct(P.tolConc,0)+": justifique.");
@@ -1353,6 +1406,15 @@ function capaLaudo(a,minuta,per){return new Promise(resolve=>{
   c.toBlob(b=>b.arrayBuffer().then(resolve),"image/png")};
  img.src=LOGO})}
 
+async function graficoObsEstPng(r){try{const P=obsEst(r);const all=P.flatMap(p=>[p.o,p.e]).filter(Number.isFinite);if(!all.length)return null;
+ const W=1120,H=600,L=120,R=30,T=30,B=80;const cv=document.createElement("canvas");cv.width=W;cv.height=H;const g=cv.getContext("2d");if(!g)return null;
+ const v0=Math.min(...all)*.95,v1=Math.max(...all)*1.05;const sx=v=>L+(v-v0)/(v1-v0)*(W-L-R),sy=v=>H-B-(v-v0)/(v1-v0)*(H-T-B);
+ g.fillStyle="#fff";g.fillRect(0,0,W,H);g.font="22px Georgia";g.fillStyle="#555";g.strokeStyle="#ddd";g.lineWidth=1;
+ for(let k=0;k<=4;k++){const v=v0+k/4*(v1-v0);g.beginPath();g.moveTo(L,sy(v));g.lineTo(W-R,sy(v));g.stroke();g.textAlign="right";g.fillText(nf(v,0),L-10,sy(v)+7);g.textAlign="center";g.fillText(nf(v,0),sx(v),H-B+30)}
+ g.strokeStyle="#C9A50E";g.setLineDash([12,8]);g.lineWidth=3;g.beginPath();g.moveTo(sx(v0),sy(v0));g.lineTo(sx(v1),sy(v1));g.stroke();g.setLineDash([]);
+ g.fillStyle="#1B2A4E";P.forEach(p=>{g.beginPath();g.arc(sx(p.o),sy(p.e),8,0,7);g.fill()});
+ g.fillStyle="#333";g.textAlign="center";g.fillText("Preço observado (R$/m²)",(L+W-R)/2,H-18);g.save();g.translate(28,(T+H-B)/2);g.rotate(-Math.PI/2);g.fillText("Valor estimado (R$/m²)",0,0);g.restore();
+ const blob=await new Promise(res=>cv.toBlob(res,"image/png"));return blob?new Uint8Array(await blob.arrayBuffer()):null}catch(e){return null}}
 async function gerarLaudoDocx(a){
  const D=await loadDocx();const fotos=await fotosParaLaudo(a);const docs=anexos(a,"doc");let anx=0;const letra=()=>String.fromCharCode(65+anx++);const letraFotos=fotos.length?"A":null;
  const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,WidthType,ShadingType,AlignmentType,HeadingLevel,BorderStyle,LevelFormat,Header,Footer,PageNumber,ImageRun,PageBreak,Bookmark,PageReference,TabStopType,LeaderType,Tab,InternalHyperlink}=D;
@@ -1471,8 +1533,11 @@ async function gerarLaudoDocx(a){
  else if(est.tipo==="inferencia"){const r=est.inf;
   if(r.ok){const m=r.escolhido.m;
    formula(r.eq,`${"⟦"+TY[r.escolhido.ty].l+"⟧"} é a variável dependente, função do valor unitário em R$/m²; `+r.vars.map((v,j)=>`⟦${txLabel(r.escolhido.tx[j],v.nome)}⟧ é a variável ${v.nome.toLowerCase()} (${v.un})`).join("; ")+`; os números são os coeficientes estimados por mínimos quadrados.`,`a equação explica o preço por metro quadrado a partir das características dos imóveis da amostra. O modelo explica ${pct(m.r2a,1)} da variação dos preços (R² ajustado).`);
-   table(["Regressor","Coeficiente","t","p-valor"],[["Intercepto",n2(m.b[0],6),n2(m.t[0],3),pct(m.pv[0],2)]].concat(r.vars.map((v,j)=>[txLabel(r.escolhido.tx[j],v.nome),n2(m.b[j+1],6),n2(m.t[j+1],3),m.pv[j+1]<1e-4?"< 0,01%":pct(m.pv[j+1],2)])),[4,2.2,1.6,2.2],{right:[1,2,3]});
-   table(["Indicador","Resultado"],[["Dados e variáveis",`n = ${r.n}; k = ${r.k}`],["R² / R² ajustado",`${n2(m.r2,4)} / ${n2(m.r2a,4)}`],["Teste F",`F = ${n2(m.F,2)}; p = ${m.pf<1e-6?"< 0,0001%":pct(m.pf,4)}`],["Normalidade dos resíduos",`${pct(r.norm.p1,0)} · ${pct(r.norm.p164,0)} · ${pct(r.norm.p196,0)}; KS D = ${n2(r.norm.D,4)}`],["Homocedasticidade",`Breusch–Pagan p = ${pct(r.bp.p,1)}`],["Multicolinearidade",`VIF máximo = ${n2(r.vifMax,2)}`],["Extrapolação",r.ext.length?r.ext.map(e=>e.v.nome).join(", "):"Não há"]],[3.5,6.5]);
+   table(["Regressor","Coeficiente","t","p-valor","Elasticidade"],[["Intercepto",n2(m.b[0],6),n2(m.t[0],3),pct(m.pv[0],2),"—"]].concat(r.vars.map((v,j)=>[txLabel(r.escolhido.tx[j],v.nome),n2(m.b[j+1],6),n2(m.t[j+1],3),m.pv[j+1]<1e-4?"< 0,01%":pct(m.pv[j+1],2),r.elast[j]!=null?n2(r.elast[j],3)+"%":"—"])),[3.4,2.1,1.4,1.8,1.7],{right:[1,2,3,4]});
+   para("A elasticidade indica quanto varia o valor unitário, em %, para 1% de variação de cada variável, no ponto de estimação do avaliando. Os sinais e as magnitudes são coerentes com o mercado (9.2.1.1 e 9.2.1.5 da NBR 14653-2).");
+   table(["Indicador","Resultado"],[["Dados e variáveis",`n = ${r.n}; k = ${r.k}`],["R² / R² ajustado",`${n2(m.r2,4)} / ${n2(m.r2a,4)}`],["Teste F",`F = ${n2(m.F,2)}; p = ${m.pf<1e-6?"< 0,0001%":pct(m.pf,4)}`],["Normalidade dos resíduos",`${pct(r.norm.p1,0)} · ${pct(r.norm.p164,0)} · ${pct(r.norm.p196,0)}; KS D = ${n2(r.norm.D,4)}`],["Homocedasticidade",`Breusch–Pagan p = ${pct(r.bp.p,1)}`],["Multicolinearidade",`VIF máximo = ${n2(r.vifMax,2)}; maior correlação entre variáveis independentes = ${n2(r.corrMax,2)}`],["Extrapolação",r.ext.length?r.ext.map(e=>`${e.v.nome} (variação de ${pct(e.dv,1)} na fronteira amostral)`).join(", ")+(r.ext.length>1?`; simultânea: ${pct(r.dvSim,1)}`:""):"Não há"]],[3.5,6.5]);
+   {const png=await graficoObsEstPng(r);if(png){H2("Preços observados e valores estimados");para("O gráfico confronta os preços observados (abscissa) com os valores estimados pelo modelo (ordenada). Pontos próximos da bissetriz indicam bom poder de predição (8.2.1.4.1 da NBR 14653-2).");
+    push(250,kn=>new Paragraph({alignment:AlignmentType.CENTER,keepNext:kn,keepLines:true,spacing:{after:120},children:[new ImageRun({type:"png",data:png,transformation:{width:560,height:300}})]}))}}
    formula("Valor = Vu × Área",`⟦Vu⟧ é o valor unitário estimado pelo modelo para o avaliando (${brl(r.vu)}/m²); ⟦Área⟧ é a área adotada (${n2(est.area)} m²).`,`multiplica-se o preço por metro quadrado previsto pelo modelo pela área do imóvel. O resultado é ${brl(est.central)}, com intervalo de 80% de ${brl(est.ic[0])} a ${brl(est.ic[1])}.`)}
   else callout("Modelo pendente",r.motivo,LD.NAVY)}
  else if(est.tipo==="evolutivo"){const e=est.e,v=a.evolutivo||{};
@@ -1497,12 +1562,13 @@ async function gerarLaudoDocx(a){
  H1("9. Especificação");
  table(["Item de fundamentação","Pontos"],fu.itens.map(i=>[i[0],String(i[1])]).concat([["Total · grau de fundamentação "+ROM(fu.grau),String(fu.pontos)]]),[8,2],{right:[1],totalRow:true});
  para(fu.obs);
- if(gp!=null)para(`Grau de precisão **${ROM(gp)}**: a amplitude do intervalo de confiança de 80% é de ${pct(est.amp)} (grau III até 30%, grau II até 40%, grau I até 50%).`);
+ if(gp)para(`Grau de precisão **${ROM(gp)}**: a amplitude do intervalo de confiança de 80% é de ${pct(est.amp)} (grau III até 30%, grau II até 40%, grau I até 50%).`);
+ else if(gp===0)para(`A amplitude do intervalo de confiança de 80% é de ${pct(est.amp)}, acima de 50%. Por isso não há classificação quanto à precisão (nota da Tabela 5 da NBR 14653-2). Justificativa: ${a.espec?.justPrecisao||"[pendente]"}`);
  else para("O grau de precisão não se aplica, pois o método empregado não é estatístico.");
  // ---------- 10. Resultado ----------
  H1("10. Resultado");
  const vf=num(a.resultado?.final),va=num(a.resultado?.adotado);
- table(["Etapa","Valor"],[["Estimativa central",brl(est.central)],...(TIPOS_IC.includes(est.tipo)?[["Intervalo de confiança de 80%",brl(est.ic[0])+" a "+brl(est.ic[1])]]:[]),["Campo de arbítrio (±"+pct(P.arbitrio,0)+")",brl(est.central*(1-P.arbitrio))+" a "+brl(est.central*(1+P.arbitrio))],["Valor adotado pelo perito",brl(va)],["Valor final arredondado",brl(vf)]],[5,5],{right:[1]});
+ table(["Etapa","Valor"],[["Estimativa central",brl(est.central)],...(TIPOS_IC.includes(est.tipo)?[["Intervalo de confiança de 80%",brl(est.ic[0])+" a "+brl(est.ic[1])]]:[]),["Campo de arbítrio (±"+pct(P.arbitrio,0)+")",brl(est.central*(1-P.arbitrio))+" a "+brl(est.central*(1+P.arbitrio))],...(()=>{const ia=intervaloAdmissivel(a,est);return ia?[["Intervalo de valores admissíveis"+(ia.arbitrado?" (valor arbitrado)":""),brl(ia.lo)+" a "+brl(ia.hi)]]:[]})(),["Valor adotado pelo perito",brl(va)],["Valor final arredondado",brl(vf)]],[5,5],{right:[1]});
  if(a.resultado?.justArbitrio)para("Justificativa do campo de arbítrio: "+a.resultado.justArbitrio);
  callout(OBJETIVOS[a.objetivo]||"Valor de mercado",[`**${brl(vf)}** (${extenso(vf)}).`,`Data de referência: ${fmtDate(a.dataRef)}.`]);
  // ---------- 11. Quesitos ----------
@@ -1513,7 +1579,7 @@ async function gerarLaudoDocx(a){
  // ---------- 12. Encerramento ----------
  H1("12. Encerramento");
  push(30,()=>new Paragraph({alignment:AlignmentType.JUSTIFIED,spacing:{after:120,line:280},keepNext:true,keepLines:true,children:[R("Este laudo contém "),new TextRun({children:[PageNumber.TOTAL_PAGES],font:LD.FONT,size:21,color:LD.TXT}),R(` páginas numeradas, com a capa e os anexos. Acompanha a ART nº ${a.emissao?.art||"[número]"}.`)]}));
- push(60,()=>new Paragraph({spacing:{before:240,after:600},keepNext:true,children:[R(`Brasília/DF, ${new Date().toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"})}.`)]}));
+ push(60,()=>new Paragraph({spacing:{before:240,after:600},keepNext:true,children:[R(`${a.emissao?.local||"Brasília/DF"}, ${new Date().toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"})}.`)]}));
  push(16,()=>new Paragraph({alignment:AlignmentType.CENTER,keepNext:true,border:{top:{style:BorderStyle.SINGLE,size:6,color:LD.TXT,space:4}},indent:{left:2200,right:2200},children:[R(per,{bold:true})]}));
  push(16,kn=>new Paragraph({alignment:AlignmentType.CENTER,keepNext:kn,children:[R([u.prof,u.registro].filter(Boolean).join(" · ")||"Perito judicial",{color:LD.GREY,size:19})]}));
  if(minuta)callout("Minuta","Documento gerado antes da emissão. Sem validade até a revisão integral, a emissão na plataforma e a assinatura do perito.",LD.NAVY);
@@ -1848,7 +1914,7 @@ function fMerc(a){const rural=a.segmento==="rural";const P=DB.params;const c=cal
  const cols=modo==="variaveis"?`<th>Preço (R$)</th><th>Área (m²)</th>${xv.map(v=>`<th title="${esc(v.un)}">${esc(v.nome)}</th>`).join("")}`:rural?`<th>Preço total (R$)</th><th>Área (ha)</th><th>Benfeitorias (R$)</th><th>NA do dado</th>`:`<th>Preço (R$)</th><th>Área (m²)</th>${P.fatores.map(f=>`<th title="${esc(f.nome)} — ${esc(f.fonte)}">${f.k}</th>`).join("")}`;
  const rows=(a.amostra||[]).map((d,i)=>{const r=motivos.get(d.id);const bad=!r.valido;const ip=(k,w=90,t="number")=>`<input class="inp ${t==="number"?"mono":""}" style="width:${w}px" type="${t}" ${t==="number"?'inputmode="decimal"':""} enterkeyhint="next" id="am-${i}-${k.replace('.','-')}" data-amostra="${i}.${k}" value="${esc(getP(d,k)??"")}" aria-label="${k} ${esc(d.ref)}">`;
   return `<tr class="${bad?"excl":""}"><td class="mono keep">${esc(d.ref)}</td><td class="ed keep"><select class="inp" style="min-width:118px" id="am-${i}-nat" data-amostra="${i}.natureza" aria-label="Natureza ${esc(d.ref)}"><option value="oferta" ${d.natureza==="oferta"?"selected":""}>Oferta</option><option value="transacao" ${d.natureza==="transacao"?"selected":""}>Transação</option></select></td>
-  <td class="ed keep">${ip("fonte",140,"text")}</td><td class="ed keep">${ip("data",130,"date")}</td><td class="ed keep">${ip("preco",110)}</td><td class="ed keep">${ip("area",76)}</td>
+  <td class="ed keep">${ip("fonte",140,"text")}</td><td class="ed keep">${ip("endereco",170,"text")}</td><td class="ed keep">${ip("data",130,"date")}</td><td class="ed keep">${ip("preco",110)}</td><td class="ed keep">${ip("area",76)}</td>
   ${modo==="variaveis"?xv.map(v=>`<td class="ed keep">${ip("x."+v.k,80)}</td>`).join(""):rural?`<td class="ed keep">${ip("benf",100)}</td><td class="ed keep">${ip("na",64)}</td>`:P.fatores.map(f=>`<td class="ed keep">${ip("f."+f.k,62)}</td>`).join("")}
   <td class="keep"><label class="check" title="Vetar dado"><input type="checkbox" id="am-${i}-vet" data-amostra="${i}.vetado" ${d.vetado?"checked":""}><span class="small">Vetar</span></label></td><td class="keep"><button class="btn ghost sm" data-action="del-dado" data-i="${i}" aria-label="Remover ${esc(d.ref)}">${ico("trash")}</button></td></tr>`}).join("");
  return `<div class="sect"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h3>Amostra de dados de mercado <span class="mono small muted">ALG-4.2 a 4.5 · R03</span></h3>
@@ -1856,7 +1922,7 @@ function fMerc(a){const rural=a.segmento==="rural";const P=DB.params;const c=cal
   <button class="btn sm primary" data-action="add-dado">${ico("plus")}Adicionar dado</button></div></div>
   ${rural?"":`<div style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Colunas da amostra"><button class="btn sm ${modo==="fatores"?"primary":""}" data-action="am-cols" data-v="fatores" aria-pressed="${modo==="fatores"}">Fatores (tratamento por fatores)</button><button class="btn sm ${modo==="variaveis"?"primary":""}" data-action="am-cols" data-v="variaveis" aria-pressed="${modo==="variaveis"}">Variáveis (inferência estatística)</button></div>`}
   <p class="hint" style="margin:0">${modo==="variaveis"?"Características de cada dado usadas na regressão. Área e natureza vêm das colunas próprias; escolha as variáveis do modelo na F6.":""} Fatores como razão avaliando/dado (1,00 = sem ajuste). Dados sem fonte, data ou preço ficam fora do cálculo automaticamente (R03). ${rural?"Benfeitorias do dado são deduzidas para obter o VTN.":"Fontes dos fatores em Parâmetros técnicos."}</p>
-  ${a.amostra?.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Dado</th><th>Natureza</th><th>Fonte</th><th>Data</th>${cols}<th></th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="empty">Nenhum dado na amostra. Adicione dados ou importe do banco de mercado.</div>`}
+  ${a.amostra?.length?`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Dado</th><th>Natureza</th><th>Fonte</th><th title="Endereço completo: exigido para o grau III">Endereço</th><th>Data</th>${cols}<th></th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="empty">Nenhum dado na amostra. Adicione dados ou importe do banco de mercado.</div>`}
   <div class="stats"><div><span>Dados informados</span><b>${a.amostra?.length||0}</b></div><div><span>Aptos ao cálculo</span><b>${c.rows.filter(r=>r.valido&&!r.d.vetado).length}</b></div><div><span>Após saneamento</span><b>${c.n}</b></div><div><span>Mínimo para grau II</span><b>5</b></div></div></div>
  <div class="sect"><h3>Diagnóstico de mercado <span class="mono small muted">ALG-4.6</span></h3><div class="grid3">
   ${fS(a,"mercado.liquidez","Liquidez",{alta:"Alta",normal:"Normal",baixa:"Baixa"},{blank:"Selecione"})}${fS(a,"mercado.desempenho","Desempenho",{aquecido:"Aquecido",normal:"Normal",recessivo:"Recessivo"},{blank:"Selecione"})}${fS(a,"mercado.absorcao","Absorção",{rapida:"Rápida",normal:"Normal",demorada:"Demorada"},{blank:"Selecione"})}</div>
@@ -1904,19 +1970,22 @@ function fCalc(a,est){const P=DB.params;
 function fEsp(a,est){const fu=fundamentacao(a);const gp=grauPrecisao(est.amp);const P=DB.params;const vc=num(a.espec?.verificacao);const dc=Number.isFinite(vc)&&est.central?Math.abs(vc-est.central)/est.central:NaN;
  const sel=(path,lab)=>fS(a,path,lab,{"1":"Grau I (1 ponto)","2":"Grau II (2 pontos)","3":"Grau III (3 pontos)"});
  return `<div class="sect"><h3>Grau de fundamentação <span class="mono small muted">ALG-7.1</span></h3>
- ${est.tipo==="evolutivo"?`<div class="grid3">${sel("espec.ev1","Valor do terreno")}${sel("espec.ev2","Custos de reedição")}${sel("espec.ev3","Fator de comercialização")}</div>`
+ ${est.tipo==="evolutivo"?`<div class="grid3">${sel("espec.ev1","Item 1 — Valor do terreno")}${grauQC(a.espec||{})?`<div class="field"><span class="lbl">Item 2 — Custos de reedição</span><div class="formula">Grau ${ROM(grauQC(a.espec||{}))} pela Tabela 7</div></div>`:sel("espec.ev2","Item 2 — Custos de reedição")}${sel("espec.ev3","Item 3 — Fator de comercialização")}</div>
+  <p class="hint" style="margin:6px 0 0">Item 2 pela quantificação de custo (Tabelas 6 e 7 da NBR 14653-2). Preencha os três itens para o cálculo automático:</p>
+  <div class="grid3">${QC_IT.map((t,i)=>sel("espec.qc"+(i+1),t)).join("")}</div>`
   :est.tipo==="involutivo"?`<div class="grid3">${INV_IT.map((t,i)=>INV_AUTO[i]?"":sel("espec.inv"+i,t)).join("")}</div>`
-  :est.tipo==="renda"?`<div class="grid3">${REN_IT.map((t,i)=>sel("espec.ren"+i,t)).join("")}</div>`
+  :est.tipo==="renda"?`${fC(a,"renda.emOperacao","Empreendimento em operação (habilita o item das séries históricas)")}<div class="grid3">${REN_IT.map((t,i)=>i===REN_NA&&!a.renda?.emOperacao?"":sel("espec.ren"+i,t)).join("")}</div>`
   :`<div class="grid2">${sel("espec.i1","Item 1 — Caracterização do avaliando")}${sel("espec.i3","Item 3 — Identificação dos dados")}</div>`}
  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Item</th><th class="num">Pontos</th><th>Origem</th></tr></thead><tbody>${fu.itens.map((i,k)=>`<tr><td>${esc(i[0])}</td><td class="num">${i[1]}</td><td class="small muted">${(fu.auto||[]).includes(k)?"Calculado pela plataforma":"Decisão do perito"}</td></tr>`).join("")}<tr><td><b>Total e enquadramento</b></td><td class="num"><b>${fu.pontos}</b></td><td><span class="chip ${fu.grau>=(num(a.grauMin)||1)?"ok":"bad"}">Grau ${ROM(fu.grau)}</span></td></tr></tbody></table></div>
  <p class="hint" style="margin:0">${esc(fu.obs)}</p></div>
  ${TIPOS_IC.includes(est.tipo)?`<div class="sect"><h3>Grau de precisão <span class="mono small muted">ALG-7.2 · R09</span></h3><div class="stats"><div><span>Amplitude do IC80%</span><b>${pct(est.amp)}</b></div><div><span>Grau III</span><b>≤ 30%</b></div><div><span>Grau II</span><b>≤ 40%</b></div><div><span>Grau I</span><b>≤ 50%</b></div></div>
- <div class="${gp?"okmsg":"badmsg"}">${gp?"Precisão enquadrada no grau "+ROM(gp)+".":"Amplitude acima de 50%: a emissão fica bloqueada até ampliar ou depurar a amostra."}</div></div>`:""}
+ <div class="${gp?"okmsg":"badmsg"}">${gp?"Precisão enquadrada no grau "+ROM(gp)+".":"Amplitude acima de 50%: não há classificação quanto à precisão. Amplie a amostra ou justifique com base no diagnóstico do mercado (nota da Tabela 5 da NBR 14653-2)."}</div>
+ ${gp===0?fT(a,"espec.justPrecisao","Justificativa da amplitude acima de 50% (diagnóstico do mercado)"):""}</div>`:""}
  <div class="sect"><h3>Conciliação com o método de verificação <span class="mono small muted">ALG-7.3</span></h3><div class="grid2">${fI(a,"espec.verificacao","Valor pelo método de verificação (R$)",{type:"number",hint:a.metodo?.verificacao?esc(a.metodo.verificacao):"Opcional"})}<div class="field"><span class="lbl">Divergência</span><div class="formula">${Number.isFinite(dc)?pct(dc)+" (tolerância "+pct(P.tolConc,0)+")":"—"}</div></div></div>
  ${Number.isFinite(dc)&&dc>P.tolConc?fT(a,"espec.concJust","Análise das causas da divergência (ALG-7.4)"):""}</div>`}
 function fRes(a,est){const P=DB.params;const va=num(a.resultado?.adotado),vf=num(a.resultado?.final);const lo=est.central*(1-P.arbitrio),hi=est.central*(1+P.arbitrio);
  const dev=Number.isFinite(va)?(va-est.central)/est.central:NaN;const ar=Number.isFinite(vf)&&Number.isFinite(va)?Math.abs(vf-va)/va:NaN;
- return `<div class="sect"><h3>Painel de resultado <span class="mono small muted">ALG-8.1</span></h3><div class="stats"><div><span>Estimativa central</span><b>${brl(est.central)}</b></div><div><span>IC80% inferior</span><b>${brl(est.ic[0])}</b></div><div><span>IC80% superior</span><b>${brl(est.ic[1])}</b></div><div><span>Campo de arbítrio ±${pct(P.arbitrio,0)}</span><b>${brl(lo)} a ${brl(hi)}</b></div></div></div>
+ return `<div class="sect"><h3>Painel de resultado <span class="mono small muted">ALG-8.1</span></h3><div class="stats"><div><span>Estimativa central</span><b>${brl(est.central)}</b></div><div><span>IC80% inferior</span><b>${brl(est.ic[0])}</b></div><div><span>IC80% superior</span><b>${brl(est.ic[1])}</b></div><div><span>Campo de arbítrio ±${pct(P.arbitrio,0)}</span><b>${brl(lo)} a ${brl(hi)}</b></div>${(()=>{const ia=intervaloAdmissivel(a,est);return ia?`<div><span>Valores admissíveis${ia.arbitrado?" (valor arbitrado)":""}</span><b>${brl(ia.lo)} a ${brl(ia.hi)}</b></div>`:""})()}</div></div>
  <div class="sect"><div class="grid2">${fI(a,"resultado.adotado","Valor adotado pelo perito (R$)",{type:"number",step:"0.01",hint:Number.isFinite(dev)?`Desvio de ${pct(dev)} em relação à estimativa central`:"Use a estimativa central ou fixe outro valor no campo de arbítrio"})}
  ${fI(a,"resultado.final","Valor final arredondado (R$)",{type:"number",step:"0.01",hint:Number.isFinite(ar)?`Arredondamento de ${pct(ar,2)} (máximo ${pct(P.arred,0)})`:""})}</div>
  <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" data-action="usar-central">Usar estimativa central</button><div class="dd"><button class="btn sm" data-dd="arred" aria-haspopup="menu" aria-expanded="false">Arredondar${ico("chev")}</button><div class="dd-menu left" id="dd-arred" role="menu" hidden>${[1000,5000,10000,50000].map(s=>`<button role="menuitem" data-action="arred" data-s="${s}">Para múltiplo de ${brl(s).replace(",00","")}</button>`).join("")}</div></div></div>
@@ -1932,7 +2001,7 @@ function fQues(a){const q=a.quesitos||[];const JUR="Matéria de natureza jurídi
 function fEmi(a,est){const ck=a.emissao?.check||{};const G=gates(a);const pend=G.filter(g=>!g.ok&&g.fase<10);
  return `<div class="sect"><h3>Checklist de conformidade <span class="mono small muted">ALG-10.2 · item 31</span></h3>
  ${CHECK_ITEMS.map(i=>`<label class="check"><input type="checkbox" data-bind="emissao.check.${i.k}" id="ck-${i.k}" ${ck[i.k]?"checked":""}><span><span class="muted small">${esc(i.b)}</span> · ${esc(i.t)}</span></label>`).join("")}</div>
- <div class="sect"><h3>Responsabilidade técnica <span class="mono small muted">ALG-10.3</span></h3><div class="grid2">${fI(a,"emissao.art","Número da ART",{mono:true})}${fI(a,"emissao.perito","Perito responsável",{ph:"Nome e registro no CREA/CAU"})}</div>
+ <div class="sect"><h3>Responsabilidade técnica <span class="mono small muted">ALG-10.3</span></h3><div class="grid2">${fI(a,"emissao.art","Número da ART",{mono:true})}${fI(a,"emissao.perito","Perito responsável",{ph:"Nome e registro no CREA/CAU"})}${fI(a,"emissao.local","Local de emissão do laudo",{ph:"Cidade/UF (padrão: Brasília/DF)"})}</div>
  ${fC(a,"emissao.assinado","Revisei integralmente a minuta e assino o laudo")}</div>`}
 function fEmiAcoes(a,est){const G=gates(a);const pend=G.filter(g=>!g.ok&&g.fase<10);
  return `<div class="sect"><h3>Minuta do laudo</h3><div class="minuta">${minuta(a,est)}</div>

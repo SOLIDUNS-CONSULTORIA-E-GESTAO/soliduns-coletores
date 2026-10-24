@@ -1,0 +1,14 @@
+<style id="v107-justificado">
+/* ===== v107 — PADRONIZAÇÃO TIPOGRÁFICA: TEXTO JUSTIFICADO (patch107lei) =====
+   Camada de prioridade mínima: só vale onde o site não definiu alinhamento próprio. */
+@layer v107-justificado {
+  body{text-align:justify; text-justify:inter-word; -webkit-hyphens:auto; hyphens:auto;
+       hyphenate-limit-chars:6 3 2; overflow-wrap:break-word;}
+  :where(h1,h2,h3,h4,h5,h6,td,label,nav,code,pre,kbd,[class*="badge"],[class*="selo"],[class*="chip"],[class*="pill"],[class*="etiqueta"],[class*="tag"],[class*="kpi"],header,.page-head,[class*="breadcrumb"],[class*="nome"],[class*="sigla"],[class*="entidade"],[class*="label"],[class*="titulo"],[class*="title"]){text-align:var(--v107-alin, start);}
+  :where(h1,h2,h3,h4,h5,h6,td,label,nav,code,pre,kbd,[class*="badge"],[class*="selo"],[class*="chip"],[class*="pill"],[class*="etiqueta"],[class*="tag"],[class*="kpi"],header,.page-head,[class*="breadcrumb"],[class*="nome"],[class*="sigla"],[class*="entidade"],[class*="label"],[class*="titulo"],[class*="title"],th,caption,button,input,select,textarea,option,[role="button"],.btn){-webkit-hyphens:manual; hyphens:manual;}
+  @media (max-width:640px){
+    body{word-spacing:normal; letter-spacing:normal;}
+    :where(p, li, dd, blockquote){overflow-wrap:anywhere;}
+  }
+}
+</style>

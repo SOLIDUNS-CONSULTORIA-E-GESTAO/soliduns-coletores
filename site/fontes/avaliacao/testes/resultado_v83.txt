@@ -1,0 +1,265 @@
+=== SQL 160 (PGlite, 2x) ===
+OK    Sem tem_area: SQL recusa com mensagem clara
+OK    Sem tem_area: nada gravado
+OK    Conferência do próprio SQL: todas ok
+OK    Dono grava avaliação (dono preenchido sozinho)
+OK    Perito só vê as próprias avaliações
+OK    Não grava em nome de outro
+OK    Não altera avaliação de outro (0 linhas)
+OK    Não apaga avaliação de outro (0 linhas)
+OK    Dono não muda o dono
+OK    Pendente na fila não lê nem grava
+OK    Aprovado sem a área no plano não grava
+OK    Plano que libera tudo grava
+OK    Visitante não lê
+OK    Administrador do sistema lê todas
+OK    Administrador ajusta avaliação de perito (suporte), dono preservado
+OK    Perito cria o próprio perfil
+OK    Não cria perfil de outro
+OK    Não vê perfil de outro
+OK    Administrador vê os perfis
+OK    Parâmetros e mercado por perito
+OK    Trilha: inclui o próprio evento
+OK    Trilha: ninguém altera
+OK    Trilha: ninguém apaga
+OK    Trilha: não registra em nome de outro
+OK    Trilha: usuário e papel carimbados pelo servidor
+OK    Trilha forjada: usuário, papel e data corrigidos pelo servidor
+OK    Id com código escondido é recusado (avaliação)
+OK    Id com código escondido é recusado (mercado e trilha)
+OK    Documento acima de 5 MB é recusado
+OK    Pasta aval-anexos aceita só imagens, PDF e Word
+OK    Trilha: administrador lê todas
+OK    Foto na própria pasta
+OK    Foto na pasta de outro: recusada
+OK    Outro perito não vê a foto
+OK    Administrador vê a foto
+OK    Pendente não envia foto
+OK    Perito apaga o próprio perfil
+OK    Perito não apaga perfil de outro (0 linhas)
+OK    Perito bloqueado na fila perde o acesso na hora
+OK    Conta excluída: avaliações, perfil e trilha saem junto
+OK    Pastas órfãs: perito comum não consulta
+OK    Pastas órfãs: arquivo recente (menos de 24 h) não entra
+OK    Pastas órfãs: só a pasta da conta excluída, com a contagem certa
+OK    Planos com lista fixa (text[]): área nova passa a ser aceita
+OK    Planos (text[]): a conferência não grava nada no plano
+OK    Planos com lista fixa (jsonb): área nova passa a ser aceita
+OK    Planos (jsonb): a conferência não grava nada no plano
+OK    Lista de áreas em formato desconhecido: SQL para e nada é gravado
+SQL 160: 48/48
+SQL 160: 48/48
+=== SQL 160 com CRLF ===
+SQL 160: 48/48
+=== t_nbr.py (regras da NBR 14653) ===
+OK    Tabela 2: 16 pontos com itens 2, 4, 5 e 6 no grau III = grau III
+OK    Tabela 2: item 2 no grau II derruba para o grau II
+OK    Tabela 2: 6 pontos, todos no grau I = grau I
+OK    Tabela 2: item obrigatório não atendido = sem enquadramento
+OK    Tabela 2: 10 pontos com obrigatórios no grau II = grau II
+OK    B.3: saneamento retira um dado por vez (o 70 volta depois que o 250 sai)
+OK    B.2.2: dado com fator isolado acima de 2,00 é excluído
+OK    Tabela 3: com menos de 5 dados, conjunto fora de 0,80–1,25 não pontua (nota a)
+OK    Tabela 3: conjunto 1,30 com 5 dados = grau II no item 4
+OK    Tabela 3: conjunto 2,30 com 5 dados = grau I no item 4
+OK    Tabela 3: conjunto 1,10 = grau III no item 4
+OK    Tabela 4: 12 dados, fatores em 0,80–1,25 e itens 1 e 3 no grau III = grau III
+OK    9.2.2.1: sem endereço completo dos dados, o grau III cai para o II
+OK    9.2.2.1: valor adotado diferente da estimativa central derruba o grau III
+OK    Tabela 7: item 1 no III e demais no II (7 pontos) = grau III
+OK    Tabela 7: 5 pontos, itens 1 e 2 no II = grau II
+OK    Tabela 7: todos no I = grau I
+OK    Tabela 7: BDI arbitrado impede o grau II mesmo com 7 pontos
+OK    Tabela 7: sem preenchimento, o item 2 continua manual
+OK    Tabela 11: itens 1 e 2 no III e item 3 no II = grau III
+OK    Tabela 11: item 2 no grau II limita ao grau II
+OK    Tabela 11: 5 pontos com itens 1 e 2 no II = grau II
+OK    Tabela 11: 3 pontos = grau I
+OK    Tabela 11: item 3 no grau I impede o grau III
+OK    9.5.2.1: terreno com menos de 15% do total recebe 2 pontos
+OK    Tabela 9: 26 pontos, itens 2, 6, 7 e 8 no III, demais no II = grau III
+OK    Tabela 9: item 2 no grau II limita ao grau II
+OK    Tabela 9: 9 pontos = grau I
+OK    Tabela 9: 20 pontos = grau II
+OK    Parte 4, Tabela 5: 25 pontos e 2 itens abaixo do III = grau III
+OK    Parte 4, Tabela 5: dois itens no grau I impedem o grau III
+OK    Parte 4: séries históricas não se aplicam fora de operação (8 itens)
+OK    Parte 4, Tabela 5: 8 itens no grau I = grau I
+OK    A.10.1.1: valores admissíveis = IC80% ∩ campo de arbítrio (85 a 115)
+OK    A.10.1.2: valor arbitrado desloca o IC e respeita o campo de arbítrio (90 a 115)
+OK    Tabela 5: 30% = III, 40% = II, 50% = I, acima de 50% sem grau
+
+NBR TOTAL 36 OK 36 FALHAS 0
+=== t83ava.py desktop ===
+OK    Áreas existentes abrem sem erro novo (logado)
+OK    Módulo não é carregado nas outras áreas
+OK    Botão Sair da plataforma funciona sem o módulo aberto
+OK    Plataforma entra com a sessão da perita
+OK    Card "Avaliação de imóveis" no hub de Investimentos
+OK    Card sem selo de plano para quem tem a área
+OK    Quadro não carrega antes de abrir o painel
+OK    Endereço vira #/avaliacao-imoveis
+OK    Título da aba
+OK    Módulo abre no painel, sem tela de login própria
+OK    Módulo usa a sessão da plataforma
+OK    Sem acesso livre de administrador no módulo
+OK    Exemplos criados no primeiro acesso
+OK    Gravação no banco da plataforma (aval_avaliacoes)
+OK    Perfil do perito criado com nome e e-mail da plataforma
+OK    Visual da plataforma (fundo preto, dourado)
+OK    Sem rolagem lateral dentro do quadro
+OK    Quadro ocupa a tela
+OK    Nova avaliação criada no módulo
+OK    Fotos enviadas para a pasta aval-anexos do perito
+OK    Perfil do perito sem formulário de senha (é da plataforma)
+OK    Registro profissional salvo no banco
+OK    Botão "Abrir Minha conta" abre a conta da plataforma
+OK    Depois de fechar Minha conta, o módulo continua na tela
+OK    Laudo em Word baixado de dentro da plataforma
+OK    Auditoria de rotas do módulo aprovada
+OK    Apelido #/laudos leva ao módulo
+OK    avaliacao.html aberto sozinho volta para a plataforma
+OK    Módulo reabre após recarregar a página
+OK    Sair da plataforma encerra a sessão
+OK    Sair limpa as avaliações guardadas no aparelho
+OK    Sair apaga as fotos guardadas no aparelho
+OK    Quadro do módulo fechado
+OK    Outro perito abre o módulo no mesmo navegador
+OK    Não vê nada da perita anterior
+OK    Banco nega as avaliações da perita para outro perito
+OK    Arquivos da perita negados para outro perito
+OK    Plano sem a área: o módulo fecha e explica
+OK    Card com selo "Planos pagos" para quem não tem a área
+OK    Sem a área: tela de plano da plataforma, módulo não carrega
+OK    Servidor também recusa quem não tem a área
+OK    Administrador do sistema abre o módulo (sem a área no plano)
+OK    Administrador vê os peritos
+OK    Sem plano/bloqueio no módulo (ficam na Equipe da plataforma)
+OK    Administrador vê a área da perita (suporte)
+OK    Cópia de segurança (.zip) do administrador com dados e fotos da nuvem
+OK    Leilão abre o módulo com avaliação já preenchida (módulo ainda fechado)
+OK    Origem do leilão registrada (edital e lance) e campo desconhecido ignorado
+OK    Aviso de origem na fase F1
+OK    Avaliação do leilão gravada no banco
+OK    Segundo pedido com o módulo aberto: imóvel rural
+OK    Pedido de quem não tem a área: tela de plano, nada criado
+OK    Privacidade e Termos citam o módulo (fotos com GPS, responsabilidade do profissional)
+OK    C1: banco recusa id com código escondido
+OK    C1: avaliação maliciosa de teste gravada pelo perito (id válido)
+OK    C1: nenhum código injetado roda nas telas do administrador
+OK    C1: ids inválidos dentro da avaliação são trocados ao carregar
+OK    Cópia do administrador leva o banco de mercado e os parâmetros de todos os peritos
+OK    M4: toda a trilha da perita tem o e-mail e o papel carimbados pelo servidor
+OK    M5: foto da conta que será excluída está no Storage
+OK    A-N1: arquivo de conta excluída enviado há menos de 24 h não é apontado
+OK    A-N1: antes de apagar, o módulo pede confirmação com a contagem
+OK    M-N5: caminho de arquivo fora da pasta da própria avaliação é descartado
+OK    M5: "Limpar arquivos de contas excluídas" apaga só as fotos da conta excluída
+OK    A1: sem internet a alteração fica guardada no aparelho
+OK    A1: ao reabrir com internet, o trabalho feito sem sinal sobe antes de baixar
+OK    A1: a foto tirada sem sinal chegou ao Storage
+OK    M3: edição do aparelho 2 não apaga a foto enviada pelo aparelho 1
+OK    M3: o aparelho 2 avisa que combinou as alterações
+OK    M2: duplo clique em Sair ainda limpa o módulo e sai
+OK    M1: Sair pelo aviso de CPF também passa pelo módulo
+OK    Arquivo que não é PDF, Word ou imagem é recusado
+OK    Storage recusa página HTML enviada direto pela API
+OK    Apagar meus dados: avaliações, mercado, perfil e arquivos do perito saem do servidor
+OK    Apagar meus dados: tela de confirmação
+OK    Sem erros inesperados no servidor
+OK    Sem erros de JavaScript do módulo
+Outros erros da página (fora do módulo): 0 []
+
+desktop AVA TOTAL 77 OK 77 FALHAS 0
+=== t83ava.py mobile ===
+OK    Áreas existentes abrem sem erro novo (logado)
+OK    Módulo não é carregado nas outras áreas
+OK    Botão Sair da plataforma funciona sem o módulo aberto
+OK    Plataforma entra com a sessão da perita
+OK    Card "Avaliação de imóveis" no hub de Investimentos
+OK    Card sem selo de plano para quem tem a área
+OK    Quadro não carrega antes de abrir o painel
+OK    Endereço vira #/avaliacao-imoveis
+OK    Título da aba
+OK    Módulo abre no painel, sem tela de login própria
+OK    Módulo usa a sessão da plataforma
+OK    Sem acesso livre de administrador no módulo
+OK    Exemplos criados no primeiro acesso
+OK    Gravação no banco da plataforma (aval_avaliacoes)
+OK    Perfil do perito criado com nome e e-mail da plataforma
+OK    Visual da plataforma (fundo preto, dourado)
+OK    Sem rolagem lateral dentro do quadro
+OK    Quadro ocupa a tela
+OK    Nova avaliação criada no módulo
+OK    Fotos enviadas para a pasta aval-anexos do perito
+OK    Perfil do perito sem formulário de senha (é da plataforma)
+OK    Registro profissional salvo no banco
+OK    Botão "Abrir Minha conta" abre a conta da plataforma
+OK    Depois de fechar Minha conta, o módulo continua na tela
+OK    Laudo em Word baixado de dentro da plataforma
+OK    Auditoria de rotas do módulo aprovada
+OK    Apelido #/laudos leva ao módulo
+OK    avaliacao.html aberto sozinho volta para a plataforma
+OK    Módulo reabre após recarregar a página
+OK    Sair da plataforma encerra a sessão
+OK    Sair limpa as avaliações guardadas no aparelho
+OK    Sair apaga as fotos guardadas no aparelho
+OK    Quadro do módulo fechado
+OK    Outro perito abre o módulo no mesmo navegador
+OK    Não vê nada da perita anterior
+OK    Banco nega as avaliações da perita para outro perito
+OK    Arquivos da perita negados para outro perito
+OK    Plano sem a área: o módulo fecha e explica
+OK    Card com selo "Planos pagos" para quem não tem a área
+OK    Sem a área: tela de plano da plataforma, módulo não carrega
+OK    Servidor também recusa quem não tem a área
+OK    Administrador do sistema abre o módulo (sem a área no plano)
+OK    Administrador vê os peritos
+OK    Sem plano/bloqueio no módulo (ficam na Equipe da plataforma)
+OK    Administrador vê a área da perita (suporte)
+OK    Cópia de segurança (.zip) do administrador com dados e fotos da nuvem
+OK    Leilão abre o módulo com avaliação já preenchida (módulo ainda fechado)
+OK    Origem do leilão registrada (edital e lance) e campo desconhecido ignorado
+OK    Aviso de origem na fase F1
+OK    Avaliação do leilão gravada no banco
+OK    Segundo pedido com o módulo aberto: imóvel rural
+OK    Pedido de quem não tem a área: tela de plano, nada criado
+OK    Privacidade e Termos citam o módulo (fotos com GPS, responsabilidade do profissional)
+OK    C1: banco recusa id com código escondido
+OK    C1: avaliação maliciosa de teste gravada pelo perito (id válido)
+OK    C1: nenhum código injetado roda nas telas do administrador
+OK    C1: ids inválidos dentro da avaliação são trocados ao carregar
+OK    Cópia do administrador leva o banco de mercado e os parâmetros de todos os peritos
+OK    M4: toda a trilha da perita tem o e-mail e o papel carimbados pelo servidor
+OK    M5: foto da conta que será excluída está no Storage
+OK    A-N1: arquivo de conta excluída enviado há menos de 24 h não é apontado
+OK    A-N1: antes de apagar, o módulo pede confirmação com a contagem
+OK    M-N5: caminho de arquivo fora da pasta da própria avaliação é descartado
+OK    M5: "Limpar arquivos de contas excluídas" apaga só as fotos da conta excluída
+OK    A1: sem internet a alteração fica guardada no aparelho
+OK    A1: ao reabrir com internet, o trabalho feito sem sinal sobe antes de baixar
+OK    A1: a foto tirada sem sinal chegou ao Storage
+OK    M3: edição do aparelho 2 não apaga a foto enviada pelo aparelho 1
+OK    M3: o aparelho 2 avisa que combinou as alterações
+OK    M2: duplo clique em Sair ainda limpa o módulo e sai
+OK    M1: Sair pelo aviso de CPF também passa pelo módulo
+OK    Arquivo que não é PDF, Word ou imagem é recusado
+OK    Storage recusa página HTML enviada direto pela API
+OK    Apagar meus dados: avaliações, mercado, perfil e arquivos do perito saem do servidor
+OK    Apagar meus dados: tela de confirmação
+OK    Sem erros inesperados no servidor
+OK    Sem erros de JavaScript do módulo
+Outros erros da página (fora do módulo): 0 []
+
+mobile AVA TOTAL 77 OK 77 FALHAS 0
+=== varredura83.py ===
+RESULTADO: TUDO OK
+=== versão avulsa (10/10, após a conferência com a NBR) ===
+desktop TOTAL 492 OK 492 FALHAS 0
+mobile TOTAL 499 OK 499 FALHAS 0
+desktop NUVEM TOTAL 89 OK 89 FALHAS 0
+=== md5 do 1_DEPLOY ===
+2a93cf67fff77146f93a64a76f8b5ed6  index.html
+1d00cd6f793a60ff2b05621e4bc0e9c7  avaliacao.html
+e869ed1e64a4e90a0e2a853db6cb094e  privacidade.html
+5e133240df4a2780cc0553ee1eb7253e  termos.html
