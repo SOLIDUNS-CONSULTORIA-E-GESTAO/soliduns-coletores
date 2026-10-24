@@ -1,0 +1,46 @@
+# SOLIDUNS — COPIA A ÚLTIMA LISTA DO ALVOS SOLIDUNS (24/10/2026). Só leitura. Só roda à mão.
+# Serve para gerar o PDF de exemplo do botão "Baixar PDF / imprimir" (v178) com as empresas reais.
+# Grava alvos.json num rascunho de release (não aparece no site nem para ninguém fora do repositório).
+name: Pesquisa - lista do Alvos (exemplo do PDF)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  copiar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Ler a última execução e as ações (sem a série de preços)
+        env:
+          U: ${{ secrets.SUPABASE_URL }}
+          K: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          H1="apikey: $K"; H2="Authorization: Bearer $K"
+          mkdir -p saida
+          curl -sf -H "$H1" -H "$H2" "$U/rest/v1/alvos_execucoes?select=*&order=data_referencia.desc,executado_em.desc&limit=1" > saida/execucao.json
+          ID=$(python3 -c "import json;print(json.load(open('saida/execucao.json'))[0]['id'])")
+          COLS="posicao,ticker,empresa,setor,grupo,preco,ent_ideal,ent_max,stop,alvo1,alvo2_d,alvo2_n,ganho_d,ganho_d_atual,ganho_n,rr_d,rr_n,alertas,limpa,origem_choque"
+          curl -sf -H "$H1" -H "$H2" "$U/rest/v1/alvos_acoes?select=$COLS&execucao_id=eq.$ID&order=posicao.asc" > saida/acoes.json
+          python3 - <<'P'
+          import json
+          e = json.load(open('saida/execucao.json'))[0]; a = json.load(open('saida/acoes.json'))
+          p = e.get('parametros') or {}
+          d = {'admin': True, 'previa': not e['publicado'], 'ultima_publicada': None,
+               'execucao': {k: e.get(k) for k in ('id', 'data_referencia', 'resultado', 'executado_em', 'p_d', 'cds_pb', 'cds_d_pb', 'cds_e_pb', 'n_acoes', 'publicado', 'publicado_em')}
+                           | {'candidato_d': p.get('candidato_d'), 'candidato_e': p.get('candidato_e'), 'ganho_destaque': p.get('ganho_destaque', 0.20), 'avisos': []},
+               'acoes': a}
+          json.dump(d, open('saida/alvos.json', 'w'), ensure_ascii=False)
+          print(f"::notice::execução {e['id']} de {e['data_referencia']}: {len(a)} ações")
+          P
+      - name: Guardar no rascunho de release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release view pesquisa-alvos >/dev/null 2>&1 || \
+            gh release create pesquisa-alvos --draft --title "Pesquisa — lista do Alvos" --notes "Cópia da última lista do Alvos SOLIDUNS para o PDF de exemplo."
+          gh release upload pesquisa-alvos saida/alvos.json --clobber
