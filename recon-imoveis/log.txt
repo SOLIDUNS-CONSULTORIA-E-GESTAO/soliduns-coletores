@@ -1,0 +1,239 @@
+SOLIDUNS — Imóveis dos leiloeiros (rede ampliada) v1.3 — GRAVANDO
+92 leiloeiro(s) nesta rodada
+2026-10-24 12:07:31,171 ERROR BLOQUEADO Fidalgo Leilões: captcha/403
+2026-10-24 12:07:31,511 ERROR BLOQUEADO Vianna Leilões: captcha/403
+2026-10-24 12:07:31,816 ERROR BLOQUEADO Lance no Leilão: captcha/403
+2026-10-24 12:07:32,272 ERROR BLOQUEADO Lance Judicial: captcha/403
+2026-10-24 12:07:32,877 INFO OK Sold Leilões: 0 lotes
+  Sold Leilões: 0 imóvel(is)
+  Lance Judicial: 0 imóvel(is); ERRO: bloqueado: captcha/403
+2026-10-24 12:07:33,815 INFO OK Frazão Leilões: 11 lotes
+2026-10-24 12:07:34,592 INFO OK Kronberg Leilões: 0 lotes
+2026-10-24 12:07:51,849 WARNING tentativa 1/3 https://www.mazzollinileiloes.com.br: HTTPSConnectionPool(host='www.mazzollinileiloes.com.br', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='www.mazzollinileiloes.com.br', port=443): Failed to resolve 'www.mazzollinileiloes.com.br' ([Errno -2] Name or service not known)")) (aguarda 2.9s)
+2026-10-24 12:07:52,063 ERROR BLOQUEADO LEJE Leilões Judiciais Eletrônicos: captcha/403
+2026-10-24 12:07:52,817 INFO OK Canal Judicial: 0 lotes
+2026-10-24 12:07:54,096 ERROR BLOQUEADO Daniel Garcia Leilões: captcha/403
+2026-10-24 12:07:54,172 INFO OK Damiani Leilões: 0 lotes
+2026-10-24 12:07:57,062 INFO OK Palácio dos Leilões: 0 lotes
+2026-10-24 12:08:11,853 WARNING tentativa 2/3 https://www.mazzollinileiloes.com.br: HTTPSConnectionPool(host='www.mazzollinileiloes.com.br', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='www.mazzollinileiloes.com.br', port=443): Failed to resolve 'www.mazzollinileiloes.com.br' ([Errno -2] Name or service not known)")) (aguarda 5.1s)
+2026-10-24 12:08:12,339 ERROR BLOQUEADO Milan Leilões: captcha/403
+2026-10-24 12:08:14,792 ERROR BLOQUEADO Adyel Marques De Paula: captcha
+2026-10-24 12:08:15,772 INFO OK Alan Machado Ribeiro Leiloeiro: 0 lotes
+2026-10-24 12:08:21,993 INFO OK Sato Leilões: 0 lotes
+2026-10-24 12:08:31,862 WARNING tentativa 3/3 https://www.mazzollinileiloes.com.br: HTTPSConnectionPool(host='www.mazzollinileiloes.com.br', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='www.mazzollinileiloes.com.br', port=443): Failed to resolve 'www.mazzollinileiloes.com.br' ([Errno -2] Name or service not known)")) (aguarda 9.1s)
+2026-10-24 12:08:36,082 INFO OK Alessandro Fahrion Pinto: 4 lotes
+2026-10-24 12:08:36,460 INFO OK Alex Vieira Passos: 0 lotes
+2026-10-24 12:08:37,457 INFO OK Alexandre Augusto Dos Santos Sabbag: 3 lotes
+2026-10-24 12:08:40,956 ERROR ERRO Mazzollini Leilões: falhou após 3 tentativas: https://www.mazzollinileiloes.com.br
+2026-10-24 12:09:01,168 INFO OK Anderson Lopes De Paula: 0 lotes
+2026-10-24 12:09:01,777 INFO OK Andressa Sedrez Terres Tonial Ferreira: 3 lotes
+2026-10-24 12:09:23,562 INFO OK Antonio Carlos Celso Santos Frazão: 0 lotes
+2026-10-24 12:09:31,743 WARNING tentativa 1/3 https://ww19.abpleiloes.com: HTTPSConnectionPool(host='ww19.abpleiloes.com', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='ww19.abpleiloes.com', port=443) at 0x7fd9142beb40>, 'Connection to ww19.abpleiloes.com timed out. (connect timeout=25)')) (aguarda 2.6s)
+2026-10-24 12:09:37,575 WARNING tentativa 2/3 https://ww19.abpleiloes.com: HTTPSConnectionPool(host='ww19.abpleiloes.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1010)'))) (aguarda 4.2s)
+2026-10-24 12:09:45,700 INFO OK Antonio Ferreira Leiloeiro: 0 lotes
+2026-10-24 12:10:05,498 INFO OK AlienaJud (Mauro da Cruz): 0 lotes
+2026-10-24 12:10:06,209 INFO OK Antonio Jose da Silva Filho: 0 lotes
+2026-10-24 12:10:16,085 WARNING tentativa 3/3 https://ww19.abpleiloes.com: HTTPSConnectionPool(host='ww19.abpleiloes.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1010)'))) (aguarda 8.2s)
+2026-10-24 12:10:24,321 ERROR ERRO Anderson Binotti Dos Passos: falhou após 3 tentativas: https://ww19.abpleiloes.com
+2026-10-24 12:10:35,157 INFO OK Biasi Leilões: 3 lotes
+  Biasi Leilões: 0 imóvel(is); descartados {'sem preço': 3}
+  Fidalgo Leilões: 0 imóvel(is); ERRO: bloqueado: captcha/403
+  Frazão Leilões: 0 imóvel(is); descartados {'sem UF/cidade': 11}
+  Lance no Leilão: 0 imóvel(is); ERRO: bloqueado: captcha/403
+  Kronberg Leilões: 0 imóvel(is)
+  Vianna Leilões: 0 imóvel(is); ERRO: bloqueado: captcha/403
+  Canal Judicial: 0 imóvel(is)
+  Mazzollini Leilões: 0 imóvel(is); ERRO: falhou após 3 tentativas: https://www.mazzollinileiloes.com.br
+  LEJE Leilões Judiciais Eletrônicos: 0 imóvel(is); ERRO: bloqueado: captcha/403
+  Damiani Leilões: 0 imóvel(is)
+2026-10-24 12:11:01,308 INFO OK Anderson Douglas Gali Falleiros: 20 lotes
+2026-10-24 12:11:08,339 INFO OK Antonio Magno Jacob Da Rocha: 0 lotes
+2026-10-24 12:11:25,761 INFO OK BSB Leilões: 1 lotes
+2026-10-24 12:11:47,604 INFO OK Clademir Dos Santos Flores: 10 lotes
+2026-10-24 12:11:55,764 INFO OK Alfa Leilões: 22 lotes
+  Alfa Leilões: 0 imóvel(is); descartados {'sem UF/cidade': 19}
+  Daniel Garcia Leilões: 0 imóvel(is); ERRO: bloqueado: captcha/403
+  Palácio dos Leilões: 0 imóvel(is)
+  Milan Leilões: 0 imóvel(is); ERRO: bloqueado: captcha/403
+  Sato Leilões: 0 imóvel(is)
+  Adyel Marques De Paula: 0 imóvel(is); ERRO: bloqueado: captcha
+  Alan Machado Ribeiro Leiloeiro: 0 imóvel(is)
+2026-10-24 12:12:10,329 INFO OK Cristiane Borguetti Moraes Lopes: 0 lotes
+2026-10-24 12:12:12,365 INFO OK Celso Alves Cunha: 0 lotes
+2026-10-24 12:12:16,943 INFO OK Daniel Hamoui: 17 lotes
+2026-10-24 12:12:19,385 INFO OK Alessandra Leilões: 0 lotes
+  Alessandra Leilões: 0 imóvel(is)
+  Alessandro Fahrion Pinto: 2 imóvel(is); descartados {'sem UF/cidade': 1}
+  Alex Vieira Passos: 0 imóvel(is)
+  Alexandre Augusto Dos Santos Sabbag: 0 imóvel(is); descartados {'sem preço': 3}
+  AlienaJud (Mauro da Cruz): 0 imóvel(is)
+  Anderson Binotti Dos Passos: 0 imóvel(is); ERRO: falhou após 3 tentativas: https://ww19.abpleiloes.com
+  Anderson Douglas Gali Falleiros: 7 imóvel(is); descartados {'sem UF/cidade': 6}
+  Anderson Lopes De Paula: 0 imóvel(is)
+  Andressa Sedrez Terres Tonial Ferreira: 2 imóvel(is)
+2026-10-24 12:12:28,591 INFO OK Aretha Mirian Antunes de Paulo Greco: 0 lotes
+2026-10-24 12:12:33,709 INFO OK Daniel Schneider Chaieb: 0 lotes
+2026-10-24 12:12:34,445 ERROR BLOQUEADO Daux Leilões: captcha
+2026-10-24 12:12:41,660 INFO OK Eduardo Vivian: 5 lotes
+2026-10-24 12:12:49,709 INFO OK Erico Sobral Soares: 2 lotes
+2026-10-24 12:13:05,813 INFO OK Angela Saraiva Portes: 4 lotes
+  Angela Saraiva Portes: 3 imóvel(is); descartados {'sem preço': 1}
+  Antonio Carlos Celso Santos Frazão: 0 imóvel(is)
+  Antonio Ferreira Leiloeiro: 0 imóvel(is)
+  Antonio Jose da Silva Filho: 0 imóvel(is)
+  Antonio Magno Jacob Da Rocha: 0 imóvel(is)
+  Aretha Mirian Antunes de Paulo Greco: 0 imóvel(is)
+2026-10-24 12:13:10,399 ERROR BLOQUEADO Gelson Bourschiet: captcha
+2026-10-24 12:13:37,878 INFO OK Avani Luiz De Morais Júnior / Mouzar Baston Filho: 0 lotes
+2026-10-24 12:14:07,618 INFO OK Arthur Ferreira Nunes: 0 lotes
+  Arthur Ferreira Nunes: 0 imóvel(is)
+  Avani Luiz De Morais Júnior / Mouzar Baston Filho: 0 imóvel(is)
+  BSB Leilões: 0 imóvel(is); descartados {'sem UF/cidade': 1}
+  Celso Alves Cunha: 0 imóvel(is)
+  Clademir Dos Santos Flores: 1 imóvel(is); descartados {'sem UF/cidade': 4}
+  Cristiane Borguetti Moraes Lopes: 0 imóvel(is)
+  Daniel Hamoui: 17 imóvel(is)
+  Daniel Schneider Chaieb: 0 imóvel(is)
+  Daux Leilões: 0 imóvel(is); ERRO: bloqueado: captcha
+2026-10-24 12:14:41,072 INFO OK Diogo Reis Dutra: 4 lotes
+  Diogo Reis Dutra: 1 imóvel(is); descartados {'sem UF/cidade': 2}
+  Eduardo Vivian: 0 imóvel(is); descartados {'sem UF/cidade': 5}
+  Erico Sobral Soares: 0 imóvel(is); descartados {'sem preço': 2}
+2026-10-24 12:14:47,524 ERROR ERRO Gabriel Silva Da Rosa: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://www.gabrielleiloes.com.br/leilao/proximos", waiting until "networkidle"
+
+2026-10-24 12:15:01,651 INFO OK Isabella Katarina Schacker Peracchi: 0 lotes
+2026-10-24 12:15:03,182 ERROR ERRO Gustavo Turani: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://turanileiloes.com.br/veiculos", waiting until "networkidle"
+
+2026-10-24 12:15:11,421 ERROR ERRO Gestor Leilões: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://www.gestorleiloes.com.br/leilao/proximos", waiting until "networkidle"
+
+2026-10-24 12:15:25,172 INFO OK José Lázaro Ribeiro Menezes: 17 lotes
+2026-10-24 12:15:34,277 INFO OK José Roberto Neves Amorim: 8 lotes
+2026-10-24 12:15:46,156 INFO OK Joyce Ribeiro Leilões: 1 lotes
+2026-10-24 12:15:54,980 INFO OK Jose Lazaro Ribeiro Menezes Junior: 0 lotes
+2026-10-24 12:16:07,465 INFO OK Leilão VIP: 21 lotes
+2026-10-24 12:16:10,967 INFO OK Glener Brasil Cassiano: 6 lotes
+2026-10-24 12:16:18,644 INFO OK Leilões Araújo: 2 lotes
+2026-10-24 12:16:31,382 ERROR BLOQUEADO Luana Vidal Ineu: captcha
+2026-10-24 12:16:32,501 INFO OK Lucas Eduardo Dalcanale: 9 lotes
+2026-10-24 12:16:39,424 INFO OK Lucas Ferreira: 25 lotes
+2026-10-24 12:16:56,021 INFO OK Everton Dias Medeiros: 0 lotes
+  Everton Dias Medeiros: 0 imóvel(is)
+2026-10-24 12:16:58,743 INFO OK Francisco Jonnathan Santos Freitas: 0 lotes
+  Francisco Jonnathan Santos Freitas: 0 imóvel(is)
+  Gabriel Silva Da Rosa: 0 imóvel(is); ERRO: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://www.gabrielleiloes.com.br/leilao/proximos", waiting until "networkidle"
+
+  Gelson Bourschiet: 0 imóvel(is); ERRO: bloqueado: captcha
+  Gestor Leilões: 0 imóvel(is); ERRO: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://www.gestorleiloes.com.br/leilao/proximos", waiting until "networkidle"
+
+  Glener Brasil Cassiano: 0 imóvel(is); descartados {'sem UF/cidade': 6}
+  Gustavo Turani: 0 imóvel(is); ERRO: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://turanileiloes.com.br/veiculos", waiting until "networkidle"
+
+2026-10-24 12:17:00,325 INFO OK Marcelo Trevisan: 3 lotes
+2026-10-24 12:17:19,829 INFO OK Marco Antônio Leiloeiro: 15 lotes
+2026-10-24 12:17:41,488 INFO OK Nicolas Tadashi Matsune: 0 lotes
+2026-10-24 12:18:02,983 INFO OK Odarli Canezin: 0 lotes
+2026-10-24 12:18:24,728 INFO OK Odiclésio Jaison Storchio: 0 lotes
+2026-10-24 12:18:30,063 INFO OK Helton Rogerio Verri Ventrilho: 0 lotes
+  Helton Rogerio Verri Ventrilho: 0 imóvel(is)
+  Isabella Katarina Schacker Peracchi: 0 imóvel(is)
+  Jose Lazaro Ribeiro Menezes Junior: 0 imóvel(is)
+2026-10-24 12:18:40,131 ERROR ERRO Luiz Egidio Cruz Medeiros: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://medeirosleiloes.com.br/leilao/proximos", waiting until "networkidle"
+
+2026-10-24 12:18:45,953 INFO OK Odilson Fumagalli Avila: 20 lotes
+2026-10-24 12:19:01,610 INFO OK Rafael Coutinho Leiloeiro: 30 lotes
+2026-10-24 12:19:22,162 WARNING tentativa 1/3 https://www.leilance.com.br: HTTP 403 (aguarda 2.3s)
+2026-10-24 12:19:24,313 INFO OK José David Gonçalves de Melo: 0 lotes
+  José David Gonçalves de Melo: 0 imóvel(is)
+  José Lázaro Ribeiro Menezes: 7 imóvel(is); descartados {'sem UF/cidade': 10}
+2026-10-24 12:19:25,247 INFO OK Mauricio Sambugari Appolinario: 3 lotes
+  José Roberto Neves Amorim: 0 imóvel(is); descartados {'preço repetido': 8}
+  Joyce Ribeiro Leilões: 0 imóvel(is); descartados {'sem UF/cidade': 1}
+2026-10-24 12:19:42,033 WARNING tentativa 2/3 https://www.leilance.com.br: HTTP 403 (aguarda 5.4s)
+2026-10-24 12:19:57,409 INFO OK Junior Cesar Da Silva: 0 lotes
+  Junior Cesar Da Silva: 0 imóvel(is)
+  Leilão VIP: 5 imóvel(is); descartados {'sem UF/cidade': 2, 'preço repetido': 7}
+  Leilões Araújo: 1 imóvel(is); descartados {'duplicado': 1}
+  Luana Vidal Ineu: 0 imóvel(is); ERRO: bloqueado: captcha
+  Lucas Eduardo Dalcanale: 0 imóvel(is); descartados {'sem preço': 9}
+  Lucas Ferreira: 0 imóvel(is); descartados {'sem UF/cidade': 9}
+2026-10-24 12:20:01,634 INFO OK Marcos Rodrigo Custodio Soares: 0 lotes
+2026-10-24 12:20:02,048 WARNING tentativa 3/3 https://www.leilance.com.br: HTTP 403 (aguarda 9.4s)
+2026-10-24 12:20:11,470 ERROR ERRO Raul Henrique Galassi Padovan: falhou após 3 tentativas: https://www.leilance.com.br
+2026-10-24 12:20:15,689 INFO OK Luiz De Chirico Júnior: 0 lotes
+  Luiz De Chirico Júnior: 0 imóvel(is)
+  Luiz Egidio Cruz Medeiros: 0 imóvel(is); ERRO: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://medeirosleiloes.com.br/leilao/proximos", waiting until "networkidle"
+
+  Marcelo Trevisan: 0 imóvel(is); descartados {'sem UF/cidade': 3}
+  Marco Antônio Leiloeiro: 11 imóvel(is); descartados {'sem UF/cidade': 4}
+  Marcos Rodrigo Custodio Soares: 0 imóvel(is)
+  Mauricio Sambugari Appolinario: 0 imóvel(is); descartados {'sem UF/cidade': 3}
+  Nicolas Tadashi Matsune: 0 imóvel(is)
+  Odarli Canezin: 0 imóvel(is)
+  Odiclésio Jaison Storchio: 0 imóvel(is)
+  Odilson Fumagalli Avila: 0 imóvel(is); descartados {'sem preço': 20}
+2026-10-24 12:20:19,390 INFO OK RMC Leilões: 0 lotes
+2026-10-24 12:20:29,533 INFO OK Raimundo Magalhaes De Moraes: 0 lotes
+2026-10-24 12:20:35,676 ERROR ERRO Oscar de Menezes Palmeira: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://www.oscar.leilao.br/leilao/proximos", waiting until "networkidle"
+
+  Oscar de Menezes Palmeira: 0 imóvel(is); ERRO: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://www.oscar.leilao.br/leilao/proximos", waiting until "networkidle"
+
+  Rafael Coutinho Leiloeiro: 3 imóvel(is); descartados {'sem UF/cidade': 27}
+2026-10-24 12:20:36,772 INFO OK Silvani Das Graças Lopes Dias: 0 lotes
+  Raimundo Magalhaes De Moraes: 0 imóvel(is)
+  Raul Henrique Galassi Padovan: 0 imóvel(is); ERRO: falhou após 3 tentativas: https://www.leilance.com.br
+2026-10-24 12:20:37,867 INFO OK Schulmann Leilões: 62 lotes
+2026-10-24 12:20:58,356 INFO OK Valdinei Generoso Silveira: 1 lotes
+2026-10-24 12:20:59,992 INFO OK Uni Leilões (Fabiana Cusato): 64 lotes
+2026-10-24 12:21:00,950 INFO OK Victor De Almeida Domingues Cunha: 0 lotes
+2026-10-24 12:22:00,790 ERROR ERRO Regina Aude Leite De Araujo Silva: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://www.reginaaudeleiloes.com.br/leilao/1-vara-civel-de-cassilandia-ms/1746", waiting until "networkidle"
+
+  Regina Aude Leite De Araujo Silva: 0 imóvel(is); ERRO: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://www.reginaaudeleiloes.com.br/leilao/1-vara-civel-de-cassilandia-ms/1746", waiting until "networkidle"
+
+2026-10-24 12:22:08,169 ERROR ERRO Sandra Regina Wontroba: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://www.swleiloes.com.br/leilao/proximos", waiting until "networkidle"
+
+2026-10-24 12:23:07,383 INFO OK Ricardo Ferreira Gomes: 1 lotes
+  Ricardo Ferreira Gomes: 0 imóvel(is)
+  RMC Leilões: 0 imóvel(is)
+  Sandra Regina Wontroba: 0 imóvel(is); ERRO: Page.goto: Timeout 25000ms exceeded.
+Call log:
+  - navigating to "https://www.swleiloes.com.br/leilao/proximos", waiting until "networkidle"
+
+  Schulmann Leilões: 0 imóvel(is); descartados {'sem UF/cidade': 59}
+  Silvani Das Graças Lopes Dias: 0 imóvel(is)
+2026-10-24 12:23:24,483 INFO OK Silvia Barros Leilões: 0 lotes
+  Silvia Barros Leilões: 0 imóvel(is)
+2026-10-24 12:24:51,929 INFO OK Thaís Costa Bastos Teixeira: 0 lotes
+  Thaís Costa Bastos Teixeira: 0 imóvel(is)
+  Uni Leilões (Fabiana Cusato): 30 imóvel(is); descartados {'sem UF/cidade': 28, 'sem preço': 1, 'duplicado': 1}
+  Valdinei Generoso Silveira: 1 imóvel(is)
+  Victor De Almeida Domingues Cunha: 0 imóvel(is)
+2026-10-24 12:25:25,727 INFO OK Werno Klöckner Júnior: 0 lotes
+  Werno Klöckner Júnior: 0 imóvel(is)
+DATA PASSOU: 104 imóvel(is) com o leilão já realizado saíram
+FIM: 91 imóvel(is) de 92 leiloeiro(s) — gravados
