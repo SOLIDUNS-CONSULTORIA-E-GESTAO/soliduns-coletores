@@ -1,0 +1,24 @@
+# SOLIDUNS — CONFERE O QUE ESTÁ NO AR EM soliduns.com.br (24/10/2026). Só leitura. Só roda à mão.
+name: Pesquisa - site no ar
+
+on:
+  workflow_dispatch:
+    inputs:
+      texto:
+        description: "Texto a procurar no index.html publicado"
+        required: true
+        default: "v178 (24/10/2026)"
+
+jobs:
+  conferir:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Baixar o index.html e procurar o texto
+        env:
+          T: ${{ github.event.inputs.texto }}
+        run: |
+          curl -s -D cab.txt "https://soliduns.com.br/?nocache=$(date +%s)" -o index.html
+          echo "::notice::HTTP $(head -1 cab.txt | tr -d '\r') · cache-control: $(grep -i '^cache-control' cab.txt | tr -d '\r')"
+          if grep -qF "$T" index.html; then echo "::notice::ENCONTRADO: $T"; else echo "::error::NÃO encontrado: $T"; fi
+          echo "::notice::scripts do fim: $(grep -o 'assets/sol-[0-9a-f]*\.js' index.html | tail -4 | tr '\n' ' ')"
