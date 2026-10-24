@@ -45,9 +45,11 @@ jobs:
           OKS=0; RUINS=""
           while read -r F; do
             mkdir -p "rec/arquivos$(dirname "$F")"
-            C=$(curl -s -L -o "rec/arquivos$F" -w "%{http_code}" "$URL$F")
-            if [ "$C" != "200" ]; then
-              C=$(curl -s -L -H "$A" -H "Accept: application/vnd.bitballoon.v1.raw" -o "rec/arquivos$F" -w "%{http_code}" "https://api.netlify.com/api/v1/deploys/$ACHOU/files$F")
+            C1=$(curl -s -L -o "rec/arquivos$F" -w "%{http_code}" "$URL$F")
+            C=$C1
+            if [ "$C1" != "200" ] || head -c 1 "rec/arquivos$F" | grep -q '{' && [ "${F##*.}" != "json" ]; then
+              C=$(curl -s -L -H "$A" -H "Content-Type: application/vnd.bitballoon.v1.raw" -H "Accept: application/vnd.bitballoon.v1.raw" -o "rec/arquivos$F" -w "%{http_code}" "https://api.netlify.com/api/v1/deploys/$ACHOU/files$F?raw=1")
+              [ "$F" = "/avaliacao.html" ] && echo "::notice::avaliacao.html: permalink HTTP $C1; API HTTP $C; início: $(head -c 120 "rec/arquivos$F" | tr '\n' ' ')"
             fi
             if [ "$C" = "200" ]; then OKS=$((OKS+1)); else RUINS="$RUINS $F:$C"; rm -f "rec/arquivos$F"; fi
           done < faltam.txt
