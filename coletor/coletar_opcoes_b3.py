@@ -386,6 +386,36 @@ def por_pregao(linhas):
         yield ler_dia(bloco)
 
 
+def por_pregao_em_disco(linhas, desde, ate):
+    """Arquivo anual: a B3 não garante a ordem por data. Separa as linhas por pregão em arquivos temporários
+    (sem segurar o ano inteiro na memória) e devolve os pregões em ordem de data."""
+    import tempfile
+    pasta = tempfile.mkdtemp(prefix="cotahist_")
+    abertos = {}
+    try:
+        lo, hi = desde.strftime("%Y%m%d"), ate.strftime("%Y%m%d")
+        for l in linhas:
+            if len(l) < 245 or l[0:2] != "01" or l[24:27] not in ("010", "070", "080"):
+                continue
+            d = l[2:10]
+            if d < lo or d > hi:
+                continue
+            f = abertos.get(d)
+            if f is None:
+                f = abertos[d] = open(os.path.join(pasta, d), "w", encoding="latin-1")
+            f.write(l + "\n")
+        for f in abertos.values():
+            f.close()
+        for d in sorted(abertos):
+            with open(os.path.join(pasta, d), encoding="latin-1") as f:
+                yield ler_dia([x.rstrip("\n") for x in f])
+            os.remove(os.path.join(pasta, d))
+    finally:
+        for f in abertos.values():
+            if not f.closed:
+                f.close()
+
+
 def ler_dia(bloco):
     vista, opcoes = ler_registros(bloco)
     d = next(iter(vista)) if vista else (opcoes[0]["data"] if opcoes else None)
@@ -445,8 +475,8 @@ def main():
                     log(f"COTAHIST_A{ano}: não encontrado")
                     continue
                 log(f"COTAHIST_A{ano}: {len(c) / 1e6:.0f} MB")
-                for x in por_pregao(linhas_zip(c)):
-                    if x[0] is not None and primeiro <= x[0] <= hoje:
+                for x in por_pregao_em_disco(linhas_zip(c), primeiro, hoje):
+                    if x[0] is not None:
                         yield x
                 del c
         eh_alvo = lambda d: d >= ini
@@ -486,4 +516,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except SystemExit as e:
+        if e.code not in (0, None):
+            print(f"::error::{e.code}", flush=True)
+        raise
+    except Exception as e:                          # aparece no resumo do GitHub (a página do erro)
+        print(f"::error::{type(e).__name__}: {str(e)[:900]}", flush=True)
+        raise
