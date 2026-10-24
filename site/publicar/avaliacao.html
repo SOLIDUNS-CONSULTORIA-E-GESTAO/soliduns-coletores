@@ -197,7 +197,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:.86rem}
 /* ---------- avaliação ---------- */
 .aval-head{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
 .aval-head .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
-.stepper{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;overflow-x:auto}
+.stepper{display:grid;grid-template-columns:repeat(10,minmax(min-content,1fr));gap:4px;overflow-x:auto}
 .step{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:8px 8px 7px;cursor:pointer;text-align:left;--v107-alin:left;display:grid;gap:2px;min-width:86px;position:relative}
 .step b{font-family:var(--f-mono);font-size:.72rem;font-weight:500;color:var(--muted)}
 .step span{font-size:.76rem;line-height:1.25;color:var(--fg)}
@@ -257,6 +257,28 @@ fieldset.ph{border:0;padding:0;margin:0;display:grid;gap:18px;min-width:0}
 .foto figcaption{padding:10px;display:grid;gap:8px;min-width:0}
 .foto textarea.inp{min-height:58px}
 @media (max-width:1100px){.work{grid-template-columns:minmax(0,1fr)}.rail{position:static}.dash{grid-template-columns:minmax(0,1fr)}}
+/* v177: dentro da plataforma o quadro tem no máximo 1130 px; o menu lateral vira uma coluna de ícones (nome no passar do mouse) */
+@media (min-width:861px) and (max-width:1279px){
+  .shell{grid-template-columns:64px minmax(0,1fr)}
+  .side{padding:16px 8px;align-items:stretch}
+  .brand{padding:4px 0 10px;justify-content:center}.brand>div{display:none}
+  .nav-h{font-size:0;padding:0;height:1px;background:var(--line);margin:8px 6px}
+  .nav button{justify-content:center;padding:10px 0;gap:0}
+  .nav button>span{display:none}
+  .nav svg{width:20px;height:20px}
+  .side-foot{justify-items:center}
+  .side-foot .chip,.side-foot .mode-pill{font-size:0;padding:0;width:14px;height:14px;gap:0;justify-content:center;border-radius:50%}
+  .side-foot .mode-pill{background:var(--line)}
+  .side-foot .chip::before{width:8px;height:8px}
+  .dash{grid-template-columns:minmax(0,1fr)}
+}
+@media (min-width:861px){.work.larga{grid-template-columns:minmax(0,1fr)}
+  .work.larga .rail{position:static;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:start}}
+.toasts{pointer-events:none}
+/* v177: em tabela que rola para o lado, a coluna do botão Remover fica sempre visível à direita */
+.tbl-wrap .tbl tr>td.keep:last-child{position:sticky;right:0;z-index:1;background:var(--surface);box-shadow:-8px 0 8px -8px rgba(0,0,0,.45)}
+.tbl-wrap .tbl:has(td.keep:last-child) tr>th:last-child{position:sticky;right:0;z-index:1;background:var(--surface)}
+.tbl tr.click:hover td.keep:last-child{background:var(--raised)}
 @media (max-width:860px){
   .auth{grid-template-columns:minmax(0,1fr)}.auth-brand{padding:32px 20px;gap:18px}.auth-brand ul{display:none}
   .shell{grid-template-columns:minmax(0,1fr)}
@@ -305,7 +327,7 @@ details.gates[open]>summary .tog{transform:rotate(180deg)}
   .bnav svg{width:22px;height:22px}
   .bnav button[aria-current="page"]{color:var(--accent-fg)}
   .bnav .dd{display:grid;place-items:center}
-  .bnav .fab{width:56px;height:56px;min-height:0;border-radius:16px;background:var(--accent);color:var(--accent-ink);margin-top:-24px;box-shadow:var(--shadow);place-items:center}
+  .bnav .fab,.bnav>.dd>button.fab{width:56px;height:56px;min-height:0;border-radius:16px;background:var(--accent);color:var(--accent-ink);margin-top:-24px;box-shadow:var(--shadow);place-items:center}
   .bnav .fab svg{width:26px;height:26px}
   .dd-menu,.dd-menu.left{position:fixed;left:0;right:0;bottom:0;top:auto;min-width:0;border-radius:16px 16px 0 0;padding:8px 8px calc(12px + env(safe-area-inset-bottom,0px));z-index:90;max-height:75dvh;overflow:auto;box-shadow:0 -12px 32px rgba(0,0,0,.35)}
   .dd-menu::before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:var(--line);margin:4px auto 8px}
@@ -688,9 +710,9 @@ async function nvGravarAval(a){let alvo=a,ver=CLOUD.ver[a.id],enviado=null,junto
  if(juntou){const i=DB.avaliacoes.findIndex(x=>x.id===a.id);if(i>=0){DB.avaliacoes[i]=alvo;CLOUD.mesclou=(CLOUD.mesclou||0)+1}}
  CLOUD.ver[alvo.id]=ver;CLOUD.base[alvo.id]=enviado;CLOUD.hashes.av[alvo.id]=fnv(enviado)}
 function nvPill(){const el=document.getElementById("nv-pill");if(el)el.outerHTML=nvPillHtml()}
-function nvPillHtml(){if(!naNuvem())return `<span class="mode-pill" id="nv-pill">${cfgNuvem()?"Nuvem: entre para sincronizar":"Modo demonstração"} · v${VERSAO}</span>`;
+function nvPillHtml(){if(!naNuvem())return `<span class="mode-pill" id="nv-pill" title="${cfgNuvem()?"Nuvem: entre para sincronizar":"Modo demonstração"}">${cfgNuvem()?"Nuvem: entre para sincronizar":"Modo demonstração"} · v${VERSAO}</span>`;
  const st=CLOUD.ocupado||CLOUD.estado==="sincronizando"?["info","Sincronizando…"]:CLOUD.pendente&&CLOUD.estado!=="ok"?["warn",CLOUD.estado==="offline"?"Sem conexão · alterações guardadas":"Erro ao salvar · tentando de novo"]:CLOUD.pendente?["info","Salvando…"]:["ok","Salvo na nuvem às "+fmtTime(CLOUD.ultimo||Date.now())];
- return `<span class="chip ${st[0]}" id="nv-pill" title="${esc(CLOUD.erro||"")}">${st[1]}</span>`}
+ return `<span class="chip ${st[0]}" id="nv-pill" title="${esc(CLOUD.erro||st[1])}">${st[1]}</span>`}
 window.addEventListener("online",()=>{if(naNuvem()&&CLOUD.pendente)nvSincronizar()});
 window.addEventListener("beforeunload",e=>{if(naNuvem()&&(CLOUD.pendente||CLOUD.fila.length)){nvSincronizar();e.preventDefault();e.returnValue=""}});
 
@@ -1676,7 +1698,7 @@ function shell(inner){
  const groups={};Object.entries(ROUTES).filter(([k,r])=>r.menu&&canSee(k)).forEach(([k,r])=>(groups[r.menu]=groups[r.menu]||[]).push([k,r]));
  const cnt={avaliacoes:minhas().filter(a=>a.status!=="emitido").length,mercado:DB.mercado.length,"admin-usuarios":DB.users.length};
  const cur=STATE.route==="avaliacao"?"avaliacoes":STATE.route;
- const nav=Object.entries(groups).map(([g,items])=>`<div class="nav-h">${esc(g)}</div>`+items.map(([k,r])=>`<button data-go="${k}" data-via="menu lateral" ${cur===k?'aria-current="page"':""}>${ico(r.icon)}<span>${esc(r.label)}</span>${cnt[k]!=null?`<span class="count">${cnt[k]}</span>`:""}</button>`).join("")).join("");
+ const nav=Object.entries(groups).map(([g,items])=>`<div class="nav-h">${esc(g)}</div>`+items.map(([k,r])=>`<button data-go="${k}" data-via="menu lateral" title="${esc(r.label)}" ${cur===k?'aria-current="page"':""}>${ico(r.icon)}<span>${esc(r.label)}</span>${cnt[k]!=null?`<span class="count">${cnt[k]}</span>`:""}</button>`).join("")).join("");
  const ini=(u?.nome||"?").split(" ").map(s=>s[0]).slice(0,2).join("").toUpperCase();
  const crumbs=crumb();
  return `${adminMode?`<div class="banner-admin" role="status"><span>${imp?`Administrador vendo a área do assinante <b>${esc(imp.nome)}</b>`:naNuvem()?"Administrador · "+esc(u?.email||""):"Administrador em modo de teste — acesso sem login"}</span>${imp?`<button data-action="sair-imp">Voltar à administração</button>`:`<button data-action="ver-como">Ver área do assinante</button>`}</div>`:""}
@@ -1858,7 +1880,7 @@ function viewAvaliacao(p){const a=DB.avaliacoes.find(x=>x.id===p.id);if(!a)retur
     <button role="menuitem" data-action="baixar-laudo">${ico("doc")}<span>Baixar ${a.status==="emitido"?"laudo":"minuta"} em Word<small>DOCX no template SOLIDUNS</small></span></button><hr>
     <button role="menuitem" data-action="excluir-aval" data-id="${esc(a.id)}">${ico("trash")}<span style="color:var(--bad)">Excluir avaliação</span></button></div></div></div>
  <nav class="stepper" aria-label="Fases do algoritmo">${step}</nav>
- <div class="work">
+ <div class="work${tab===4||tab===6?" larga":""}">
   <section class="panel"><div class="panel-h"><div><div class="eyebrow">Fase ${tab} de 10</div><h2>${esc(FASES[tab-1].nome)}</h2></div>${gF.length?(gF.every(g=>g.ok)?'<span class="chip ok">Gate liberado</span>':'<span class="chip warn">Gate pendente</span>'):""}</div>
    <div class="panel-b" style="display:grid;gap:18px">
     ${locked?`<div class="lockmsg"><span>Esta fase só abre depois do gate da F${f} (${esc(FASES[f-1].nome)}). Os campos estão em modo de leitura.</span><button class="btn sm" data-action="tab" data-tab="${f}">Ir para F${f}</button></div>`:""}
